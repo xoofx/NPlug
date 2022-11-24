@@ -916,6 +916,27 @@ internal static partial class LibVst
         /// 
         /// </summary>
         public ushort type;
+        
+        [StructLayout(LayoutKind.Explicit)]
+        public unsafe partial struct Union
+        {
+            [FieldOffset(0)]
+            public long intValue;
+            
+            [FieldOffset(0)]
+            public double floatValue;
+            
+            [FieldOffset(0)]
+            public byte* string8;
+            
+            [FieldOffset(0)]
+            public char* string16;
+            
+            [FieldOffset(0)]
+            public LibVst.FUnknown* @object;
+        }
+        
+        public LibVst.FVariant.Union union;
     }
     
     /// <summary>
@@ -3416,6 +3437,66 @@ internal static partial class LibVst
         /// </summary>
         public ushort type;
         
+        [StructLayout(LayoutKind.Explicit)]
+        public unsafe partial struct Union
+        {
+            /// <summary>
+            /// type == kNoteOnEvent
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.NoteOnEvent noteOn;
+            
+            /// <summary>
+            /// type == kNoteOffEvent
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.NoteOffEvent noteOff;
+            
+            /// <summary>
+            /// type == kDataEvent
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.DataEvent data;
+            
+            /// <summary>
+            /// type == kPolyPressureEvent
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.PolyPressureEvent polyPressure;
+            
+            /// <summary>
+            /// type == kNoteExpressionValueEvent
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.NoteExpressionValueEvent noteExpressionValue;
+            
+            /// <summary>
+            /// type == kNoteExpressionTextEvent
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.NoteExpressionTextEvent noteExpressionText;
+            
+            /// <summary>
+            /// type == kChordEvent
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.ChordEvent chord;
+            
+            /// <summary>
+            /// type == kScaleEvent
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.ScaleEvent scale;
+            
+            /// <summary>
+            /// type == kLegacyMIDICCOutEvent
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.LegacyMIDICCOutEvent midiCCOut;
+        }
+        
+        public LibVst.Event.Union union;
+        
         /// <summary>
         /// Event Flags - used for Event::flags
         /// </summary>
@@ -3490,6 +3571,298 @@ internal static partial class LibVst
     }
     
     public partial record struct TQuarterNotes(double Value);
+    
+    /// <summary>
+    /// Note-on event specific data. Used in @ref Event (union)
+    /// </summary>
+    /// <remarks>
+    ///  vstEventGrpPitch uses the twelve-tone equal temperament tuning (12-TET).
+    /// </remarks>
+    public unsafe partial struct NoteOnEvent
+    {
+        /// <summary>
+        /// channel index in event bus
+        /// </summary>
+        public short channel;
+        
+        /// <summary>
+        /// range [0, 127] = [C-2, G8] with A3=440Hz (12-TET: twelve-tone equal temperament)
+        /// </summary>
+        public short pitch;
+        
+        /// <summary>
+        /// 1.f = +1 cent, -1.f = -1 cent
+        /// </summary>
+        public float tuning;
+        
+        /// <summary>
+        /// range [0.0, 1.0]
+        /// </summary>
+        public float velocity;
+        
+        /// <summary>
+        /// in sample frames (optional, Note Off has to follow in any case!)
+        /// </summary>
+        public int length;
+        
+        /// <summary>
+        /// note identifier (if not available then -1)
+        /// </summary>
+        public int noteId;
+    }
+    
+    /// <summary>
+    /// Note-off event specific data. Used in @ref Event (union)
+    /// </summary>
+    /// <remarks>
+    ///  vstEventGrp
+    /// </remarks>
+    public unsafe partial struct NoteOffEvent
+    {
+        /// <summary>
+        /// channel index in event bus
+        /// </summary>
+        public short channel;
+        
+        /// <summary>
+        /// range [0, 127] = [C-2, G8] with A3=440Hz (12-TET)
+        /// </summary>
+        public short pitch;
+        
+        /// <summary>
+        /// range [0.0, 1.0]
+        /// </summary>
+        public float velocity;
+        
+        /// <summary>
+        /// associated noteOn identifier (if not available then -1)
+        /// </summary>
+        public int noteId;
+        
+        /// <summary>
+        /// 1.f = +1 cent, -1.f = -1 cent
+        /// </summary>
+        public float tuning;
+    }
+    
+    /// <summary>
+    /// Data event specific data. Used in @ref Event (union)
+    /// </summary>
+    /// <remarks>
+    ///  vstEventGrp
+    /// </remarks>
+    public unsafe partial struct DataEvent
+    {
+        /// <summary>
+        /// size in bytes of the data block bytes
+        /// </summary>
+        public uint size;
+        
+        /// <summary>
+        /// type of this data block (see @ref DataTypes)
+        /// </summary>
+        public uint type;
+        
+        /// <summary>
+        /// pointer to the data block
+        /// </summary>
+        public byte* bytes;
+        
+        /// <summary>
+        /// Value for DataEvent::type
+        /// </summary>
+        public enum DataTypes
+        {
+            /// <summary>
+            /// for MIDI system exclusive message
+            /// </summary>
+            kMidiSysEx = 0,
+        }
+    }
+    
+    /// <summary>
+    /// PolyPressure event specific data. Used in @ref Event (union)
+    /// </summary>
+    /// <remarks>
+    ///  vstEventGrp
+    /// </remarks>
+    public unsafe partial struct PolyPressureEvent
+    {
+        /// <summary>
+        /// channel index in event bus
+        /// </summary>
+        public short channel;
+        
+        /// <summary>
+        /// range [0, 127] = [C-2, G8] with A3=440Hz
+        /// </summary>
+        public short pitch;
+        
+        /// <summary>
+        /// range [0.0, 1.0]
+        /// </summary>
+        public float pressure;
+        
+        /// <summary>
+        /// event should be applied to the noteId (if not -1)
+        /// </summary>
+        public int noteId;
+    }
+    
+    /// <summary>
+    /// Note Expression Value event. Used in @ref Event (union)
+    /// A note expression event affects one single playing note (referring its noteId).
+    /// This kind of event is send from host to the plug-in like other events (NoteOnEvent, NoteOffEvent,...) in @ref ProcessData during the process call.
+    /// Note expression events for a specific noteId can only occur after a NoteOnEvent. The host must take care that the event list (@ref IEventList) is properly sorted.
+    /// Expression events are always absolute normalized values [0.0, 1.0].
+    /// The predefined types have a predefined mapping of the normalized values (see @ref NoteExpressionTypeIDs)
+    /// </summary>
+    /// <seealso cref="INoteExpressionController"/>
+    public unsafe partial struct NoteExpressionValueEvent
+    {
+        /// <summary>
+        /// see @ref NoteExpressionTypeID
+        /// </summary>
+        public LibVst.NoteExpressionTypeID typeId;
+        
+        /// <summary>
+        /// associated note identifier to apply the change
+        /// </summary>
+        public int noteId;
+        
+        /// <summary>
+        /// normalized value [0.0, 1.0].
+        /// </summary>
+        public LibVst.NoteExpressionValue value;
+    }
+    
+    public partial record struct NoteExpressionTypeID(uint Value);
+    
+    public partial record struct NoteExpressionValue(double Value);
+    
+    /// <summary>
+    /// Note Expression Text event. Used in Event (union)
+    /// A Expression event affects one single playing note.
+    /// </summary>
+    /// <seealso cref="NoteExpressionTypeInfo"/>
+    /// <seealso cref="INoteExpressionController"/>
+    public unsafe partial struct NoteExpressionTextEvent
+    {
+        /// <summary>
+        /// see @ref NoteExpressionTypeID (kTextTypeID or kPhoneticTypeID)
+        /// </summary>
+        public LibVst.NoteExpressionTypeID typeId;
+        
+        /// <summary>
+        /// associated note identifier to apply the change
+        /// </summary>
+        public int noteId;
+        
+        /// <summary>
+        /// the number of characters (TChar) between the beginning of text and the terminating
+        /// null character (without including the terminating null character itself)
+        /// </summary>
+        public uint textLen;
+        
+        /// <summary>
+        /// UTF-16, null terminated
+        /// </summary>
+        public char* text;
+    }
+    
+    /// <summary>
+    /// Chord event specific data. Used in @ref Event (union)
+    /// </summary>
+    /// <remarks>
+    ///  vstEventGrp
+    /// </remarks>
+    public unsafe partial struct ChordEvent
+    {
+        /// <summary>
+        /// range [0, 127] = [C-2, G8] with A3=440Hz
+        /// </summary>
+        public short root;
+        
+        /// <summary>
+        /// range [0, 127] = [C-2, G8] with A3=440Hz
+        /// </summary>
+        public short bassNote;
+        
+        /// <summary>
+        /// root is bit 0
+        /// </summary>
+        public short mask;
+        
+        /// <summary>
+        /// the number of characters (TChar) between the beginning of text and the terminating
+        /// null character (without including the terminating null character itself)
+        /// </summary>
+        public ushort textLen;
+        
+        /// <summary>
+        /// UTF-16, null terminated Hosts Chord Name
+        /// </summary>
+        public char* text;
+    }
+    
+    /// <summary>
+    /// Scale event specific data. Used in @ref Event (union)
+    /// </summary>
+    /// <remarks>
+    ///  vstEventGrp
+    /// </remarks>
+    public unsafe partial struct ScaleEvent
+    {
+        /// <summary>
+        /// range [0, 127] = root Note/Transpose Factor
+        /// </summary>
+        public short root;
+        
+        /// <summary>
+        /// Bit 0 =  C,  Bit 1 = C#, ... (0x5ab5 = Major Scale)
+        /// </summary>
+        public short mask;
+        
+        /// <summary>
+        /// the number of characters (TChar) between the beginning of text and the terminating
+        /// null character (without including the terminating null character itself)
+        /// </summary>
+        public ushort textLen;
+        
+        /// <summary>
+        /// UTF-16, null terminated, Hosts Scale Name
+        /// </summary>
+        public char* text;
+    }
+    
+    /// <summary>
+    /// Legacy MIDI CC Out event specific data. Used in @ref Event (union)
+    /// </summary>
+    /// <remarks>
+    ///  vstEventGrp- [released: 3.6.12]This kind of event is reserved for generating MIDI CC as output event for kEvent Bus during the process call.
+    /// </remarks>
+    public unsafe partial struct LegacyMIDICCOutEvent
+    {
+        /// <summary>
+        /// see enum ControllerNumbers [0, 255]
+        /// </summary>
+        public byte controlNumber;
+        
+        /// <summary>
+        /// channel index in event bus [0, 15]
+        /// </summary>
+        public sbyte channel;
+        
+        /// <summary>
+        /// value of Controller [0, 127]
+        /// </summary>
+        public sbyte value;
+        
+        /// <summary>
+        /// [0, 127] used for pitch bend (kPitchBend) and polyPressure (kCtrlPolyPressure)
+        /// </summary>
+        public sbyte value2;
+    }
     
     /// <summary>
     /// All parameter changes of a processing block: Vst::IParameterChanges
@@ -3989,7 +4362,29 @@ internal static partial class LibVst
         /// Bitset of silence state per channel
         /// </summary>
         public ulong silenceFlags;
+        
+        [StructLayout(LayoutKind.Explicit)]
+        public unsafe partial struct Union
+        {
+            /// <summary>
+            /// sample buffers to process with 32-bit precision
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.Sample32** channelBuffers32;
+            
+            /// <summary>
+            /// sample buffers to process with 64-bit precision
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.Sample64** channelBuffers64;
+        }
+        
+        public LibVst.AudioBusBuffers.Union union;
     }
+    
+    public partial record struct Sample32(float Value);
+    
+    public partial record struct Sample64(double Value);
     
     /// <summary>
     /// Audio processing context.
@@ -5290,9 +5685,9 @@ internal static partial class LibVst
         /// host to identify this newly created progress (for update and finish method)
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult start(ProgressType type, LibVst.tchar* optionalDescription, LibVst.ID* outID)
+        public ComResult start(ProgressType type, char* optionalDescription, LibVst.ID* outID)
         {
-            return ((delegate*unmanaged<LibVst.IProgress*, ProgressType, LibVst.tchar*, LibVst.ID*, ComResult>)Vtbl[3])((LibVst.IProgress*)Unsafe.AsPointer(ref this), type, optionalDescription, outID);
+            return ((delegate*unmanaged<LibVst.IProgress*, ProgressType, char*, LibVst.ID*, ComResult>)Vtbl[3])((LibVst.IProgress*)Unsafe.AsPointer(ref this), type, optionalDescription, outID);
         }
         
         /// <summary>
@@ -5344,8 +5739,6 @@ internal static partial class LibVst
             }
         }
     }
-    
-    public partial record struct tchar(char Value);
     
     public partial record struct ID(ulong Value);
     
@@ -5930,8 +6323,6 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct NoteExpressionTypeID(uint Value);
-    
     /// <summary>
     /// Description of a Note Expression Type
     /// This structure is part of the NoteExpressionTypeInfo structure, it describes for given NoteExpressionTypeID its default value
@@ -5961,8 +6352,6 @@ internal static partial class LibVst
         /// </summary>
         public int stepCount;
     }
-    
-    public partial record struct NoteExpressionValue(double Value);
     
     /// <summary>
     /// Extended plug-in interface IEditController for key switches support: Vst::IKeyswitchController

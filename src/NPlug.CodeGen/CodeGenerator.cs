@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Numerics;
 using System.Resources;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -371,6 +372,7 @@ public class CodeGenerator
             case "char":
             case "uint8":
                 return CSharpPrimitiveType.Byte();
+            case "tchar":
             case "TChar":
             case "char16":
                 return CSharpPrimitiveType.Char();
@@ -465,21 +467,39 @@ public class CodeGenerator
         Both = Plugin | Host
     }
 
-    private CSharpStruct GetOrCreateStruct(CppClass cppClass)
+    private CSharpStruct GetOrCreateStruct(CppClass cppClass, CSharpTypeWithMembers? container = null)
     {
-        if (_cppTypeToCSharpType.TryGetValue(cppClass.Name, out var csType))
+        var name = cppClass.Name;
+        bool isUnion = cppClass.ClassKind == CppClassKind.Union;
+        bool isAnonymousUnion = isUnion && string.IsNullOrEmpty(name);
+        if (isAnonymousUnion)
+        {
+            name = "Union";
+        }
+
+        if (_cppTypeToCSharpType.TryGetValue(name, out var csType))
         {
             return (CSharpStruct)csType;
         }
 
-        var csStruct = new CSharpStruct(cppClass.Name)
+        var csStruct = new CSharpStruct(name)
         {
             Modifiers = CSharpModifiers.Unsafe | CSharpModifiers.Partial,
             Visibility = CSharpVisibility.Public,
             CppElement = cppClass,
         };
-        _cppTypeToCSharpType[cppClass.Name] = csStruct;
-        _container!.Members.Add(csStruct);
+        if (isUnion)
+        {
+            csStruct.Attributes.Add(new CSharpStructLayoutAttribute(LayoutKind.Explicit));
+        }
+
+        if (!isAnonymousUnion)
+        {
+            _cppTypeToCSharpType[name] = csStruct;
+        }
+
+        container ??= _container!;
+        container.Members.Add(csStruct);
         UpdateComment(csStruct);
 
         if (cppClass.Functions.All(x => (x.Flags & CppFunctionFlags.Pure) == 0))
@@ -490,6 +510,10 @@ public class CodeGenerator
                 {
                     var csField = new CSharpField(FilterName(cppField.Name)) { CppElement = cppField };
                     UpdateComment(csField);
+                    if (isUnion)
+                    {
+                        csField.Attributes.Add(new CSharpFreeAttribute("FieldOffset(0)"));
+                    }
                     if (cppField.Type is CppArrayType arrayType)
                     {
                         csField.FieldType = new CSharpFixedArrayType(GetCSharpType(arrayType.ElementType), arrayType.Size);
@@ -498,6 +522,22 @@ public class CodeGenerator
                     {
                         csField.FieldType = GetCSharpType(cppField.Type);
                     }
+                    csStruct.Members.Add(csField);
+                }
+            }
+
+            foreach (var cppUnion in cppClass.Classes)
+            {
+                if (cppUnion.ClassKind == CppClassKind.Union)
+                {
+                    var csUnion = GetOrCreateStruct(cppUnion, csStruct);
+
+                    var csField = new CSharpField("union")
+                    {
+                        FieldType = csUnion,
+                        CppElement = cppUnion
+                    };
+                    UpdateComment(csField);
                     csStruct.Members.Add(csField);
                 }
             }
@@ -524,7 +564,7 @@ public class CodeGenerator
 
             }
 
-            if (_hostOnly.Contains(cppClass.Name))
+            if (_hostOnly.Contains(name))
             {
                 kind = InterfaceKind.Host;
             }
@@ -574,7 +614,7 @@ public class CodeGenerator
                         initializeVtbl.ReturnType = voidPtrPtr;
                         csStruct.Members.Add(initializeVtbl);
 
-                        var ccwFile = $"LibVst.{cppClass.Name}.cs";
+                        var ccwFile = $"LibVst.{name}.cs";
                         if (!File.Exists(Path.Combine(_destinationFolder, ccwFile)))
                         {
                             var csFile = new CSharpGeneratedFile($"/{ccwFile}")
@@ -594,7 +634,7 @@ public class CodeGenerator
                             };
                             csFile.Members.Add(csLibVst);
 
-                            ccwStructImpl = new CSharpStruct(cppClass.Name)
+                            ccwStructImpl = new CSharpStruct(name)
                             {
                                 Modifiers = CSharpModifiers.Partial,
                                 Visibility = CSharpVisibility.Public,

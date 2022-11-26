@@ -467,7 +467,7 @@ public class CodeGenerator
         Both = Plugin | Host
     }
 
-    private CSharpStruct GetOrCreateStruct(CppClass cppClass, CSharpTypeWithMembers? container = null)
+    private CSharpComStruct GetOrCreateStruct(CppClass cppClass, CSharpTypeWithMembers? container = null)
     {
         var name = cppClass.Name;
         bool isUnion = cppClass.ClassKind == CppClassKind.Union;
@@ -479,10 +479,10 @@ public class CodeGenerator
 
         if (_cppTypeToCSharpType.TryGetValue(name, out var csType))
         {
-            return (CSharpStruct)csType;
+            return (CSharpComStruct)csType;
         }
 
-        var csStruct = new CSharpStruct(name)
+        var csStruct = new CSharpComStruct(name)
         {
             Modifiers = CSharpModifiers.Unsafe | CSharpModifiers.Partial,
             Visibility = CSharpVisibility.Public,
@@ -549,7 +549,12 @@ public class CodeGenerator
             {
                 if (cppClassBaseType.Type is CppClass cppClassBase)
                 {
-                    GetOrCreateStruct(cppClassBase);
+                    var comStruct = GetOrCreateStruct(cppClassBase);
+                    if (comStruct.ComMethodCount > 0)
+                    {
+                        csStruct.BaseComMethodIndex = comStruct.BaseComMethodIndex + comStruct.ComMethodCount;
+                        break;
+                    }
                 }
             }
 
@@ -611,7 +616,7 @@ public class CodeGenerator
                     {
                         initializeVtbl = new CSharpMethod() { Name = "InitializeVtbl", Modifiers = CSharpModifiers.Static };
                         initializeVtbl.Parameters.Add(new CSharpParameter("vtbl") { ParameterType = voidPtrPtr });
-                        initializeVtbl.ReturnType = voidPtrPtr;
+                        initializeVtbl.ReturnType = CSharpPrimitiveType.Void();
                         csStruct.Members.Add(initializeVtbl);
 
                         var ccwFile = $"LibVst.{name}.cs";
@@ -706,25 +711,28 @@ public class CodeGenerator
                 initializeVtbl.Body = (writer, element) =>
                 {
                     var baseType = GetBaseType(cppClass);
+                    int vtblIndex = 0;
                     if (baseType != null)
                     {
-                        writer.WriteLine($"vtbl = {baseType.Name}.InitializeVtbl(vtbl);");
+                        writer.WriteLine($"{baseType.Name}.InitializeVtbl(vtbl);");
+                        var csBaseType = GetOrCreateStruct(baseType);
+                        vtblIndex = csBaseType.BaseComMethodIndex + csBaseType.ComMethodCount;
                     }
 
                     foreach (var method in ccwMethods)
                     {
                         var functionPointer = method.ToFunctionPointer();
                         functionPointer.IsUnmanaged = true;
-                        writer.WriteLine($"*vtbl++ = ({functionPointer})&{method.Name};");
+                        writer.WriteLine($"vtbl[{vtblIndex}] = ({functionPointer})&{method.Name};");
+                        vtblIndex++;
                     }
-
-                    writer.WriteLine("return vtbl;");
                 };
 
                 foreach (var cSharpMethod in ccwMethods)
                 {
                     csStruct.Members.Add(cSharpMethod);
                 }
+                csStruct.ComMethodCount = ccwMethods.Count;
             }
         }
 
@@ -918,5 +926,16 @@ public class CodeGenerator
         {
             return $"0x{Value1:x8}, 0x{Value2:x8}, 0x{Value3:x8}, 0x{Value4:x8}";
         }
+    }
+
+    private class CSharpComStruct : CSharpStruct
+    {
+        public CSharpComStruct(string name) : base(name)
+        {
+        }
+
+        public int BaseComMethodIndex { get; set; }
+
+        public int ComMethodCount { get; set; }
     }
 }

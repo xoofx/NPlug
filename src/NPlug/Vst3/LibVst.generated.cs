@@ -33,12 +33,11 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            *vtbl++ = (delegate*unmanaged<ComObject*, Guid, void**, ComResult>)&queryInterface_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, uint>)&addRef_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, uint>)&release_ccw;
-            return vtbl;
+            vtbl[0] = (delegate*unmanaged<ComObject*, Guid, void**, ComResult>)&queryInterface_ccw;
+            vtbl[1] = (delegate*unmanaged<ComObject*, uint>)&addRef_ccw;
+            vtbl[2] = (delegate*unmanaged<ComObject*, uint>)&release_ccw;
         }
         
         // --------------------------------------------------------------
@@ -122,14 +121,13 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, void*, int, int*, ComResult>)&read_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, void*, int, int*, ComResult>)&write_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, long, int, long*, ComResult>)&seek_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, long*, ComResult>)&tell_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, void*, int, int*, ComResult>)&read_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, void*, int, int*, ComResult>)&write_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, long, int, long*, ComResult>)&seek_ccw;
+            vtbl[6] = (delegate*unmanaged<ComObject*, long*, ComResult>)&tell_ccw;
         }
         
         // --------------------------------------------------------------
@@ -298,12 +296,11 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, long*, ComResult>)&getStreamSize_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, long, ComResult>)&setStreamSize_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, long*, ComResult>)&getStreamSize_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, long, ComResult>)&setStreamSize_ccw;
         }
         
         // --------------------------------------------------------------
@@ -405,11 +402,10 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.FUnknown*>)&clone_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.FUnknown*>)&clone_ccw;
         }
         
         // --------------------------------------------------------------
@@ -494,16 +490,15 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, byte*, void>)&setText8_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, char*, void>)&setText16_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, byte*>)&getText8_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, char*>)&getText16_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, void*, byte, void>)&take_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, byte>)&isWideString_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, byte*, void>)&setText8_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, char*, void>)&setText16_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, byte*>)&getText8_ccw;
+            vtbl[6] = (delegate*unmanaged<ComObject*, char*>)&getText16_ccw;
+            vtbl[7] = (delegate*unmanaged<ComObject*, void*, byte, void>)&take_ccw;
+            vtbl[8] = (delegate*unmanaged<ComObject*, byte>)&isWideString_ccw;
         }
         
         // --------------------------------------------------------------
@@ -669,13 +664,12 @@ internal static partial class LibVst
     /// </summary>
     public unsafe partial struct IErrorContext
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, byte, void>)&disableErrorUI_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, ComResult>)&errorMessageShown_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IString*, ComResult>)&getErrorMessage_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, byte, void>)&disableErrorUI_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, ComResult>)&errorMessageShown_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, LibVst.IString*, ComResult>)&getErrorMessage_ccw;
         }
         
         // --------------------------------------------------------------
@@ -959,13 +953,12 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IPersistent
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, byte*, ComResult>)&getClassID_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IAttributes*, ComResult>)&saveAttributes_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IAttributes*, ComResult>)&loadAttributes_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, byte*, ComResult>)&getClassID_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, LibVst.IAttributes*, ComResult>)&saveAttributes_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, LibVst.IAttributes*, ComResult>)&loadAttributes_ccw;
         }
         
         // --------------------------------------------------------------
@@ -1215,12 +1208,11 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IPluginBase
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.FUnknown*, ComResult>)&initialize_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, ComResult>)&terminate_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.FUnknown*, ComResult>)&initialize_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, ComResult>)&terminate_ccw;
         }
         
         // --------------------------------------------------------------
@@ -1274,14 +1266,13 @@ internal static partial class LibVst
     /// <seealso cref="GetPluginFactory"/>
     public unsafe partial struct IPluginFactory
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.PFactoryInfo*, ComResult>)&getFactoryInfo_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int>)&countClasses_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, LibVst.PClassInfo*, ComResult>)&getClassInfo_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.FIDString, LibVst.FIDString, void**, ComResult>)&createInstance_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.PFactoryInfo*, ComResult>)&getFactoryInfo_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, int>)&countClasses_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, int, LibVst.PClassInfo*, ComResult>)&getClassInfo_ccw;
+            vtbl[6] = (delegate*unmanaged<ComObject*, LibVst.FIDString, LibVst.FIDString, void**, ComResult>)&createInstance_ccw;
         }
         
         // --------------------------------------------------------------
@@ -1440,11 +1431,10 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = IPluginFactory.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, LibVst.PClassInfo2*, ComResult>)&getClassInfo2_ccw;
-            return vtbl;
+            IPluginFactory.InitializeVtbl(vtbl);
+            vtbl[7] = (delegate*unmanaged<ComObject*, int, LibVst.PClassInfo2*, ComResult>)&getClassInfo2_ccw;
         }
         
         // --------------------------------------------------------------
@@ -1623,12 +1613,11 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = IPluginFactory2.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, LibVst.PClassInfoW*, ComResult>)&getClassInfoUnicode_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.FUnknown*, ComResult>)&setHostContext_ccw;
-            return vtbl;
+            IPluginFactory2.InitializeVtbl(vtbl);
+            vtbl[8] = (delegate*unmanaged<ComObject*, int, LibVst.PClassInfoW*, ComResult>)&getClassInfoUnicode_ccw;
+            vtbl[9] = (delegate*unmanaged<ComObject*, LibVst.FUnknown*, ComResult>)&setHostContext_ccw;
         }
         
         // --------------------------------------------------------------
@@ -1837,11 +1826,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IPluginCompatibility
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&getCompatibilityJSON_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&getCompatibilityJSON_ccw;
         }
         
         // --------------------------------------------------------------
@@ -1884,11 +1872,10 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, byte*, void>)&setText_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, byte*, void>)&setText_ccw;
         }
         
         // --------------------------------------------------------------
@@ -1975,11 +1962,10 @@ internal static partial class LibVst
     /// <seealso cref="IUpdateHandler"/>
     public unsafe partial struct IDependent
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.FUnknown*, int, void>)&update_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.FUnknown*, int, void>)&update_ccw;
         }
         
         // --------------------------------------------------------------
@@ -2243,22 +2229,21 @@ internal static partial class LibVst
     /// </par>
     public unsafe partial struct IPlugView
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.FIDString, ComResult>)&isPlatformTypeSupported_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, void*, LibVst.FIDString, ComResult>)&attached_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, ComResult>)&removed_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, float, ComResult>)&onWheel_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, char, short, short, ComResult>)&onKeyDown_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, char, short, short, ComResult>)&onKeyUp_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ViewRect*, ComResult>)&getSize_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ViewRect*, ComResult>)&onSize_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, bool, ComResult>)&onFocus_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IPlugFrame*, ComResult>)&setFrame_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, ComResult>)&canResize_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ViewRect*, ComResult>)&checkSizeConstraint_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.FIDString, ComResult>)&isPlatformTypeSupported_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, void*, LibVst.FIDString, ComResult>)&attached_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, ComResult>)&removed_ccw;
+            vtbl[6] = (delegate*unmanaged<ComObject*, float, ComResult>)&onWheel_ccw;
+            vtbl[7] = (delegate*unmanaged<ComObject*, char, short, short, ComResult>)&onKeyDown_ccw;
+            vtbl[8] = (delegate*unmanaged<ComObject*, char, short, short, ComResult>)&onKeyUp_ccw;
+            vtbl[9] = (delegate*unmanaged<ComObject*, LibVst.ViewRect*, ComResult>)&getSize_ccw;
+            vtbl[10] = (delegate*unmanaged<ComObject*, LibVst.ViewRect*, ComResult>)&onSize_ccw;
+            vtbl[11] = (delegate*unmanaged<ComObject*, bool, ComResult>)&onFocus_ccw;
+            vtbl[12] = (delegate*unmanaged<ComObject*, LibVst.IPlugFrame*, ComResult>)&setFrame_ccw;
+            vtbl[13] = (delegate*unmanaged<ComObject*, ComResult>)&canResize_ccw;
+            vtbl[14] = (delegate*unmanaged<ComObject*, LibVst.ViewRect*, ComResult>)&checkSizeConstraint_ccw;
         }
         
         // --------------------------------------------------------------
@@ -2410,11 +2395,10 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ScaleFactor, ComResult>)&setContentScaleFactor_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.ScaleFactor, ComResult>)&setContentScaleFactor_ccw;
         }
         
         // --------------------------------------------------------------
@@ -3130,19 +3114,18 @@ internal static partial class LibVst
     /// <seealso cref="IPluginBase"/>
     public unsafe partial struct IComponent
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = IPluginBase.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, Guid, ComResult>)&getControllerClassId_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IoMode, ComResult>)&setIoMode_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.MediaType, LibVst.BusDirection, int>)&getBusCount_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.MediaType, LibVst.BusDirection, int, LibVst.BusInfo*, ComResult>)&getBusInfo_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.RoutingInfo*, LibVst.RoutingInfo*, ComResult>)&getRoutingInfo_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.MediaType, LibVst.BusDirection, int, bool, ComResult>)&activateBus_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, bool, ComResult>)&setActive_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&setState_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&getState_ccw;
-            return vtbl;
+            IPluginBase.InitializeVtbl(vtbl);
+            vtbl[5] = (delegate*unmanaged<ComObject*, Guid, ComResult>)&getControllerClassId_ccw;
+            vtbl[6] = (delegate*unmanaged<ComObject*, LibVst.IoMode, ComResult>)&setIoMode_ccw;
+            vtbl[7] = (delegate*unmanaged<ComObject*, LibVst.MediaType, LibVst.BusDirection, int>)&getBusCount_ccw;
+            vtbl[8] = (delegate*unmanaged<ComObject*, LibVst.MediaType, LibVst.BusDirection, int, LibVst.BusInfo*, ComResult>)&getBusInfo_ccw;
+            vtbl[9] = (delegate*unmanaged<ComObject*, LibVst.RoutingInfo*, LibVst.RoutingInfo*, ComResult>)&getRoutingInfo_ccw;
+            vtbl[10] = (delegate*unmanaged<ComObject*, LibVst.MediaType, LibVst.BusDirection, int, bool, ComResult>)&activateBus_ccw;
+            vtbl[11] = (delegate*unmanaged<ComObject*, bool, ComResult>)&setActive_ccw;
+            vtbl[12] = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&setState_ccw;
+            vtbl[13] = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&getState_ccw;
         }
         
         // --------------------------------------------------------------
@@ -4113,18 +4096,17 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IAudioProcessor
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.SpeakerArrangement*, int, LibVst.SpeakerArrangement*, int, ComResult>)&setBusArrangements_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.BusDirection, int, LibVst.SpeakerArrangement*, ComResult>)&getBusArrangement_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, ComResult>)&canProcessSampleSize_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, uint>)&getLatencySamples_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ProcessSetup*, ComResult>)&setupProcessing_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, bool, ComResult>)&setProcessing_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ProcessData*, ComResult>)&process_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, uint>)&getTailSamples_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.SpeakerArrangement*, int, LibVst.SpeakerArrangement*, int, ComResult>)&setBusArrangements_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, LibVst.BusDirection, int, LibVst.SpeakerArrangement*, ComResult>)&getBusArrangement_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, int, ComResult>)&canProcessSampleSize_ccw;
+            vtbl[6] = (delegate*unmanaged<ComObject*, uint>)&getLatencySamples_ccw;
+            vtbl[7] = (delegate*unmanaged<ComObject*, LibVst.ProcessSetup*, ComResult>)&setupProcessing_ccw;
+            vtbl[8] = (delegate*unmanaged<ComObject*, bool, ComResult>)&setProcessing_ccw;
+            vtbl[9] = (delegate*unmanaged<ComObject*, LibVst.ProcessData*, ComResult>)&process_ccw;
+            vtbl[10] = (delegate*unmanaged<ComObject*, uint>)&getTailSamples_ccw;
         }
         
         // --------------------------------------------------------------
@@ -4650,11 +4632,10 @@ internal static partial class LibVst
     /// <seealso cref="IComponent"/>
     public unsafe partial struct IAudioPresentationLatency
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.BusDirection, int, uint, ComResult>)&setAudioPresentationLatencySamples_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.BusDirection, int, uint, ComResult>)&setAudioPresentationLatencySamples_ccw;
         }
         
         // --------------------------------------------------------------
@@ -4699,11 +4680,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IProcessContextRequirements
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, uint>)&getProcessContextRequirements_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, uint>)&getProcessContextRequirements_ccw;
         }
         
         // --------------------------------------------------------------
@@ -4797,11 +4777,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IAutomationState
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, ComResult>)&setAutomationState_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, int, ComResult>)&setAutomationState_ccw;
         }
         
         // --------------------------------------------------------------
@@ -5037,11 +5016,10 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, ComResult>)&executeMenuItem_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, int, ComResult>)&executeMenuItem_ccw;
         }
         
         // --------------------------------------------------------------
@@ -5753,23 +5731,22 @@ internal static partial class LibVst
     /// <seealso cref="IMidiMappingIComponent::getControllerClassId,"/>
     public unsafe partial struct IEditController
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = IPluginBase.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&setComponentState_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&setState_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&getState_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int>)&getParameterCount_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, LibVst.ParameterInfo*, ComResult>)&getParameterInfo_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128, ComResult>)&getParamStringByValue_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ParamID, char*, LibVst.ParamValue*, ComResult>)&getParamValueByString_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&normalizedParamToPlain_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&plainParamToNormalized_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue>)&getParamNormalized_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, ComResult>)&setParamNormalized_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IComponentHandler*, ComResult>)&setComponentHandler_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.FIDString, LibVst.IPlugView*>)&createView_ccw;
-            return vtbl;
+            IPluginBase.InitializeVtbl(vtbl);
+            vtbl[5] = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&setComponentState_ccw;
+            vtbl[6] = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&setState_ccw;
+            vtbl[7] = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&getState_ccw;
+            vtbl[8] = (delegate*unmanaged<ComObject*, int>)&getParameterCount_ccw;
+            vtbl[9] = (delegate*unmanaged<ComObject*, int, LibVst.ParameterInfo*, ComResult>)&getParameterInfo_ccw;
+            vtbl[10] = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128, ComResult>)&getParamStringByValue_ccw;
+            vtbl[11] = (delegate*unmanaged<ComObject*, LibVst.ParamID, char*, LibVst.ParamValue*, ComResult>)&getParamValueByString_ccw;
+            vtbl[12] = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&normalizedParamToPlain_ccw;
+            vtbl[13] = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&plainParamToNormalized_ccw;
+            vtbl[14] = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue>)&getParamNormalized_ccw;
+            vtbl[15] = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, ComResult>)&setParamNormalized_ccw;
+            vtbl[16] = (delegate*unmanaged<ComObject*, LibVst.IComponentHandler*, ComResult>)&setComponentHandler_ccw;
+            vtbl[17] = (delegate*unmanaged<ComObject*, LibVst.FIDString, LibVst.IPlugView*>)&createView_ccw;
         }
         
         // --------------------------------------------------------------
@@ -5986,13 +5963,12 @@ internal static partial class LibVst
     /// <seealso cref="EditControllerIEditController,"/>
     public unsafe partial struct IEditController2
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.KnobMode, ComResult>)&setKnobMode_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, bool, ComResult>)&openHelp_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, bool, ComResult>)&openAboutBox_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.KnobMode, ComResult>)&setKnobMode_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, bool, ComResult>)&openHelp_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, bool, ComResult>)&openAboutBox_ccw;
         }
         
         // --------------------------------------------------------------
@@ -6086,11 +6062,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IMidiMapping
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, short, LibVst.CtrlNumber, LibVst.ParamID*, ComResult>)&getMidiControllerAssignment_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, int, short, LibVst.CtrlNumber, LibVst.ParamID*, ComResult>)&getMidiControllerAssignment_ccw;
         }
         
         // --------------------------------------------------------------
@@ -6146,12 +6121,11 @@ internal static partial class LibVst
     /// <seealso cref="IEditController"/>
     public unsafe partial struct IEditControllerHostEditing
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ParamID, ComResult>)&beginEditFromHost_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ParamID, ComResult>)&endEditFromHost_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.ParamID, ComResult>)&beginEditFromHost_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, LibVst.ParamID, ComResult>)&endEditFromHost_ccw;
         }
         
         // --------------------------------------------------------------
@@ -6199,14 +6173,13 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct INoteExpressionController
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, short, int>)&getNoteExpressionCount_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, short, int, LibVst.NoteExpressionTypeInfo*, ComResult>)&getNoteExpressionInfo_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128, ComResult>)&getNoteExpressionStringByValue_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, short, LibVst.NoteExpressionTypeID, char*, LibVst.NoteExpressionValue*, ComResult>)&getNoteExpressionValueByString_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, int, short, int>)&getNoteExpressionCount_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, int, short, int, LibVst.NoteExpressionTypeInfo*, ComResult>)&getNoteExpressionInfo_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128, ComResult>)&getNoteExpressionStringByValue_ccw;
+            vtbl[6] = (delegate*unmanaged<ComObject*, int, short, LibVst.NoteExpressionTypeID, char*, LibVst.NoteExpressionValue*, ComResult>)&getNoteExpressionValueByString_ccw;
         }
         
         // --------------------------------------------------------------
@@ -6366,12 +6339,11 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IKeyswitchController
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, short, int>)&getKeyswitchCount_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, short, int, LibVst.KeyswitchInfo*, ComResult>)&getKeyswitchInfo_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, int, short, int>)&getKeyswitchCount_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, int, short, int, LibVst.KeyswitchInfo*, ComResult>)&getKeyswitchInfo_ccw;
         }
         
         // --------------------------------------------------------------
@@ -6563,13 +6535,12 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IConnectionPoint*, ComResult>)&connect_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IConnectionPoint*, ComResult>)&disconnect_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IMessage*, ComResult>)&notify_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.IConnectionPoint*, ComResult>)&connect_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, LibVst.IConnectionPoint*, ComResult>)&disconnect_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, LibVst.IMessage*, ComResult>)&notify_ccw;
         }
         
         // --------------------------------------------------------------
@@ -6949,14 +6920,13 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IInterAppAudioPresetManager
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, ComResult>)&runLoadPresetBrowser_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, ComResult>)&runSavePresetBrowser_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, ComResult>)&loadNextPreset_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, ComResult>)&loadPreviousPreset_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, ComResult>)&runLoadPresetBrowser_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, ComResult>)&runSavePresetBrowser_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, ComResult>)&loadNextPreset_ccw;
+            vtbl[6] = (delegate*unmanaged<ComObject*, ComResult>)&loadPreviousPreset_ccw;
         }
         
         // --------------------------------------------------------------
@@ -7167,11 +7137,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IInterAppAudioConnectionNotification
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, bool, void>)&onInterAppAudioConnectionStateChange_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, bool, void>)&onInterAppAudioConnectionStateChange_ccw;
         }
         
         // --------------------------------------------------------------
@@ -7263,11 +7232,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IMidiLearn
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, short, LibVst.CtrlNumber, ComResult>)&onLiveMIDIControllerInput_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, int, short, LibVst.CtrlNumber, ComResult>)&onLiveMIDIControllerInput_ccw;
         }
         
         // --------------------------------------------------------------
@@ -7368,11 +7336,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IParameterFunctionName
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.UnitID, LibVst.FIDString, LibVst.ParamID*, ComResult>)&getParameterIDFromFunctionName_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.UnitID, LibVst.FIDString, LibVst.ParamID*, ComResult>)&getParameterIDFromFunctionName_ccw;
         }
         
         // --------------------------------------------------------------
@@ -7461,11 +7428,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct INoteExpressionPhysicalUIMapping
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, short, LibVst.PhysicalUIMapList*, ComResult>)&getPhysicalUIMapping_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, int, short, LibVst.PhysicalUIMapList*, ComResult>)&getPhysicalUIMapping_ccw;
         }
         
         // --------------------------------------------------------------
@@ -7638,11 +7604,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IParameterFinder
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, int, LibVst.ParamID*, ComResult>)&findParameter_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, int, int, LibVst.ParamID*, ComResult>)&findParameter_ccw;
         }
         
         // --------------------------------------------------------------
@@ -7698,11 +7663,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IPrefetchableSupport
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.PrefetchableSupport*, ComResult>)&getPrefetchableSupport_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.PrefetchableSupport*, ComResult>)&getPrefetchableSupport_ccw;
         }
         
         // --------------------------------------------------------------
@@ -7826,11 +7790,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IXmlRepresentationController
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.RepresentationInfo*, LibVst.IBStream*, ComResult>)&getXmlRepresentationStream_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.RepresentationInfo*, LibVst.IBStream*, ComResult>)&getXmlRepresentationStream_ccw;
         }
         
         // --------------------------------------------------------------
@@ -7899,15 +7862,14 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IComponent*>)&getComponent_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IEditController*>)&getController_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IComponent*, LibVst.IEditController*, ComResult>)&releasePlugIn_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IStringResult*, ComResult>)&getSubCategories_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.FUID*, ComResult>)&getComponentUID_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.IComponent*>)&getComponent_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, LibVst.IEditController*>)&getController_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, LibVst.IComponent*, LibVst.IEditController*, ComResult>)&releasePlugIn_ccw;
+            vtbl[6] = (delegate*unmanaged<ComObject*, LibVst.IStringResult*, ComResult>)&getSubCategories_ccw;
+            vtbl[7] = (delegate*unmanaged<ComObject*, LibVst.FUID*, ComResult>)&getComponentUID_ccw;
         }
         
         // --------------------------------------------------------------
@@ -8107,11 +8069,10 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = ITestPlugProvider.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IPluginFactory*>)&getPluginFactory_ccw;
-            return vtbl;
+            ITestPlugProvider.InitializeVtbl(vtbl);
+            vtbl[8] = (delegate*unmanaged<ComObject*, LibVst.IPluginFactory*>)&getPluginFactory_ccw;
         }
         
         // --------------------------------------------------------------
@@ -8437,22 +8398,21 @@ internal static partial class LibVst
     /// <seealso cref="IUnitHandlervst3Units,"/>
     public unsafe partial struct IUnitInfo
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, int>)&getUnitCount_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, LibVst.UnitInfo*, ComResult>)&getUnitInfo_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int>)&getProgramListCount_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, LibVst.ProgramListInfo*, ComResult>)&getProgramListInfo_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.String128, ComResult>)&getProgramName_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.CString, LibVst.String128, ComResult>)&getProgramInfo_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, ComResult>)&hasProgramPitchNames_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, short, LibVst.String128, ComResult>)&getProgramPitchName_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.UnitID>)&getSelectedUnit_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.UnitID, ComResult>)&selectUnit_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.MediaType, LibVst.BusDirection, int, int, LibVst.UnitID*, ComResult>)&getUnitByBus_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, int, int, LibVst.IBStream*, ComResult>)&setUnitProgramData_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, int>)&getUnitCount_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, int, LibVst.UnitInfo*, ComResult>)&getUnitInfo_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, int>)&getProgramListCount_ccw;
+            vtbl[6] = (delegate*unmanaged<ComObject*, int, LibVst.ProgramListInfo*, ComResult>)&getProgramListInfo_ccw;
+            vtbl[7] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.String128, ComResult>)&getProgramName_ccw;
+            vtbl[8] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.CString, LibVst.String128, ComResult>)&getProgramInfo_ccw;
+            vtbl[9] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, ComResult>)&hasProgramPitchNames_ccw;
+            vtbl[10] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, short, LibVst.String128, ComResult>)&getProgramPitchName_ccw;
+            vtbl[11] = (delegate*unmanaged<ComObject*, LibVst.UnitID>)&getSelectedUnit_ccw;
+            vtbl[12] = (delegate*unmanaged<ComObject*, LibVst.UnitID, ComResult>)&selectUnit_ccw;
+            vtbl[13] = (delegate*unmanaged<ComObject*, LibVst.MediaType, LibVst.BusDirection, int, int, LibVst.UnitID*, ComResult>)&getUnitByBus_ccw;
+            vtbl[14] = (delegate*unmanaged<ComObject*, int, int, LibVst.IBStream*, ComResult>)&setUnitProgramData_ccw;
         }
         
         // --------------------------------------------------------------
@@ -8625,13 +8585,12 @@ internal static partial class LibVst
     /// <seealso cref="vst3MultitimbralProgramsIUnitData, "/>
     public unsafe partial struct IProgramListData
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, ComResult>)&programDataSupported_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.IBStream*, ComResult>)&getProgramData_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.IBStream*, ComResult>)&setProgramData_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, ComResult>)&programDataSupported_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.IBStream*, ComResult>)&getProgramData_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.IBStream*, ComResult>)&setProgramData_ccw;
         }
         
         // --------------------------------------------------------------
@@ -8684,13 +8643,12 @@ internal static partial class LibVst
     /// <seealso cref="vst3ProgramLists"/>
     public unsafe partial struct IUnitData
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.UnitID, ComResult>)&unitDataSupported_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.UnitID, LibVst.IBStream*, ComResult>)&getUnitData_ccw;
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.UnitID, LibVst.IBStream*, ComResult>)&setUnitData_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.UnitID, ComResult>)&unitDataSupported_ccw;
+            vtbl[4] = (delegate*unmanaged<ComObject*, LibVst.UnitID, LibVst.IBStream*, ComResult>)&getUnitData_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, LibVst.UnitID, LibVst.IBStream*, ComResult>)&setUnitData_ccw;
         }
         
         // --------------------------------------------------------------
@@ -9583,11 +9541,10 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IInfoListener
     {
-        public static void** InitializeVtbl(void** vtbl)
+        public static void InitializeVtbl(void** vtbl)
         {
-            vtbl = FUnknown.InitializeVtbl(vtbl);
-            *vtbl++ = (delegate*unmanaged<ComObject*, LibVst.IAttributeList*, ComResult>)&setChannelContextInfos_ccw;
-            return vtbl;
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged<ComObject*, LibVst.IAttributeList*, ComResult>)&setChannelContextInfos_ccw;
         }
         
         // --------------------------------------------------------------

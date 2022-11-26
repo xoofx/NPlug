@@ -617,6 +617,7 @@ public class CodeGenerator
                         initializeVtbl = new CSharpMethod() { Name = "InitializeVtbl", Modifiers = CSharpModifiers.Static };
                         initializeVtbl.Parameters.Add(new CSharpParameter("vtbl") { ParameterType = voidPtrPtr });
                         initializeVtbl.ReturnType = CSharpPrimitiveType.Void();
+                        initializeVtbl.Attributes.Add(MethodImplAggressiveInliningAttribute);
                         csStruct.Members.Add(initializeVtbl);
 
                         var ccwFile = $"LibVst.{name}.cs";

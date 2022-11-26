@@ -33,6 +33,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             vtbl[0] = (delegate*unmanaged<ComObject*, Guid, void**, ComResult>)&queryInterface_ccw;
@@ -121,6 +122,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -296,6 +298,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -402,6 +405,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -490,6 +494,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -664,6 +669,7 @@ internal static partial class LibVst
     /// </summary>
     public unsafe partial struct IErrorContext
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -953,6 +959,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IPersistent
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -1208,6 +1215,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IPluginBase
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -1266,6 +1274,7 @@ internal static partial class LibVst
     /// <seealso cref="GetPluginFactory"/>
     public unsafe partial struct IPluginFactory
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -1431,6 +1440,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             IPluginFactory.InitializeVtbl(vtbl);
@@ -1613,6 +1623,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             IPluginFactory2.InitializeVtbl(vtbl);
@@ -1826,6 +1837,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IPluginCompatibility
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -1872,6 +1884,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -1962,6 +1975,7 @@ internal static partial class LibVst
     /// <seealso cref="IUpdateHandler"/>
     public unsafe partial struct IDependent
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -2229,6 +2243,7 @@ internal static partial class LibVst
     /// </par>
     public unsafe partial struct IPlugView
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -2395,6 +2410,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -3114,6 +3130,7 @@ internal static partial class LibVst
     /// <seealso cref="IPluginBase"/>
     public unsafe partial struct IComponent
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             IPluginBase.InitializeVtbl(vtbl);
@@ -4096,6 +4113,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IAudioProcessor
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -4632,6 +4650,7 @@ internal static partial class LibVst
     /// <seealso cref="IComponent"/>
     public unsafe partial struct IAudioPresentationLatency
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -4680,6 +4699,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IProcessContextRequirements
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -4777,6 +4797,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IAutomationState
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -5016,6 +5037,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -5731,6 +5753,7 @@ internal static partial class LibVst
     /// <seealso cref="IMidiMappingIComponent::getControllerClassId,"/>
     public unsafe partial struct IEditController
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             IPluginBase.InitializeVtbl(vtbl);
@@ -5963,6 +5986,7 @@ internal static partial class LibVst
     /// <seealso cref="EditControllerIEditController,"/>
     public unsafe partial struct IEditController2
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -6062,6 +6086,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IMidiMapping
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -6121,6 +6146,7 @@ internal static partial class LibVst
     /// <seealso cref="IEditController"/>
     public unsafe partial struct IEditControllerHostEditing
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -6173,6 +6199,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct INoteExpressionController
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -6339,6 +6366,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IKeyswitchController
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -6535,6 +6563,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -6920,6 +6949,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IInterAppAudioPresetManager
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -7137,6 +7167,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IInterAppAudioConnectionNotification
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -7232,6 +7263,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IMidiLearn
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -7336,6 +7368,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IParameterFunctionName
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -7428,6 +7461,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct INoteExpressionPhysicalUIMapping
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -7604,6 +7638,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IParameterFinder
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -7663,6 +7698,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IPrefetchableSupport
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -7790,6 +7826,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IXmlRepresentationController
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -7862,6 +7899,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -8069,6 +8107,7 @@ internal static partial class LibVst
     {
         public void** Vtbl;
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             ITestPlugProvider.InitializeVtbl(vtbl);
@@ -8398,6 +8437,7 @@ internal static partial class LibVst
     /// <seealso cref="IUnitHandlervst3Units,"/>
     public unsafe partial struct IUnitInfo
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -8585,6 +8625,7 @@ internal static partial class LibVst
     /// <seealso cref="vst3MultitimbralProgramsIUnitData, "/>
     public unsafe partial struct IProgramListData
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -8643,6 +8684,7 @@ internal static partial class LibVst
     /// <seealso cref="vst3ProgramLists"/>
     public unsafe partial struct IUnitData
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
@@ -9541,6 +9583,7 @@ internal static partial class LibVst
     /// </remarks>
     public unsafe partial struct IInfoListener
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);

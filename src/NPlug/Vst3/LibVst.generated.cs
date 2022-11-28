@@ -502,8 +502,8 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged<ComObject*, char*, void>)&setText16_ccw;
             vtbl[5] = (delegate*unmanaged<ComObject*, byte*>)&getText8_ccw;
             vtbl[6] = (delegate*unmanaged<ComObject*, char*>)&getText16_ccw;
-            vtbl[7] = (delegate*unmanaged<ComObject*, void*, byte, void>)&take_ccw;
-            vtbl[8] = (delegate*unmanaged<ComObject*, byte>)&isWideString_ccw;
+            vtbl[7] = (delegate*unmanaged<ComObject*, void*, bool, void>)&take_ccw;
+            vtbl[8] = (delegate*unmanaged<ComObject*, bool>)&isWideString_ccw;
         }
         
         // --------------------------------------------------------------
@@ -589,18 +589,19 @@ internal static partial class LibVst
         /// Later implementations will redirect 'take' to setText8 and setText16
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void take(void* s, byte isWide)
+        public void take(void* s, [MarshalAs(UnmanagedType.U1)] bool isWide)
         {
-            ((delegate*unmanaged<LibVst.IString*, void*, byte, void>)Vtbl[7])((LibVst.IString*)Unsafe.AsPointer(ref this), s, isWide);
+            ((delegate*unmanaged<LibVst.IString*, void*, bool, void>)Vtbl[7])((LibVst.IString*)Unsafe.AsPointer(ref this), s, isWide);
         }
         
         /// <summary>
         /// Returns true if the string is in unicode format, returns false if the string is ASCII
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public byte isWideString()
+        [return:MarshalAs(UnmanagedType.U1)]
+        public bool isWideString()
         {
-            return ((delegate*unmanaged<LibVst.IString*, byte>)Vtbl[8])((LibVst.IString*)Unsafe.AsPointer(ref this));
+            return ((delegate*unmanaged<LibVst.IString*, bool>)Vtbl[8])((LibVst.IString*)Unsafe.AsPointer(ref this));
         }
         
         // --------------------------------------------------------------
@@ -638,13 +639,14 @@ internal static partial class LibVst
         /// Later implementations will redirect 'take' to setText8 and setText16
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial void take_ccw(ComObject* self, void* s, byte isWide);
+        private static partial void take_ccw(ComObject* self, void* s, [MarshalAs(UnmanagedType.U1)] bool isWide);
         
         /// <summary>
         /// Returns true if the string is in unicode format, returns false if the string is ASCII
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial byte isWideString_ccw(ComObject* self);
+        [return:MarshalAs(UnmanagedType.U1)]
+        private static partial bool isWideString_ccw(ComObject* self);
         
         /// <summary>
         /// DECLARE_CLASS_IID (IString, 0xF99DB7A3, 0x0FC14821, 0x800B0CF9, 0x8E348EDF)
@@ -673,7 +675,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged<ComObject*, byte, void>)&disableErrorUI_ccw;
+            vtbl[3] = (delegate*unmanaged<ComObject*, bool, void>)&disableErrorUI_ccw;
             vtbl[4] = (delegate*unmanaged<ComObject*, ComResult>)&errorMessageShown_ccw;
             vtbl[5] = (delegate*unmanaged<ComObject*, LibVst.IString*, ComResult>)&getErrorMessage_ccw;
         }
@@ -685,7 +687,7 @@ internal static partial class LibVst
         /// Tells the plug-in to not show any UI elements on errors.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial void disableErrorUI_ccw(ComObject* self, byte state);
+        private static partial void disableErrorUI_ccw(ComObject* self, [MarshalAs(UnmanagedType.U1)] bool state);
         
         /// <summary>
         /// If an error happens and disableErrorUI was not set this should return kResultTrue if the plug-in already showed a message to the user what happened.
@@ -806,9 +808,9 @@ internal static partial class LibVst
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
+        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, [MarshalAs(UnmanagedType.U1)] bool copyBytes)
         {
-            return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, byte, ComResult>)Vtbl[5])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
+            return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, bool, ComResult>)Vtbl[5])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
         }
         
         /// <remarks>
@@ -1094,9 +1096,9 @@ internal static partial class LibVst
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
+        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, [MarshalAs(UnmanagedType.U1)] bool copyBytes)
         {
-            return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, void*, uint, byte, ComResult>)Vtbl[5])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
+            return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, void*, uint, bool, ComResult>)Vtbl[5])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
         }
         
         /// <remarks>
@@ -2334,7 +2336,7 @@ internal static partial class LibVst
         /// Focus changed message.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult onFocus_ccw(ComObject* self, bool state);
+        private static partial ComResult onFocus_ccw(ComObject* self, [MarshalAs(UnmanagedType.U1)] bool state);
         
         /// <summary>
         /// Sets IPlugFrame object to allow the plug-in to inform the host about resizing.
@@ -3186,13 +3188,13 @@ internal static partial class LibVst
         /// does not need to be reactivated after a IAudioProcessor::setBusArrangements call.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult activateBus_ccw(ComObject* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, bool state);
+        private static partial ComResult activateBus_ccw(ComObject* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, [MarshalAs(UnmanagedType.U1)] bool state);
         
         /// <summary>
         /// Activates / deactivates the component.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult setActive_ccw(ComObject* self, bool state);
+        private static partial ComResult setActive_ccw(ComObject* self, [MarshalAs(UnmanagedType.U1)] bool state);
         
         /// <summary>
         /// Sets complete state of component.
@@ -4196,7 +4198,7 @@ internal static partial class LibVst
         /// was called).
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult setProcessing_ccw(ComObject* self, bool state);
+        private static partial ComResult setProcessing_ccw(ComObject* self, [MarshalAs(UnmanagedType.U1)] bool state);
         
         /// <summary>
         /// The Process call, where all information (parameter changes, event, audio buffer) are passed.
@@ -5774,7 +5776,7 @@ internal static partial class LibVst
         /// if true the host should apply a save before quitting.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setDirty(bool state)
+        public ComResult setDirty([MarshalAs(UnmanagedType.U1)] bool state)
         {
             return ((delegate*unmanaged<LibVst.IComponentHandler2*, bool, ComResult>)Vtbl[3])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this), state);
         }
@@ -5890,7 +5892,7 @@ internal static partial class LibVst
         /// request the host to activate or deactivate a specific bus.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult requestBusActivation(LibVst.MediaType type, LibVst.BusDirection dir, int index, bool state)
+        public ComResult requestBusActivation(LibVst.MediaType type, LibVst.BusDirection dir, int index, [MarshalAs(UnmanagedType.U1)] bool state)
         {
             return ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, LibVst.MediaType, LibVst.BusDirection, int, bool, ComResult>)Vtbl[3])((LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this), type, dir, index, state);
         }
@@ -6320,7 +6322,7 @@ internal static partial class LibVst
         /// Return kResultFalse means not supported function.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult openHelp_ccw(ComObject* self, bool onlyCheck);
+        private static partial ComResult openHelp_ccw(ComObject* self, [MarshalAs(UnmanagedType.U1)] bool onlyCheck);
         
         /// <summary>
         /// Host could ask to open the plug-in about box.
@@ -6328,7 +6330,7 @@ internal static partial class LibVst
         /// Return kResultFalse means not supported function.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult openAboutBox_ccw(ComObject* self, bool onlyCheck);
+        private static partial ComResult openAboutBox_ccw(ComObject* self, [MarshalAs(UnmanagedType.U1)] bool onlyCheck);
         
         /// <summary>
         /// DECLARE_CLASS_IID (IEditController2, 0x7F4EFE59, 0xF3204967, 0xAC27A3AE, 0xAFB63038)
@@ -7214,7 +7216,7 @@ internal static partial class LibVst
         /// <param name="state">true to enable, false to disable MPE processing</param>
         /// <returns>kResultTrue on success</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult enableMPEInputProcessing(bool state)
+        public ComResult enableMPEInputProcessing([MarshalAs(UnmanagedType.U1)] bool state)
         {
             return ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, bool, ComResult>)Vtbl[3])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this), state);
         }
@@ -7491,7 +7493,7 @@ internal static partial class LibVst
         /// </summary>
         /// <param name="newState">true if an Inter-App Audio connection is established, otherwise false</param>
         [UnmanagedCallersOnly]
-        private static partial void onInterAppAudioConnectionStateChange_ccw(ComObject* self, bool newState);
+        private static partial void onInterAppAudioConnectionStateChange_ccw(ComObject* self, [MarshalAs(UnmanagedType.U1)] bool newState);
         
         /// <summary>
         /// DECLARE_CLASS_IID (IInterAppAudioConnectionNotification, 0x6020C72D, 0x5FC24AA1, 0xB0950DB5, 0xD7D6D5CF)

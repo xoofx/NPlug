@@ -30,12 +30,12 @@ internal static unsafe partial class LibVst
             throw new NotImplementedException();
         }
         
-        private static partial void take_ccw(ComObject* self, void* s, byte isWide)
+        private static partial void take_ccw(ComObject* self, void* s, bool isWide)
         {
             throw new NotImplementedException();
         }
         
-        private static partial byte isWideString_ccw(ComObject* self)
+        private static partial bool isWideString_ccw(ComObject* self)
         {
             throw new NotImplementedException();
         }

@@ -384,9 +384,12 @@ public class CodeGenerator
         var typeName = cppType.GetDisplayName();
         switch (typeName)
         {
+            case "bool":
+            case "TBool":
+                return new CSharpTypeWithAttributes(CSharpPrimitiveType.Bool()) { Attributes = { new CSharpMarshalAttribute(CSharpUnmanagedKind.U1) } };
+
             case "int8":
                 return CSharpPrimitiveType.SByte();
-            case "bool":
             case "unsigned char":
             case "char8":
             case "char":
@@ -404,7 +407,6 @@ public class CodeGenerator
             case "uint64": return CSharpPrimitiveType.ULong();
             case "void": return CSharpPrimitiveType.Void();
             case "TUID": return new CSharpFreeType("Guid");
-            case "TBool": return CSharpPrimitiveType.Bool();
             case "float": return CSharpPrimitiveType.Float();
             case "double": return CSharpPrimitiveType.Double();
             //case "short": return CSharpPrimitiveType.Short();

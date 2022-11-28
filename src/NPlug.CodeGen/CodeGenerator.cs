@@ -152,7 +152,7 @@ public class CodeGenerator
 
         foreach (var ns in namespaces)
         {
-            ProcessConstStrings(ns);
+            ProcessConstFields(ns);
 
             foreach (var cppField in ns.Fields)
             {
@@ -229,59 +229,79 @@ public class CodeGenerator
     }
 
 
-    private void ProcessConstStrings(CppNamespace ns)
+    private void ProcessConstFields(CppNamespace ns)
     {
-        bool isRootNameSpace = ns.Name == "Steinberg" || ns.Name == "Vst";
-        CSharpClass? nsClass = null;
-        
         foreach (var cppField in ns.Fields)
         {
             if (cppField.InitValue?.Value is string text)
             {
-                // Console.WriteLine($"{cppField.Type} => {text}");
-                
-                var csField = new CSharpField(cppField.Name)
+                ProcessConstString(ns, cppField, text);
+            }
+            else if (cppField.Type is CppQualifiedType qualifiedType && qualifiedType.Qualifier == CppTypeQualifier.Const && qualifiedType.ElementType is CppTypedef typeDef)
+            {
+                // Process Speaker and SpeakerArrangement enum
+                if (typeDef.Name == "Speaker" || typeDef.Name == "SpeakerArrangement")
                 {
-                    CppElement = cppField,
-                    FieldType = CSharpPrimitiveType.String(),
-                    Modifiers = CSharpModifiers.Const,
-                };
-                csField.InitValue = $"\"{text}\"";
-                UpdateComment(csField);
-                var csProperty = new CSharpProperty($"{cppField.Name}_u8")
-                {
-                    CppElement = cppField,
-                    ReturnType = new CSharpFreeType("ReadOnlySpan<byte>"),
-                    Modifiers = CSharpModifiers.Static,
-                    Visibility = CSharpVisibility.Public,
-                    GetBodyInlined = $"\"{text}\\0\"u8"
-                };
-                UpdateComment(csProperty);
-
-                CSharpTypeWithMembers container;
-
-                if (isRootNameSpace)
-                {
-                    container = _container!;
+                    var csEnum = (CSharpEnum)_cppTypeToCSharpType["SpeakerArrangement"];
+                    var csEnumItem = new CSharpEnumItem(cppField.Name, cppField.InitExpression.ToString().Replace("(Speaker)", string.Empty).Replace("1 <<", "1UL <<")) { CppElement = cppField };
+                    csEnum.Members.Add(csEnumItem);
                 }
-                else
-                {
-                    if (nsClass is null)
-                    {
-                        nsClass = new CSharpClass(ns.Name)
-                        {
-                            Modifiers = CSharpModifiers.Static | CSharpModifiers.Partial,
-                            Visibility = CSharpVisibility.Public
-                        };
-                        _container!.Members.Add(nsClass);
-                    }
-                    container = nsClass;
-                }
-
-                container.Members.Add(csField);
-                container.Members.Add(csProperty);
             }
         }
+    }
+
+    private void ProcessConstSpeakers(CppNamespace ns, CppField cppField, string text)
+    {
+
+    }
+
+
+
+    private void ProcessConstString(CppNamespace ns, CppField cppField, string text)
+    {
+        CSharpClass? nsClass = null;
+        bool isRootNameSpace = ns.Name == "Steinberg" || ns.Name == "Vst";
+        var csField = new CSharpField(cppField.Name)
+        {
+            CppElement = cppField,
+            FieldType = CSharpPrimitiveType.String(),
+            Modifiers = CSharpModifiers.Const,
+        };
+        csField.InitValue = $"\"{text}\"";
+        UpdateComment(csField);
+        var csProperty = new CSharpProperty($"{cppField.Name}_u8")
+        {
+            CppElement = cppField,
+            ReturnType = new CSharpFreeType("ReadOnlySpan<byte>"),
+            Modifiers = CSharpModifiers.Static,
+            Visibility = CSharpVisibility.Public,
+            GetBodyInlined = $"\"{text}\\0\"u8"
+        };
+        UpdateComment(csProperty);
+
+        CSharpTypeWithMembers container;
+
+        if (isRootNameSpace)
+        {
+            container = _container!;
+        }
+        else
+        {
+            if (nsClass is null)
+            {
+                nsClass = new CSharpClass(ns.Name)
+                {
+                    Modifiers = CSharpModifiers.Static | CSharpModifiers.Partial,
+                    Visibility = CSharpVisibility.Public
+                };
+                _container!.Members.Add(nsClass);
+            }
+
+            container = nsClass;
+        }
+
+        container.Members.Add(csField);
+        container.Members.Add(csProperty);
     }
 
     private static readonly Regex MatchDashes = new(@"^-+(?:\r?\n|$)", RegexOptions.Multiline);
@@ -397,7 +417,7 @@ public class CodeGenerator
                     {
                         if (typeDef.ElementType is CppArrayType arrayType)
                         {
-                            var csStruct = new CSharpStruct(FilterName(typeDef.Name));
+                            var csStruct = new CSharpStructExtended(FilterName(typeDef.Name)) { IsFixedArray = true };
                             var csField = new CSharpField("Value")
                             {
                                 FieldType = new CSharpFixedArrayType(GetCSharpType(arrayType.ElementType), arrayType.Size)
@@ -408,20 +428,33 @@ public class CodeGenerator
                         }
                         else
                         {
-                            var csStruct = new CSharpStruct(FilterName(typeDef.Name));
-                            var csParameterType = GetCSharpType(typeDef.ElementType);
-                            csType = csStruct;
-                            if (csParameterType is CSharpPointerType)
+                            if (typeDef.Name == "SpeakerArrangement")
                             {
-                                csStruct.Members.Add(new CSharpField("Value") { FieldType = csParameterType });
+                                var csEnum = new CSharpEnum("SpeakerArrangement")
+                                {
+                                    BaseTypes = { CSharpPrimitiveType.ULong() },
+                                    CppElement = typeDef
+                                };
+                                UpdateComment(csEnum);
+                                csType = csEnum;
                             }
                             else
                             {
-                                csStruct.IsRecord = true;
-                                csStruct.RecordParameters.Add(new CSharpParameter("Value") { ParameterType = csParameterType });
-                            }
+                                var csStruct = new CSharpStruct(FilterName(typeDef.Name));
+                                var csParameterType = GetCSharpType(typeDef.ElementType);
+                                csType = csStruct;
+                                if (csParameterType is CSharpPointerType)
+                                {
+                                    csStruct.Members.Add(new CSharpField("Value") { FieldType = csParameterType });
+                                }
+                                else
+                                {
+                                    csStruct.IsRecord = true;
+                                    csStruct.RecordParameters.Add(new CSharpParameter("Value") { ParameterType = csParameterType });
+                                }
 
-                            ApplyUnsafe(csStruct, csParameterType);
+                                ApplyUnsafe(csStruct, csParameterType);
+                            }
                         }
                         _cppTypeToCSharpType[typeDef.Name] = csType;
                         _container!.Members.Add(csType);
@@ -441,6 +474,19 @@ public class CodeGenerator
                 return csType;
         }
     }
+
+    private CSharpType GetCSharpParameterType(CppParameter parameter)
+    {
+        var type = GetCSharpType(parameter.Type);
+        // If the parameter is fixed array, pass a pointer
+        if (type is CSharpStructExtended { IsFixedArray: true })
+        {
+            type = new CSharpPointerType(type);
+        }
+
+        return type;
+    }
+
     static void ApplyUnsafe(CSharpStruct csStruct, CSharpType csType)
     {
         if (csType is CSharpPointerType || csType is CSharpFixedArrayType)
@@ -467,7 +513,7 @@ public class CodeGenerator
         Both = Plugin | Host
     }
 
-    private CSharpComStruct GetOrCreateStruct(CppClass cppClass, CSharpTypeWithMembers? container = null)
+    private CSharpStructExtended GetOrCreateStruct(CppClass cppClass, CSharpTypeWithMembers? container = null)
     {
         var name = cppClass.Name;
         bool isUnion = cppClass.ClassKind == CppClassKind.Union;
@@ -479,10 +525,10 @@ public class CodeGenerator
 
         if (_cppTypeToCSharpType.TryGetValue(name, out var csType))
         {
-            return (CSharpComStruct)csType;
+            return (CSharpStructExtended)csType;
         }
 
-        var csStruct = new CSharpComStruct(name)
+        var csStruct = new CSharpStructExtended(name)
         {
             Modifiers = CSharpModifiers.Unsafe | CSharpModifiers.Partial,
             Visibility = CSharpVisibility.Public,
@@ -664,8 +710,11 @@ public class CodeGenerator
                     csMethod.Parameters.Add(new CSharpParameter("self") { ParameterType = new CSharpFreeType("ComObject*") });
                     foreach (var cppMethodParameter in cppMethod.Parameters)
                     {
-                        var csParameter = new CSharpParameter() { Name = FilterName(cppMethodParameter.Name) };
-                        csParameter.ParameterType = GetCSharpType(cppMethodParameter.Type);
+                        var csParameter = new CSharpParameter
+                        {
+                            Name = FilterName(cppMethodParameter.Name),
+                            ParameterType = GetCSharpParameterType(cppMethodParameter)
+                        };
                         csMethod.Parameters.Add(csParameter);
                     }
 
@@ -785,7 +834,7 @@ public class CodeGenerator
             var csParameter = new CSharpParameter
             {
                 Name = FilterName(cppMethodParameter.Name),
-                ParameterType = GetCSharpType(cppMethodParameter.Type)
+                ParameterType = GetCSharpParameterType(cppMethodParameter)
             };
             csMethod.Parameters.Add(csParameter);
         }
@@ -929,14 +978,16 @@ public class CodeGenerator
         }
     }
 
-    private class CSharpComStruct : CSharpStruct
+    private class CSharpStructExtended : CSharpStruct
     {
-        public CSharpComStruct(string name) : base(name)
+        public CSharpStructExtended(string name) : base(name)
         {
         }
 
         public int BaseComMethodIndex { get; set; }
 
         public int ComMethodCount { get; set; }
+
+        public bool IsFixedArray { get; set; }
     }
 }

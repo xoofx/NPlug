@@ -30,12 +30,12 @@ internal static unsafe partial class LibVst
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getProgramName_ccw(ComObject* self, ProgramListID listId, int programIndex, String128 name)
+        private static partial ComResult getProgramName_ccw(ComObject* self, ProgramListID listId, int programIndex, String128* name)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getProgramInfo_ccw(ComObject* self, ProgramListID listId, int programIndex, CString attributeId, String128 attributeValue)
+        private static partial ComResult getProgramInfo_ccw(ComObject* self, ProgramListID listId, int programIndex, CString attributeId, String128* attributeValue)
         {
             throw new NotImplementedException();
         }
@@ -45,7 +45,7 @@ internal static unsafe partial class LibVst
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getProgramPitchName_ccw(ComObject* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128 name)
+        private static partial ComResult getProgramPitchName_ccw(ComObject* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name)
         {
             throw new NotImplementedException();
         }

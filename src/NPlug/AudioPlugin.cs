@@ -4,19 +4,62 @@
 
 namespace NPlug;
 
-public class AudioHost
+public abstract class AudioPlugin : IAudioPlugin, IAudioConnectionPoint
 {
+    private IAudioConnectionPoint? _connectionPoint;
 
-}
-
-public class AudioPlugin
-{
-
-    public virtual void Initialize(AudioHost host)
+    protected AudioHostApplication? Host { get; private set; }
+    
+    protected virtual void Terminate()
     {
     }
 
-    public virtual void Terminate()
+    protected virtual void OnMessage(AudioMessage message)
     {
+    }
+
+    bool IAudioPlugin.Initialize(AudioHostApplication hostApplication)
+    {
+        if (InitializeInternal(hostApplication))
+        {
+            Host = hostApplication;
+            return true;
+        }
+        return false;
+    }
+
+    internal abstract bool InitializeInternal(AudioHostApplication hostApplication);
+
+    internal virtual void TerminateInternal()
+    {
+        Host?.Dispose();
+        Host = null;
+    }
+    
+    void IAudioPlugin.Terminate()
+    {
+        try
+        {
+            Terminate();
+        }
+        finally
+        {
+            TerminateInternal();
+        }
+    }
+
+    void IAudioConnectionPoint.Connect(IAudioConnectionPoint connectionPoint)
+    {
+        _connectionPoint = connectionPoint;
+    }
+
+    void IAudioConnectionPoint.Disconnect(IAudioConnectionPoint connectionPoint)
+    {
+        _connectionPoint = null;
+    }
+
+    void IAudioConnectionPoint.Notify(AudioMessage message)
+    {
+        OnMessage(message);
     }
 }

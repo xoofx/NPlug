@@ -20,7 +20,7 @@ internal static unsafe partial class LibVst
             throw new NotImplementedException();
         }
         
-        private static partial ComResult getNoteExpressionStringByValue_ccw(ComObject* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128 @string)
+        private static partial ComResult getNoteExpressionStringByValue_ccw(ComObject* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string)
         {
             throw new NotImplementedException();
         }

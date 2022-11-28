@@ -3080,9 +3080,9 @@ internal static partial class LibVst
         /// Gets filename (without file extension) of the stream.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult getFileName(LibVst.String128 name)
+        public ComResult getFileName(LibVst.String128* name)
         {
-            return ((delegate*unmanaged<LibVst.IStreamAttributes*, LibVst.String128, ComResult>)Vtbl[3])((LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this), name);
+            return ((delegate*unmanaged<LibVst.IStreamAttributes*, LibVst.String128*, ComResult>)Vtbl[3])((LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this), name);
         }
         
         /// <summary>
@@ -4234,7 +4234,316 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct SpeakerArrangement(ulong Value);
+    /// <summary>
+    /// Speaker Arrangements Types
+    /// 
+    /// </summary>
+    public enum SpeakerArrangement : ulong
+    {
+        kSpeakerL = 1<<0,
+        
+        kSpeakerR = 1<<1,
+        
+        kSpeakerC = 1<<2,
+        
+        kSpeakerLfe = 1<<3,
+        
+        kSpeakerLs = 1<<4,
+        
+        kSpeakerRs = 1<<5,
+        
+        kSpeakerLc = 1<<6,
+        
+        kSpeakerRc = 1<<7,
+        
+        kSpeakerS = 1<<8,
+        
+        kSpeakerCs = kSpeakerS,
+        
+        kSpeakerSl = 1<<9,
+        
+        kSpeakerSr = 1<<10,
+        
+        kSpeakerTc = 1<<11,
+        
+        kSpeakerTfl = 1<<12,
+        
+        kSpeakerTfc = 1<<13,
+        
+        kSpeakerTfr = 1<<14,
+        
+        kSpeakerTrl = 1<<15,
+        
+        kSpeakerTrc = 1<<16,
+        
+        kSpeakerTrr = 1<<17,
+        
+        kSpeakerLfe2 = 1<<18,
+        
+        kSpeakerM = 1<<19,
+        
+        kSpeakerACN0 = 1UL << 20,
+        
+        kSpeakerACN1 = 1UL << 21,
+        
+        kSpeakerACN2 = 1UL << 22,
+        
+        kSpeakerACN3 = 1UL << 23,
+        
+        kSpeakerACN4 = 1UL << 38,
+        
+        kSpeakerACN5 = 1UL << 39,
+        
+        kSpeakerACN6 = 1UL << 40,
+        
+        kSpeakerACN7 = 1UL << 41,
+        
+        kSpeakerACN8 = 1UL << 42,
+        
+        kSpeakerACN9 = 1UL << 43,
+        
+        kSpeakerACN10 = 1UL << 44,
+        
+        kSpeakerACN11 = 1UL << 45,
+        
+        kSpeakerACN12 = 1UL << 46,
+        
+        kSpeakerACN13 = 1UL << 47,
+        
+        kSpeakerACN14 = 1UL << 48,
+        
+        kSpeakerACN15 = 1UL << 49,
+        
+        kSpeakerTsl = 1UL << 24,
+        
+        kSpeakerTsr = 1UL << 25,
+        
+        kSpeakerLcs = 1UL << 26,
+        
+        kSpeakerRcs = 1UL << 27,
+        
+        kSpeakerBfl = 1UL << 28,
+        
+        kSpeakerBfc = 1UL << 29,
+        
+        kSpeakerBfr = 1UL << 30,
+        
+        kSpeakerPl = 1UL << 31,
+        
+        kSpeakerPr = 1UL << 32,
+        
+        kSpeakerBsl = 1UL << 33,
+        
+        kSpeakerBsr = 1UL << 34,
+        
+        kSpeakerBrl = 1UL << 35,
+        
+        kSpeakerBrc = 1UL << 36,
+        
+        kSpeakerBrr = 1UL << 37,
+        
+        kEmpty = 0,
+        
+        kMono = kSpeakerM,
+        
+        kStereo = kSpeakerL | kSpeakerR,
+        
+        kStereoSurround = kSpeakerLs | kSpeakerRs,
+        
+        kStereoCenter = kSpeakerLc | kSpeakerRc,
+        
+        kStereoSide = kSpeakerSl | kSpeakerSr,
+        
+        kStereoCLfe = kSpeakerC | kSpeakerLfe,
+        
+        kStereoTF = kSpeakerTfl | kSpeakerTfr,
+        
+        kStereoTS = kSpeakerTsl | kSpeakerTsr,
+        
+        kStereoTR = kSpeakerTrl | kSpeakerTrr,
+        
+        kStereoBF = kSpeakerBfl | kSpeakerBfr,
+        
+        kCineFront = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLc | kSpeakerRc,
+        
+        k30Cine = kSpeakerL | kSpeakerR | kSpeakerC,
+        
+        k31Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe,
+        
+        k30Music = kSpeakerL | kSpeakerR | kSpeakerCs,
+        
+        k31Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerCs,
+        
+        k40Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerCs,
+        
+        k41Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerCs,
+        
+        k40Music = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs,
+        
+        k41Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs,
+        
+        k50 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs,
+        
+        k51 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs,
+        
+        k60Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerCs,
+        
+        k61Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs,
+        
+        k60Music = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
+        
+        k61Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
+        
+        k70Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc,
+        
+        k71Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc,
+        
+        k71CineFullFront = k71Cine,
+        
+        k70Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
+        
+        k71Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
+        
+        k71CineFullRear = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLcs | kSpeakerRcs,
+        
+        k71CineSideFill = k71Music,
+        
+        k71Proximity = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerPl | kSpeakerPr,
+        
+        k80Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs,
+        
+        k81Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs,
+        
+        k80Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerSl | kSpeakerSr,
+        
+        k81Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerSl | kSpeakerSr,
+        
+        k90Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr,
+        
+        k91Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr,
+        
+        k100Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr,
+        
+        k101Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr,
+        
+        kAmbi1stOrderACN = kSpeakerACN0 | kSpeakerACN1 | kSpeakerACN2 | kSpeakerACN3,
+        
+        kAmbi2cdOrderACN = kAmbi1stOrderACN | kSpeakerACN4 | kSpeakerACN5 | kSpeakerACN6 | kSpeakerACN7 | kSpeakerACN8,
+        
+        kAmbi3rdOrderACN = kAmbi2cdOrderACN | kSpeakerACN9 | kSpeakerACN10 | kSpeakerACN11 | kSpeakerACN12 | kSpeakerACN13 | kSpeakerACN14 | kSpeakerACN15,
+        
+        k80Cube = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k40_4 = k80Cube,
+        
+        k71CineTopCenter = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerTc,
+        
+        k71CineCenterHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerTfc,
+        
+        k70CineFrontHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr,
+        
+        k70MPEG3D = k70CineFrontHigh,
+        
+        k50_2 = k70CineFrontHigh,
+        
+        k71CineFrontHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr,
+        
+        k71MPEG3D = k71CineFrontHigh,
+        
+        k51_2 = k71CineFrontHigh,
+        
+        k71CineSideHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTsl | kSpeakerTsr,
+        
+        k81MPEG3D = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerBfc,
+        
+        k41_4_1 = k81MPEG3D,
+        
+        k90 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k50_4 = k90,
+        
+        k91 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k51_4 = k91,
+        
+        k50_4_1 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfc,
+        
+        k51_4_1 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfc,
+        
+        k70_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTsl | kSpeakerTsr,
+        
+        k71_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTsl | kSpeakerTsr,
+        
+        k91Atmos = k71_2,
+        
+        k70_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrc,
+        
+        k72_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrc | kSpeakerLfe2,
+        
+        k70_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k71_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k111MPEG3D = k71_4,
+        
+        k70_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
+        
+        k71_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
+        
+        k90_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k91_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k90_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
+        
+        k91_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
+        
+        k100 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k50_5 = k100,
+        
+        k101 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k101MPEG3D = k101,
+        
+        k51_5 = k101,
+        
+        k102 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerLfe2,
+        
+        k52_5 = k102,
+        
+        k110 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k50_6 = k110,
+        
+        k111 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k51_6 = k111,
+        
+        k122 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerLfe2,
+        
+        k72_5 = k122,
+        
+        k130 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k131 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k140 = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr | kSpeakerBrl | kSpeakerBrr,
+        
+        k60_4_4 = k140,
+        
+        k220 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrc | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
+        
+        k100_9_3 = k220,
+        
+        k222 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrc | kSpeakerTrr | kSpeakerLfe2 | kSpeakerTsl | kSpeakerTsr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
+        
+        k102_9_3 = k222,
+        
+        k50_5_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
+        
+        k51_5_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
+    }
     
     /// <summary>
     /// Audio processing setup.
@@ -5762,7 +6071,7 @@ internal static partial class LibVst
             vtbl[7] = (delegate*unmanaged<ComObject*, LibVst.IBStream*, ComResult>)&getState_ccw;
             vtbl[8] = (delegate*unmanaged<ComObject*, int>)&getParameterCount_ccw;
             vtbl[9] = (delegate*unmanaged<ComObject*, int, LibVst.ParameterInfo*, ComResult>)&getParameterInfo_ccw;
-            vtbl[10] = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128, ComResult>)&getParamStringByValue_ccw;
+            vtbl[10] = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128*, ComResult>)&getParamStringByValue_ccw;
             vtbl[11] = (delegate*unmanaged<ComObject*, LibVst.ParamID, char*, LibVst.ParamValue*, ComResult>)&getParamValueByString_ccw;
             vtbl[12] = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&normalizedParamToPlain_ccw;
             vtbl[13] = (delegate*unmanaged<ComObject*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&plainParamToNormalized_ccw;
@@ -5810,7 +6119,7 @@ internal static partial class LibVst
         /// Gets for a given paramID and normalized value its associated string representation.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult getParamStringByValue_ccw(ComObject* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128 @string);
+        private static partial ComResult getParamStringByValue_ccw(ComObject* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string);
         
         /// <summary>
         /// Gets for a given paramID and string its normalized value.
@@ -6205,7 +6514,7 @@ internal static partial class LibVst
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged<ComObject*, int, short, int>)&getNoteExpressionCount_ccw;
             vtbl[4] = (delegate*unmanaged<ComObject*, int, short, int, LibVst.NoteExpressionTypeInfo*, ComResult>)&getNoteExpressionInfo_ccw;
-            vtbl[5] = (delegate*unmanaged<ComObject*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128, ComResult>)&getNoteExpressionStringByValue_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128*, ComResult>)&getNoteExpressionStringByValue_ccw;
             vtbl[6] = (delegate*unmanaged<ComObject*, int, short, LibVst.NoteExpressionTypeID, char*, LibVst.NoteExpressionValue*, ComResult>)&getNoteExpressionValueByString_ccw;
         }
         
@@ -6228,7 +6537,7 @@ internal static partial class LibVst
         /// Gets a user readable representation of the normalized note change value.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult getNoteExpressionStringByValue_ccw(ComObject* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128 @string);
+        private static partial ComResult getNoteExpressionStringByValue_ccw(ComObject* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string);
         
         /// <summary>
         /// Converts the user readable representation to the normalized note change value.
@@ -6731,9 +7040,9 @@ internal static partial class LibVst
         /// Gets host application name.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult getName(LibVst.String128 name)
+        public ComResult getName(LibVst.String128* name)
         {
-            return ((delegate*unmanaged<LibVst.IHostApplication*, LibVst.String128, ComResult>)Vtbl[3])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), name);
+            return ((delegate*unmanaged<LibVst.IHostApplication*, LibVst.String128*, ComResult>)Vtbl[3])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), name);
         }
         
         /// <summary>
@@ -8445,10 +8754,10 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged<ComObject*, int, LibVst.UnitInfo*, ComResult>)&getUnitInfo_ccw;
             vtbl[5] = (delegate*unmanaged<ComObject*, int>)&getProgramListCount_ccw;
             vtbl[6] = (delegate*unmanaged<ComObject*, int, LibVst.ProgramListInfo*, ComResult>)&getProgramListInfo_ccw;
-            vtbl[7] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.String128, ComResult>)&getProgramName_ccw;
-            vtbl[8] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.CString, LibVst.String128, ComResult>)&getProgramInfo_ccw;
+            vtbl[7] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.String128*, ComResult>)&getProgramName_ccw;
+            vtbl[8] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, LibVst.CString, LibVst.String128*, ComResult>)&getProgramInfo_ccw;
             vtbl[9] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, ComResult>)&hasProgramPitchNames_ccw;
-            vtbl[10] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, short, LibVst.String128, ComResult>)&getProgramPitchName_ccw;
+            vtbl[10] = (delegate*unmanaged<ComObject*, LibVst.ProgramListID, int, short, LibVst.String128*, ComResult>)&getProgramPitchName_ccw;
             vtbl[11] = (delegate*unmanaged<ComObject*, LibVst.UnitID>)&getSelectedUnit_ccw;
             vtbl[12] = (delegate*unmanaged<ComObject*, LibVst.UnitID, ComResult>)&selectUnit_ccw;
             vtbl[13] = (delegate*unmanaged<ComObject*, LibVst.MediaType, LibVst.BusDirection, int, int, LibVst.UnitID*, ComResult>)&getUnitByBus_ccw;
@@ -8489,13 +8798,13 @@ internal static partial class LibVst
         /// Gets for a given program list ID and program index its program name.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult getProgramName_ccw(ComObject* self, LibVst.ProgramListID listId, int programIndex, LibVst.String128 name);
+        private static partial ComResult getProgramName_ccw(ComObject* self, LibVst.ProgramListID listId, int programIndex, LibVst.String128* name);
         
         /// <summary>
         /// Gets for a given program list ID, program index and attributeId the associated attribute value.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult getProgramInfo_ccw(ComObject* self, LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128 attributeValue);
+        private static partial ComResult getProgramInfo_ccw(ComObject* self, LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue);
         
         /// <summary>
         /// Returns kResultTrue if the given program index of a given program list ID supports PitchNames.
@@ -8508,7 +8817,7 @@ internal static partial class LibVst
         /// If PitchNames are changed the plug-in should inform the host with IUnitHandler::notifyProgramListChange.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult getProgramPitchName_ccw(ComObject* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128 name);
+        private static partial ComResult getProgramPitchName_ccw(ComObject* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name);
         
         /// <summary>
         /// units selection --------------------
@@ -9712,335 +10021,584 @@ internal static partial class LibVst
         /// {
         /// </remarks>
         public static ReadOnlySpan<byte> kStringEmpty_u8 => "\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringMono = "Mono";
         
         public static ReadOnlySpan<byte> kStringMono_u8 => "Mono\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereo = "Stereo";
         
         public static ReadOnlySpan<byte> kStringStereo_u8 => "Stereo\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoR = "Stereo (Ls Rs)";
         
         public static ReadOnlySpan<byte> kStringStereoR_u8 => "Stereo (Ls Rs)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoC = "Stereo (Lc Rc)";
         
         public static ReadOnlySpan<byte> kStringStereoC_u8 => "Stereo (Lc Rc)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoSide = "Stereo (Sl Sr)";
         
         public static ReadOnlySpan<byte> kStringStereoSide_u8 => "Stereo (Sl Sr)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoCLfe = "Stereo (C LFE)";
         
         public static ReadOnlySpan<byte> kStringStereoCLfe_u8 => "Stereo (C LFE)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoTF = "Stereo (Tfl Tfr)";
         
         public static ReadOnlySpan<byte> kStringStereoTF_u8 => "Stereo (Tfl Tfr)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoTS = "Stereo (Tsl Tsr)";
         
         public static ReadOnlySpan<byte> kStringStereoTS_u8 => "Stereo (Tsl Tsr)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoTR = "Stereo (Trl Trr)";
         
         public static ReadOnlySpan<byte> kStringStereoTR_u8 => "Stereo (Trl Trr)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoBF = "Stereo (Bfl Bfr)";
         
         public static ReadOnlySpan<byte> kStringStereoBF_u8 => "Stereo (Bfl Bfr)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringCineFront = "Cine Front";
         
         public static ReadOnlySpan<byte> kStringCineFront_u8 => "Cine Front\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString30Cine = "LRC";
         
         public static ReadOnlySpan<byte> kString30Cine_u8 => "LRC\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString30Music = "LRS";
         
         public static ReadOnlySpan<byte> kString30Music_u8 => "LRS\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString31Cine = "LRC+LFE";
         
         public static ReadOnlySpan<byte> kString31Cine_u8 => "LRC+LFE\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString31Music = "LRS+LFE";
         
         public static ReadOnlySpan<byte> kString31Music_u8 => "LRS+LFE\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString40Cine = "LRCS";
         
         public static ReadOnlySpan<byte> kString40Cine_u8 => "LRCS\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString40Music = "Quadro";
         
         public static ReadOnlySpan<byte> kString40Music_u8 => "Quadro\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString41Cine = "LRCS+LFE";
         
         public static ReadOnlySpan<byte> kString41Cine_u8 => "LRCS+LFE\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString41Music = "Quadro+LFE";
         
         public static ReadOnlySpan<byte> kString41Music_u8 => "Quadro+LFE\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString50 = "5.0";
         
         public static ReadOnlySpan<byte> kString50_u8 => "5.0\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString51 = "5.1";
         
         public static ReadOnlySpan<byte> kString51_u8 => "5.1\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString60Cine = "6.0 Cine";
         
         public static ReadOnlySpan<byte> kString60Cine_u8 => "6.0 Cine\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString60Music = "6.0 Music";
         
         public static ReadOnlySpan<byte> kString60Music_u8 => "6.0 Music\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString61Cine = "6.1 Cine";
         
         public static ReadOnlySpan<byte> kString61Cine_u8 => "6.1 Cine\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString61Music = "6.1 Music";
         
         public static ReadOnlySpan<byte> kString61Music_u8 => "6.1 Music\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70Cine = "7.0 SDDS";
         
         public static ReadOnlySpan<byte> kString70Cine_u8 => "7.0 SDDS\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70CineOld = "7.0 Cine (SDDS)";
         
         public static ReadOnlySpan<byte> kString70CineOld_u8 => "7.0 Cine (SDDS)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70Music = "7.0";
         
         public static ReadOnlySpan<byte> kString70Music_u8 => "7.0\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70MusicOld = "7.0 Music (Dolby)";
         
         public static ReadOnlySpan<byte> kString70MusicOld_u8 => "7.0 Music (Dolby)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71Cine = "7.1 SDDS";
         
         public static ReadOnlySpan<byte> kString71Cine_u8 => "7.1 SDDS\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineOld = "7.1 Cine (SDDS)";
         
         public static ReadOnlySpan<byte> kString71CineOld_u8 => "7.1 Cine (SDDS)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71Music = "7.1";
         
         public static ReadOnlySpan<byte> kString71Music_u8 => "7.1\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71MusicOld = "7.1 Music (Dolby)";
         
         public static ReadOnlySpan<byte> kString71MusicOld_u8 => "7.1 Music (Dolby)\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineTopCenter = "7.1 Cine Top Center";
         
         public static ReadOnlySpan<byte> kString71CineTopCenter_u8 => "7.1 Cine Top Center\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineCenterHigh = "7.1 Cine Center High";
         
         public static ReadOnlySpan<byte> kString71CineCenterHigh_u8 => "7.1 Cine Center High\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineFrontHigh = "7.1 Cine Front High";
         
         public static ReadOnlySpan<byte> kString71CineFrontHigh_u8 => "7.1 Cine Front High\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70CineFrontHigh = "7.0 Cine Front High";
         
         public static ReadOnlySpan<byte> kString70CineFrontHigh_u8 => "7.0 Cine Front High\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineSideHigh = "7.1 Cine Side High";
         
         public static ReadOnlySpan<byte> kString71CineSideHigh_u8 => "7.1 Cine Side High\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineFullRear = "7.1 Cine Full Rear";
         
         public static ReadOnlySpan<byte> kString71CineFullRear_u8 => "7.1 Cine Full Rear\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71Proximity = "7.1 Proximity";
         
         public static ReadOnlySpan<byte> kString71Proximity_u8 => "7.1 Proximity\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString80Cine = "8.0 Cine";
         
         public static ReadOnlySpan<byte> kString80Cine_u8 => "8.0 Cine\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString80Music = "8.0 Music";
         
         public static ReadOnlySpan<byte> kString80Music_u8 => "8.0 Music\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString80Cube = "8.0 Cube";
         
         public static ReadOnlySpan<byte> kString80Cube_u8 => "8.0 Cube\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString81Cine = "8.1 Cine";
         
         public static ReadOnlySpan<byte> kString81Cine_u8 => "8.1 Cine\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString81Music = "8.1 Music";
         
         public static ReadOnlySpan<byte> kString81Music_u8 => "8.1 Music\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString90Cine = "9.0 Cine";
         
         public static ReadOnlySpan<byte> kString90Cine_u8 => "9.0 Cine\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString91Cine = "9.1 Cine";
         
         public static ReadOnlySpan<byte> kString91Cine_u8 => "9.1 Cine\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString100Cine = "10.0 Cine";
         
         public static ReadOnlySpan<byte> kString100Cine_u8 => "10.0 Cine\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString101Cine = "10.1 Cine";
         
         public static ReadOnlySpan<byte> kString101Cine_u8 => "10.1 Cine\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString102 = "10.2 Experimental";
         
         public static ReadOnlySpan<byte> kString102_u8 => "10.2 Experimental\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString122 = "12.2";
         
         public static ReadOnlySpan<byte> kString122_u8 => "12.2\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString50_4 = "5.0.4";
         
         public static ReadOnlySpan<byte> kString50_4_u8 => "5.0.4\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString51_4 = "5.1.4";
         
         public static ReadOnlySpan<byte> kString51_4_u8 => "5.1.4\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString50_4_1 = "5.0.4.1";
         
         public static ReadOnlySpan<byte> kString50_4_1_u8 => "5.0.4.1\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString51_4_1 = "5.1.4.1";
         
         public static ReadOnlySpan<byte> kString51_4_1_u8 => "5.1.4.1\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_2 = "7.0.2";
         
         public static ReadOnlySpan<byte> kString70_2_u8 => "7.0.2\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71_2 = "7.1.2";
         
         public static ReadOnlySpan<byte> kString71_2_u8 => "7.1.2\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_3 = "7.0.3";
         
         public static ReadOnlySpan<byte> kString70_3_u8 => "7.0.3\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString72_3 = "7.2.3";
         
         public static ReadOnlySpan<byte> kString72_3_u8 => "7.2.3\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_4 = "7.0.4";
         
         public static ReadOnlySpan<byte> kString70_4_u8 => "7.0.4\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71_4 = "7.1.4";
         
         public static ReadOnlySpan<byte> kString71_4_u8 => "7.1.4\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_6 = "7.0.6";
         
         public static ReadOnlySpan<byte> kString70_6_u8 => "7.0.6\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71_6 = "7.1.6";
         
         public static ReadOnlySpan<byte> kString71_6_u8 => "7.1.6\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString90_4 = "9.0.4";
         
         public static ReadOnlySpan<byte> kString90_4_u8 => "9.0.4\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString91_4 = "9.1.4";
         
         public static ReadOnlySpan<byte> kString91_4_u8 => "9.1.4\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString90_6 = "9.0.6";
         
         public static ReadOnlySpan<byte> kString90_6_u8 => "9.0.6\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString91_6 = "9.1.6";
         
         public static ReadOnlySpan<byte> kString91_6_u8 => "9.1.6\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString100 = "10.0 Auro-3D";
         
         public static ReadOnlySpan<byte> kString100_u8 => "10.0 Auro-3D\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString101 = "10.1 Auro-3D";
         
         public static ReadOnlySpan<byte> kString101_u8 => "10.1 Auro-3D\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString110 = "11.0 Auro-3D";
         
         public static ReadOnlySpan<byte> kString110_u8 => "11.0 Auro-3D\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString111 = "11.1 Auro-3D";
         
         public static ReadOnlySpan<byte> kString111_u8 => "11.1 Auro-3D\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString130 = "13.0 Auro-3D";
         
         public static ReadOnlySpan<byte> kString130_u8 => "13.0 Auro-3D\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString131 = "13.1 Auro-3D";
         
         public static ReadOnlySpan<byte> kString131_u8 => "13.1 Auro-3D\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString81MPEG = "8.1 MPEG";
         
         public static ReadOnlySpan<byte> kString81MPEG_u8 => "8.1 MPEG\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString140 = "14.0";
         
         public static ReadOnlySpan<byte> kString140_u8 => "14.0\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString222 = "22.2";
         
         public static ReadOnlySpan<byte> kString222_u8 => "22.2\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString220 = "22.0";
         
         public static ReadOnlySpan<byte> kString220_u8 => "22.0\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString50_5_3 = "5.0.5.3";
         
         public static ReadOnlySpan<byte> kString50_5_3_u8 => "5.0.5.3\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString51_5_3 = "5.1.5.3";
         
         public static ReadOnlySpan<byte> kString51_5_3_u8 => "5.1.5.3\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringAmbi1stOrder = "1st Order Ambisonics";
         
         public static ReadOnlySpan<byte> kStringAmbi1stOrder_u8 => "1st Order Ambisonics\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringAmbi2cdOrder = "2nd Order Ambisonics";
         
         public static ReadOnlySpan<byte> kStringAmbi2cdOrder_u8 => "2nd Order Ambisonics\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringAmbi3rdOrder = "3rd Order Ambisonics";
         
         public static ReadOnlySpan<byte> kStringAmbi3rdOrder_u8 => "3rd Order Ambisonics\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         /// <summary>
         /// Speaker Arrangement String Representation with Speakers Name.
         /// </summary>
@@ -10058,311 +10616,542 @@ internal static partial class LibVst
         /// {
         /// </remarks>
         public static ReadOnlySpan<byte> kStringMonoS_u8 => "M\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoS = "L R";
         
         public static ReadOnlySpan<byte> kStringStereoS_u8 => "L R\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoRS = "Ls Rs";
         
         public static ReadOnlySpan<byte> kStringStereoRS_u8 => "Ls Rs\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoCS = "Lc Rc";
         
         public static ReadOnlySpan<byte> kStringStereoCS_u8 => "Lc Rc\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoSS = "Sl Sr";
         
         public static ReadOnlySpan<byte> kStringStereoSS_u8 => "Sl Sr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoCLfeS = "C LFE";
         
         public static ReadOnlySpan<byte> kStringStereoCLfeS_u8 => "C LFE\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoTFS = "Tfl Tfr";
         
         public static ReadOnlySpan<byte> kStringStereoTFS_u8 => "Tfl Tfr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoTSS = "Tsl Tsr";
         
         public static ReadOnlySpan<byte> kStringStereoTSS_u8 => "Tsl Tsr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoTRS = "Trl Trr";
         
         public static ReadOnlySpan<byte> kStringStereoTRS_u8 => "Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringStereoBFS = "Bfl Bfr";
         
         public static ReadOnlySpan<byte> kStringStereoBFS_u8 => "Bfl Bfr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringCineFrontS = "L R C Lc Rc";
         
         public static ReadOnlySpan<byte> kStringCineFrontS_u8 => "L R C Lc Rc\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString30CineS = "L R C";
         
         public static ReadOnlySpan<byte> kString30CineS_u8 => "L R C\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString30MusicS = "L R S";
         
         public static ReadOnlySpan<byte> kString30MusicS_u8 => "L R S\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString31CineS = "L R C LFE";
         
         public static ReadOnlySpan<byte> kString31CineS_u8 => "L R C LFE\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString31MusicS = "L R LFE S";
         
         public static ReadOnlySpan<byte> kString31MusicS_u8 => "L R LFE S\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString40CineS = "L R C S";
         
         public static ReadOnlySpan<byte> kString40CineS_u8 => "L R C S\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString40MusicS = "L R Ls Rs";
         
         public static ReadOnlySpan<byte> kString40MusicS_u8 => "L R Ls Rs\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString41CineS = "L R C LFE S";
         
         public static ReadOnlySpan<byte> kString41CineS_u8 => "L R C LFE S\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString41MusicS = "L R LFE Ls Rs";
         
         public static ReadOnlySpan<byte> kString41MusicS_u8 => "L R LFE Ls Rs\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString50S = "L R C Ls Rs";
         
         public static ReadOnlySpan<byte> kString50S_u8 => "L R C Ls Rs\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString51S = "L R C LFE Ls Rs";
         
         public static ReadOnlySpan<byte> kString51S_u8 => "L R C LFE Ls Rs\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString60CineS = "L R C Ls Rs Cs";
         
         public static ReadOnlySpan<byte> kString60CineS_u8 => "L R C Ls Rs Cs\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString60MusicS = "L R Ls Rs Sl Sr";
         
         public static ReadOnlySpan<byte> kString60MusicS_u8 => "L R Ls Rs Sl Sr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString61CineS = "L R C LFE Ls Rs Cs";
         
         public static ReadOnlySpan<byte> kString61CineS_u8 => "L R C LFE Ls Rs Cs\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString61MusicS = "L R LFE Ls Rs Sl Sr";
         
         public static ReadOnlySpan<byte> kString61MusicS_u8 => "L R LFE Ls Rs Sl Sr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70CineS = "L R C Ls Rs Lc Rc";
         
         public static ReadOnlySpan<byte> kString70CineS_u8 => "L R C Ls Rs Lc Rc\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70MusicS = "L R C Ls Rs Sl Sr";
         
         public static ReadOnlySpan<byte> kString70MusicS_u8 => "L R C Ls Rs Sl Sr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineS = "L R C LFE Ls Rs Lc Rc";
         
         public static ReadOnlySpan<byte> kString71CineS_u8 => "L R C LFE Ls Rs Lc Rc\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71MusicS = "L R C LFE Ls Rs Sl Sr";
         
         public static ReadOnlySpan<byte> kString71MusicS_u8 => "L R C LFE Ls Rs Sl Sr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString80CineS = "L R C Ls Rs Lc Rc Cs";
         
         public static ReadOnlySpan<byte> kString80CineS_u8 => "L R C Ls Rs Lc Rc Cs\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString80MusicS = "L R C Ls Rs Cs Sl Sr";
         
         public static ReadOnlySpan<byte> kString80MusicS_u8 => "L R C Ls Rs Cs Sl Sr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString81CineS = "L R C LFE Ls Rs Lc Rc Cs";
         
         public static ReadOnlySpan<byte> kString81CineS_u8 => "L R C LFE Ls Rs Lc Rc Cs\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString81MusicS = "L R C LFE Ls Rs Cs Sl Sr";
         
         public static ReadOnlySpan<byte> kString81MusicS_u8 => "L R C LFE Ls Rs Cs Sl Sr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString80CubeS = "L R Ls Rs Tfl Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString80CubeS_u8 => "L R Ls Rs Tfl Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineTopCenterS = "L R C LFE Ls Rs Cs Tc";
         
         public static ReadOnlySpan<byte> kString71CineTopCenterS_u8 => "L R C LFE Ls Rs Cs Tc\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineCenterHighS = "L R C LFE Ls Rs Cs Tfc";
         
         public static ReadOnlySpan<byte> kString71CineCenterHighS_u8 => "L R C LFE Ls Rs Cs Tfc\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineFrontHighS = "L R C LFE Ls Rs Tfl Tfr";
         
         public static ReadOnlySpan<byte> kString71CineFrontHighS_u8 => "L R C LFE Ls Rs Tfl Tfr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70CineFrontHighS = "L R C Ls Rs Tfl Tfr";
         
         public static ReadOnlySpan<byte> kString70CineFrontHighS_u8 => "L R C Ls Rs Tfl Tfr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineSideHighS = "L R C LFE Ls Rs Tsl Tsr";
         
         public static ReadOnlySpan<byte> kString71CineSideHighS_u8 => "L R C LFE Ls Rs Tsl Tsr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71CineFullRearS = "L R C LFE Ls Rs Lcs Rcs";
         
         public static ReadOnlySpan<byte> kString71CineFullRearS_u8 => "L R C LFE Ls Rs Lcs Rcs\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71ProximityS = "L R C LFE Ls Rs Pl Pr";
         
         public static ReadOnlySpan<byte> kString71ProximityS_u8 => "L R C LFE Ls Rs Pl Pr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString90CineS = "L R C Ls Rs Lc Rc Sl Sr";
         
         public static ReadOnlySpan<byte> kString90CineS_u8 => "L R C Ls Rs Lc Rc Sl Sr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString91CineS = "L R C LFE Ls Rs Lc Rc Sl Sr";
         
         public static ReadOnlySpan<byte> kString91CineS_u8 => "L R C LFE Ls Rs Lc Rc Sl Sr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString100CineS = "L R C Ls Rs Lc Rc Cs Sl Sr";
         
         public static ReadOnlySpan<byte> kString100CineS_u8 => "L R C Ls Rs Lc Rc Cs Sl Sr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString101CineS = "L R C LFE Ls Rs Lc Rc Cs Sl Sr";
         
         public static ReadOnlySpan<byte> kString101CineS_u8 => "L R C LFE Ls Rs Lc Rc Cs Sl Sr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString50_4S = "L R C Ls Rs Tfl Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString50_4S_u8 => "L R C Ls Rs Tfl Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString51_4S = "L R C LFE Ls Rs Tfl Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString51_4S_u8 => "L R C LFE Ls Rs Tfl Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString50_4_1S = "L R C Ls Rs Tfl Tfr Trl Trr Bfc";
         
         public static ReadOnlySpan<byte> kString50_4_1S_u8 => "L R C Ls Rs Tfl Tfr Trl Trr Bfc\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString51_4_1S = "L R C LFE Ls Rs Tfl Tfr Trl Trr Bfc";
         
         public static ReadOnlySpan<byte> kString51_4_1S_u8 => "L R C LFE Ls Rs Tfl Tfr Trl Trr Bfc\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_2S = "L R C Ls Rs Sl Sr Tsl Tsr";
         
         public static ReadOnlySpan<byte> kString70_2S_u8 => "L R C Ls Rs Sl Sr Tsl Tsr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71_2S = "L R C LFE Ls Rs Sl Sr Tsl Tsr";
         
         public static ReadOnlySpan<byte> kString71_2S_u8 => "L R C LFE Ls Rs Sl Sr Tsl Tsr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_3S = "L R C Ls Rs Sl Sr Tfl Tfr Trc";
         
         public static ReadOnlySpan<byte> kString70_3S_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trc\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString72_3S = "L R C LFE Ls Rs Sl Sr Tfl Tfr Trc LFE2";
         
         public static ReadOnlySpan<byte> kString72_3S_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr Trc LFE2\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_4S = "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString70_4S_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71_4S = "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString71_4S_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_6S = "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr";
         
         public static ReadOnlySpan<byte> kString70_6S_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString71_6S = "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr";
         
         public static ReadOnlySpan<byte> kString71_6S_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString90_4S = "L R C Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString90_4S_u8 => "L R C Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString91_4S = "L R C LFE Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString91_4S_u8 => "L R C LFE Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString90_6S = "L R C Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr Tsl Tsr";
         
         public static ReadOnlySpan<byte> kString90_6S_u8 => "L R C Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr Tsl Tsr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString91_6S = "L R C LFE Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr Tsl Tsr";
         
         public static ReadOnlySpan<byte> kString91_6S_u8 => "L R C LFE Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr Tsl Tsr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString100S = "L R C Ls Rs Tc Tfl Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString100S_u8 => "L R C Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString101S = "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString101S_u8 => "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString110S = "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString110S_u8 => "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString111S = "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString111S_u8 => "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString130S = "L R C Ls Rs Sl Sr Tc Tfl Tfc Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString130S_u8 => "L R C Ls Rs Sl Sr Tc Tfl Tfc Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString131S = "L R C LFE Ls Rs Sl Sr Tc Tfl Tfc Tfr Trl Trr";
         
         public static ReadOnlySpan<byte> kString131S_u8 => "L R C LFE Ls Rs Sl Sr Tc Tfl Tfc Tfr Trl Trr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString102S = "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2";
         
         public static ReadOnlySpan<byte> kString102S_u8 => "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString122S = "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2";
         
         public static ReadOnlySpan<byte> kString122S_u8 => "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString81MPEGS = "L R LFE Ls Rs Tfl Tfc Tfr Bfc";
         
         public static ReadOnlySpan<byte> kString81MPEGS_u8 => "L R LFE Ls Rs Tfl Tfc Tfr Bfc\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString140S = "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr";
         
         public static ReadOnlySpan<byte> kString140S_u8 => "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString222S = "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr";
         
         public static ReadOnlySpan<byte> kString222S_u8 => "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString220S = "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr";
         
         public static ReadOnlySpan<byte> kString220S_u8 => "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString50_5_3S = "L R C Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr";
         
         public static ReadOnlySpan<byte> kString50_5_3S_u8 => "L R C Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString51_5_3S = "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr";
         
         public static ReadOnlySpan<byte> kString51_5_3S_u8 => "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringAmbi1stOrderS = "0 1 2 3";
         
         public static ReadOnlySpan<byte> kStringAmbi1stOrderS_u8 => "0 1 2 3\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringAmbi2cdOrderS = "0 1 2 3 4 5 6 7 8";
         
         public static ReadOnlySpan<byte> kStringAmbi2cdOrderS_u8 => "0 1 2 3 4 5 6 7 8\0"u8;
-        
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kStringAmbi3rdOrderS = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15";
         
         public static ReadOnlySpan<byte> kStringAmbi3rdOrderS_u8 => "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15\0"u8;
@@ -10379,7 +11168,10 @@ internal static partial class LibVst
         /// Scope, FFT-Display, Loudness Processing...
         /// </summary>
         public static ReadOnlySpan<byte> kFxAnalyzer_u8 => "Fx|Analyzer\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Delay, Multi-tap Delay, Ping-Pong Delay...
         /// </summary>
@@ -10389,7 +11181,10 @@ internal static partial class LibVst
         /// Delay, Multi-tap Delay, Ping-Pong Delay...
         /// </summary>
         public static ReadOnlySpan<byte> kFxDelay_u8 => "Fx|Delay\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Amp Simulator, Sub-Harmonic, SoftClipper...
         /// </summary>
@@ -10399,7 +11194,10 @@ internal static partial class LibVst
         /// Amp Simulator, Sub-Harmonic, SoftClipper...
         /// </summary>
         public static ReadOnlySpan<byte> kFxDistortion_u8 => "Fx|Distortion\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Compressor, Expander, Gate, Limiter, Maximizer, Tape Simulator, EnvelopeShaper...
         /// </summary>
@@ -10409,7 +11207,10 @@ internal static partial class LibVst
         /// Compressor, Expander, Gate, Limiter, Maximizer, Tape Simulator, EnvelopeShaper...
         /// </summary>
         public static ReadOnlySpan<byte> kFxDynamics_u8 => "Fx|Dynamics\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Equalization, Graphical EQ...
         /// </summary>
@@ -10419,7 +11220,10 @@ internal static partial class LibVst
         /// Equalization, Graphical EQ...
         /// </summary>
         public static ReadOnlySpan<byte> kFxEQ_u8 => "Fx|EQ\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// WahWah, ToneBooster, Specific Filter,...
         /// </summary>
@@ -10429,7 +11233,10 @@ internal static partial class LibVst
         /// WahWah, ToneBooster, Specific Filter,...
         /// </summary>
         public static ReadOnlySpan<byte> kFxFilter_u8 => "Fx|Filter\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// others type (not categorized)
         /// </summary>
@@ -10439,7 +11246,10 @@ internal static partial class LibVst
         /// others type (not categorized)
         /// </summary>
         public static ReadOnlySpan<byte> kFx_u8 => "Fx\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Fx which could be loaded as Instrument too
         /// </summary>
@@ -10449,7 +11259,10 @@ internal static partial class LibVst
         /// Fx which could be loaded as Instrument too
         /// </summary>
         public static ReadOnlySpan<byte> kFxInstrument_u8 => "Fx|Instrument\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Fx which could be loaded as Instrument too and is external (wrapped Hardware)
         /// </summary>
@@ -10459,7 +11272,10 @@ internal static partial class LibVst
         /// Fx which could be loaded as Instrument too and is external (wrapped Hardware)
         /// </summary>
         public static ReadOnlySpan<byte> kFxInstrumentExternal_u8 => "Fx|Instrument|External\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// MonoToStereo, StereoEnhancer,...
         /// </summary>
@@ -10469,7 +11285,10 @@ internal static partial class LibVst
         /// MonoToStereo, StereoEnhancer,...
         /// </summary>
         public static ReadOnlySpan<byte> kFxSpatial_u8 => "Fx|Spatial\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Tone Generator, Noise Generator...
         /// </summary>
@@ -10479,7 +11298,10 @@ internal static partial class LibVst
         /// Tone Generator, Noise Generator...
         /// </summary>
         public static ReadOnlySpan<byte> kFxGenerator_u8 => "Fx|Generator\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Dither, Noise Shaping,...
         /// </summary>
@@ -10489,7 +11311,10 @@ internal static partial class LibVst
         /// Dither, Noise Shaping,...
         /// </summary>
         public static ReadOnlySpan<byte> kFxMastering_u8 => "Fx|Mastering\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Phaser, Flanger, Chorus, Tremolo, Vibrato, AutoPan, Rotary, Cloner...
         /// </summary>
@@ -10499,7 +11324,10 @@ internal static partial class LibVst
         /// Phaser, Flanger, Chorus, Tremolo, Vibrato, AutoPan, Rotary, Cloner...
         /// </summary>
         public static ReadOnlySpan<byte> kFxModulation_u8 => "Fx|Modulation\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Pitch Processing, Pitch Correction, Vocal Tuning...
         /// </summary>
@@ -10509,7 +11337,10 @@ internal static partial class LibVst
         /// Pitch Processing, Pitch Correction, Vocal Tuning...
         /// </summary>
         public static ReadOnlySpan<byte> kFxPitchShift_u8 => "Fx|Pitch Shift\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Denoiser, Declicker,...
         /// </summary>
@@ -10519,7 +11350,10 @@ internal static partial class LibVst
         /// Denoiser, Declicker,...
         /// </summary>
         public static ReadOnlySpan<byte> kFxRestoration_u8 => "Fx|Restoration\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Reverberation, Room Simulation, Convolution Reverb...
         /// </summary>
@@ -10529,7 +11363,10 @@ internal static partial class LibVst
         /// Reverberation, Room Simulation, Convolution Reverb...
         /// </summary>
         public static ReadOnlySpan<byte> kFxReverb_u8 => "Fx|Reverb\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// dedicated to surround processing: LFE Splitter, Bass Manager...
         /// </summary>
@@ -10539,7 +11376,10 @@ internal static partial class LibVst
         /// dedicated to surround processing: LFE Splitter, Bass Manager...
         /// </summary>
         public static ReadOnlySpan<byte> kFxSurround_u8 => "Fx|Surround\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Volume, Mixer, Tuner...
         /// </summary>
@@ -10549,7 +11389,10 @@ internal static partial class LibVst
         /// Volume, Mixer, Tuner...
         /// </summary>
         public static ReadOnlySpan<byte> kFxTools_u8 => "Fx|Tools\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// using Network
         /// </summary>
@@ -10559,7 +11402,10 @@ internal static partial class LibVst
         /// using Network
         /// </summary>
         public static ReadOnlySpan<byte> kFxNetwork_u8 => "Fx|Network\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Effect used as instrument (sound generator), not as insert
         /// </summary>
@@ -10569,7 +11415,10 @@ internal static partial class LibVst
         /// Effect used as instrument (sound generator), not as insert
         /// </summary>
         public static ReadOnlySpan<byte> kInstrument_u8 => "Instrument\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Instrument for Drum sounds
         /// </summary>
@@ -10579,7 +11428,10 @@ internal static partial class LibVst
         /// Instrument for Drum sounds
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentDrum_u8 => "Instrument|Drum\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// External Instrument (wrapped Hardware)
         /// </summary>
@@ -10589,7 +11441,10 @@ internal static partial class LibVst
         /// External Instrument (wrapped Hardware)
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentExternal_u8 => "Instrument|External\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Instrument for Piano sounds
         /// </summary>
@@ -10599,7 +11454,10 @@ internal static partial class LibVst
         /// Instrument for Piano sounds
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentPiano_u8 => "Instrument|Piano\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Instrument based on Samples
         /// </summary>
@@ -10609,7 +11467,10 @@ internal static partial class LibVst
         /// Instrument based on Samples
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentSampler_u8 => "Instrument|Sampler\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Instrument based on Synthesis
         /// </summary>
@@ -10619,7 +11480,10 @@ internal static partial class LibVst
         /// Instrument based on Synthesis
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentSynth_u8 => "Instrument|Synth\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Instrument based on Synthesis and Samples
         /// </summary>
@@ -10629,7 +11493,10 @@ internal static partial class LibVst
         /// Instrument based on Synthesis and Samples
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentSynthSampler_u8 => "Instrument|Synth|Sampler\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// used for SurroundPanner
         /// </summary>
@@ -10639,7 +11506,10 @@ internal static partial class LibVst
         /// used for SurroundPanner
         /// </summary>
         public static ReadOnlySpan<byte> kSpatial_u8 => "Spatial\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// used for SurroundPanner and as insert effect
         /// </summary>
@@ -10649,7 +11519,10 @@ internal static partial class LibVst
         /// used for SurroundPanner and as insert effect
         /// </summary>
         public static ReadOnlySpan<byte> kSpatialFx_u8 => "Spatial|Fx\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// indicates that it supports only realtime process call, no processing faster than realtime
         /// </summary>
@@ -10659,7 +11532,10 @@ internal static partial class LibVst
         /// indicates that it supports only realtime process call, no processing faster than realtime
         /// </summary>
         public static ReadOnlySpan<byte> kOnlyRealTime_u8 => "OnlyRT\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// used for plug-in offline processing  (will not work as normal insert plug-in)
         /// </summary>
@@ -10669,7 +11545,10 @@ internal static partial class LibVst
         /// used for plug-in offline processing  (will not work as normal insert plug-in)
         /// </summary>
         public static ReadOnlySpan<byte> kOnlyOfflineProcess_u8 => "OnlyOfflineProcess\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
         /// </summary>
@@ -10679,7 +11558,10 @@ internal static partial class LibVst
         /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
         /// </summary>
         public static ReadOnlySpan<byte> kOnlyARA_u8 => "OnlyARA\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
         /// </summary>
@@ -10689,7 +11571,10 @@ internal static partial class LibVst
         /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
         /// </summary>
         public static ReadOnlySpan<byte> kNoOfflineProcess_u8 => "NoOfflineProcess\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// used for Mixconverter/Up-Mixer/Down-Mixer
         /// </summary>
@@ -10699,7 +11584,10 @@ internal static partial class LibVst
         /// used for Mixconverter/Up-Mixer/Down-Mixer
         /// </summary>
         public static ReadOnlySpan<byte> kUpDownMix_u8 => "Up-Downmix\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// Meter, Scope, FFT-Display, not selectable as insert plug-in
         /// </summary>
@@ -10709,7 +11597,10 @@ internal static partial class LibVst
         /// Meter, Scope, FFT-Display, not selectable as insert plug-in
         /// </summary>
         public static ReadOnlySpan<byte> kAnalyzer_u8 => "Analyzer\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
         /// </summary>
@@ -10719,7 +11610,10 @@ internal static partial class LibVst
         /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
         /// </summary>
         public static ReadOnlySpan<byte> kAmbisonics_u8 => "Ambisonics\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// used for Mono only plug-in [optional]
         /// </summary>
@@ -10729,7 +11623,10 @@ internal static partial class LibVst
         /// used for Mono only plug-in [optional]
         /// </summary>
         public static ReadOnlySpan<byte> kMono_u8 => "Mono\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// used for Stereo only plug-in [optional]
         /// </summary>
@@ -10739,7 +11636,10 @@ internal static partial class LibVst
         /// used for Stereo only plug-in [optional]
         /// </summary>
         public static ReadOnlySpan<byte> kStereo_u8 => "Stereo\0"u8;
-        
+    }
+    
+    public static partial class PlugType
+    {
         /// <summary>
         /// used for Surround only plug-in [optional]
         /// </summary>
@@ -10772,7 +11672,10 @@ internal static partial class LibVst
         /// string (TChar) [optional]: unique id string used to identify a channel
         /// </remarks>
         public static ReadOnlySpan<byte> kChannelUIDKey_u8 => "channel uid\0"u8;
-        
+    }
+    
+    public static partial class ChannelContext
+    {
         /// <summary>
         /// integer (int64) [optional]: number of characters in kChannelUIDKey
         /// </summary>
@@ -10782,7 +11685,10 @@ internal static partial class LibVst
         /// integer (int64) [optional]: number of characters in kChannelUIDKey
         /// </summary>
         public static ReadOnlySpan<byte> kChannelUIDLengthKey_u8 => "channel uid length\0"u8;
-        
+    }
+    
+    public static partial class ChannelContext
+    {
         /// <summary>
         /// string (TChar) [optional]: name of the channel like displayed in the mixer
         /// </summary>
@@ -10792,7 +11698,10 @@ internal static partial class LibVst
         /// string (TChar) [optional]: name of the channel like displayed in the mixer
         /// </summary>
         public static ReadOnlySpan<byte> kChannelNameKey_u8 => "channel name\0"u8;
-        
+    }
+    
+    public static partial class ChannelContext
+    {
         /// <summary>
         /// integer (int64) [optional]: number of characters in kChannelNameKey
         /// </summary>
@@ -10802,7 +11711,10 @@ internal static partial class LibVst
         /// integer (int64) [optional]: number of characters in kChannelNameKey
         /// </summary>
         public static ReadOnlySpan<byte> kChannelNameLengthKey_u8 => "channel name length\0"u8;
-        
+    }
+    
+    public static partial class ChannelContext
+    {
         /// <summary>
         /// color (ColorSpec) [optional]: used color for the channel in mixer or track
         /// </summary>
@@ -10812,7 +11724,10 @@ internal static partial class LibVst
         /// color (ColorSpec) [optional]: used color for the channel in mixer or track
         /// </summary>
         public static ReadOnlySpan<byte> kChannelColorKey_u8 => "channel color\0"u8;
-        
+    }
+    
+    public static partial class ChannelContext
+    {
         /// <summary>
         /// integer (int64) [optional]: index of the channel in a channel index namespace, start with 1 not * 0!
         /// </summary>
@@ -10822,7 +11737,10 @@ internal static partial class LibVst
         /// integer (int64) [optional]: index of the channel in a channel index namespace, start with 1 not * 0!
         /// </summary>
         public static ReadOnlySpan<byte> kChannelIndexKey_u8 => "channel index\0"u8;
-        
+    }
+    
+    public static partial class ChannelContext
+    {
         /// <summary>
         /// integer (int64) [optional]: define the order of the current used index namespace, start with 1 not 0!
         /// For example:
@@ -10840,7 +11758,10 @@ internal static partial class LibVst
         /// index namespace is "Output"  -&gt; order 3
         /// </summary>
         public static ReadOnlySpan<byte> kChannelIndexNamespaceOrderKey_u8 => "channel index namespace order\0"u8;
-        
+    }
+    
+    public static partial class ChannelContext
+    {
         /// <summary>
         /// string (TChar) [optional]: name of the channel index namespace for example "Input", "Output", "Channel", ...
         /// </summary>
@@ -10850,7 +11771,10 @@ internal static partial class LibVst
         /// string (TChar) [optional]: name of the channel index namespace for example "Input", "Output", "Channel", ...
         /// </summary>
         public static ReadOnlySpan<byte> kChannelIndexNamespaceKey_u8 => "channel index namespace\0"u8;
-        
+    }
+    
+    public static partial class ChannelContext
+    {
         /// <summary>
         /// integer (int64) [optional]: number of characters in kChannelIndexNamespaceKey
         /// </summary>
@@ -10860,7 +11784,10 @@ internal static partial class LibVst
         /// integer (int64) [optional]: number of characters in kChannelIndexNamespaceKey
         /// </summary>
         public static ReadOnlySpan<byte> kChannelIndexNamespaceLengthKey_u8 => "channel index namespace length\0"u8;
-        
+    }
+    
+    public static partial class ChannelContext
+    {
         /// <summary>
         /// PNG image representation as binary [optional]
         /// </summary>
@@ -10870,7 +11797,10 @@ internal static partial class LibVst
         /// PNG image representation as binary [optional]
         /// </summary>
         public static ReadOnlySpan<byte> kChannelImageKey_u8 => "channel image\0"u8;
-        
+    }
+    
+    public static partial class ChannelContext
+    {
         /// <summary>
         /// integer (int64) [optional]: routing position of the plug-in in the channel (see ChannelPluginLocation)
         /// </summary>
@@ -10900,23 +11830,38 @@ internal static partial class LibVst
         /// 
         /// </summary>
         public static ReadOnlySpan<byte> kCompGainReduction_u8 => "Comp:GainReduction\0"u8;
-        
+    }
+    
+    public static partial class FunctionNameType
+    {
         public const string kCompGainReductionMax = "Comp:GainReductionMax";
         
         public static ReadOnlySpan<byte> kCompGainReductionMax_u8 => "Comp:GainReductionMax\0"u8;
-        
+    }
+    
+    public static partial class FunctionNameType
+    {
         public const string kCompGainReductionPeakHold = "Comp:GainReductionPeakHold";
         
         public static ReadOnlySpan<byte> kCompGainReductionPeakHold_u8 => "Comp:GainReductionPeakHold\0"u8;
-        
+    }
+    
+    public static partial class FunctionNameType
+    {
         public const string kCompResetGainReductionMax = "Comp:ResetGainReductionMax";
         
         public static ReadOnlySpan<byte> kCompResetGainReductionMax_u8 => "Comp:ResetGainReductionMax\0"u8;
-        
+    }
+    
+    public static partial class FunctionNameType
+    {
         public const string kLowLatencyMode = "LowLatencyMode";
         
         public static ReadOnlySpan<byte> kLowLatencyMode_u8 => "LowLatencyMode\0"u8;
-        
+    }
+    
+    public static partial class FunctionNameType
+    {
         /// <summary>
         /// Useful for live situation where low
         /// latency is required:
@@ -10932,7 +11877,10 @@ internal static partial class LibVst
         /// 1 means LowLatency enable
         /// </summary>
         public static ReadOnlySpan<byte> kDryWetMix_u8 => "DryWetMix\0"u8;
-        
+    }
+    
+    public static partial class FunctionNameType
+    {
         /// <summary>
         /// Allowing to mix the original (Dry) Signal with the processed one (Wet):
         /// 0.0 means Dry Signal only,
@@ -10948,7 +11896,10 @@ internal static partial class LibVst
         /// 1.0 means Wet Signal only
         /// </summary>
         public static ReadOnlySpan<byte> kRandomize_u8 => "Randomize\0"u8;
-        
+    }
+    
+    public static partial class FunctionNameType
+    {
         /// <summary>
         /// Gravity point X-axis [0, 1]=&gt;[L-R] (for stereo: middle between left and right)
         /// </summary>
@@ -10958,7 +11909,10 @@ internal static partial class LibVst
         /// Gravity point X-axis [0, 1]=&gt;[L-R] (for stereo: middle between left and right)
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterX_u8 => "PanPosCenterX\0"u8;
-        
+    }
+    
+    public static partial class FunctionNameType
+    {
         /// <summary>
         /// Gravity point Y-axis [0, 1]=&gt;[Front-Rear]
         /// </summary>
@@ -10968,7 +11922,10 @@ internal static partial class LibVst
         /// Gravity point Y-axis [0, 1]=&gt;[Front-Rear]
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterY_u8 => "PanPosCenterY\0"u8;
-        
+    }
+    
+    public static partial class FunctionNameType
+    {
         /// <summary>
         /// Gravity point Z-axis [0, 1]=&gt;[Bottom-Top]
         /// </summary>
@@ -10985,7 +11942,10 @@ internal static partial class LibVst
         public const string kSegment = "segment";
         
         public static ReadOnlySpan<byte> kSegment_u8 => "segment\0"u8;
-        
+    }
+    
+    public static partial class CurveType
+    {
         public const string kValueList = "valueList";
         
         public static ReadOnlySpan<byte> kValueList_u8 => "valueList\0"u8;
@@ -11002,7 +11962,10 @@ internal static partial class LibVst
         /// string attribute : See AttributesStyle for available string value
         /// </summary>
         public static ReadOnlySpan<byte> kStyle_u8 => "style\0"u8;
-        
+    }
+    
+    public static partial class Attributes
+    {
         /// <summary>
         /// string attribute : See AttributesStyle for available string value
         /// </summary>
@@ -11012,7 +11975,10 @@ internal static partial class LibVst
         /// string attribute : See AttributesStyle for available string value
         /// </summary>
         public static ReadOnlySpan<byte> kLEDStyle_u8 => "ledStyle\0"u8;
-        
+    }
+    
+    public static partial class Attributes
+    {
         /// <summary>
         /// string attribute : See AttributesStyle for available string value
         /// </summary>
@@ -11022,7 +11988,10 @@ internal static partial class LibVst
         /// string attribute : See AttributesStyle for available string value
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchStyle_u8 => "switchStyle\0"u8;
-        
+    }
+    
+    public static partial class Attributes
+    {
         /// <summary>
         /// float attribute
         /// </summary>
@@ -11032,7 +12001,10 @@ internal static partial class LibVst
         /// float attribute
         /// </summary>
         public static ReadOnlySpan<byte> kKnobTurnsPerFullRange_u8 => "turnsPerFullRange\0"u8;
-        
+    }
+    
+    public static partial class Attributes
+    {
         /// <summary>
         /// string attribute : See AttributesFunction for available string value
         /// </summary>
@@ -11042,7 +12014,10 @@ internal static partial class LibVst
         /// string attribute : See AttributesFunction for available string value
         /// </summary>
         public static ReadOnlySpan<byte> kFunction_u8 => "function\0"u8;
-        
+    }
+    
+    public static partial class Attributes
+    {
         /// <summary>
         /// string attribute : See AttributesFlags for available string value
         /// </summary>
@@ -11065,7 +12040,10 @@ internal static partial class LibVst
         /// Gravity point X-axis (L-R) (for stereo: middle between left and right)
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterXFunc_u8 => "PanPosCenterX\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Gravity point Y-axis (Front-Rear)
         /// </summary>
@@ -11075,7 +12053,10 @@ internal static partial class LibVst
         /// Gravity point Y-axis (Front-Rear)
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterYFunc_u8 => "PanPosCenterY\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Left channel Position in X-axis
         /// </summary>
@@ -11085,7 +12066,10 @@ internal static partial class LibVst
         /// Left channel Position in X-axis
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosFrontLeftXFunc_u8 => "PanPosFrontLeftX\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Left channel Position in Y-axis
         /// </summary>
@@ -11095,7 +12079,10 @@ internal static partial class LibVst
         /// Left channel Position in Y-axis
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosFrontLeftYFunc_u8 => "PanPosFrontLeftY\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Right channel Position in X-axis
         /// </summary>
@@ -11105,7 +12092,10 @@ internal static partial class LibVst
         /// Right channel Position in X-axis
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosFrontRightXFunc_u8 => "PanPosFrontRightX\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Right channel Position in Y-axis
         /// </summary>
@@ -11115,7 +12105,10 @@ internal static partial class LibVst
         /// Right channel Position in Y-axis
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosFrontRightYFunc_u8 => "PanPosFrontRightY\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Rotation around the Center (gravity point)
         /// </summary>
@@ -11125,7 +12118,10 @@ internal static partial class LibVst
         /// Rotation around the Center (gravity point)
         /// </summary>
         public static ReadOnlySpan<byte> kPanRotationFunc_u8 => "PanRotation\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Panning Law
         /// </summary>
@@ -11135,7 +12131,10 @@ internal static partial class LibVst
         /// Panning Law
         /// </summary>
         public static ReadOnlySpan<byte> kPanLawFunc_u8 => "PanLaw\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Panning Mirror Mode
         /// </summary>
@@ -11145,7 +12144,10 @@ internal static partial class LibVst
         /// Panning Mirror Mode
         /// </summary>
         public static ReadOnlySpan<byte> kPanMirrorModeFunc_u8 => "PanMirrorMode\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Panning LFE Gain
         /// </summary>
@@ -11155,7 +12157,10 @@ internal static partial class LibVst
         /// Panning LFE Gain
         /// </summary>
         public static ReadOnlySpan<byte> kPanLfeGainFunc_u8 => "PanLfeGain\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Gain Reduction for compressor
         /// </summary>
@@ -11165,7 +12170,10 @@ internal static partial class LibVst
         /// Gain Reduction for compressor
         /// </summary>
         public static ReadOnlySpan<byte> kGainReductionFunc_u8 => "GainReduction\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Solo
         /// </summary>
@@ -11175,7 +12183,10 @@ internal static partial class LibVst
         /// Solo
         /// </summary>
         public static ReadOnlySpan<byte> kSoloFunc_u8 => "Solo\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Mute
         /// </summary>
@@ -11185,7 +12196,10 @@ internal static partial class LibVst
         /// Mute
         /// </summary>
         public static ReadOnlySpan<byte> kMuteFunc_u8 => "Mute\0"u8;
-        
+    }
+    
+    public static partial class AttributesFunction
+    {
         /// <summary>
         /// Volume
         /// </summary>
@@ -11208,7 +12222,10 @@ internal static partial class LibVst
         /// the associated layer should use the inverse value of parameter (1 - x).
         /// </summary>
         public static ReadOnlySpan<byte> kInverseStyle_u8 => "inverse\0"u8;
-        
+    }
+    
+    public static partial class AttributesStyle
+    {
         /// <summary>
         /// |======&gt;----- (the default one if not specified)
         /// </summary>
@@ -11218,7 +12235,10 @@ internal static partial class LibVst
         /// |======&gt;----- (the default one if not specified)
         /// </summary>
         public static ReadOnlySpan<byte> kLEDWrapLeftStyle_u8 => "wrapLeft\0"u8;
-        
+    }
+    
+    public static partial class AttributesStyle
+    {
         /// <summary>
         /// &lt;
         /// ====|
@@ -11230,7 +12250,10 @@ internal static partial class LibVst
         /// ====|
         /// </summary>
         public static ReadOnlySpan<byte> kLEDWrapRightStyle_u8 => "wrapRight\0"u8;
-        
+    }
+    
+    public static partial class AttributesStyle
+    {
         /// <summary>
         /// &lt;
         /// ==|==&gt;---
@@ -11242,7 +12265,10 @@ internal static partial class LibVst
         /// ==|==&gt;---
         /// </summary>
         public static ReadOnlySpan<byte> kLEDSpreadStyle_u8 => "spread\0"u8;
-        
+    }
+    
+    public static partial class AttributesStyle
+    {
         /// <summary>
         /// ------|===&gt;--
         /// </summary>
@@ -11252,7 +12278,10 @@ internal static partial class LibVst
         /// ------|===&gt;--
         /// </summary>
         public static ReadOnlySpan<byte> kLEDBoostCutStyle_u8 => "boostCut\0"u8;
-        
+    }
+    
+    public static partial class AttributesStyle
+    {
         /// <summary>
         /// --------|----
         /// </summary>
@@ -11262,7 +12291,10 @@ internal static partial class LibVst
         /// --------|----
         /// </summary>
         public static ReadOnlySpan<byte> kLEDSingleDotStyle_u8 => "singleDot\0"u8;
-        
+    }
+    
+    public static partial class AttributesStyle
+    {
         /// <summary>
         /// Apply only when pressed, unpressed will reset the value to min.
         /// </summary>
@@ -11272,7 +12304,10 @@ internal static partial class LibVst
         /// Apply only when pressed, unpressed will reset the value to min.
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchPushStyle_u8 => "push\0"u8;
-        
+    }
+    
+    public static partial class AttributesStyle
+    {
         /// <summary>
         /// Push will increment the value. When the max is reached it will restart with min.
         /// The default one if not specified (with 2 states values it is a OnOff switch).
@@ -11284,7 +12319,10 @@ internal static partial class LibVst
         /// The default one if not specified (with 2 states values it is a OnOff switch).
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchPushIncLoopedStyle_u8 => "pushIncLooped\0"u8;
-        
+    }
+    
+    public static partial class AttributesStyle
+    {
         /// <summary>
         /// Push will decrement the value. When the min is reached it will restart with max.
         /// </summary>
@@ -11294,7 +12332,10 @@ internal static partial class LibVst
         /// Push will decrement the value. When the min is reached it will restart with max.
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchPushDecLoopedStyle_u8 => "pushDecLooped\0"u8;
-        
+    }
+    
+    public static partial class AttributesStyle
+    {
         /// <summary>
         /// Increment after each press (delta depends of the curve).
         /// </summary>
@@ -11304,7 +12345,10 @@ internal static partial class LibVst
         /// Increment after each press (delta depends of the curve).
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchPushIncStyle_u8 => "pushInc\0"u8;
-        
+    }
+    
+    public static partial class AttributesStyle
+    {
         /// <summary>
         /// Decrement after each press (delta depends of the curve).
         /// </summary>
@@ -11314,7 +12358,10 @@ internal static partial class LibVst
         /// Decrement after each press (delta depends of the curve).
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchPushDecStyle_u8 => "pushDec\0"u8;
-        
+    }
+    
+    public static partial class AttributesStyle
+    {
         /// <summary>
         /// Each push-release will change the value between min and max. 
         /// A timeout between push and release could be used to simulate a push style (if timeout is reached).
@@ -11352,7 +12399,10 @@ internal static partial class LibVst
         /// plug-in name
         /// </summary>
         public static ReadOnlySpan<byte> kPlugInName_u8 => "PlugInName\0"u8;
-        
+    }
+    
+    public static partial class PresetAttributes
+    {
         /// <summary>
         /// eg. "Fx|Dynamics", "Instrument", "Instrument|Synth"
         /// </summary>
@@ -11362,7 +12412,10 @@ internal static partial class LibVst
         /// eg. "Fx|Dynamics", "Instrument", "Instrument|Synth"
         /// </summary>
         public static ReadOnlySpan<byte> kPlugInCategory_u8 => "PlugInCategory\0"u8;
-        
+    }
+    
+    public static partial class PresetAttributes
+    {
         /// <summary>
         /// eg. instrument group (like 'Piano' or 'Piano|A. Piano')
         /// </summary>
@@ -11372,7 +12425,10 @@ internal static partial class LibVst
         /// eg. instrument group (like 'Piano' or 'Piano|A. Piano')
         /// </summary>
         public static ReadOnlySpan<byte> kInstrument_u8 => "MusicalInstrument\0"u8;
-        
+    }
+    
+    public static partial class PresetAttributes
+    {
         /// <summary>
         /// eg. 'Pop', 'Jazz', 'Classic'
         /// </summary>
@@ -11382,7 +12438,10 @@ internal static partial class LibVst
         /// eg. 'Pop', 'Jazz', 'Classic'
         /// </summary>
         public static ReadOnlySpan<byte> kStyle_u8 => "MusicalStyle\0"u8;
-        
+    }
+    
+    public static partial class PresetAttributes
+    {
         /// <summary>
         /// eg. instrument nature (like 'Soft' 'Dry' 'Acoustic')
         /// </summary>
@@ -11392,7 +12451,10 @@ internal static partial class LibVst
         /// eg. instrument nature (like 'Soft' 'Dry' 'Acoustic')
         /// </summary>
         public static ReadOnlySpan<byte> kCharacter_u8 => "MusicalCharacter\0"u8;
-        
+    }
+    
+    public static partial class PresetAttributes
+    {
         /// <summary>
         /// Type of the given state see @ref StateType : Project / Default Preset or Normal Preset
         /// </summary>
@@ -11402,7 +12464,10 @@ internal static partial class LibVst
         /// Type of the given state see @ref StateType : Project / Default Preset or Normal Preset
         /// </summary>
         public static ReadOnlySpan<byte> kStateType_u8 => "StateType\0"u8;
-        
+    }
+    
+    public static partial class PresetAttributes
+    {
         /// <summary>
         /// Full file path string (if available) where the preset comes from (be sure to use a bigger string when asking for it (with 1024 characters))
         /// </summary>
@@ -11412,7 +12477,10 @@ internal static partial class LibVst
         /// Full file path string (if available) where the preset comes from (be sure to use a bigger string when asking for it (with 1024 characters))
         /// </summary>
         public static ReadOnlySpan<byte> kFilePathStringType_u8 => "FilePathString\0"u8;
-        
+    }
+    
+    public static partial class PresetAttributes
+    {
         /// <summary>
         /// name of the preset
         /// </summary>
@@ -11422,7 +12490,10 @@ internal static partial class LibVst
         /// name of the preset
         /// </summary>
         public static ReadOnlySpan<byte> kName_u8 => "Name\0"u8;
-        
+    }
+    
+    public static partial class PresetAttributes
+    {
         /// <summary>
         /// filename of the preset (including extension)
         /// </summary>
@@ -11445,7 +12516,10 @@ internal static partial class LibVst
         /// the state is restored from a project loading or it is saved in a project
         /// </summary>
         public static ReadOnlySpan<byte> kProject_u8 => "Project\0"u8;
-        
+    }
+    
+    public static partial class StateType
+    {
         /// <summary>
         /// the state is restored from a preset (marked as default) or the host wants to store a default state of the plug-in
         /// </summary>
@@ -11476,459 +12550,801 @@ internal static partial class LibVst
         /// {
         /// </remarks>
         public static ReadOnlySpan<byte> kAccordion_u8 => "Accordion\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kAccordionAccordion = "Accordion|Accordion";
         
         public static ReadOnlySpan<byte> kAccordionAccordion_u8 => "Accordion|Accordion\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kAccordionHarmonica = "Accordion|Harmonica";
         
         public static ReadOnlySpan<byte> kAccordionHarmonica_u8 => "Accordion|Harmonica\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kAccordionOther = "Accordion|Other";
         
         public static ReadOnlySpan<byte> kAccordionOther_u8 => "Accordion|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBass = "Bass";
         
         public static ReadOnlySpan<byte> kBass_u8 => "Bass\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBassABass = "Bass|A. Bass";
         
         public static ReadOnlySpan<byte> kBassABass_u8 => "Bass|A. Bass\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBassEBass = "Bass|E. Bass";
         
         public static ReadOnlySpan<byte> kBassEBass_u8 => "Bass|E. Bass\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBassSynthBass = "Bass|Synth Bass";
         
         public static ReadOnlySpan<byte> kBassSynthBass_u8 => "Bass|Synth Bass\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBassOther = "Bass|Other";
         
         public static ReadOnlySpan<byte> kBassOther_u8 => "Bass|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBrass = "Brass";
         
         public static ReadOnlySpan<byte> kBrass_u8 => "Brass\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBrassFrenchHorn = "Brass|French Horn";
         
         public static ReadOnlySpan<byte> kBrassFrenchHorn_u8 => "Brass|French Horn\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBrassTrumpet = "Brass|Trumpet";
         
         public static ReadOnlySpan<byte> kBrassTrumpet_u8 => "Brass|Trumpet\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBrassTrombone = "Brass|Trombone";
         
         public static ReadOnlySpan<byte> kBrassTrombone_u8 => "Brass|Trombone\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBrassTuba = "Brass|Tuba";
         
         public static ReadOnlySpan<byte> kBrassTuba_u8 => "Brass|Tuba\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBrassSection = "Brass|Section";
         
         public static ReadOnlySpan<byte> kBrassSection_u8 => "Brass|Section\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBrassSynth = "Brass|Synth";
         
         public static ReadOnlySpan<byte> kBrassSynth_u8 => "Brass|Synth\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kBrassOther = "Brass|Other";
         
         public static ReadOnlySpan<byte> kBrassOther_u8 => "Brass|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kChromaticPerc = "Chromatic Perc";
         
         public static ReadOnlySpan<byte> kChromaticPerc_u8 => "Chromatic Perc\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kChromaticPercBell = "Chromatic Perc|Bell";
         
         public static ReadOnlySpan<byte> kChromaticPercBell_u8 => "Chromatic Perc|Bell\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kChromaticPercMallett = "Chromatic Perc|Mallett";
         
         public static ReadOnlySpan<byte> kChromaticPercMallett_u8 => "Chromatic Perc|Mallett\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kChromaticPercWood = "Chromatic Perc|Wood";
         
         public static ReadOnlySpan<byte> kChromaticPercWood_u8 => "Chromatic Perc|Wood\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kChromaticPercPercussion = "Chromatic Perc|Percussion";
         
         public static ReadOnlySpan<byte> kChromaticPercPercussion_u8 => "Chromatic Perc|Percussion\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kChromaticPercTimpani = "Chromatic Perc|Timpani";
         
         public static ReadOnlySpan<byte> kChromaticPercTimpani_u8 => "Chromatic Perc|Timpani\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kChromaticPercOther = "Chromatic Perc|Other";
         
         public static ReadOnlySpan<byte> kChromaticPercOther_u8 => "Chromatic Perc|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPerc = "Drum&Perc";
         
         public static ReadOnlySpan<byte> kDrumPerc_u8 => "Drum&Perc\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPercDrumsetGM = "Drum&Perc|Drumset GM";
         
         public static ReadOnlySpan<byte> kDrumPercDrumsetGM_u8 => "Drum&Perc|Drumset GM\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPercDrumset = "Drum&Perc|Drumset";
         
         public static ReadOnlySpan<byte> kDrumPercDrumset_u8 => "Drum&Perc|Drumset\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPercDrumMenues = "Drum&Perc|Drum Menues";
         
         public static ReadOnlySpan<byte> kDrumPercDrumMenues_u8 => "Drum&Perc|Drum Menues\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPercBeats = "Drum&Perc|Beats";
         
         public static ReadOnlySpan<byte> kDrumPercBeats_u8 => "Drum&Perc|Beats\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPercPercussion = "Drum&Perc|Percussion";
         
         public static ReadOnlySpan<byte> kDrumPercPercussion_u8 => "Drum&Perc|Percussion\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPercKickDrum = "Drum&Perc|Kick Drum";
         
         public static ReadOnlySpan<byte> kDrumPercKickDrum_u8 => "Drum&Perc|Kick Drum\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPercSnareDrum = "Drum&Perc|Snare Drum";
         
         public static ReadOnlySpan<byte> kDrumPercSnareDrum_u8 => "Drum&Perc|Snare Drum\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPercToms = "Drum&Perc|Toms";
         
         public static ReadOnlySpan<byte> kDrumPercToms_u8 => "Drum&Perc|Toms\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPercHiHats = "Drum&Perc|HiHats";
         
         public static ReadOnlySpan<byte> kDrumPercHiHats_u8 => "Drum&Perc|HiHats\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPercCymbals = "Drum&Perc|Cymbals";
         
         public static ReadOnlySpan<byte> kDrumPercCymbals_u8 => "Drum&Perc|Cymbals\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kDrumPercOther = "Drum&Perc|Other";
         
         public static ReadOnlySpan<byte> kDrumPercOther_u8 => "Drum&Perc|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kEthnic = "Ethnic";
         
         public static ReadOnlySpan<byte> kEthnic_u8 => "Ethnic\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kEthnicAsian = "Ethnic|Asian";
         
         public static ReadOnlySpan<byte> kEthnicAsian_u8 => "Ethnic|Asian\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kEthnicAfrican = "Ethnic|African";
         
         public static ReadOnlySpan<byte> kEthnicAfrican_u8 => "Ethnic|African\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kEthnicEuropean = "Ethnic|European";
         
         public static ReadOnlySpan<byte> kEthnicEuropean_u8 => "Ethnic|European\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kEthnicLatin = "Ethnic|Latin";
         
         public static ReadOnlySpan<byte> kEthnicLatin_u8 => "Ethnic|Latin\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kEthnicAmerican = "Ethnic|American";
         
         public static ReadOnlySpan<byte> kEthnicAmerican_u8 => "Ethnic|American\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kEthnicAlien = "Ethnic|Alien";
         
         public static ReadOnlySpan<byte> kEthnicAlien_u8 => "Ethnic|Alien\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kEthnicOther = "Ethnic|Other";
         
         public static ReadOnlySpan<byte> kEthnicOther_u8 => "Ethnic|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kGuitar = "Guitar/Plucked";
         
         public static ReadOnlySpan<byte> kGuitar_u8 => "Guitar/Plucked\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kGuitarAGuitar = "Guitar/Plucked|A. Guitar";
         
         public static ReadOnlySpan<byte> kGuitarAGuitar_u8 => "Guitar/Plucked|A. Guitar\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kGuitarEGuitar = "Guitar/Plucked|E. Guitar";
         
         public static ReadOnlySpan<byte> kGuitarEGuitar_u8 => "Guitar/Plucked|E. Guitar\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kGuitarHarp = "Guitar/Plucked|Harp";
         
         public static ReadOnlySpan<byte> kGuitarHarp_u8 => "Guitar/Plucked|Harp\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kGuitarEthnic = "Guitar/Plucked|Ethnic";
         
         public static ReadOnlySpan<byte> kGuitarEthnic_u8 => "Guitar/Plucked|Ethnic\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kGuitarOther = "Guitar/Plucked|Other";
         
         public static ReadOnlySpan<byte> kGuitarOther_u8 => "Guitar/Plucked|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kKeyboard = "Keyboard";
         
         public static ReadOnlySpan<byte> kKeyboard_u8 => "Keyboard\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kKeyboardClavi = "Keyboard|Clavi";
         
         public static ReadOnlySpan<byte> kKeyboardClavi_u8 => "Keyboard|Clavi\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kKeyboardEPiano = "Keyboard|E. Piano";
         
         public static ReadOnlySpan<byte> kKeyboardEPiano_u8 => "Keyboard|E. Piano\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kKeyboardHarpsichord = "Keyboard|Harpsichord";
         
         public static ReadOnlySpan<byte> kKeyboardHarpsichord_u8 => "Keyboard|Harpsichord\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kKeyboardOther = "Keyboard|Other";
         
         public static ReadOnlySpan<byte> kKeyboardOther_u8 => "Keyboard|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kMusicalFX = "Musical FX";
         
         public static ReadOnlySpan<byte> kMusicalFX_u8 => "Musical FX\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kMusicalFXHitsStabs = "Musical FX|Hits&Stabs";
         
         public static ReadOnlySpan<byte> kMusicalFXHitsStabs_u8 => "Musical FX|Hits&Stabs\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kMusicalFXMotion = "Musical FX|Motion";
         
         public static ReadOnlySpan<byte> kMusicalFXMotion_u8 => "Musical FX|Motion\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kMusicalFXSweeps = "Musical FX|Sweeps";
         
         public static ReadOnlySpan<byte> kMusicalFXSweeps_u8 => "Musical FX|Sweeps\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kMusicalFXBeepsBlips = "Musical FX|Beeps&Blips";
         
         public static ReadOnlySpan<byte> kMusicalFXBeepsBlips_u8 => "Musical FX|Beeps&Blips\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kMusicalFXScratches = "Musical FX|Scratches";
         
         public static ReadOnlySpan<byte> kMusicalFXScratches_u8 => "Musical FX|Scratches\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kMusicalFXOther = "Musical FX|Other";
         
         public static ReadOnlySpan<byte> kMusicalFXOther_u8 => "Musical FX|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kOrgan = "Organ";
         
         public static ReadOnlySpan<byte> kOrgan_u8 => "Organ\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kOrganElectric = "Organ|Electric";
         
         public static ReadOnlySpan<byte> kOrganElectric_u8 => "Organ|Electric\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kOrganPipe = "Organ|Pipe";
         
         public static ReadOnlySpan<byte> kOrganPipe_u8 => "Organ|Pipe\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kOrganOther = "Organ|Other";
         
         public static ReadOnlySpan<byte> kOrganOther_u8 => "Organ|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kPiano = "Piano";
         
         public static ReadOnlySpan<byte> kPiano_u8 => "Piano\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kPianoAPiano = "Piano|A. Piano";
         
         public static ReadOnlySpan<byte> kPianoAPiano_u8 => "Piano|A. Piano\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kPianoEGrand = "Piano|E. Grand";
         
         public static ReadOnlySpan<byte> kPianoEGrand_u8 => "Piano|E. Grand\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kPianoOther = "Piano|Other";
         
         public static ReadOnlySpan<byte> kPianoOther_u8 => "Piano|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSoundFX = "Sound FX";
         
         public static ReadOnlySpan<byte> kSoundFX_u8 => "Sound FX\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSoundFXNature = "Sound FX|Nature";
         
         public static ReadOnlySpan<byte> kSoundFXNature_u8 => "Sound FX|Nature\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSoundFXMechanical = "Sound FX|Mechanical";
         
         public static ReadOnlySpan<byte> kSoundFXMechanical_u8 => "Sound FX|Mechanical\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSoundFXSynthetic = "Sound FX|Synthetic";
         
         public static ReadOnlySpan<byte> kSoundFXSynthetic_u8 => "Sound FX|Synthetic\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSoundFXOther = "Sound FX|Other";
         
         public static ReadOnlySpan<byte> kSoundFXOther_u8 => "Sound FX|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kStrings = "Strings";
         
         public static ReadOnlySpan<byte> kStrings_u8 => "Strings\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kStringsViolin = "Strings|Violin";
         
         public static ReadOnlySpan<byte> kStringsViolin_u8 => "Strings|Violin\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kStringsViola = "Strings|Viola";
         
         public static ReadOnlySpan<byte> kStringsViola_u8 => "Strings|Viola\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kStringsCello = "Strings|Cello";
         
         public static ReadOnlySpan<byte> kStringsCello_u8 => "Strings|Cello\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kStringsBass = "Strings|Bass";
         
         public static ReadOnlySpan<byte> kStringsBass_u8 => "Strings|Bass\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kStringsSection = "Strings|Section";
         
         public static ReadOnlySpan<byte> kStringsSection_u8 => "Strings|Section\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kStringsSynth = "Strings|Synth";
         
         public static ReadOnlySpan<byte> kStringsSynth_u8 => "Strings|Synth\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kStringsOther = "Strings|Other";
         
         public static ReadOnlySpan<byte> kStringsOther_u8 => "Strings|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthLead = "Synth Lead";
         
         public static ReadOnlySpan<byte> kSynthLead_u8 => "Synth Lead\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthLeadAnalog = "Synth Lead|Analog";
         
         public static ReadOnlySpan<byte> kSynthLeadAnalog_u8 => "Synth Lead|Analog\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthLeadDigital = "Synth Lead|Digital";
         
         public static ReadOnlySpan<byte> kSynthLeadDigital_u8 => "Synth Lead|Digital\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthLeadArpeggio = "Synth Lead|Arpeggio";
         
         public static ReadOnlySpan<byte> kSynthLeadArpeggio_u8 => "Synth Lead|Arpeggio\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthLeadOther = "Synth Lead|Other";
         
         public static ReadOnlySpan<byte> kSynthLeadOther_u8 => "Synth Lead|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthPad = "Synth Pad";
         
         public static ReadOnlySpan<byte> kSynthPad_u8 => "Synth Pad\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthPadSynthChoir = "Synth Pad|Synth Choir";
         
         public static ReadOnlySpan<byte> kSynthPadSynthChoir_u8 => "Synth Pad|Synth Choir\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthPadAnalog = "Synth Pad|Analog";
         
         public static ReadOnlySpan<byte> kSynthPadAnalog_u8 => "Synth Pad|Analog\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthPadDigital = "Synth Pad|Digital";
         
         public static ReadOnlySpan<byte> kSynthPadDigital_u8 => "Synth Pad|Digital\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthPadMotion = "Synth Pad|Motion";
         
         public static ReadOnlySpan<byte> kSynthPadMotion_u8 => "Synth Pad|Motion\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthPadOther = "Synth Pad|Other";
         
         public static ReadOnlySpan<byte> kSynthPadOther_u8 => "Synth Pad|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthComp = "Synth Comp";
         
         public static ReadOnlySpan<byte> kSynthComp_u8 => "Synth Comp\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthCompAnalog = "Synth Comp|Analog";
         
         public static ReadOnlySpan<byte> kSynthCompAnalog_u8 => "Synth Comp|Analog\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthCompDigital = "Synth Comp|Digital";
         
         public static ReadOnlySpan<byte> kSynthCompDigital_u8 => "Synth Comp|Digital\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kSynthCompOther = "Synth Comp|Other";
         
         public static ReadOnlySpan<byte> kSynthCompOther_u8 => "Synth Comp|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kVocal = "Vocal";
         
         public static ReadOnlySpan<byte> kVocal_u8 => "Vocal\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kVocalLeadVocal = "Vocal|Lead Vocal";
         
         public static ReadOnlySpan<byte> kVocalLeadVocal_u8 => "Vocal|Lead Vocal\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kVocalAdlibs = "Vocal|Adlibs";
         
         public static ReadOnlySpan<byte> kVocalAdlibs_u8 => "Vocal|Adlibs\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kVocalChoir = "Vocal|Choir";
         
         public static ReadOnlySpan<byte> kVocalChoir_u8 => "Vocal|Choir\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kVocalSolo = "Vocal|Solo";
         
         public static ReadOnlySpan<byte> kVocalSolo_u8 => "Vocal|Solo\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kVocalFX = "Vocal|FX";
         
         public static ReadOnlySpan<byte> kVocalFX_u8 => "Vocal|FX\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kVocalSpoken = "Vocal|Spoken";
         
         public static ReadOnlySpan<byte> kVocalSpoken_u8 => "Vocal|Spoken\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kVocalOther = "Vocal|Other";
         
         public static ReadOnlySpan<byte> kVocalOther_u8 => "Vocal|Other\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kWoodwinds = "Woodwinds";
         
         public static ReadOnlySpan<byte> kWoodwinds_u8 => "Woodwinds\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kWoodwindsEthnic = "Woodwinds|Ethnic";
         
         public static ReadOnlySpan<byte> kWoodwindsEthnic_u8 => "Woodwinds|Ethnic\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kWoodwindsFlute = "Woodwinds|Flute";
         
         public static ReadOnlySpan<byte> kWoodwindsFlute_u8 => "Woodwinds|Flute\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kWoodwindsOboe = "Woodwinds|Oboe";
         
         public static ReadOnlySpan<byte> kWoodwindsOboe_u8 => "Woodwinds|Oboe\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kWoodwindsEnglHorn = "Woodwinds|Engl. Horn";
         
         public static ReadOnlySpan<byte> kWoodwindsEnglHorn_u8 => "Woodwinds|Engl. Horn\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kWoodwindsClarinet = "Woodwinds|Clarinet";
         
         public static ReadOnlySpan<byte> kWoodwindsClarinet_u8 => "Woodwinds|Clarinet\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kWoodwindsSaxophone = "Woodwinds|Saxophone";
         
         public static ReadOnlySpan<byte> kWoodwindsSaxophone_u8 => "Woodwinds|Saxophone\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kWoodwindsBassoon = "Woodwinds|Bassoon";
         
         public static ReadOnlySpan<byte> kWoodwindsBassoon_u8 => "Woodwinds|Bassoon\0"u8;
-        
+    }
+    
+    public static partial class MusicalInstrument
+    {
         public const string kWoodwindsOther = "Woodwinds|Other";
         
         public static ReadOnlySpan<byte> kWoodwindsOther_u8 => "Woodwinds|Other\0"u8;
@@ -11953,435 +13369,759 @@ internal static partial class LibVst
         /// {
         /// </remarks>
         public static ReadOnlySpan<byte> kAlternativeIndie_u8 => "Alternative/Indie\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAlternativeIndieGothRock = "Alternative/Indie|Goth Rock";
         
         public static ReadOnlySpan<byte> kAlternativeIndieGothRock_u8 => "Alternative/Indie|Goth Rock\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAlternativeIndieGrunge = "Alternative/Indie|Grunge";
         
         public static ReadOnlySpan<byte> kAlternativeIndieGrunge_u8 => "Alternative/Indie|Grunge\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAlternativeIndieNewWave = "Alternative/Indie|New Wave";
         
         public static ReadOnlySpan<byte> kAlternativeIndieNewWave_u8 => "Alternative/Indie|New Wave\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAlternativeIndiePunk = "Alternative/Indie|Punk";
         
         public static ReadOnlySpan<byte> kAlternativeIndiePunk_u8 => "Alternative/Indie|Punk\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAlternativeIndieCollegeRock = "Alternative/Indie|College Rock";
         
         public static ReadOnlySpan<byte> kAlternativeIndieCollegeRock_u8 => "Alternative/Indie|College Rock\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAlternativeIndieDarkWave = "Alternative/Indie|Dark Wave";
         
         public static ReadOnlySpan<byte> kAlternativeIndieDarkWave_u8 => "Alternative/Indie|Dark Wave\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAlternativeIndieHardcore = "Alternative/Indie|Hardcore";
         
         public static ReadOnlySpan<byte> kAlternativeIndieHardcore_u8 => "Alternative/Indie|Hardcore\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAmbientChillOut = "Ambient/ChillOut";
         
         public static ReadOnlySpan<byte> kAmbientChillOut_u8 => "Ambient/ChillOut\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAmbientChillOutNewAgeMeditation = "Ambient/ChillOut|New Age/Meditation";
         
         public static ReadOnlySpan<byte> kAmbientChillOutNewAgeMeditation_u8 => "Ambient/ChillOut|New Age/Meditation\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAmbientChillOutDarkAmbient = "Ambient/ChillOut|Dark Ambient";
         
         public static ReadOnlySpan<byte> kAmbientChillOutDarkAmbient_u8 => "Ambient/ChillOut|Dark Ambient\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAmbientChillOutDowntempo = "Ambient/ChillOut|Downtempo";
         
         public static ReadOnlySpan<byte> kAmbientChillOutDowntempo_u8 => "Ambient/ChillOut|Downtempo\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kAmbientChillOutLounge = "Ambient/ChillOut|Lounge";
         
         public static ReadOnlySpan<byte> kAmbientChillOutLounge_u8 => "Ambient/ChillOut|Lounge\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kBlues = "Blues";
         
         public static ReadOnlySpan<byte> kBlues_u8 => "Blues\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kBluesAcousticBlues = "Blues|Acoustic Blues";
         
         public static ReadOnlySpan<byte> kBluesAcousticBlues_u8 => "Blues|Acoustic Blues\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kBluesCountryBlues = "Blues|Country Blues";
         
         public static ReadOnlySpan<byte> kBluesCountryBlues_u8 => "Blues|Country Blues\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kBluesElectricBlues = "Blues|Electric Blues";
         
         public static ReadOnlySpan<byte> kBluesElectricBlues_u8 => "Blues|Electric Blues\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kBluesChicagoBlues = "Blues|Chicago Blues";
         
         public static ReadOnlySpan<byte> kBluesChicagoBlues_u8 => "Blues|Chicago Blues\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kClassical = "Classical";
         
         public static ReadOnlySpan<byte> kClassical_u8 => "Classical\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kClassicalBaroque = "Classical|Baroque";
         
         public static ReadOnlySpan<byte> kClassicalBaroque_u8 => "Classical|Baroque\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kClassicalChamberMusic = "Classical|Chamber Music";
         
         public static ReadOnlySpan<byte> kClassicalChamberMusic_u8 => "Classical|Chamber Music\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kClassicalMedieval = "Classical|Medieval";
         
         public static ReadOnlySpan<byte> kClassicalMedieval_u8 => "Classical|Medieval\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kClassicalModernComposition = "Classical|Modern Composition";
         
         public static ReadOnlySpan<byte> kClassicalModernComposition_u8 => "Classical|Modern Composition\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kClassicalOpera = "Classical|Opera";
         
         public static ReadOnlySpan<byte> kClassicalOpera_u8 => "Classical|Opera\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kClassicalGregorian = "Classical|Gregorian";
         
         public static ReadOnlySpan<byte> kClassicalGregorian_u8 => "Classical|Gregorian\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kClassicalRenaissance = "Classical|Renaissance";
         
         public static ReadOnlySpan<byte> kClassicalRenaissance_u8 => "Classical|Renaissance\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kClassicalClassic = "Classical|Classic";
         
         public static ReadOnlySpan<byte> kClassicalClassic_u8 => "Classical|Classic\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kClassicalRomantic = "Classical|Romantic";
         
         public static ReadOnlySpan<byte> kClassicalRomantic_u8 => "Classical|Romantic\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kClassicalSoundtrack = "Classical|Soundtrack";
         
         public static ReadOnlySpan<byte> kClassicalSoundtrack_u8 => "Classical|Soundtrack\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kCountry = "Country";
         
         public static ReadOnlySpan<byte> kCountry_u8 => "Country\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kCountryCountryWestern = "Country|Country/Western";
         
         public static ReadOnlySpan<byte> kCountryCountryWestern_u8 => "Country|Country/Western\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kCountryHonkyTonk = "Country|Honky Tonk";
         
         public static ReadOnlySpan<byte> kCountryHonkyTonk_u8 => "Country|Honky Tonk\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kCountryUrbanCowboy = "Country|Urban Cowboy";
         
         public static ReadOnlySpan<byte> kCountryUrbanCowboy_u8 => "Country|Urban Cowboy\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kCountryBluegrass = "Country|Bluegrass";
         
         public static ReadOnlySpan<byte> kCountryBluegrass_u8 => "Country|Bluegrass\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kCountryAmericana = "Country|Americana";
         
         public static ReadOnlySpan<byte> kCountryAmericana_u8 => "Country|Americana\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kCountrySquaredance = "Country|Squaredance";
         
         public static ReadOnlySpan<byte> kCountrySquaredance_u8 => "Country|Squaredance\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kCountryNorthAmericanFolk = "Country|North American Folk";
         
         public static ReadOnlySpan<byte> kCountryNorthAmericanFolk_u8 => "Country|North American Folk\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDance = "Electronica/Dance";
         
         public static ReadOnlySpan<byte> kElectronicaDance_u8 => "Electronica/Dance\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceMinimal = "Electronica/Dance|Minimal";
         
         public static ReadOnlySpan<byte> kElectronicaDanceMinimal_u8 => "Electronica/Dance|Minimal\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceClassicHouse = "Electronica/Dance|Classic House";
         
         public static ReadOnlySpan<byte> kElectronicaDanceClassicHouse_u8 => "Electronica/Dance|Classic House\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceElektroHouse = "Electronica/Dance|Elektro House";
         
         public static ReadOnlySpan<byte> kElectronicaDanceElektroHouse_u8 => "Electronica/Dance|Elektro House\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceFunkyHouse = "Electronica/Dance|Funky House";
         
         public static ReadOnlySpan<byte> kElectronicaDanceFunkyHouse_u8 => "Electronica/Dance|Funky House\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceIndustrial = "Electronica/Dance|Industrial";
         
         public static ReadOnlySpan<byte> kElectronicaDanceIndustrial_u8 => "Electronica/Dance|Industrial\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceElectronicBodyMusic = "Electronica/Dance|Electronic Body Music";
         
         public static ReadOnlySpan<byte> kElectronicaDanceElectronicBodyMusic_u8 => "Electronica/Dance|Electronic Body Music\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceTripHop = "Electronica/Dance|Trip Hop";
         
         public static ReadOnlySpan<byte> kElectronicaDanceTripHop_u8 => "Electronica/Dance|Trip Hop\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceTechno = "Electronica/Dance|Techno";
         
         public static ReadOnlySpan<byte> kElectronicaDanceTechno_u8 => "Electronica/Dance|Techno\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceDrumNBassJungle = "Electronica/Dance|Drum'n'Bass/Jungle";
         
         public static ReadOnlySpan<byte> kElectronicaDanceDrumNBassJungle_u8 => "Electronica/Dance|Drum'n'Bass/Jungle\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceElektro = "Electronica/Dance|Elektro";
         
         public static ReadOnlySpan<byte> kElectronicaDanceElektro_u8 => "Electronica/Dance|Elektro\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceTrance = "Electronica/Dance|Trance";
         
         public static ReadOnlySpan<byte> kElectronicaDanceTrance_u8 => "Electronica/Dance|Trance\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceDub = "Electronica/Dance|Dub";
         
         public static ReadOnlySpan<byte> kElectronicaDanceDub_u8 => "Electronica/Dance|Dub\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kElectronicaDanceBigBeats = "Electronica/Dance|Big Beats";
         
         public static ReadOnlySpan<byte> kElectronicaDanceBigBeats_u8 => "Electronica/Dance|Big Beats\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kExperimental = "Experimental";
         
         public static ReadOnlySpan<byte> kExperimental_u8 => "Experimental\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kExperimentalNewMusic = "Experimental|New Music";
         
         public static ReadOnlySpan<byte> kExperimentalNewMusic_u8 => "Experimental|New Music\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kExperimentalFreeImprovisation = "Experimental|Free Improvisation";
         
         public static ReadOnlySpan<byte> kExperimentalFreeImprovisation_u8 => "Experimental|Free Improvisation\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kExperimentalElectronicArtMusic = "Experimental|Electronic Art Music";
         
         public static ReadOnlySpan<byte> kExperimentalElectronicArtMusic_u8 => "Experimental|Electronic Art Music\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kExperimentalNoise = "Experimental|Noise";
         
         public static ReadOnlySpan<byte> kExperimentalNoise_u8 => "Experimental|Noise\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kJazz = "Jazz";
         
         public static ReadOnlySpan<byte> kJazz_u8 => "Jazz\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kJazzNewOrleansJazz = "Jazz|New Orleans Jazz";
         
         public static ReadOnlySpan<byte> kJazzNewOrleansJazz_u8 => "Jazz|New Orleans Jazz\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kJazzTraditionalJazz = "Jazz|Traditional Jazz";
         
         public static ReadOnlySpan<byte> kJazzTraditionalJazz_u8 => "Jazz|Traditional Jazz\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kJazzOldtimeJazzDixiland = "Jazz|Oldtime Jazz/Dixiland";
         
         public static ReadOnlySpan<byte> kJazzOldtimeJazzDixiland_u8 => "Jazz|Oldtime Jazz/Dixiland\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kJazzFusion = "Jazz|Fusion";
         
         public static ReadOnlySpan<byte> kJazzFusion_u8 => "Jazz|Fusion\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kJazzAvantgarde = "Jazz|Avantgarde";
         
         public static ReadOnlySpan<byte> kJazzAvantgarde_u8 => "Jazz|Avantgarde\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kJazzLatinJazz = "Jazz|Latin Jazz";
         
         public static ReadOnlySpan<byte> kJazzLatinJazz_u8 => "Jazz|Latin Jazz\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kJazzFreeJazz = "Jazz|Free Jazz";
         
         public static ReadOnlySpan<byte> kJazzFreeJazz_u8 => "Jazz|Free Jazz\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kJazzRagtime = "Jazz|Ragtime";
         
         public static ReadOnlySpan<byte> kJazzRagtime_u8 => "Jazz|Ragtime\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kPop = "Pop";
         
         public static ReadOnlySpan<byte> kPop_u8 => "Pop\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kPopBritpop = "Pop|Britpop";
         
         public static ReadOnlySpan<byte> kPopBritpop_u8 => "Pop|Britpop\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kPopRock = "Pop|Pop/Rock";
         
         public static ReadOnlySpan<byte> kPopRock_u8 => "Pop|Pop/Rock\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kPopTeenPop = "Pop|Teen Pop";
         
         public static ReadOnlySpan<byte> kPopTeenPop_u8 => "Pop|Teen Pop\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kPopChartDance = "Pop|Chart Dance";
         
         public static ReadOnlySpan<byte> kPopChartDance_u8 => "Pop|Chart Dance\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kPop80sPop = "Pop|80's Pop";
         
         public static ReadOnlySpan<byte> kPop80sPop_u8 => "Pop|80's Pop\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kPopDancehall = "Pop|Dancehall";
         
         public static ReadOnlySpan<byte> kPopDancehall_u8 => "Pop|Dancehall\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kPopDisco = "Pop|Disco";
         
         public static ReadOnlySpan<byte> kPopDisco_u8 => "Pop|Disco\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetal = "Rock/Metal";
         
         public static ReadOnlySpan<byte> kRockMetal_u8 => "Rock/Metal\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalBluesRock = "Rock/Metal|Blues Rock";
         
         public static ReadOnlySpan<byte> kRockMetalBluesRock_u8 => "Rock/Metal|Blues Rock\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalClassicRock = "Rock/Metal|Classic Rock";
         
         public static ReadOnlySpan<byte> kRockMetalClassicRock_u8 => "Rock/Metal|Classic Rock\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalHardRock = "Rock/Metal|Hard Rock";
         
         public static ReadOnlySpan<byte> kRockMetalHardRock_u8 => "Rock/Metal|Hard Rock\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalRockRoll = "Rock/Metal|Rock &amp; Roll";
         
         public static ReadOnlySpan<byte> kRockMetalRockRoll_u8 => "Rock/Metal|Rock &amp; Roll\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalSingerSongwriter = "Rock/Metal|Singer/Songwriter";
         
         public static ReadOnlySpan<byte> kRockMetalSingerSongwriter_u8 => "Rock/Metal|Singer/Songwriter\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalHeavyMetal = "Rock/Metal|Heavy Metal";
         
         public static ReadOnlySpan<byte> kRockMetalHeavyMetal_u8 => "Rock/Metal|Heavy Metal\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalDeathBlackMetal = "Rock/Metal|Death/Black Metal";
         
         public static ReadOnlySpan<byte> kRockMetalDeathBlackMetal_u8 => "Rock/Metal|Death/Black Metal\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalNuMetal = "Rock/Metal|NuMetal";
         
         public static ReadOnlySpan<byte> kRockMetalNuMetal_u8 => "Rock/Metal|NuMetal\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalReggae = "Rock/Metal|Reggae";
         
         public static ReadOnlySpan<byte> kRockMetalReggae_u8 => "Rock/Metal|Reggae\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalBallad = "Rock/Metal|Ballad";
         
         public static ReadOnlySpan<byte> kRockMetalBallad_u8 => "Rock/Metal|Ballad\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalAlternativeRock = "Rock/Metal|Alternative Rock";
         
         public static ReadOnlySpan<byte> kRockMetalAlternativeRock_u8 => "Rock/Metal|Alternative Rock\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalRockabilly = "Rock/Metal|Rockabilly";
         
         public static ReadOnlySpan<byte> kRockMetalRockabilly_u8 => "Rock/Metal|Rockabilly\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalThrashMetal = "Rock/Metal|Thrash Metal";
         
         public static ReadOnlySpan<byte> kRockMetalThrashMetal_u8 => "Rock/Metal|Thrash Metal\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kRockMetalProgressiveRock = "Rock/Metal|Progressive Rock";
         
         public static ReadOnlySpan<byte> kRockMetalProgressiveRock_u8 => "Rock/Metal|Progressive Rock\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kUrbanHipHopRB = "Urban (Hip-Hop / R&B)";
         
         public static ReadOnlySpan<byte> kUrbanHipHopRB_u8 => "Urban (Hip-Hop / R&B)\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kUrbanHipHopRBClassic = "Urban (Hip-Hop / R&B)|Classic R&B";
         
         public static ReadOnlySpan<byte> kUrbanHipHopRBClassic_u8 => "Urban (Hip-Hop / R&B)|Classic R&B\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kUrbanHipHopRBModern = "Urban (Hip-Hop / R&B)|Modern R&B";
         
         public static ReadOnlySpan<byte> kUrbanHipHopRBModern_u8 => "Urban (Hip-Hop / R&B)|Modern R&B\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kUrbanHipHopRBPop = "Urban (Hip-Hop / R&B)|R&B Pop";
         
         public static ReadOnlySpan<byte> kUrbanHipHopRBPop_u8 => "Urban (Hip-Hop / R&B)|R&B Pop\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kUrbanHipHopRBWestCoastHipHop = "Urban (Hip-Hop / R&B)|WestCoast Hip-Hop";
         
         public static ReadOnlySpan<byte> kUrbanHipHopRBWestCoastHipHop_u8 => "Urban (Hip-Hop / R&B)|WestCoast Hip-Hop\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kUrbanHipHopRBEastCoastHipHop = "Urban (Hip-Hop / R&B)|EastCoast Hip-Hop";
         
         public static ReadOnlySpan<byte> kUrbanHipHopRBEastCoastHipHop_u8 => "Urban (Hip-Hop / R&B)|EastCoast Hip-Hop\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kUrbanHipHopRBRapHipHop = "Urban (Hip-Hop / R&B)|Rap/Hip Hop";
         
         public static ReadOnlySpan<byte> kUrbanHipHopRBRapHipHop_u8 => "Urban (Hip-Hop / R&B)|Rap/Hip Hop\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kUrbanHipHopRBSoul = "Urban (Hip-Hop / R&B)|Soul";
         
         public static ReadOnlySpan<byte> kUrbanHipHopRBSoul_u8 => "Urban (Hip-Hop / R&B)|Soul\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kUrbanHipHopRBFunk = "Urban (Hip-Hop / R&B)|Funk";
         
         public static ReadOnlySpan<byte> kUrbanHipHopRBFunk_u8 => "Urban (Hip-Hop / R&B)|Funk\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnic = "World/Ethnic";
         
         public static ReadOnlySpan<byte> kWorldEthnic_u8 => "World/Ethnic\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnicAfrica = "World/Ethnic|Africa";
         
         public static ReadOnlySpan<byte> kWorldEthnicAfrica_u8 => "World/Ethnic|Africa\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnicAsia = "World/Ethnic|Asia";
         
         public static ReadOnlySpan<byte> kWorldEthnicAsia_u8 => "World/Ethnic|Asia\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnicCeltic = "World/Ethnic|Celtic";
         
         public static ReadOnlySpan<byte> kWorldEthnicCeltic_u8 => "World/Ethnic|Celtic\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnicEurope = "World/Ethnic|Europe";
         
         public static ReadOnlySpan<byte> kWorldEthnicEurope_u8 => "World/Ethnic|Europe\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnicKlezmer = "World/Ethnic|Klezmer";
         
         public static ReadOnlySpan<byte> kWorldEthnicKlezmer_u8 => "World/Ethnic|Klezmer\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnicScandinavia = "World/Ethnic|Scandinavia";
         
         public static ReadOnlySpan<byte> kWorldEthnicScandinavia_u8 => "World/Ethnic|Scandinavia\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnicEasternEurope = "World/Ethnic|Eastern Europe";
         
         public static ReadOnlySpan<byte> kWorldEthnicEasternEurope_u8 => "World/Ethnic|Eastern Europe\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnicIndiaOriental = "World/Ethnic|India/Oriental";
         
         public static ReadOnlySpan<byte> kWorldEthnicIndiaOriental_u8 => "World/Ethnic|India/Oriental\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnicNorthAmerica = "World/Ethnic|North America";
         
         public static ReadOnlySpan<byte> kWorldEthnicNorthAmerica_u8 => "World/Ethnic|North America\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnicSouthAmerica = "World/Ethnic|South America";
         
         public static ReadOnlySpan<byte> kWorldEthnicSouthAmerica_u8 => "World/Ethnic|South America\0"u8;
-        
+    }
+    
+    public static partial class MusicalStyle
+    {
         public const string kWorldEthnicAustralia = "World/Ethnic|Australia";
         
         public static ReadOnlySpan<byte> kWorldEthnicAustralia_u8 => "World/Ethnic|Australia\0"u8;
@@ -12406,75 +14146,129 @@ internal static partial class LibVst
         /// {----TYPE------------------------------------
         /// </remarks>
         public static ReadOnlySpan<byte> kMono_u8 => "Mono\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kPoly = "Poly";
         
         public static ReadOnlySpan<byte> kPoly_u8 => "Poly\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kSplit = "Split";
         
         public static ReadOnlySpan<byte> kSplit_u8 => "Split\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kLayer = "Layer";
         
         public static ReadOnlySpan<byte> kLayer_u8 => "Layer\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kGlide = "Glide";
         
         public static ReadOnlySpan<byte> kGlide_u8 => "Glide\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kGlissando = "Glissando";
         
         public static ReadOnlySpan<byte> kGlissando_u8 => "Glissando\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kMajor = "Major";
         
         public static ReadOnlySpan<byte> kMajor_u8 => "Major\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kMinor = "Minor";
         
         public static ReadOnlySpan<byte> kMinor_u8 => "Minor\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kSingle = "Single";
         
         public static ReadOnlySpan<byte> kSingle_u8 => "Single\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kEnsemble = "Ensemble";
         
         public static ReadOnlySpan<byte> kEnsemble_u8 => "Ensemble\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kAcoustic = "Acoustic";
         
         public static ReadOnlySpan<byte> kAcoustic_u8 => "Acoustic\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kElectric = "Electric";
         
         public static ReadOnlySpan<byte> kElectric_u8 => "Electric\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kAnalog = "Analog";
         
         public static ReadOnlySpan<byte> kAnalog_u8 => "Analog\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kDigital = "Digital";
         
         public static ReadOnlySpan<byte> kDigital_u8 => "Digital\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kVintage = "Vintage";
         
         public static ReadOnlySpan<byte> kVintage_u8 => "Vintage\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kModern = "Modern";
         
         public static ReadOnlySpan<byte> kModern_u8 => "Modern\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kOld = "Old";
         
         public static ReadOnlySpan<byte> kOld_u8 => "Old\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kNew = "New";
         
         public static ReadOnlySpan<byte> kNew_u8 => "New\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         /// <summary>
         /// ----TONE------------------------------------
         /// </summary>
@@ -12484,75 +14278,129 @@ internal static partial class LibVst
         /// ----TONE------------------------------------
         /// </summary>
         public static ReadOnlySpan<byte> kClean_u8 => "Clean\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kDistorted = "Distorted";
         
         public static ReadOnlySpan<byte> kDistorted_u8 => "Distorted\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kDry = "Dry";
         
         public static ReadOnlySpan<byte> kDry_u8 => "Dry\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kProcessed = "Processed";
         
         public static ReadOnlySpan<byte> kProcessed_u8 => "Processed\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kHarmonic = "Harmonic";
         
         public static ReadOnlySpan<byte> kHarmonic_u8 => "Harmonic\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kDissonant = "Dissonant";
         
         public static ReadOnlySpan<byte> kDissonant_u8 => "Dissonant\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kClear = "Clear";
         
         public static ReadOnlySpan<byte> kClear_u8 => "Clear\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kNoisy = "Noisy";
         
         public static ReadOnlySpan<byte> kNoisy_u8 => "Noisy\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kThin = "Thin";
         
         public static ReadOnlySpan<byte> kThin_u8 => "Thin\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kRich = "Rich";
         
         public static ReadOnlySpan<byte> kRich_u8 => "Rich\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kDark = "Dark";
         
         public static ReadOnlySpan<byte> kDark_u8 => "Dark\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kBright = "Bright";
         
         public static ReadOnlySpan<byte> kBright_u8 => "Bright\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kCold = "Cold";
         
         public static ReadOnlySpan<byte> kCold_u8 => "Cold\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kWarm = "Warm";
         
         public static ReadOnlySpan<byte> kWarm_u8 => "Warm\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kMetallic = "Metallic";
         
         public static ReadOnlySpan<byte> kMetallic_u8 => "Metallic\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kWooden = "Wooden";
         
         public static ReadOnlySpan<byte> kWooden_u8 => "Wooden\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kGlass = "Glass";
         
         public static ReadOnlySpan<byte> kGlass_u8 => "Glass\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kPlastic = "Plastic";
         
         public static ReadOnlySpan<byte> kPlastic_u8 => "Plastic\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         /// <summary>
         /// ----ENVELOPE------------------------------------
         /// </summary>
@@ -12562,71 +14410,122 @@ internal static partial class LibVst
         /// ----ENVELOPE------------------------------------
         /// </summary>
         public static ReadOnlySpan<byte> kPercussive_u8 => "Percussive\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kSoft = "Soft";
         
         public static ReadOnlySpan<byte> kSoft_u8 => "Soft\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kFast = "Fast";
         
         public static ReadOnlySpan<byte> kFast_u8 => "Fast\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kSlow = "Slow";
         
         public static ReadOnlySpan<byte> kSlow_u8 => "Slow\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kShort = "Short";
         
         public static ReadOnlySpan<byte> kShort_u8 => "Short\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kLong = "Long";
         
         public static ReadOnlySpan<byte> kLong_u8 => "Long\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kAttack = "Attack";
         
         public static ReadOnlySpan<byte> kAttack_u8 => "Attack\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kRelease = "Release";
         
         public static ReadOnlySpan<byte> kRelease_u8 => "Release\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kDecay = "Decay";
         
         public static ReadOnlySpan<byte> kDecay_u8 => "Decay\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kSustain = "Sustain";
         
         public static ReadOnlySpan<byte> kSustain_u8 => "Sustain\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kFastAttack = "Fast Attack";
         
         public static ReadOnlySpan<byte> kFastAttack_u8 => "Fast Attack\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kSlowAttack = "Slow Attack";
         
         public static ReadOnlySpan<byte> kSlowAttack_u8 => "Slow Attack\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kShortRelease = "Short Release";
         
         public static ReadOnlySpan<byte> kShortRelease_u8 => "Short Release\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kLongRelease = "Long Release";
         
         public static ReadOnlySpan<byte> kLongRelease_u8 => "Long Release\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kStatic = "Static";
         
         public static ReadOnlySpan<byte> kStatic_u8 => "Static\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kMoving = "Moving";
         
         public static ReadOnlySpan<byte> kMoving_u8 => "Moving\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kLoop = "Loop";
         
         public static ReadOnlySpan<byte> kLoop_u8 => "Loop\0"u8;
-        
+    }
+    
+    public static partial class MusicalCharacter
+    {
         public const string kOneShot = "One Shot";
         
         public static ReadOnlySpan<byte> kOneShot_u8 => "One Shot\0"u8;

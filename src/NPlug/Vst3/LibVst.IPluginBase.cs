@@ -14,9 +14,18 @@ internal static unsafe partial class LibVst
         {
             try
             {
-                // TODO: bind context to AudioHost
-                ((AudioPlugin)self->Handle.Target!).Initialize(new AudioHost());
-                return ComResult.Ok;
+                IHostApplication* hostApplication;
+                var result = context->queryInterface(IHostApplication.IId, (void**)&hostApplication);
+                if (result.IsSuccess)
+                {
+                    String128 name = default;
+                    _ = hostApplication->getName(&name);
+                    return ((IAudioPlugin)self->Handle.Target!).Initialize(new AudioHostApplicationVst(hostApplication, name.ToString()));
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch
             {
@@ -28,7 +37,7 @@ internal static unsafe partial class LibVst
         {
             try
             {
-                ((AudioPlugin)self->Handle.Target!).Terminate();
+                ((IAudioPlugin)self->Handle.Target!).Terminate();
                 return ComResult.Ok;
             }
             catch

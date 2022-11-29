@@ -3,9 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
-using System.Buffers;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -13,18 +11,20 @@ namespace NPlug.Vst3;
 
 internal static unsafe partial class LibVst
 {
-    private sealed class AudioHostApplicationVst : AudioHostApplication
+    private sealed class AudioHostApplicationClient : AudioHostApplication
     {
         private readonly IHostApplication* _hostApplication;
         private readonly Dictionary<ulong, string> _nativeUTF8ToManaged;
         private readonly Dictionary<string, IntPtr> _managedToNativeUTF8;
         private readonly IntPtr _tempBuffer;
+        private readonly Stack<AudioMessageClient> _audioMessagesCache;
 
-        public AudioHostApplicationVst(IHostApplication* hostApplication, string name) : base(name)
+        public AudioHostApplicationClient(IHostApplication* hostApplication, string name) : base(name)
         {
             _hostApplication = hostApplication;
             _nativeUTF8ToManaged = new Dictionary<ulong, string>();
             _managedToNativeUTF8 = new Dictionary<string, IntPtr>();
+            _audioMessagesCache = new Stack<AudioMessageClient>();
             _tempBuffer = (IntPtr)NativeMemory.Alloc((nuint)TempBufferSize);
         }
 
@@ -34,14 +34,22 @@ internal static unsafe partial class LibVst
 
         public override AudioMessage CreateMessage(string messageId)
         {
-            IMessage* obj;
-            var result = _hostApplication->createInstance(IMessage.IId, IMessage.IId, (void**)&obj);
+            IMessage* nativeMessage;
+            var result = _hostApplication->createInstance(IMessage.NativeGuid, IMessage.NativeGuid, (void**)&nativeMessage);
             if (result.IsSuccess)
             {
-                return new AudioMessageVst(this, obj, messageId);
+                var message = _audioMessagesCache.Count > 0 ? _audioMessagesCache.Pop() : new AudioMessageClient(this);
+                message.NativeMessage = nativeMessage;
+                message.Id = messageId;
+                return message;
             }
 
             throw new InvalidOperationException("Unable to create message");
+        }
+
+        internal void Return(AudioMessageClient message)
+        {
+            _audioMessagesCache.Push(message);
         }
 
         public override void Dispose()
@@ -78,103 +86,12 @@ internal static unsafe partial class LibVst
             if (!_managedToNativeUTF8.TryGetValue(str, out var ptr))
             {
                 var byteCount = Encoding.UTF8.GetByteCount(str);
+                // TODO: optimize memory allocation with a global allocator
                 ptr = (IntPtr)NativeMemory.Alloc((nuint)(byteCount + 1));
                 _managedToNativeUTF8.Add(str, ptr);
             }
 
             return new FIDString() { Value = (byte*)ptr };
-        }
-    }
-
-    private class AudioMessageVst : AudioMessage
-    {
-        private readonly AudioHostApplicationVst _host;
-        private readonly IMessage* _message;
-        private readonly IAttributeList* _attributeList;
-
-        public AudioMessageVst(AudioHostApplicationVst host, IMessage* message, string id) : base(id)
-        {
-            _host = host;
-            _message = message;
-            _attributeList = message->getAttributes();
-            _message->setMessageID(host.GetOrCreateString(id));
-        }
-
-        public override bool TrySetInt64(string attributeId, long value)
-        {
-            return _attributeList->setInt(GetNativeAttributeId(attributeId), value);
-        }
-
-        public override bool TryGetInt64(string attributeId, out long value)
-        {
-            long localValue = 0;
-            var result = _attributeList->getInt(GetNativeAttributeId(attributeId), &localValue);
-            value = localValue;
-            return result;
-        }
-
-        public override bool TrySetFloat64(string attributeId, double value)
-        {
-            return _attributeList->setFloat(GetNativeAttributeId(attributeId), value);
-        }
-
-        public override bool TryGetFloat64(string attributeId, out double value)
-        {
-            double localValue = 0;
-            var result = _attributeList->getFloat(GetNativeAttributeId(attributeId), &localValue);
-            value = localValue;
-            return result;
-        }
-
-        public override bool TrySetString(string attributeId, string value)
-        {
-            fixed (char* pValue = value)
-                return _attributeList->setString(GetNativeAttributeId(attributeId), pValue);
-        }
-
-        public override bool TryGetString(string attributeId, out string value)
-        {
-            value = string.Empty;
-            var result = _attributeList->getString(GetNativeAttributeId(attributeId), (char*)_host.TempBuffer, AudioHostApplicationVst.TempBufferSize);
-            if (result.IsSuccess)
-            {
-                var span = new ReadOnlySpan<char>((char*)_host.TempBuffer, int.MaxValue);
-                span = span.Slice(0, span.IndexOf((char)0));
-                value = new string(span);
-            }
-            return result;
-        }
-
-        public override bool TrySetBinary(string attributeId, ReadOnlySpan<byte> value)
-        {
-            fixed (byte* pBuffer = &MemoryMarshal.GetReference(value))
-            {
-                return _attributeList->setBinary(GetNativeAttributeId(attributeId), pBuffer, (uint)value.Length);
-            }
-        }
-
-        public override bool TryGetBinary(string attributeId, out ReadOnlySpan<byte> value)
-        {
-            void* pBuffer;
-            int size;
-            var result = _attributeList->getBinary(GetNativeAttributeId(attributeId), &pBuffer, (uint*)&size);
-            if (result)
-            {
-                value = new ReadOnlySpan<byte>(pBuffer, size);
-                return true;
-            }
-            value = default;
-            return false;
-        }
-
-        public override void Dispose()
-        {
-            _attributeList->release();
-            _message->release();
-        }
-        private AttrID GetNativeAttributeId(string attributeId)
-        {
-            return new AttrID() { Value = _host.GetOrCreateString(attributeId).Value };
         }
     }
 }

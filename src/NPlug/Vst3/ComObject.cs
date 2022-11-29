@@ -2,6 +2,7 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -15,5 +16,10 @@ internal static partial class LibVst
         public uint RefCount;
         public SpinLock Lock;
         public GCHandle Handle;
+    }
+
+    public unsafe interface INativeGuid
+    {
+        public static abstract Guid* NativeGuid { get; }
     }
 }

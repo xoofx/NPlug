@@ -15,15 +15,16 @@ internal static unsafe partial class LibVst
             try
             {
                 IHostApplication* hostApplication;
-                var result = context->queryInterface(IHostApplication.IId, (void**)&hostApplication);
+                var result = context->queryInterface(IHostApplication.NativeGuid, (void**)&hostApplication);
                 if (result.IsSuccess)
                 {
                     String128 name = default;
                     _ = hostApplication->getName(&name);
-                    return ((IAudioPlugin)self->Handle.Target!).Initialize(new AudioHostApplicationVst(hostApplication, name.ToString()));
+                    return ((IAudioPlugin)self->Handle.Target!).Initialize(new AudioHostApplicationClient(hostApplication, name.ToString()));
                 }
                 else
                 {
+                    // TODO Free self->Handle
                     return false;
                 }
             }

@@ -8,12 +8,7 @@ namespace NPlug;
 
 public abstract class AudioMessage : IDisposable
 {
-    internal AudioMessage(string id)
-    {
-        Id = id;
-    }
-
-    public string Id { get; set; }
+    public abstract string Id { get; set; }
 
     public bool TrySetBool(string attributeId, bool value)
     {

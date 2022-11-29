@@ -29,14 +29,16 @@ internal static partial class LibVst
     /// If no more references exist, the object is destroyed in memory.Interfaces are identified by 16 byte Globally Unique Identifiers.
     /// The SDK provides a class called FUID for this purpose.@ref howtoClass
     /// </remarks>
-    public unsafe partial struct FUnknown
+    public unsafe partial struct FUnknown : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
-            vtbl[0] = (delegate*unmanaged<ComObject*, Guid, void**, ComResult>)&queryInterface_ccw;
+            vtbl[0] = (delegate*unmanaged<ComObject*, Guid*, void**, ComResult>)&queryInterface_ccw;
             vtbl[1] = (delegate*unmanaged<ComObject*, uint>)&addRef_ccw;
             vtbl[2] = (delegate*unmanaged<ComObject*, uint>)&release_ccw;
         }
@@ -52,9 +54,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.FUnknown*, Guid, void**, ComResult>)Vtbl[0])((LibVst.FUnknown*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.FUnknown*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.FUnknown*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -91,7 +93,7 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [UnmanagedCallersOnly]
-        private static partial ComResult queryInterface_ccw(ComObject* self, Guid _iid, void** obj);
+        private static partial ComResult queryInterface_ccw(ComObject* self, Guid* _iid, void** obj);
         
         /// <summary>
         /// Adds a reference and returns the new reference count.
@@ -109,6 +111,21 @@ internal static partial class LibVst
         /// </summary>
         [UnmanagedCallersOnly]
         private static partial uint release_ccw(ComObject* self);
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (FUnknown, 0x00000000, 0x00000000, 0xC0000000, 0x00000046)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x46, 0x00, 0x00, 0x00 })
+                    )));
+            }
+        }
     }
     
     /// <summary>
@@ -118,8 +135,10 @@ internal static partial class LibVst
     ///  pluginBase- read/write binary data from/to stream
     /// - get/set stream read-write position (read and write position is the same)
     /// </remarks>
-    public unsafe partial struct IBStream
+    public unsafe partial struct IBStream : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -143,9 +162,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IBStream*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IBStream*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IBStream*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IBStream*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -294,8 +313,10 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase[extends IBStream] when stream type supports it (like file and memory stream)
     /// </remarks>
-    public unsafe partial struct ISizeableStream
+    public unsafe partial struct ISizeableStream : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -317,9 +338,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.ISizeableStream*, Guid, void**, ComResult>)Vtbl[0])((LibVst.ISizeableStream*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.ISizeableStream*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.ISizeableStream*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -401,8 +422,10 @@ internal static partial class LibVst
     /// host imp] 
     /// - [released: N4.12]
     /// </summary>
-    public unsafe partial struct ICloneable
+    public unsafe partial struct ICloneable : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -423,9 +446,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.ICloneable*, Guid, void**, ComResult>)Vtbl[0])((LibVst.ICloneable*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.ICloneable*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.ICloneable*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -490,8 +513,10 @@ internal static partial class LibVst
     /// - [host imp] or [plug imp]
     /// - [released: ]
     /// </summary>
-    public unsafe partial struct IString
+    public unsafe partial struct IString : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -517,9 +542,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IString*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IString*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IString*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IString*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -669,8 +694,10 @@ internal static partial class LibVst
     /// - [plug imp]
     /// - [released: Sequel 2]
     /// </summary>
-    public unsafe partial struct IErrorContext
+    public unsafe partial struct IErrorContext : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -728,8 +755,10 @@ internal static partial class LibVst
     /// For a more convenient usage of this interface, you should use the functions defined
     /// in namespace PAttributes (public.sdk/source/common/pattributes.h+cpp) !! frameworkHostClasses
     /// </remarks>
-    public unsafe partial struct IAttributes
+    public unsafe partial struct IAttributes : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -743,9 +772,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IAttributes*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IAttributes*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -959,8 +988,10 @@ internal static partial class LibVst
     /// @endcodeThe tag data="Preset" tells the host to create a preset controller that handles the 
     /// 3 values named "preset control",  "store preset", and "remove preset".
     /// </remarks>
-    public unsafe partial struct IPersistent
+    public unsafe partial struct IPersistent : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -1016,8 +1047,10 @@ internal static partial class LibVst
     /// <remarks>
     ///  frameworkHostClasses
     /// </remarks>
-    public unsafe partial struct IAttributes2
+    public unsafe partial struct IAttributes2 : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -1031,9 +1064,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IAttributes2*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IAttributes2*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -1215,8 +1248,10 @@ internal static partial class LibVst
     /// A list of supported host context interfaces should be included in the documentation
     /// of a specific category.
     /// </remarks>
-    public unsafe partial struct IPluginBase
+    public unsafe partial struct IPluginBase : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -1274,8 +1309,10 @@ internal static partial class LibVst
     /// mechanism to create instances of these classes (that usually define the IPluginBase interface).&lt;b&gt;An implementation is provided in public.sdk/source/common/pluginfactory.cpp &lt;/b&gt;
     /// </remarks>
     /// <seealso cref="GetPluginFactory"/>
-    public unsafe partial struct IPluginFactory
+    public unsafe partial struct IPluginFactory : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -1438,8 +1475,10 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase@copydoc IPluginFactory
     /// </remarks>
-    public unsafe partial struct IPluginFactory2
+    public unsafe partial struct IPluginFactory2 : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1460,9 +1499,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IPluginFactory2*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IPluginFactory2*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -1621,8 +1660,10 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase@copydoc IPluginFactory
     /// </remarks>
-    public unsafe partial struct IPluginFactory3
+    public unsafe partial struct IPluginFactory3 : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1644,9 +1685,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IPluginFactory3*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IPluginFactory3*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -1837,8 +1878,10 @@ internal static partial class LibVst
     /// ]
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IPluginCompatibility
+    public unsafe partial struct IPluginCompatibility : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -1882,8 +1925,10 @@ internal static partial class LibVst
     /// - [host imp] or [plug imp]
     /// - [released: SX 4]
     /// </summary>
-    public unsafe partial struct IStringResult
+    public unsafe partial struct IStringResult : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1904,9 +1949,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IStringResult*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IStringResult*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IStringResult*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IStringResult*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -1975,8 +2020,10 @@ internal static partial class LibVst
     ///  frameworkHostClasses
     /// </remarks>
     /// <seealso cref="IUpdateHandler"/>
-    public unsafe partial struct IDependent
+    public unsafe partial struct IDependent : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -2034,8 +2081,10 @@ internal static partial class LibVst
     /// inside the Plug-In to handle internal updates! frameworkHostClasses
     /// </remarks>
     /// <seealso cref="IDependent"/>
-    public unsafe partial struct IUpdateHandler
+    public unsafe partial struct IUpdateHandler : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -2049,9 +2098,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IUpdateHandler*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IUpdateHandler*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -2144,8 +2193,10 @@ internal static partial class LibVst
     /// - [released: 3.0.0]
     /// - [mandatory]Enables a plug-in to resize the view and cause the host to resize the window.
     /// </remarks>
-    public unsafe partial struct IPlugFrame
+    public unsafe partial struct IPlugFrame : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -2159,9 +2210,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IPlugFrame*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IPlugFrame*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IPlugFrame*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IPlugFrame*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -2243,8 +2294,10 @@ internal static partial class LibVst
     /// depends on a proper return value when IPlugView::onKeyDown is called, otherwise the plug-in view may
     /// cause a malfunction of the host's key command handling.
     /// </par>
-    public unsafe partial struct IPlugView
+    public unsafe partial struct IPlugView : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -2408,8 +2461,10 @@ internal static partial class LibVst
     /// IPlugView::getSize() afterwards you return the size of your view for that new scale factor.It is recommended to implement this interface on Microsoft Windows to let the host know that the
     /// plug-in is able to render in different scalings.
     /// </remarks>
-    public unsafe partial struct IPlugViewContentScaleSupport
+    public unsafe partial struct IPlugViewContentScaleSupport : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -2430,9 +2485,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -2849,8 +2904,10 @@ internal static partial class LibVst
     /// - [released: 3.0.0]
     /// - [mandatory]An attribute list associates values with a key (id: some predefined keys can be found in @ref presetAttributes).
     /// </remarks>
-    public unsafe partial struct IAttributeList
+    public unsafe partial struct IAttributeList : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -2864,9 +2921,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IAttributeList*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IAttributeList*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -3035,8 +3092,10 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IStreamAttributes
+    public unsafe partial struct IStreamAttributes : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -3050,9 +3109,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IStreamAttributes*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IStreamAttributes*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -3130,13 +3189,15 @@ internal static partial class LibVst
     /// component must provide both the specific interface and IComponent.
     /// </remarks>
     /// <seealso cref="IPluginBase"/>
-    public unsafe partial struct IComponent
+    public unsafe partial struct IComponent : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             IPluginBase.InitializeVtbl(vtbl);
-            vtbl[5] = (delegate*unmanaged<ComObject*, Guid, ComResult>)&getControllerClassId_ccw;
+            vtbl[5] = (delegate*unmanaged<ComObject*, Guid*, ComResult>)&getControllerClassId_ccw;
             vtbl[6] = (delegate*unmanaged<ComObject*, LibVst.IoMode, ComResult>)&setIoMode_ccw;
             vtbl[7] = (delegate*unmanaged<ComObject*, LibVst.MediaType, LibVst.BusDirection, int>)&getBusCount_ccw;
             vtbl[8] = (delegate*unmanaged<ComObject*, LibVst.MediaType, LibVst.BusDirection, int, LibVst.BusInfo*, ComResult>)&getBusInfo_ccw;
@@ -3154,7 +3215,7 @@ internal static partial class LibVst
         /// Called before initializing the component to get information about the controller class.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult getControllerClassId_ccw(ComObject* self, Guid classId);
+        private static partial ComResult getControllerClassId_ccw(ComObject* self, Guid* classId);
         
         /// <summary>
         /// Called before 'initialize' to set the component usage (optional). See @ref IoModes
@@ -3320,8 +3381,10 @@ internal static partial class LibVst
     /// - [mandatory]
     /// </remarks>
     /// <seealso cref="ProcessData, Event"/>
-    public unsafe partial struct IEventList
+    public unsafe partial struct IEventList : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -3335,9 +3398,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IEventList*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IEventList*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IEventList*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IEventList*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -3877,8 +3940,10 @@ internal static partial class LibVst
     /// well as automation. They are transmitted as a list of queues (@ref IParamValueQueue)containing only queues for parameters that actually did change.
     /// See @ref IParamValueQueue, @ref ProcessData
     /// </remarks>
-    public unsafe partial struct IParameterChanges
+    public unsafe partial struct IParameterChanges : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -3892,9 +3957,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IParameterChanges*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IParameterChanges*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IParameterChanges*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IParameterChanges*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -4005,8 +4070,10 @@ internal static partial class LibVst
     /// @endcode@b Jumps: @n A jump in the automation curve has to be transmitted as two points: one with the
     /// old value and one with the new value at the next sample position. html "automation.jpg"See @ref IParameterChanges, @ref ProcessData
     /// </remarks>
-    public unsafe partial struct IParamValueQueue
+    public unsafe partial struct IParamValueQueue : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -4020,9 +4087,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IParamValueQueue*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IParamValueQueue*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -4113,8 +4180,10 @@ internal static partial class LibVst
     /// - [released: 3.0.0]
     /// - [mandatory]This interface must always be supported by audio processing plug-ins.
     /// </remarks>
-    public unsafe partial struct IAudioProcessor
+    public unsafe partial struct IAudioProcessor : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -4959,8 +5028,10 @@ internal static partial class LibVst
     /// </remarks>
     /// <seealso cref="IAudioProcessor"/>
     /// <seealso cref="IComponent"/>
-    public unsafe partial struct IAudioPresentationLatency
+    public unsafe partial struct IAudioPresentationLatency : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -5008,8 +5079,10 @@ internal static partial class LibVst
     /// 3.7) will still get the old information, but the information
     /// may not be as accurate as when using this interface.
     /// </remarks>
-    public unsafe partial struct IProcessContextRequirements
+    public unsafe partial struct IProcessContextRequirements : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -5106,8 +5179,10 @@ internal static partial class LibVst
     /// - [released: 3.6.5]
     /// - [optional]Hosts can inform the plug-in about its current automation state (Read/Write/Nothing).
     /// </remarks>
-    public unsafe partial struct IAutomationState
+    public unsafe partial struct IAutomationState : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -5178,8 +5253,10 @@ internal static partial class LibVst
     /// With IContextMenu the plug-in can retrieve a Item, add a Item, remove a Item and pop-up the menu.
     /// </remarks>
     /// <seealso cref="IComponentHandler3 for more information."/>
-    public unsafe partial struct IContextMenu
+    public unsafe partial struct IContextMenu : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -5193,9 +5270,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IContextMenu*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IContextMenu*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -5344,8 +5421,10 @@ internal static partial class LibVst
     /// this menu item.
     /// </remarks>
     /// <seealso cref="IComponentHandler3 for more information."/>
-    public unsafe partial struct IContextMenuTarget
+    public unsafe partial struct IContextMenuTarget : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -5366,9 +5445,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IContextMenuTarget*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IContextMenuTarget*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -5499,8 +5578,10 @@ internal static partial class LibVst
     /// </remarks>
     /// <seealso cref="IContextMenu"/>
     /// <seealso cref="IContextMenuTarget"/>
-    public unsafe partial struct IComponentHandler3
+    public unsafe partial struct IComponentHandler3 : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -5514,9 +5595,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IComponentHandler3*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IComponentHandler3*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -5580,8 +5661,10 @@ internal static partial class LibVst
     /// Cause the host to react on configuration changes (restartComponent).
     /// </remarks>
     /// <seealso cref="IEditController"/>
-    public unsafe partial struct IComponentHandler
+    public unsafe partial struct IComponentHandler : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -5595,9 +5678,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IComponentHandler*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IComponentHandler*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -5728,8 +5811,10 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IEditControllerIComponentHandler,"/>
-    public unsafe partial struct IComponentHandler2
+    public unsafe partial struct IComponentHandler2 : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -5743,9 +5828,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IComponentHandler2*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IComponentHandler2*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -5845,8 +5930,10 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IComponentHandler"/>
-    public unsafe partial struct IComponentHandlerBusActivation
+    public unsafe partial struct IComponentHandlerBusActivation : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -5860,9 +5947,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -5948,8 +6035,10 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IComponentHandler"/>
-    public unsafe partial struct IProgress
+    public unsafe partial struct IProgress : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -5963,9 +6052,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IProgress*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IProgress*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IProgress*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IProgress*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -6062,8 +6151,10 @@ internal static partial class LibVst
     /// - [mandatory]The controller part of an effect or instrument with parameter handling (export, definition, conversion...).
     /// </remarks>
     /// <seealso cref="IMidiMappingIComponent::getControllerClassId,"/>
-    public unsafe partial struct IEditController
+    public unsafe partial struct IEditController : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -6295,8 +6386,10 @@ internal static partial class LibVst
     /// and to open the plug-in about box or help documentation.
     /// </remarks>
     /// <seealso cref="EditControllerIEditController,"/>
-    public unsafe partial struct IEditController2
+    public unsafe partial struct IEditController2 : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -6395,8 +6488,10 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IMidiMapping
+    public unsafe partial struct IMidiMapping : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -6455,8 +6550,10 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IEditController"/>
-    public unsafe partial struct IEditControllerHostEditing
+    public unsafe partial struct IEditControllerHostEditing : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -6508,8 +6605,10 @@ internal static partial class LibVst
     /// and the getNoteExpressionValueByString method from a string to a normalized value.When the note expression state changes (for example when switching presets) the plug-in needs
     /// to inform the host about it via @ref IComponentHandler::restartComponent (kNoteExpressionChanged).
     /// </remarks>
-    public unsafe partial struct INoteExpressionController
+    public unsafe partial struct INoteExpressionController : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -6675,8 +6774,10 @@ internal static partial class LibVst
     /// of used key switches (megatrig/articulation) for a given channel of a event bus and then automatically use them (like in Cubase 6) to
     /// create VST Expression Map (allowing to associated symbol to a given articulation / key switch).
     /// </remarks>
-    public unsafe partial struct IKeyswitchController
+    public unsafe partial struct IKeyswitchController : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -6773,8 +6874,10 @@ internal static partial class LibVst
     /// - [mandatory]Messages are sent from a VST controller component to a VST editor component and vice versa.
     /// </remarks>
     /// <seealso cref="vst3CommunicationIAttributeList, IConnectionPoint, "/>
-    public unsafe partial struct IMessage
+    public unsafe partial struct IMessage : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -6788,9 +6891,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IMessage*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IMessage*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IMessage*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IMessage*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -6870,8 +6973,10 @@ internal static partial class LibVst
     /// Note that some hosts will place a proxy object between the components so that they are not directly connected.
     /// </remarks>
     /// <seealso cref="vst3Communication"/>
-    public unsafe partial struct IConnectionPoint
+    public unsafe partial struct IConnectionPoint : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -6894,9 +6999,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IConnectionPoint*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IConnectionPoint*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -6995,8 +7100,10 @@ internal static partial class LibVst
     /// - [released: 3.0.0]
     /// - [mandatory]Basic VST host application interface.
     /// </remarks>
-    public unsafe partial struct IHostApplication
+    public unsafe partial struct IHostApplication : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -7010,9 +7117,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IHostApplication*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IHostApplication*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -7051,9 +7158,9 @@ internal static partial class LibVst
         /// Creates host object (e.g. Vst::IMessage).
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult createInstance(Guid cid, Guid _iid, void** obj)
+        public ComResult createInstance(Guid* cid, Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IHostApplication*, Guid, Guid, void**, ComResult>)Vtbl[4])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), cid, _iid, obj);
+            return ((delegate*unmanaged<LibVst.IHostApplication*, Guid*, Guid*, void**, ComResult>)Vtbl[4])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), cid, _iid, obj);
         }
         
         /// <summary>
@@ -7167,8 +7274,10 @@ internal static partial class LibVst
     /// will be one and the memberEndChannel will be 14.As MPE is a subset of the VST3 Note Expression feature, mapping from the three MPE expressions is
     /// handled via the INoteExpressionPhysicalUIMapping interface.
     /// </remarks>
-    public unsafe partial struct IVst3WrapperMPESupport
+    public unsafe partial struct IVst3WrapperMPESupport : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -7182,9 +7291,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -7258,8 +7367,10 @@ internal static partial class LibVst
     /// - [extends IEditController]
     /// - [released: 3.6.0]
     /// </remarks>
-    public unsafe partial struct IInterAppAudioPresetManager
+    public unsafe partial struct IInterAppAudioPresetManager : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -7322,8 +7433,10 @@ internal static partial class LibVst
     /// - [released: 3.6.0]
     /// - [optional]Implemented by the InterAppAudio Wrapper.
     /// </remarks>
-    public unsafe partial struct IInterAppAudioHost
+    public unsafe partial struct IInterAppAudioHost : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -7337,9 +7450,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -7476,8 +7589,10 @@ internal static partial class LibVst
     /// - [extends IEditController]
     /// - [released: 3.6.0]
     /// </remarks>
-    public unsafe partial struct IInterAppAudioConnectionNotification
+    public unsafe partial struct IInterAppAudioConnectionNotification : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -7572,8 +7687,10 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IMidiLearn
+    public unsafe partial struct IMidiLearn : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -7677,8 +7794,10 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IParameterFunctionName
+    public unsafe partial struct IParameterFunctionName : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -7770,8 +7889,10 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct INoteExpressionPhysicalUIMapping
+    public unsafe partial struct INoteExpressionPhysicalUIMapping : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -7868,8 +7989,10 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IPluginBase"/>
-    public unsafe partial struct IPlugInterfaceSupport
+    public unsafe partial struct IPlugInterfaceSupport : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -7883,9 +8006,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -7915,9 +8038,9 @@ internal static partial class LibVst
         /// Returns kResultTrue if the associated interface to the given _iid is supported/used by the host.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult isPlugInterfaceSupported(Guid _iid)
+        public ComResult isPlugInterfaceSupported(Guid* _iid)
         {
-            return ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, Guid, ComResult>)Vtbl[3])((LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this), _iid);
+            return ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, Guid*, ComResult>)Vtbl[3])((LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this), _iid);
         }
         
         /// <summary>
@@ -7947,8 +8070,10 @@ internal static partial class LibVst
     /// - [optional]It is highly recommended to implement this interface.
     /// A host can implement important functionality when a plug-in supports this interface.For example, all Steinberg hosts require this interface in order to support the "AI Knob".
     /// </remarks>
-    public unsafe partial struct IParameterFinder
+    public unsafe partial struct IParameterFinder : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -8007,8 +8132,10 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IPrefetchableSupport
+    public unsafe partial struct IPrefetchableSupport : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -8135,8 +8262,10 @@ internal static partial class LibVst
     /// &lt;/vstXML&gt;
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IXmlRepresentationController
+    public unsafe partial struct IXmlRepresentationController : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -8206,8 +8335,10 @@ internal static partial class LibVst
     /// test (see ITest).
     /// You get this interface as the context argument in the ITestFactory::createTests method.------------------------------------------------------------------------
     /// </remarks>
-    public unsafe partial struct ITestPlugProvider
+    public unsafe partial struct ITestPlugProvider : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -8232,9 +8363,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.ITestPlugProvider*, Guid, void**, ComResult>)Vtbl[0])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.ITestPlugProvider*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -8414,8 +8545,10 @@ internal static partial class LibVst
     /// <remarks>
     ///  TestClass
     /// </remarks>
-    public unsafe partial struct ITestPlugProvider2
+    public unsafe partial struct ITestPlugProvider2 : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -8436,9 +8569,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.ITestPlugProvider2*, Guid, void**, ComResult>)Vtbl[0])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.ITestPlugProvider2*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -8570,8 +8703,10 @@ internal static partial class LibVst
     /// Retrieve via queryInterface from IComponentHandler.
     /// </remarks>
     /// <seealso cref="IUnitInfovst3Units,"/>
-    public unsafe partial struct IUnitHandler
+    public unsafe partial struct IUnitHandler : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -8585,9 +8720,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IUnitHandler*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IUnitHandler*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IUnitHandler*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IUnitHandler*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -8664,8 +8799,10 @@ internal static partial class LibVst
     /// to get the new relations between busses and unit.
     /// </remarks>
     /// <seealso cref="IUnitHandlervst3Units,"/>
-    public unsafe partial struct IUnitHandler2
+    public unsafe partial struct IUnitHandler2 : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         public void** Vtbl;
         
         // --------------------------------------------------------------
@@ -8679,9 +8816,9 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queryInterface(Guid _iid, void** obj)
+        public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            return ((delegate*unmanaged<LibVst.IUnitHandler2*, Guid, void**, ComResult>)Vtbl[0])((LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this), _iid, obj);
+            return ((delegate*unmanaged<LibVst.IUnitHandler2*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this), _iid, obj);
         }
         
         /// <summary>
@@ -8746,8 +8883,10 @@ internal static partial class LibVst
     /// - Each unit, using a program list, references one program of the list.
     /// </remarks>
     /// <seealso cref="IUnitHandlervst3Units,"/>
-    public unsafe partial struct IUnitInfo
+    public unsafe partial struct IUnitInfo : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -8934,8 +9073,10 @@ internal static partial class LibVst
     /// unit preset data (IUnitData).
     /// </remarks>
     /// <seealso cref="vst3MultitimbralProgramsIUnitData, "/>
-    public unsafe partial struct IProgramListData
+    public unsafe partial struct IProgramListData : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -8993,8 +9134,10 @@ internal static partial class LibVst
     /// program list data (IProgramListData).
     /// </remarks>
     /// <seealso cref="vst3ProgramLists"/>
-    public unsafe partial struct IUnitData
+    public unsafe partial struct IUnitData : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -9892,8 +10035,10 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IInfoListener
+    public unsafe partial struct IInfoListener : INativeGuid
     {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {

@@ -19,10 +19,18 @@ internal static unsafe partial class LibVst
 
     public partial struct FUnknown
     {
-        private static partial ComResult queryInterface_ccw(ComObject* pObj, Guid _iid, void** pInterface)
+        private static partial ComResult queryInterface_ccw(ComObject* pObj, Guid* iid, void** pInterface)
         {
             *pInterface = (void*)0;
             // TODO implement
+
+            if (*iid == IPluginBase.IId)
+            {
+                
+            }
+
+
+
             //if (pObj->Handle.Target is ObjectUnknown objUnknown && objUnknown.QueryInterface(_iid, out var obj))
             //{
             //    *pInterface = (void*)obj.Pointer;

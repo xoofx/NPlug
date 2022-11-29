@@ -156,7 +156,7 @@ public class CodeGenerator
 
             foreach (var cppField in ns.Fields)
             {
-                if (cppField.Name.EndsWith("_iid") && cppField.Name.StartsWith("I"))
+                if (cppField.Name.EndsWith("_iid") && cppField.Type is CppQualifiedType qualifiedType && qualifiedType.ElementType is CppTypedef typedef && typedef.Name == "TUID")
                 {
                     var fileContent = LoadContent(cppField.Span.Start.File);
                     var uuidText = fileContent[cppField.Span.Start.Line - 1];
@@ -486,6 +486,11 @@ public class CodeGenerator
             type = new CSharpPointerType(type);
         }
 
+        if (type is CSharpFreeType freeType && freeType.Text == "Guid")
+        {
+            type = new CSharpPointerType(type);
+        }
+
         return type;
     }
 
@@ -614,8 +619,18 @@ public class CodeGenerator
                 var isHostOnly = comment.Contains("[host imp]");
                 if (isPluginOnly) kind |= InterfaceKind.Plugin;
                 if (isHostOnly) kind |= InterfaceKind.Host;
-
             }
+
+            csStruct.BaseTypes.Add(new CSharpFreeType("INativeGuid"));
+            csStruct.Members.Add(
+                new CSharpProperty("NativeGuid")
+                {
+                    Modifiers = CSharpModifiers.Static,
+                    Visibility = CSharpVisibility.Public,
+                    ReturnType = new CSharpPointerType(new CSharpFreeType("Guid")),
+                    GetBodyInlined = "(Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId))"
+                }
+            );
 
             if (_hostOnly.Contains(name))
             {

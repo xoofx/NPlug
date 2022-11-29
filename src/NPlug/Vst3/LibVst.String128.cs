@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace NPlug.Vst3;
 
@@ -10,6 +11,14 @@ internal static unsafe partial class LibVst
 {
     public partial struct String128
     {
+        public void CopyFrom(string name)
+        {
+            var maxLength = Math.Min(name.Length, 127);
+            var localSpan = MemoryMarshal.CreateSpan(ref this.Value[0], maxLength + 1);
+            name.AsSpan().Slice(0, maxLength).CopyTo(localSpan);
+            localSpan[maxLength] = (char)0;
+        }
+
         public override string ToString()
         {
             fixed (char* pValue = Value)

@@ -120,7 +120,14 @@ internal static unsafe partial class LibVst
 
         private static partial uint getTailSamples_ccw(ComObject* self)
         {
-            return Get(self).TailSamples;
+            try
+            {
+                return Get(self).TailSamples;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }

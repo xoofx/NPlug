@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IInfoListener
     {
-        private static partial ComResult setChannelContextInfos_ccw(ComObject* self, LibVst.IAttributeList* list)
+        private static partial ComResult setChannelContextInfos_ccw(IInfoListener* self, LibVst.IAttributeList* list)
         {
             throw new NotImplementedException();
         }

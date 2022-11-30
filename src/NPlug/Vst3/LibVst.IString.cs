@@ -10,32 +10,32 @@ internal static unsafe partial class LibVst
 {
     public partial struct IString
     {
-        private static partial void setText8_ccw(ComObject* self, byte* text)
+        private static partial void setText8_ccw(IString* self, byte* text)
         {
             throw new NotImplementedException();
         }
         
-        private static partial void setText16_ccw(ComObject* self, char* text)
+        private static partial void setText16_ccw(IString* self, char* text)
         {
             throw new NotImplementedException();
         }
         
-        private static partial byte* getText8_ccw(ComObject* self)
+        private static partial byte* getText8_ccw(IString* self)
         {
             throw new NotImplementedException();
         }
         
-        private static partial char* getText16_ccw(ComObject* self)
+        private static partial char* getText16_ccw(IString* self)
         {
             throw new NotImplementedException();
         }
         
-        private static partial void take_ccw(ComObject* self, void* s, bool isWide)
+        private static partial void take_ccw(IString* self, void* s, bool isWide)
         {
             throw new NotImplementedException();
         }
         
-        private static partial bool isWideString_ccw(ComObject* self)
+        private static partial bool isWideString_ccw(IString* self)
         {
             throw new NotImplementedException();
         }

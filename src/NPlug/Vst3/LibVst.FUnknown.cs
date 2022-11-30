@@ -3,80 +3,47 @@
 // See license.txt file in the project root for full license information.
 
 using System;
-using System.Runtime.InteropServices;
 
 namespace NPlug.Vst3;
 
 internal static unsafe partial class LibVst
 {
-    //public static void** InitializeVtbl_FUnknown(void** vtbl)
-    //{
-    //    *vtbl++ = (delegate* unmanaged<ComObject*, Guid*, void**, int>)&FUnknown_queryInterface;
-    //    *vtbl++ = (delegate* unmanaged<ComObject*, uint>)&FUnknown_addRef;
-    //    *vtbl++ = (delegate* unmanaged<ComObject*, uint>)&FUnknown_release;
-    //    return vtbl;
-    //}
-
     public partial struct FUnknown
     {
-        private static partial ComResult queryInterface_ccw(ComObject* pObj, Guid* iid, void** pInterface)
+        private static ComObjectHandle* Get(FUnknown* self) => (ComObjectHandle*)self;
+
+        private static partial ComResult queryInterface_ccw(FUnknown* pObj, Guid* iid, void** pInterface)
         {
             *pInterface = (void*)0;
-            // TODO implement
+            var bridge = Get(pObj)->ComObject;
 
-            if (*iid == IPluginBase.IId)
+            if (TryQueryInterface<IPluginBase, IAudioPlugin>(iid, bridge, pInterface)
+                || TryQueryInterface<IComponent, IAudioProcessor>(iid, bridge, pInterface)
+                || TryQueryInterface<IAudioProcessor, IAudioProcessor>(iid, bridge, pInterface))
             {
-                
+                return ComResult.Ok;
             }
-
-
-
-            //if (pObj->Handle.Target is ObjectUnknown objUnknown && objUnknown.QueryInterface(_iid, out var obj))
-            //{
-            //    *pInterface = (void*)obj.Pointer;
-            //    return ComResult.Ok;
-            //}
-
             return ComResult.NoInterface;
         }
 
-        private static partial uint addRef_ccw(ComObject* pObj)
+        private static bool TryQueryInterface<TNative, TUser>(Guid* iid, ComObject bridge, void** pInterface) where TNative : INativeGuid, INativeVtbl
         {
-            bool lockTaken = false;
-            try
+            if (*iid == *TNative.NativeGuid && bridge.Target is TUser)
             {
-                pObj->Lock.Enter(ref lockTaken);
-                pObj->RefCount++;
-                return pObj->RefCount;
+                *pInterface = bridge.GetOrComObjectHandle<TNative>();
+                return true;
             }
-            finally
-            {
-                pObj->Lock.Exit();
-            }
+            return false;
         }
 
-        private static partial uint release_ccw(ComObject* pObj)
+        private static partial uint addRef_ccw(FUnknown* pObj)
         {
-            bool lockTaken = false;
-            try
-            {
-                pObj->Lock.Enter(ref lockTaken);
-                if (pObj->RefCount > 0)
-                {
-                    pObj->RefCount--;
-                    if (pObj->RefCount == 0 && pObj->Handle.IsAllocated)
-                    {
-                        pObj->Handle.Free();
-                        pObj->Handle = default;
-                    }
-                }
+            return Get(pObj)->ComObject.AddRef();
+        }
 
-                return pObj->RefCount;
-            }
-            finally
-            {
-                pObj->Lock.Exit();
-            }
+        private static partial uint release_ccw(FUnknown* pObj)
+        {
+            return Get(pObj)->ComObject.ReleaseRef();
         }
     }
 }

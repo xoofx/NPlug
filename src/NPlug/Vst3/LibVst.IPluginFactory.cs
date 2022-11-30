@@ -10,22 +10,22 @@ internal static unsafe partial class LibVst
 {
     public partial struct IPluginFactory
     {
-        private static partial ComResult getFactoryInfo_ccw(ComObject* self, PFactoryInfo* info)
+        private static partial ComResult getFactoryInfo_ccw(IPluginFactory* self, PFactoryInfo* info)
         {
             throw new NotImplementedException();
         }
 
-        private static partial int countClasses_ccw(ComObject* self)
+        private static partial int countClasses_ccw(IPluginFactory* self)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getClassInfo_ccw(ComObject* self, int index, PClassInfo* info)
+        private static partial ComResult getClassInfo_ccw(IPluginFactory* self, int index, PClassInfo* info)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult createInstance_ccw(ComObject* self, FIDString cid, FIDString _iid, void** obj)
+        private static partial ComResult createInstance_ccw(IPluginFactory* self, FIDString cid, FIDString _iid, void** obj)
         {
             throw new NotImplementedException();
         }

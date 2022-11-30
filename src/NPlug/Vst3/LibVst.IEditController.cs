@@ -10,67 +10,67 @@ internal static unsafe partial class LibVst
 {
     public partial struct IEditController
     {
-        private static partial ComResult setComponentState_ccw(ComObject* self, IBStream* state)
+        private static partial ComResult setComponentState_ccw(IEditController* self, IBStream* state)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult setState_ccw(ComObject* self, IBStream* state)
+        private static partial ComResult setState_ccw(IEditController* self, IBStream* state)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getState_ccw(ComObject* self, IBStream* state)
+        private static partial ComResult getState_ccw(IEditController* self, IBStream* state)
         {
             throw new NotImplementedException();
         }
 
-        private static partial int getParameterCount_ccw(ComObject* self)
+        private static partial int getParameterCount_ccw(IEditController* self)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getParameterInfo_ccw(ComObject* self, int paramIndex, ParameterInfo* info)
+        private static partial ComResult getParameterInfo_ccw(IEditController* self, int paramIndex, ParameterInfo* info)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getParamStringByValue_ccw(ComObject* self, ParamID id, ParamValue valueNormalized, String128* @string)
+        private static partial ComResult getParamStringByValue_ccw(IEditController* self, ParamID id, ParamValue valueNormalized, String128* @string)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getParamValueByString_ccw(ComObject* self, ParamID id, char* @string, ParamValue* valueNormalized)
+        private static partial ComResult getParamValueByString_ccw(IEditController* self, ParamID id, char* @string, ParamValue* valueNormalized)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ParamValue normalizedParamToPlain_ccw(ComObject* self, ParamID id, ParamValue valueNormalized)
+        private static partial ParamValue normalizedParamToPlain_ccw(IEditController* self, ParamID id, ParamValue valueNormalized)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ParamValue plainParamToNormalized_ccw(ComObject* self, ParamID id, ParamValue plainValue)
+        private static partial ParamValue plainParamToNormalized_ccw(IEditController* self, ParamID id, ParamValue plainValue)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ParamValue getParamNormalized_ccw(ComObject* self, ParamID id)
+        private static partial ParamValue getParamNormalized_ccw(IEditController* self, ParamID id)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult setParamNormalized_ccw(ComObject* self, ParamID id, ParamValue value)
+        private static partial ComResult setParamNormalized_ccw(IEditController* self, ParamID id, ParamValue value)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult setComponentHandler_ccw(ComObject* self, IComponentHandler* handler)
+        private static partial ComResult setComponentHandler_ccw(IEditController* self, IComponentHandler* handler)
         {
             throw new NotImplementedException();
         }
 
-        private static partial IPlugView* createView_ccw(ComObject* self, FIDString name)
+        private static partial IPlugView* createView_ccw(IEditController* self, FIDString name)
         {
             throw new NotImplementedException();
         }

@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IPluginCompatibility
     {
-        private static partial ComResult getCompatibilityJSON_ccw(ComObject* self, LibVst.IBStream* stream)
+        private static partial ComResult getCompatibilityJSON_ccw(IPluginCompatibility* self, LibVst.IBStream* stream)
         {
             throw new NotImplementedException();
         }

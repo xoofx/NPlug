@@ -10,27 +10,27 @@ internal static unsafe partial class LibVst
 {
     public partial struct ITestPlugProvider
     {
-        private static partial LibVst.IComponent* getComponent_ccw(ComObject* self)
+        private static partial LibVst.IComponent* getComponent_ccw(ITestPlugProvider* self)
         {
             throw new NotImplementedException();
         }
         
-        private static partial LibVst.IEditController* getController_ccw(ComObject* self)
+        private static partial LibVst.IEditController* getController_ccw(ITestPlugProvider* self)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult releasePlugIn_ccw(ComObject* self, LibVst.IComponent* component, LibVst.IEditController* controller)
+        private static partial ComResult releasePlugIn_ccw(ITestPlugProvider* self, LibVst.IComponent* component, LibVst.IEditController* controller)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult getSubCategories_ccw(ComObject* self, LibVst.IStringResult* result)
+        private static partial ComResult getSubCategories_ccw(ITestPlugProvider* self, LibVst.IStringResult* result)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult getComponentUID_ccw(ComObject* self, LibVst.FUID* uid)
+        private static partial ComResult getComponentUID_ccw(ITestPlugProvider* self, LibVst.FUID* uid)
         {
             throw new NotImplementedException();
         }

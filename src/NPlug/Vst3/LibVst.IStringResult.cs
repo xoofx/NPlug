@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IStringResult
     {
-        private static partial void setText_ccw(ComObject* self, byte* text)
+        private static partial void setText_ccw(IStringResult* self, byte* text)
         {
             throw new NotImplementedException();
         }

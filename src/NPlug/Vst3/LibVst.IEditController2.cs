@@ -10,17 +10,17 @@ internal static unsafe partial class LibVst
 {
     public partial struct IEditController2
     {
-        private static partial ComResult setKnobMode_ccw(ComObject* self, KnobMode mode)
+        private static partial ComResult setKnobMode_ccw(IEditController2* self, KnobMode mode)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult openHelp_ccw(ComObject* self, bool onlyCheck)
+        private static partial ComResult openHelp_ccw(IEditController2* self, bool onlyCheck)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult openAboutBox_ccw(ComObject* self, bool onlyCheck)
+        private static partial ComResult openAboutBox_ccw(IEditController2* self, bool onlyCheck)
         {
             throw new NotImplementedException();
         }

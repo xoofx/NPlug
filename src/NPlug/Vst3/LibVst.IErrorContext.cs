@@ -10,17 +10,17 @@ internal static unsafe partial class LibVst
 {
     public partial struct IErrorContext
     {
-        private static partial void disableErrorUI_ccw(ComObject* self, bool state)
+        private static partial void disableErrorUI_ccw(IErrorContext* self, bool state)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult errorMessageShown_ccw(ComObject* self)
+        private static partial ComResult errorMessageShown_ccw(IErrorContext* self)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult getErrorMessage_ccw(ComObject* self, LibVst.IString* message)
+        private static partial ComResult getErrorMessage_ccw(IErrorContext* self, LibVst.IString* message)
         {
             throw new NotImplementedException();
         }

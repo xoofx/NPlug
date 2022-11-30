@@ -10,12 +10,12 @@ internal static unsafe partial class LibVst
 {
     public partial struct IPluginFactory3
     {
-        private static partial ComResult getClassInfoUnicode_ccw(ComObject* self, int index, PClassInfoW* info)
+        private static partial ComResult getClassInfoUnicode_ccw(IPluginFactory3* self, int index, PClassInfoW* info)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult setHostContext_ccw(ComObject* self, FUnknown* context)
+        private static partial ComResult setHostContext_ccw(IPluginFactory3* self, FUnknown* context)
         {
             throw new NotImplementedException();
         }

@@ -24,9 +24,9 @@ internal static unsafe partial class LibVst
         }
 #endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static NPlug.IAudioProcessor Get(ComObject* self) => ((NPlug.IAudioProcessor)self->Handle.Target!);
+        private static NPlug.IAudioProcessor Get(IAudioProcessor* self) => (NPlug.IAudioProcessor)((ComObjectHandle*)self)->Handle.Target!;
 
-        private static partial ComResult setBusArrangements_ccw(ComObject* self, SpeakerArrangement* inputs, int numIns, SpeakerArrangement* outputs, int numOuts)
+        private static partial ComResult setBusArrangements_ccw(IAudioProcessor* self, SpeakerArrangement* inputs, int numIns, SpeakerArrangement* outputs, int numOuts)
         {
             if (numIns < 0 || numOuts < 0) return ComResult.InvalidArg;
             try
@@ -39,7 +39,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult getBusArrangement_ccw(ComObject* self, BusDirection dir, int index, SpeakerArrangement* arr)
+        private static partial ComResult getBusArrangement_ccw(IAudioProcessor* self, BusDirection dir, int index, SpeakerArrangement* arr)
         {
             if (index < 0) return ComResult.InvalidArg;
             try
@@ -57,7 +57,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult canProcessSampleSize_ccw(ComObject* self, int symbolicSampleSize)
+        private static partial ComResult canProcessSampleSize_ccw(IAudioProcessor* self, int symbolicSampleSize)
         {
             try
             {
@@ -69,7 +69,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial uint getLatencySamples_ccw(ComObject* self)
+        private static partial uint getLatencySamples_ccw(IAudioProcessor* self)
         {
             try
             {
@@ -81,7 +81,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult setupProcessing_ccw(ComObject* self, ProcessSetup* setup)
+        private static partial ComResult setupProcessing_ccw(IAudioProcessor* self, ProcessSetup* setup)
         {
             try
             {
@@ -93,7 +93,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult setProcessing_ccw(ComObject* self, bool state)
+        private static partial ComResult setProcessing_ccw(IAudioProcessor* self, bool state)
         {
             try
             {
@@ -106,7 +106,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult process_ccw(ComObject* self, ProcessData* data)
+        private static partial ComResult process_ccw(IAudioProcessor* self, ProcessData* data)
         {
             try
             {
@@ -118,7 +118,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial uint getTailSamples_ccw(ComObject* self)
+        private static partial uint getTailSamples_ccw(IAudioProcessor* self)
         {
             try
             {

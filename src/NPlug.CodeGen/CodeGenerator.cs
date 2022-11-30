@@ -643,6 +643,7 @@ public class CodeGenerator
             }
 
             CSharpMethod? initializeVtbl = null;
+            CSharpProperty? vtblCount = null;
 
             var voidPtrPtr = new CSharpPointerType(new CSharpPointerType(CSharpPrimitiveType.Void()));
 
@@ -677,6 +678,16 @@ public class CodeGenerator
                     // Create vtbl
                     if (initializeVtbl is null)
                     {
+                        csStruct.BaseTypes.Add(new CSharpFreeType("INativeVtbl"));
+
+                        vtblCount = new CSharpProperty("VtblCount")
+                        {
+                            Modifiers = CSharpModifiers.Static,
+                            Visibility = CSharpVisibility.Public,
+                            ReturnType = CSharpPrimitiveType.Int(),
+                        };
+                        csStruct.Members.Add(vtblCount);
+
                         initializeVtbl = new CSharpMethod() { Name = "InitializeVtbl", Modifiers = CSharpModifiers.Static };
                         initializeVtbl.Parameters.Add(new CSharpParameter("vtbl") { ParameterType = voidPtrPtr });
                         initializeVtbl.ReturnType = CSharpPrimitiveType.Void();
@@ -724,7 +735,7 @@ public class CodeGenerator
                     UpdateComment(csMethod);
                     csMethod.Attributes.Add(new CSharpFreeAttribute("UnmanagedCallersOnly"));
                     csMethod.ReturnType = GetCSharpType(cppMethod.ReturnType);
-                    csMethod.Parameters.Add(new CSharpParameter("self") { ParameterType = new CSharpFreeType("ComObject*") });
+                    csMethod.Parameters.Add(new CSharpParameter("self") { ParameterType = new CSharpFreeType($"{name}*") });
                     foreach (var cppMethodParameter in cppMethod.Parameters)
                     {
                         var csParameter = new CSharpParameter
@@ -770,8 +781,10 @@ public class CodeGenerator
                 }
             }
 
-            if (initializeVtbl != null)
+            if (initializeVtbl != null && vtblCount != null)
             {
+                vtblCount.GetBodyInlined = $"{virtualMethodIndex}";
+
                 csStruct.Members.Add(new CSharpSimpleComment() { Children = { new CSharpTextComment("--------------------------------------------------------------") } });
                 csStruct.Members.Add(new CSharpSimpleComment() { Children = { new CSharpTextComment("CCW methods") } });
                 csStruct.Members.Add(new CSharpSimpleComment() { Children = { new CSharpTextComment("--------------------------------------------------------------") } });

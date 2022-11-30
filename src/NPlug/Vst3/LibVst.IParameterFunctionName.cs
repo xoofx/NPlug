@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IParameterFunctionName
     {
-        private static partial ComResult getParameterIDFromFunctionName_ccw(ComObject* self, LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID)
+        private static partial ComResult getParameterIDFromFunctionName_ccw(IParameterFunctionName* self, LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID)
         {
             throw new NotImplementedException();
         }

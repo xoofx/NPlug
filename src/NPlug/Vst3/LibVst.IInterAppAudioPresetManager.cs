@@ -10,22 +10,22 @@ internal static unsafe partial class LibVst
 {
     public partial struct IInterAppAudioPresetManager
     {
-        private static partial ComResult runLoadPresetBrowser_ccw(ComObject* self)
+        private static partial ComResult runLoadPresetBrowser_ccw(IInterAppAudioPresetManager* self)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult runSavePresetBrowser_ccw(ComObject* self)
+        private static partial ComResult runSavePresetBrowser_ccw(IInterAppAudioPresetManager* self)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult loadNextPreset_ccw(ComObject* self)
+        private static partial ComResult loadNextPreset_ccw(IInterAppAudioPresetManager* self)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult loadPreviousPreset_ccw(ComObject* self)
+        private static partial ComResult loadPreviousPreset_ccw(IInterAppAudioPresetManager* self)
         {
             throw new NotImplementedException();
         }

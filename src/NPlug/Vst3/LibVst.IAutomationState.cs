@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IAutomationState
     {
-        private static partial ComResult setAutomationState_ccw(ComObject* self, int state)
+        private static partial ComResult setAutomationState_ccw(IAutomationState* self, int state)
         {
             throw new NotImplementedException();
         }

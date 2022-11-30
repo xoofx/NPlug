@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IXmlRepresentationController
     {
-        private static partial ComResult getXmlRepresentationStream_ccw(ComObject* self, LibVst.RepresentationInfo* info, LibVst.IBStream* stream)
+        private static partial ComResult getXmlRepresentationStream_ccw(IXmlRepresentationController* self, LibVst.RepresentationInfo* info, LibVst.IBStream* stream)
         {
             throw new NotImplementedException();
         }

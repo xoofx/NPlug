@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IParameterFinder
     {
-        private static partial ComResult findParameter_ccw(ComObject* self, int xPos, int yPos, LibVst.ParamID* resultTag)
+        private static partial ComResult findParameter_ccw(IParameterFinder* self, int xPos, int yPos, LibVst.ParamID* resultTag)
         {
             throw new NotImplementedException();
         }

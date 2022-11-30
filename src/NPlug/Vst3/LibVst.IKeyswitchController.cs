@@ -10,12 +10,12 @@ internal static unsafe partial class LibVst
 {
     public partial struct IKeyswitchController
     {
-        private static partial int getKeyswitchCount_ccw(ComObject* self, int busIndex, short channel)
+        private static partial int getKeyswitchCount_ccw(IKeyswitchController* self, int busIndex, short channel)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult getKeyswitchInfo_ccw(ComObject* self, int busIndex, short channel, int keySwitchIndex, LibVst.KeyswitchInfo* info)
+        private static partial ComResult getKeyswitchInfo_ccw(IKeyswitchController* self, int busIndex, short channel, int keySwitchIndex, LibVst.KeyswitchInfo* info)
         {
             throw new NotImplementedException();
         }

@@ -10,62 +10,62 @@ internal static unsafe partial class LibVst
 {
     public partial struct IUnitInfo
     {
-        private static partial int getUnitCount_ccw(ComObject* self)
+        private static partial int getUnitCount_ccw(IUnitInfo* self)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getUnitInfo_ccw(ComObject* self, int unitIndex, UnitInfo* info)
+        private static partial ComResult getUnitInfo_ccw(IUnitInfo* self, int unitIndex, UnitInfo* info)
         {
             throw new NotImplementedException();
         }
 
-        private static partial int getProgramListCount_ccw(ComObject* self)
+        private static partial int getProgramListCount_ccw(IUnitInfo* self)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getProgramListInfo_ccw(ComObject* self, int listIndex, ProgramListInfo* info)
+        private static partial ComResult getProgramListInfo_ccw(IUnitInfo* self, int listIndex, ProgramListInfo* info)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getProgramName_ccw(ComObject* self, ProgramListID listId, int programIndex, String128* name)
+        private static partial ComResult getProgramName_ccw(IUnitInfo* self, ProgramListID listId, int programIndex, String128* name)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getProgramInfo_ccw(ComObject* self, ProgramListID listId, int programIndex, CString attributeId, String128* attributeValue)
+        private static partial ComResult getProgramInfo_ccw(IUnitInfo* self, ProgramListID listId, int programIndex, CString attributeId, String128* attributeValue)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult hasProgramPitchNames_ccw(ComObject* self, ProgramListID listId, int programIndex)
+        private static partial ComResult hasProgramPitchNames_ccw(IUnitInfo* self, ProgramListID listId, int programIndex)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getProgramPitchName_ccw(ComObject* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name)
+        private static partial ComResult getProgramPitchName_ccw(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name)
         {
             throw new NotImplementedException();
         }
 
-        private static partial UnitID getSelectedUnit_ccw(ComObject* self)
+        private static partial UnitID getSelectedUnit_ccw(IUnitInfo* self)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult selectUnit_ccw(ComObject* self, UnitID unitId)
+        private static partial ComResult selectUnit_ccw(IUnitInfo* self, UnitID unitId)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getUnitByBus_ccw(ComObject* self, MediaType type, BusDirection dir, int busIndex, int channel, UnitID* unitId)
+        private static partial ComResult getUnitByBus_ccw(IUnitInfo* self, MediaType type, BusDirection dir, int busIndex, int channel, UnitID* unitId)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult setUnitProgramData_ccw(ComObject* self, int listOrUnitId, int programIndex, IBStream* data)
+        private static partial ComResult setUnitProgramData_ccw(IUnitInfo* self, int listOrUnitId, int programIndex, IBStream* data)
         {
             throw new NotImplementedException();
         }

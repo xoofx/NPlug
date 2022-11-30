@@ -12,12 +12,12 @@ internal static unsafe partial class LibVst
     public partial struct IComponent
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static NPlug.IAudioProcessor Get(ComObject* self)
+        private static NPlug.IAudioProcessor Get(IComponent* self)
         {
-            return (NPlug.IAudioProcessor)self->Handle.Target!;
+            return (NPlug.IAudioProcessor)((ComObjectHandle*)self)->Handle.Target!;
         }
         
-        private static partial ComResult getControllerClassId_ccw(ComObject* self, Guid* classId)
+        private static partial ComResult getControllerClassId_ccw(IComponent* self, Guid* classId)
         {
             try
             {
@@ -30,7 +30,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult setIoMode_ccw(ComObject* self, IoMode mode)
+        private static partial ComResult setIoMode_ccw(IComponent* self, IoMode mode)
         {
             try
             {
@@ -43,7 +43,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial int getBusCount_ccw(ComObject* self, MediaType type, BusDirection dir)
+        private static partial int getBusCount_ccw(IComponent* self, MediaType type, BusDirection dir)
         {
             try
             {
@@ -55,7 +55,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult getBusInfo_ccw(ComObject* self, MediaType type, BusDirection dir, int index, BusInfo* bus)
+        private static partial ComResult getBusInfo_ccw(IComponent* self, MediaType type, BusDirection dir, int index, BusInfo* bus)
         {
             try
             {
@@ -74,7 +74,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult getRoutingInfo_ccw(ComObject* self, RoutingInfo* inInfo, RoutingInfo* outInfo)
+        private static partial ComResult getRoutingInfo_ccw(IComponent* self, RoutingInfo* inInfo, RoutingInfo* outInfo)
         {
             try
             {
@@ -86,7 +86,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult activateBus_ccw(ComObject* self, MediaType type, BusDirection dir, int index, bool state)
+        private static partial ComResult activateBus_ccw(IComponent* self, MediaType type, BusDirection dir, int index, bool state)
         {
             try
             {
@@ -98,7 +98,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult setActive_ccw(ComObject* self, bool state)
+        private static partial ComResult setActive_ccw(IComponent* self, bool state)
         {
             try
             {
@@ -111,7 +111,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult setState_ccw(ComObject* self, IBStream* state)
+        private static partial ComResult setState_ccw(IComponent* self, IBStream* state)
         {
             try
             {
@@ -125,7 +125,7 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult getState_ccw(ComObject* self, IBStream* state)
+        private static partial ComResult getState_ccw(IComponent* self, IBStream* state)
         {
             try
             {

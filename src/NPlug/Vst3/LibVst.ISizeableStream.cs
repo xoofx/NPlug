@@ -10,12 +10,12 @@ internal static unsafe partial class LibVst
 {
     public partial struct ISizeableStream
     {
-        private static partial ComResult getStreamSize_ccw(ComObject* self, long* size)
+        private static partial ComResult getStreamSize_ccw(ISizeableStream* self, long* size)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult setStreamSize_ccw(ComObject* self, long size)
+        private static partial ComResult setStreamSize_ccw(ISizeableStream* self, long size)
         {
             throw new NotImplementedException();
         }

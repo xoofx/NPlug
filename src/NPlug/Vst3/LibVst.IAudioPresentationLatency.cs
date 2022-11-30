@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IAudioPresentationLatency
     {
-        private static partial ComResult setAudioPresentationLatencySamples_ccw(ComObject* self, LibVst.BusDirection dir, int busIndex, uint latencyInSamples)
+        private static partial ComResult setAudioPresentationLatencySamples_ccw(IAudioPresentationLatency* self, LibVst.BusDirection dir, int busIndex, uint latencyInSamples)
         {
             throw new NotImplementedException();
         }

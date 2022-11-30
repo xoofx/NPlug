@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IMidiMapping
     {
-        private static partial ComResult getMidiControllerAssignment_ccw(ComObject* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id)
+        private static partial ComResult getMidiControllerAssignment_ccw(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id)
         {
             throw new NotImplementedException();
         }

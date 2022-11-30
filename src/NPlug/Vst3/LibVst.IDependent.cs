@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IDependent
     {
-        private static partial void update_ccw(ComObject* self, LibVst.FUnknown* changedUnknown, int message)
+        private static partial void update_ccw(IDependent* self, LibVst.FUnknown* changedUnknown, int message)
         {
             throw new NotImplementedException();
         }

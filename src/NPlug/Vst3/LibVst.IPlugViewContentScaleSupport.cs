@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IPlugViewContentScaleSupport
     {
-        private static partial ComResult setContentScaleFactor_ccw(ComObject* self, LibVst.ScaleFactor factor)
+        private static partial ComResult setContentScaleFactor_ccw(IPlugViewContentScaleSupport* self, LibVst.ScaleFactor factor)
         {
             throw new NotImplementedException();
         }

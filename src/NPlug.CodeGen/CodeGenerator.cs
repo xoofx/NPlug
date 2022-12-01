@@ -419,7 +419,7 @@ public class CodeGenerator
                     {
                         if (typeDef.ElementType is CppArrayType arrayType)
                         {
-                            var csStruct = new CSharpStructExtended(FilterName(typeDef.Name)) { IsFixedArray = true };
+                            var csStruct = new CSharpStructExtended(FilterName(typeDef.Name, false)) { IsFixedArray = true };
                             var csField = new CSharpField("Value")
                             {
                                 FieldType = new CSharpFixedArrayType(GetCSharpType(arrayType.ElementType), arrayType.Size)
@@ -442,7 +442,7 @@ public class CodeGenerator
                             }
                             else
                             {
-                                var csStruct = new CSharpStruct(FilterName(typeDef.Name));
+                                var csStruct = new CSharpStruct(FilterName(typeDef.Name, false));
                                 var csParameterType = GetCSharpType(typeDef.ElementType);
                                 csType = csStruct;
                                 if (csParameterType is CSharpPointerType)
@@ -502,12 +502,12 @@ public class CodeGenerator
         }
     }
 
-    private static string FilterName(string name)
+    private static string FilterName(string name, bool isParameter)
     {
         if (name == "string") return "@string";
         if (name == "event") return "@event";
         if (name == "object") return "@object";
-        if (string.IsNullOrEmpty(name)) return "arg";
+        if (string.IsNullOrEmpty(name)) return isParameter ? "arg" : "union";
         return name;
     }
 
@@ -528,6 +528,11 @@ public class CodeGenerator
         if (isAnonymousUnion)
         {
             name = "Union";
+        }
+
+        if (container is null && cppClass.Parent is CppClass parentCpp)
+        {
+            container = (CSharpStruct)GetCSharpType(parentCpp);
         }
 
         if (_cppTypeToCSharpType.TryGetValue(name, out var csType))
@@ -561,7 +566,7 @@ public class CodeGenerator
             {
                 if (cppField.StorageQualifier == CppStorageQualifier.None)
                 {
-                    var csField = new CSharpField(FilterName(cppField.Name)) { CppElement = cppField };
+                    var csField = new CSharpField(FilterName(cppField.Name, false)) { CppElement = cppField };
                     UpdateComment(csField);
                     if (isUnion)
                     {
@@ -575,22 +580,6 @@ public class CodeGenerator
                     {
                         csField.FieldType = GetCSharpType(cppField.Type);
                     }
-                    csStruct.Members.Add(csField);
-                }
-            }
-
-            foreach (var cppUnion in cppClass.Classes)
-            {
-                if (cppUnion.ClassKind == CppClassKind.Union)
-                {
-                    var csUnion = GetOrCreateStruct(cppUnion, csStruct);
-
-                    var csField = new CSharpField("union")
-                    {
-                        FieldType = csUnion,
-                        CppElement = cppUnion
-                    };
-                    UpdateComment(csField);
                     csStruct.Members.Add(csField);
                 }
             }
@@ -740,7 +729,7 @@ public class CodeGenerator
                     {
                         var csParameter = new CSharpParameter
                         {
-                            Name = FilterName(cppMethodParameter.Name),
+                            Name = FilterName(cppMethodParameter.Name, true),
                             ParameterType = GetCSharpParameterType(cppMethodParameter)
                         };
                         csMethod.Parameters.Add(csParameter);
@@ -863,7 +852,7 @@ public class CodeGenerator
         {
             var csParameter = new CSharpParameter
             {
-                Name = FilterName(cppMethodParameter.Name),
+                Name = FilterName(cppMethodParameter.Name, true),
                 ParameterType = GetCSharpParameterType(cppMethodParameter)
             };
             csMethod.Parameters.Add(csParameter);

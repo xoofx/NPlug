@@ -35,7 +35,7 @@ internal static partial class LibVst
         private uint _refCount;
         private SpinLock _lock;
         private readonly ComObjectHandle* _handles;
-        private int _count;
+        private int _interfaceCount;
         private GCHandle _thisHandle;
 
         public ComObject(ComObjectManager manager)
@@ -77,6 +77,7 @@ internal static partial class LibVst
                     {
                         disposable.Dispose();
                         Reset();
+                        Release();
                     }
                 }
                 return _refCount;
@@ -89,37 +90,38 @@ internal static partial class LibVst
 
         public ComObjectHandle* GetOrComObjectHandle<T>() where T: INativeGuid, INativeVtbl
         {
-            ref var guid = ref *T.NativeGuid;
-            for (int i = 0; i < _count; i++)
+            var guidToFind = *T.NativeGuid;
+            for (int i = 0; i < _interfaceCount; i++)
             {
                 var handle = _handles + i;
-                // TODO: optimize guid comparison (it is making a copy on the stack, instead of a fast byte by byte comparer)
-                if (handle->Guid == guid)
+                if (handle->Guid.Equals(guidToFind))
                 {
                     return handle;
                 }
             }
 
-            if (_count == MaxInterfacesPerObject)
+            if (_interfaceCount == MaxInterfacesPerObject)
             {
                 throw new InvalidOperationException($"Cannot create more handle for a COM object. Maximum of {MaxInterfacesPerObject} interfaces has been reached.");
             }
 
-            var nextHandle = _handles + _count;
-            _count++;
+            var nextHandle = _handles + _interfaceCount;
+            _interfaceCount++;
 
             nextHandle->Vtbl = VtblInitializer<T>.Vtbl;
-            nextHandle->Guid = guid;
+            nextHandle->Guid = guidToFind;
             nextHandle->Handle = _thisHandle;
             return nextHandle;
         }
 
         public void Reset()
         {
-            for (int i = 0; i < _count; i++)
+            for (int i = 0; i < _interfaceCount; i++)
             {
                 _handles[i] = default;
             }
+
+            _interfaceCount = 0;
             _refCount = 0;
             _lock = default;
             Target = null;
@@ -140,6 +142,12 @@ internal static partial class LibVst
         {
             NativeMemory.Free(_handles);
             _thisHandle.Free();
+        }
+
+        public void Release()
+        {
+            // Pool the object back to the manager
+            Manager.ReleaseObject(this);
         }
     }
 
@@ -173,8 +181,27 @@ internal static partial class LibVst
             return new ComObject(this);
         }
 
+        public void ReleaseObject(ComObject comObject)
+        {
+            bool taken = false;
+            try
+            {
+                _lock.Enter(ref taken);
+                _comObjectCache.Push(comObject);
+            }
+            finally
+            {
+                if (taken) _lock.Exit();
+            }
+        }
+
         public void Dispose()
         {
+            foreach (var comObject in _comObjectCache)
+            {
+                comObject.Dispose();
+            }
+            _comObjectCache.Clear();
         }
     }
 

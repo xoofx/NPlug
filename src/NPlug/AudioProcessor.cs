@@ -201,7 +201,7 @@ public abstract class AudioProcessor : AudioPlugin, IAudioProcessor
         IsProcessing = state;
     }
 
-    void IAudioProcessor.Process(ref AudioProcessData processData)
+    void IAudioProcessor.Process(in AudioProcessData processData)
     {
         Process(in _processSetupData, in processData);
     }

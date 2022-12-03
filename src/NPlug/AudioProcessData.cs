@@ -52,7 +52,7 @@ public ref struct AudioProcessData
     /// </summary>
     public ref AudioProcessContext GetContext()
     {
-        if (HasContext) throw new InvalidOperationException("No context is available. Check HasContext before accessing this method");
+        if (!HasContext) throw new InvalidOperationException("No context is available. Check HasContext before accessing this method");
         unsafe
         {
             return ref Unsafe.AsRef<AudioProcessContext>((void*)_context);

@@ -110,7 +110,17 @@ internal static unsafe partial class LibVst
         {
             try
             {
-                throw new NotImplementedException();
+                var processData = new AudioProcessData((IntPtr)data->processContext)
+                {
+                    SampleCount = data->numSamples,
+                    SampleSize = (AudioSampleSize)data->symbolicSampleSize,
+                    ProcessMode = (AudioProcessMode)data->processMode
+                };
+                processData.Input.Buffers = new Span<NPlug.AudioBusBuffers>(data->inputs, data->numInputs);
+                processData.Output.Buffers = new Span<NPlug.AudioBusBuffers>(data->outputs, data->numOutputs);
+                
+                Get(self).Process(in processData);
+                return ComResult.Ok;
             }
             catch (Exception)
             {

@@ -89,5 +89,5 @@ public interface IAudioProcessor : IAudioPlugin
 
     void SetProcessing(bool state);
 
-    void Process(ref AudioProcessData processData);
+    void Process(in AudioProcessData processData);
 }

@@ -3,12 +3,33 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
+using NPlug.Backend;
 
 namespace NPlug;
 
-public abstract class AudioMessage : IDisposable
+public readonly ref struct AudioMessage
 {
-    public abstract string Id { get; set; }
+    private readonly IAudioMessageBackend? _backend;
+    internal readonly IntPtr MessageContext;
+    internal readonly IntPtr AttributeContext;
+
+    internal AudioMessage(IAudioMessageBackend backend, IntPtr messageContext, IntPtr attributeContext)
+    {
+        _backend = backend;
+        MessageContext = messageContext;
+        AttributeContext = attributeContext;
+    }
+
+    public string GetId()
+    {
+        return GetSafeBackend().GetId(this);
+    }
+
+    public void SetId(string id)
+    {
+        GetSafeBackend().SetId(this, id);
+    }
 
     public bool TrySetBool(string attributeId, bool value)
     {
@@ -94,13 +115,62 @@ public abstract class AudioMessage : IDisposable
         return result;
     }
 
-    public abstract bool TrySetInt64(string attributeId, long value);
-    public abstract bool TryGetInt64(string attributeId, out long value);
-    public abstract bool TrySetFloat64(string attributeId, double value);
-    public abstract bool TryGetFloat64(string attributeId, out double value);
-    public abstract bool TrySetString(string attributeId, string value);
-    public abstract bool TryGetString(string attributeId, out string value);
-    public abstract bool TrySetBinary(string attributeId, ReadOnlySpan<byte> value);
-    public abstract bool TryGetBinary(string attributeId, out ReadOnlySpan<byte> value);
-    public abstract void Dispose();
+    public bool TrySetInt64(string attributeId, long value)
+    {
+        return GetSafeBackend().TrySetInt64(this, attributeId, value);
+    }
+
+    public bool TryGetInt64(string attributeId, out long value)
+    {
+        return GetSafeBackend().TryGetInt64(this, attributeId, out value);
+    }
+
+    public bool TrySetFloat64(string attributeId, double value)
+    {
+        return GetSafeBackend().TrySetFloat64(this, attributeId, value);
+    }
+
+    public bool TryGetFloat64(string attributeId, out double value)
+    {
+        return GetSafeBackend().TryGetFloat64(this, attributeId, out value);
+    }
+
+    public bool TrySetString(string attributeId, string value)
+    {
+        return GetSafeBackend().TrySetString(this, attributeId, value);
+    }
+
+    public bool TryGetString(string attributeId, out string value)
+    {
+        return GetSafeBackend().TryGetString(this, attributeId, out value);
+    }
+
+    public bool TrySetBinary(string attributeId, ReadOnlySpan<byte> value)
+    {
+        return GetSafeBackend().TrySetBinary(this, attributeId, value);
+    }
+
+    [UnscopedRef]
+    public bool TryGetBinary(string attributeId, out ReadOnlySpan<byte> value)
+    {
+        return GetSafeBackend().TryGetBinary(this, attributeId, out value);
+    }
+
+    public void Dispose()
+    {
+        if (_backend is null) return;
+        GetSafeBackend().Destroy(this);
+    }
+
+    private IAudioMessageBackend GetSafeBackend()
+    {
+        if (_backend is null) ThrowNotInitialized();
+        return _backend;
+    }
+
+    [DoesNotReturn]
+    private static void ThrowNotInitialized()
+    {
+        throw new InvalidOperationException("This message is not initialized");
+    }
 }

@@ -4,37 +4,32 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System;
+using NPlug.Backend;
 
 namespace NPlug;
 
 public readonly ref struct AudioEventList
 {
-    private readonly IntPtr _nativeContext;
     private readonly IAudioEventListBackend? _backend;
-    internal AudioEventList(IntPtr nativeContext, IAudioEventListBackend? backend)
+    internal readonly IntPtr NativeContext;
+
+    internal AudioEventList(IAudioEventListBackend? backend, IntPtr nativeContext)
     {
-        _nativeContext = nativeContext;
+        NativeContext = nativeContext;
         _backend = backend;
     }
 
     /// <summary>
     /// Returns the count of events.
     /// </summary>
-    public int Count
-    {
-        get
-        {
-            return _nativeContext == IntPtr.Zero ? 0 : _backend!.GetEventCount(_nativeContext);
-        }
-    }
-    
+    public int Count => _backend?.GetEventCount(this) ?? 0;
+
     /// <summary>
     /// Gets parameter by index.
     /// </summary>
     public bool TryGetEvent(int index, out AudioEvent evt)
     {
-        if (_nativeContext == IntPtr.Zero) ThrowNotInitialized();
-        return _backend!.TryGetEvent(_nativeContext, index, out evt);
+        return GetSafeBackend().TryGetEvent(this, index, out evt);
     }
 
     /// <summary>
@@ -42,8 +37,13 @@ public readonly ref struct AudioEventList
     /// </summary>
     public bool TryAddEvent(IntPtr context, in AudioEvent e)
     {
-        if (_nativeContext == IntPtr.Zero) ThrowNotInitialized();
-        return _backend!.TryAddEvent(_nativeContext, e);
+        return GetSafeBackend().TryAddEvent(this, e);
+    }
+
+    private IAudioEventListBackend GetSafeBackend()
+    {
+        if (_backend is null) ThrowNotInitialized();
+        return _backend;
     }
 
     [DoesNotReturn]
@@ -51,22 +51,4 @@ public readonly ref struct AudioEventList
     {
         throw new InvalidOperationException("This event list is empty.");
     }
-}
-
-public interface IAudioEventListBackend
-{
-    /// <summary>
-    /// Returns the count of events.
-    /// </summary>
-    int GetEventCount(IntPtr context);
-
-    /// <summary>
-    /// Gets parameter by index.
-    /// </summary>
-    bool TryGetEvent(IntPtr context, int index, out AudioEvent evt);
-
-    /// <summary>
-    /// Adds a new event.
-    /// </summary>
-    bool TryAddEvent(IntPtr context, in AudioEvent evt);
 }

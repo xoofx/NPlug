@@ -3,53 +3,41 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using NPlug.Backend;
 
 namespace NPlug.Vst3;
 
 internal static unsafe partial class LibVst
 {
-    private sealed class AudioHostApplicationClient : AudioHostApplication
+    private sealed class AudioHostApplicationClient : AudioHostApplication, IAudioMessageBackend
     {
         private readonly IHostApplication* _hostApplication;
         private readonly Dictionary<ulong, string> _nativeUTF8ToManaged;
         private readonly Dictionary<string, IntPtr> _managedToNativeUTF8;
-        private readonly IntPtr _tempBuffer;
-        private readonly Stack<AudioMessageClient> _audioMessagesCache;
+
 
         public AudioHostApplicationClient(IHostApplication* hostApplication, string name) : base(name)
         {
             _hostApplication = hostApplication;
             _nativeUTF8ToManaged = new Dictionary<ulong, string>();
             _managedToNativeUTF8 = new Dictionary<string, IntPtr>();
-            _audioMessagesCache = new Stack<AudioMessageClient>();
-            _tempBuffer = (IntPtr)NativeMemory.Alloc((nuint)TempBufferSize);
         }
 
-        public IntPtr TempBuffer => _tempBuffer;
-
-        public const int TempBufferSize = 4096;
-
-        public override AudioMessage CreateMessage(string messageId)
+        public override bool TryCreateMessage(string messageId, out AudioMessage message)
         {
             IMessage* nativeMessage;
             var result = _hostApplication->createInstance(IMessage.NativeGuid, IMessage.NativeGuid, (void**)&nativeMessage);
             if (result.IsSuccess)
             {
-                var message = _audioMessagesCache.Count > 0 ? _audioMessagesCache.Pop() : new AudioMessageClient(this);
-                message.NativeMessage = nativeMessage;
-                message.Id = messageId;
-                return message;
+                message = new AudioMessage(this, (IntPtr)nativeMessage, (IntPtr)nativeMessage->getAttributes());
+                return true;
             }
-
-            throw new InvalidOperationException("Unable to create message");
-        }
-
-        internal void Return(AudioMessageClient message)
-        {
-            _audioMessagesCache.Push(message);
+            message = default;
+            return false;
         }
 
         public override void Dispose()
@@ -61,8 +49,6 @@ internal static unsafe partial class LibVst
 
             _managedToNativeUTF8.Clear();
             _nativeUTF8ToManaged.Clear();
-
-            NativeMemory.Free((void*)_tempBuffer);
         }
 
         public string GetOrCreateString(byte* str)
@@ -92,6 +78,108 @@ internal static unsafe partial class LibVst
             }
 
             return new FIDString() { Value = (byte*)ptr };
+        }
+
+        string IAudioMessageBackend.GetId(in AudioMessage message)
+        {
+            return GetOrCreateString(((IMessage*)message.MessageContext)->getMessageID().Value);
+        }
+
+        void IAudioMessageBackend.SetId(in AudioMessage message, string id)
+        {
+            ((IMessage*)message.MessageContext)->setMessageID(GetOrCreateString(id));
+        }
+
+        bool IAudioMessageBackend.TrySetInt64(in AudioMessage message, string attributeId, long value)
+        {
+            return ((IAttributeList*)message.AttributeContext)->setInt(GetNativeAttributeId(attributeId), value);
+        }
+
+        bool IAudioMessageBackend.TryGetInt64(in AudioMessage message, string attributeId, out long value)
+        {
+            long localValue = 0;
+            var result = ((IAttributeList*)message.AttributeContext)->getInt(GetNativeAttributeId(attributeId), &localValue);
+            value = localValue;
+            return result;
+        }
+
+        bool IAudioMessageBackend.TrySetFloat64(in AudioMessage message, string attributeId, double value)
+        {
+            return ((IAttributeList*)message.AttributeContext)->setFloat(GetNativeAttributeId(attributeId), value);
+        }
+
+        bool IAudioMessageBackend.TryGetFloat64(in AudioMessage message, string attributeId, out double value)
+        {
+            double localValue = 0;
+            var result = ((IAttributeList*)message.AttributeContext)->getFloat(GetNativeAttributeId(attributeId), &localValue);
+            value = localValue;
+            return result;
+        }
+
+        bool IAudioMessageBackend.TrySetString(in AudioMessage message, string attributeId, string value)
+        {
+            fixed (char* pValue = value)
+                return ((IAttributeList*)message.AttributeContext)->setString(GetNativeAttributeId(attributeId), pValue);
+        }
+
+        bool IAudioMessageBackend.TryGetString(in AudioMessage message, string attributeId, out string value)
+        {
+            value = string.Empty;
+            const int TempBufferSize = 4096;
+            var array = ArrayPool<byte>.Shared.Rent(TempBufferSize);
+            try
+            {
+                fixed (byte* pValue = array)
+                {
+                    var result = ((IAttributeList*)message.AttributeContext)->getString(GetNativeAttributeId(attributeId), (char*)pValue, TempBufferSize);
+                    if (result.IsSuccess)
+                    {
+                        var span = new ReadOnlySpan<char>((char*)pValue, int.MaxValue);
+                        span = span.Slice(0, span.IndexOf((char)0));
+                        value = new string(span);
+                        return true;
+                    }
+                }
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(array);
+            }
+
+            return false;
+        }
+
+        bool IAudioMessageBackend.TrySetBinary(in AudioMessage message, string attributeId, ReadOnlySpan<byte> value)
+        {
+            fixed (byte* pBuffer = &MemoryMarshal.GetReference(value))
+            {
+                return ((IAttributeList*)message.AttributeContext)->setBinary(GetNativeAttributeId(attributeId), pBuffer, (uint)value.Length);
+            }
+        }
+
+        bool IAudioMessageBackend.TryGetBinary(in AudioMessage message, string attributeId, out ReadOnlySpan<byte> value)
+        {
+            void* pBuffer;
+            int size;
+            var result = ((IAttributeList*)message.AttributeContext)->getBinary(GetNativeAttributeId(attributeId), &pBuffer, (uint*)&size);
+            if (result)
+            {
+                value = new ReadOnlySpan<byte>(pBuffer, size);
+                return true;
+            }
+            value = default;
+            return false;
+        }
+
+        void IAudioMessageBackend.Destroy(in AudioMessage message)
+        {
+            ((IMessage*)message.MessageContext)->release();
+            ((IAttributeList*)message.AttributeContext)->release();
+        }
+
+        private AttrID GetNativeAttributeId(string attributeId)
+        {
+            return new AttrID() { Value = GetOrCreateString(attributeId).Value };
         }
     }
 }

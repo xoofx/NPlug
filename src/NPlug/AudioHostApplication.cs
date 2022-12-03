@@ -15,7 +15,7 @@ public abstract class AudioHostApplication : IDisposable
 
     public string Name { get; }
 
-    public abstract AudioMessage CreateMessage(string messageId);
+    public abstract bool TryCreateMessage(string messageId, out AudioMessage message);
 
     public abstract void Dispose();
 }

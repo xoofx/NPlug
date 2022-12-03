@@ -11,13 +11,18 @@ internal static unsafe partial class LibVst
 {
     private class AudioMessageClient : AudioMessage
     {
-        private readonly AudioHostApplicationClient _host;
+        private AudioHostApplicationClient? _host;
         private IMessage* _message;
         private IAttributeList* _attributeList;
 
-        public AudioMessageClient(AudioHostApplicationClient host)
+        public AudioMessageClient()
         {
-            _host = host;
+        }
+
+        public AudioHostApplicationClient? Host
+        {
+            get { return _host; }
+            set { _host = value; }
         }
 
         public IMessage* NativeMessage
@@ -34,11 +39,11 @@ internal static unsafe partial class LibVst
         {
             get
             {
-                return _host.GetOrCreateString(_message->getMessageID().Value);
+                return _host!.GetOrCreateString(_message->getMessageID().Value);
             }
             set
             {
-                _message->setMessageID(_host.GetOrCreateString(value));
+                _message->setMessageID(_host!.GetOrCreateString(value));
             }
         }
 
@@ -77,7 +82,7 @@ internal static unsafe partial class LibVst
         public override bool TryGetString(string attributeId, out string value)
         {
             value = string.Empty;
-            var result = _attributeList->getString(GetNativeAttributeId(attributeId), (char*)_host.TempBuffer, AudioHostApplicationClient.TempBufferSize);
+            var result = _attributeList->getString(GetNativeAttributeId(attributeId), (char*)_host!.TempBuffer, AudioHostApplicationClient.TempBufferSize);
             if (result.IsSuccess)
             {
                 var span = new ReadOnlySpan<char>((char*)_host.TempBuffer, int.MaxValue);
@@ -115,12 +120,12 @@ internal static unsafe partial class LibVst
             _attributeList = null;
             _message->release();
             _message = null;
-            _host.Return(this);
+            _host?.Return(this);
         }
 
         private AttrID GetNativeAttributeId(string attributeId)
         {
-            return new AttrID() { Value = _host.GetOrCreateString(attributeId).Value };
+            return new AttrID() { Value = _host!.GetOrCreateString(attributeId).Value };
         }
     }
 }

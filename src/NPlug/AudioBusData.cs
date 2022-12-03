@@ -8,11 +8,9 @@ namespace NPlug;
 
 public ref struct AudioBusData
 {
-    public int Count => Buffers.Length;
-
     public Span<AudioBusBuffers> Buffers;
 
-    public AudioParameterChanges? ParameterChanges;
+    public AudioParameterChanges ParameterChanges;
 
-    public AudioEventList? Events;
+    public AudioEventList Events;
 }

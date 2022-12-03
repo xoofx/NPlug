@@ -386,7 +386,7 @@ public class CodeGenerator
         {
             case "bool":
             case "TBool":
-                return new CSharpTypeWithAttributes(CSharpPrimitiveType.Bool()) { Attributes = { new CSharpMarshalAttribute(CSharpUnmanagedKind.U1) } };
+                return new CSharpTypeWithAttributes(CSharpPrimitiveType.Byte()) { Attributes = { new CSharpMarshalAttribute(CSharpUnmanagedKind.U1) } };
 
             case "int8":
                 return CSharpPrimitiveType.SByte();
@@ -477,9 +477,9 @@ public class CodeGenerator
         }
     }
 
-    private CSharpType GetCSharpParameterType(CppParameter parameter)
+    private CSharpType GetCSharpReturnOrParameterType(CppType cppType)
     {
-        var type = GetCSharpType(parameter.Type);
+        var type = GetCSharpType(cppType);
         // If the parameter is fixed array, pass a pointer
         if (type is CSharpStructExtended { IsFixedArray: true })
         {
@@ -489,6 +489,12 @@ public class CodeGenerator
         if (type is CSharpFreeType freeType && freeType.Text == "Guid")
         {
             type = new CSharpPointerType(type);
+        }
+
+        // We don't support char
+        if (type is CSharpPrimitiveType primitive && primitive.Kind == CSharpPrimitiveKind.Char)
+        {
+            type = CSharpPrimitiveType.UShort();
         }
 
         return type;
@@ -546,10 +552,6 @@ public class CodeGenerator
             Visibility = CSharpVisibility.Public,
             CppElement = cppClass,
         };
-        if (isUnion)
-        {
-            csStruct.Attributes.Add(new CSharpStructLayoutAttribute(LayoutKind.Explicit));
-        }
 
         if (!isAnonymousUnion)
         {
@@ -562,6 +564,11 @@ public class CodeGenerator
 
         if (cppClass.Functions.All(x => (x.Flags & CppFunctionFlags.Pure) == 0))
         {
+            csStruct.Attributes.Add(isUnion
+                ? new CSharpStructLayoutAttribute(LayoutKind.Explicit) { CharSet = CharSet.Unicode }
+                : new CSharpStructLayoutAttribute(LayoutKind.Sequential) { CharSet = CharSet.Unicode }
+            );
+
             foreach (var cppField in cppClass.Fields)
             {
                 if (cppField.StorageQualifier == CppStorageQualifier.None)
@@ -723,14 +730,14 @@ public class CodeGenerator
                     };
                     UpdateComment(csMethod);
                     csMethod.Attributes.Add(new CSharpFreeAttribute("UnmanagedCallersOnly"));
-                    csMethod.ReturnType = GetCSharpType(cppMethod.ReturnType);
+                    csMethod.ReturnType = GetCSharpReturnOrParameterType(cppMethod.ReturnType);
                     csMethod.Parameters.Add(new CSharpParameter("self") { ParameterType = new CSharpFreeType($"{name}*") });
                     foreach (var cppMethodParameter in cppMethod.Parameters)
                     {
                         var csParameter = new CSharpParameter
                         {
                             Name = FilterName(cppMethodParameter.Name, true),
-                            ParameterType = GetCSharpParameterType(cppMethodParameter)
+                            ParameterType = GetCSharpReturnOrParameterType(cppMethodParameter.Type)
                         };
                         csMethod.Parameters.Add(csParameter);
                     }
@@ -847,13 +854,13 @@ public class CodeGenerator
         };
         UpdateComment(csMethod);
         csMethod.Attributes.Add(MethodImplAggressiveInliningAttribute);
-        csMethod.ReturnType = GetCSharpType(cppMethod.ReturnType);
+        csMethod.ReturnType = GetCSharpReturnOrParameterType(cppMethod.ReturnType);
         foreach (var cppMethodParameter in cppMethod.Parameters)
         {
             var csParameter = new CSharpParameter
             {
                 Name = FilterName(cppMethodParameter.Name, true),
-                ParameterType = GetCSharpParameterType(cppMethodParameter)
+                ParameterType = GetCSharpReturnOrParameterType(cppMethodParameter.Type)
             };
             csMethod.Parameters.Add(csParameter);
         }

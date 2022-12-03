@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IErrorContext
     {
-        private static partial void disableErrorUI_ccw(IErrorContext* self, bool state)
+        private static partial void disableErrorUI_ccw(IErrorContext* self, byte state)
         {
             throw new NotImplementedException();
         }

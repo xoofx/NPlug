@@ -86,11 +86,11 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult activateBus_ccw(IComponent* self, MediaType type, BusDirection dir, int index, bool state)
+        private static partial ComResult activateBus_ccw(IComponent* self, MediaType type, BusDirection dir, int index, byte state)
         {
             try
             {
-                return Get(self).ActivateBus((AudioBusMediaType)type.Value, (AudioBusDirection)dir.Value, index, state);
+                return Get(self).ActivateBus((AudioBusMediaType)type.Value, (AudioBusDirection)dir.Value, index, state != 0);
             }
             catch (Exception)
             {
@@ -98,11 +98,11 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult setActive_ccw(IComponent* self, bool state)
+        private static partial ComResult setActive_ccw(IComponent* self, byte state)
         {
             try
             {
-                Get(self).SetActive(state);
+                Get(self).SetActive(state != 0);
                 return ComResult.Ok;
             }
             catch (Exception)

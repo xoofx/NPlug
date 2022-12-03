@@ -30,12 +30,12 @@ internal static unsafe partial class LibVst
             throw new NotImplementedException();
         }
 
-        private static partial ComResult onKeyDown_ccw(IPlugView* self, char key, short keyCode, short modifiers)
+        private static partial ComResult onKeyDown_ccw(IPlugView* self, ushort key, short keyCode, short modifiers)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult onKeyUp_ccw(IPlugView* self, char key, short keyCode, short modifiers)
+        private static partial ComResult onKeyUp_ccw(IPlugView* self, ushort key, short keyCode, short modifiers)
         {
             throw new NotImplementedException();
         }
@@ -50,7 +50,7 @@ internal static unsafe partial class LibVst
             throw new NotImplementedException();
         }
 
-        private static partial ComResult onFocus_ccw(IPlugView* self, bool state)
+        private static partial ComResult onFocus_ccw(IPlugView* self, byte state)
         {
             throw new NotImplementedException();
         }

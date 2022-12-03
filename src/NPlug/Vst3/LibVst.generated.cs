@@ -537,8 +537,8 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged<IString*, char*, void>)&setText16_ccw;
             vtbl[5] = (delegate*unmanaged<IString*, byte*>)&getText8_ccw;
             vtbl[6] = (delegate*unmanaged<IString*, char*>)&getText16_ccw;
-            vtbl[7] = (delegate*unmanaged<IString*, void*, bool, void>)&take_ccw;
-            vtbl[8] = (delegate*unmanaged<IString*, bool>)&isWideString_ccw;
+            vtbl[7] = (delegate*unmanaged<IString*, void*, byte, void>)&take_ccw;
+            vtbl[8] = (delegate*unmanaged<IString*, byte>)&isWideString_ccw;
         }
         
         // --------------------------------------------------------------
@@ -624,9 +624,9 @@ internal static partial class LibVst
         /// Later implementations will redirect 'take' to setText8 and setText16
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void take(void* s, [MarshalAs(UnmanagedType.U1)] bool isWide)
+        public void take(void* s, [MarshalAs(UnmanagedType.U1)] byte isWide)
         {
-            ((delegate*unmanaged<LibVst.IString*, void*, bool, void>)Vtbl[7])((LibVst.IString*)Unsafe.AsPointer(ref this), s, isWide);
+            ((delegate*unmanaged<LibVst.IString*, void*, byte, void>)Vtbl[7])((LibVst.IString*)Unsafe.AsPointer(ref this), s, isWide);
         }
         
         /// <summary>
@@ -634,9 +634,9 @@ internal static partial class LibVst
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [return:MarshalAs(UnmanagedType.U1)]
-        public bool isWideString()
+        public byte isWideString()
         {
-            return ((delegate*unmanaged<LibVst.IString*, bool>)Vtbl[8])((LibVst.IString*)Unsafe.AsPointer(ref this));
+            return ((delegate*unmanaged<LibVst.IString*, byte>)Vtbl[8])((LibVst.IString*)Unsafe.AsPointer(ref this));
         }
         
         // --------------------------------------------------------------
@@ -674,14 +674,14 @@ internal static partial class LibVst
         /// Later implementations will redirect 'take' to setText8 and setText16
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial void take_ccw(IString* self, void* s, [MarshalAs(UnmanagedType.U1)] bool isWide);
+        private static partial void take_ccw(IString* self, void* s, [MarshalAs(UnmanagedType.U1)] byte isWide);
         
         /// <summary>
         /// Returns true if the string is in unicode format, returns false if the string is ASCII
         /// </summary>
         [UnmanagedCallersOnly]
         [return:MarshalAs(UnmanagedType.U1)]
-        private static partial bool isWideString_ccw(IString* self);
+        private static partial byte isWideString_ccw(IString* self);
         
         /// <summary>
         /// DECLARE_CLASS_IID (IString, 0xF99DB7A3, 0x0FC14821, 0x800B0CF9, 0x8E348EDF)
@@ -714,7 +714,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged<IErrorContext*, bool, void>)&disableErrorUI_ccw;
+            vtbl[3] = (delegate*unmanaged<IErrorContext*, byte, void>)&disableErrorUI_ccw;
             vtbl[4] = (delegate*unmanaged<IErrorContext*, ComResult>)&errorMessageShown_ccw;
             vtbl[5] = (delegate*unmanaged<IErrorContext*, LibVst.IString*, ComResult>)&getErrorMessage_ccw;
         }
@@ -726,7 +726,7 @@ internal static partial class LibVst
         /// Tells the plug-in to not show any UI elements on errors.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial void disableErrorUI_ccw(IErrorContext* self, [MarshalAs(UnmanagedType.U1)] bool state);
+        private static partial void disableErrorUI_ccw(IErrorContext* self, [MarshalAs(UnmanagedType.U1)] byte state);
         
         /// <summary>
         /// If an error happens and disableErrorUI was not set this should return kResultTrue if the plug-in already showed a message to the user what happened.
@@ -849,9 +849,9 @@ internal static partial class LibVst
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, [MarshalAs(UnmanagedType.U1)] bool copyBytes)
+        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, [MarshalAs(UnmanagedType.U1)] byte copyBytes)
         {
-            return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, bool, ComResult>)Vtbl[5])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
+            return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, byte, ComResult>)Vtbl[5])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
         }
         
         /// <remarks>
@@ -953,6 +953,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct FVariant
     {
         /// <summary>
@@ -960,7 +961,7 @@ internal static partial class LibVst
         /// </summary>
         public ushort type;
         
-        [StructLayout(LayoutKind.Explicit)]
+        [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
         public unsafe partial struct Union
         {
             [FieldOffset(0)]
@@ -1143,9 +1144,9 @@ internal static partial class LibVst
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, [MarshalAs(UnmanagedType.U1)] bool copyBytes)
+        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, [MarshalAs(UnmanagedType.U1)] byte copyBytes)
         {
-            return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, void*, uint, bool, ComResult>)Vtbl[5])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
+            return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, void*, uint, byte, ComResult>)Vtbl[5])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
         }
         
         /// <remarks>
@@ -1392,6 +1393,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct PFactoryInfo
     {
         /// <summary>
@@ -1455,6 +1457,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct PClassInfo
     {
         /// <summary>
@@ -1625,6 +1628,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct PClassInfo2
     {
         /// <summary>
@@ -1834,6 +1838,7 @@ internal static partial class LibVst
     /// <summary>
     /// Unicode Version of Basic Information about a class provided by the plug-in
     /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct PClassInfoW
     {
         /// <summary>
@@ -2336,11 +2341,11 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged<IPlugView*, void*, LibVst.FIDString, ComResult>)&attached_ccw;
             vtbl[5] = (delegate*unmanaged<IPlugView*, ComResult>)&removed_ccw;
             vtbl[6] = (delegate*unmanaged<IPlugView*, float, ComResult>)&onWheel_ccw;
-            vtbl[7] = (delegate*unmanaged<IPlugView*, char, short, short, ComResult>)&onKeyDown_ccw;
-            vtbl[8] = (delegate*unmanaged<IPlugView*, char, short, short, ComResult>)&onKeyUp_ccw;
+            vtbl[7] = (delegate*unmanaged<IPlugView*, ushort, short, short, ComResult>)&onKeyDown_ccw;
+            vtbl[8] = (delegate*unmanaged<IPlugView*, ushort, short, short, ComResult>)&onKeyUp_ccw;
             vtbl[9] = (delegate*unmanaged<IPlugView*, LibVst.ViewRect*, ComResult>)&getSize_ccw;
             vtbl[10] = (delegate*unmanaged<IPlugView*, LibVst.ViewRect*, ComResult>)&onSize_ccw;
-            vtbl[11] = (delegate*unmanaged<IPlugView*, bool, ComResult>)&onFocus_ccw;
+            vtbl[11] = (delegate*unmanaged<IPlugView*, byte, ComResult>)&onFocus_ccw;
             vtbl[12] = (delegate*unmanaged<IPlugView*, LibVst.IPlugFrame*, ComResult>)&setFrame_ccw;
             vtbl[13] = (delegate*unmanaged<IPlugView*, ComResult>)&canResize_ccw;
             vtbl[14] = (delegate*unmanaged<IPlugView*, LibVst.ViewRect*, ComResult>)&checkSizeConstraint_ccw;
@@ -2390,7 +2395,7 @@ internal static partial class LibVst
         /// <returns>kResultTrue if the key is handled, otherwise kResultFalse. @n &lt;b&gt;Please note that kResultTrue must only be returned if the key has really been
         /// handled. &lt;/b&gt;Otherwise key command handling of the host might be blocked!</returns>
         [UnmanagedCallersOnly]
-        private static partial ComResult onKeyDown_ccw(IPlugView* self, char key, short keyCode, short modifiers);
+        private static partial ComResult onKeyDown_ccw(IPlugView* self, ushort key, short keyCode, short modifiers);
         
         /// <summary>
         /// Handling of keyboard events : Key Up.
@@ -2400,7 +2405,7 @@ internal static partial class LibVst
         /// <param name="modifiers">: any combination of KeyModifier - see @ref KeyModifier in keycodes.h</param>
         /// <returns>kResultTrue if the key is handled, otherwise return kResultFalse.</returns>
         [UnmanagedCallersOnly]
-        private static partial ComResult onKeyUp_ccw(IPlugView* self, char key, short keyCode, short modifiers);
+        private static partial ComResult onKeyUp_ccw(IPlugView* self, ushort key, short keyCode, short modifiers);
         
         /// <summary>
         /// Returns the size of the platform representation of the view.
@@ -2419,7 +2424,7 @@ internal static partial class LibVst
         /// Focus changed message.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult onFocus_ccw(IPlugView* self, [MarshalAs(UnmanagedType.U1)] bool state);
+        private static partial ComResult onFocus_ccw(IPlugView* self, [MarshalAs(UnmanagedType.U1)] byte state);
         
         /// <summary>
         /// Sets IPlugFrame object to allow the plug-in to inform the host about resizing.
@@ -2462,6 +2467,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginGUI
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct ViewRect
     {
         public int left;
@@ -3236,8 +3242,8 @@ internal static partial class LibVst
             vtbl[7] = (delegate*unmanaged<IComponent*, LibVst.MediaType, LibVst.BusDirection, int>)&getBusCount_ccw;
             vtbl[8] = (delegate*unmanaged<IComponent*, LibVst.MediaType, LibVst.BusDirection, int, LibVst.BusInfo*, ComResult>)&getBusInfo_ccw;
             vtbl[9] = (delegate*unmanaged<IComponent*, LibVst.RoutingInfo*, LibVst.RoutingInfo*, ComResult>)&getRoutingInfo_ccw;
-            vtbl[10] = (delegate*unmanaged<IComponent*, LibVst.MediaType, LibVst.BusDirection, int, bool, ComResult>)&activateBus_ccw;
-            vtbl[11] = (delegate*unmanaged<IComponent*, bool, ComResult>)&setActive_ccw;
+            vtbl[10] = (delegate*unmanaged<IComponent*, LibVst.MediaType, LibVst.BusDirection, int, byte, ComResult>)&activateBus_ccw;
+            vtbl[11] = (delegate*unmanaged<IComponent*, byte, ComResult>)&setActive_ccw;
             vtbl[12] = (delegate*unmanaged<IComponent*, LibVst.IBStream*, ComResult>)&setState_ccw;
             vtbl[13] = (delegate*unmanaged<IComponent*, LibVst.IBStream*, ComResult>)&getState_ccw;
         }
@@ -3283,13 +3289,13 @@ internal static partial class LibVst
         /// does not need to be reactivated after a IAudioProcessor::setBusArrangements call.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult activateBus_ccw(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, [MarshalAs(UnmanagedType.U1)] bool state);
+        private static partial ComResult activateBus_ccw(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, [MarshalAs(UnmanagedType.U1)] byte state);
         
         /// <summary>
         /// Activates / deactivates the component.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult setActive_ccw(IComponent* self, [MarshalAs(UnmanagedType.U1)] bool state);
+        private static partial ComResult setActive_ccw(IComponent* self, [MarshalAs(UnmanagedType.U1)] byte state);
         
         /// <summary>
         /// Sets complete state of component.
@@ -3329,6 +3335,7 @@ internal static partial class LibVst
     /// BusInfo:
     /// This is the structure used with getBusInfo, informing the host about what is a specific given bus.@n See also: Steinberg::Vst::IComponent::getBusInfo
     /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct BusInfo
     {
         /// <summary>
@@ -3388,6 +3395,7 @@ internal static partial class LibVst
     /// relation of an event-input-channel to an audio-output-bus in particular is of interest to the host
     /// (in order to relate MIDI-tracks to audio-channels)@n See also: IComponent::getRoutingInfo, @ref vst3Routing
     /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct RoutingInfo
     {
         /// <summary>
@@ -3509,6 +3517,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrpStructure representing a single Event of different types associated to a specific event (@ref kEvent) bus.
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct Event
     {
         /// <summary>
@@ -3536,7 +3545,7 @@ internal static partial class LibVst
         /// </summary>
         public ushort type;
         
-        [StructLayout(LayoutKind.Explicit)]
+        [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
         public unsafe partial struct Union
         {
             /// <summary>
@@ -3677,6 +3686,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrpPitch uses the twelve-tone equal temperament tuning (12-TET).
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct NoteOnEvent
     {
         /// <summary>
@@ -3716,6 +3726,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct NoteOffEvent
     {
         /// <summary>
@@ -3750,6 +3761,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct DataEvent
     {
         /// <summary>
@@ -3785,6 +3797,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct PolyPressureEvent
     {
         /// <summary>
@@ -3817,6 +3830,7 @@ internal static partial class LibVst
     /// The predefined types have a predefined mapping of the normalized values (see @ref NoteExpressionTypeIDs)
     /// </summary>
     /// <seealso cref="INoteExpressionController"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct NoteExpressionValueEvent
     {
         /// <summary>
@@ -3845,6 +3859,7 @@ internal static partial class LibVst
     /// </summary>
     /// <seealso cref="NoteExpressionTypeInfo"/>
     /// <seealso cref="INoteExpressionController"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct NoteExpressionTextEvent
     {
         /// <summary>
@@ -3875,6 +3890,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct ChordEvent
     {
         /// <summary>
@@ -3910,6 +3926,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct ScaleEvent
     {
         /// <summary>
@@ -3940,6 +3957,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp- [released: 3.6.12]This kind of event is reserved for generating MIDI CC as output event for kEvent Bus during the process call.
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct LegacyMIDICCOutEvent
     {
         /// <summary>
@@ -4229,7 +4247,7 @@ internal static partial class LibVst
             vtbl[5] = (delegate*unmanaged<IAudioProcessor*, int, ComResult>)&canProcessSampleSize_ccw;
             vtbl[6] = (delegate*unmanaged<IAudioProcessor*, uint>)&getLatencySamples_ccw;
             vtbl[7] = (delegate*unmanaged<IAudioProcessor*, LibVst.ProcessSetup*, ComResult>)&setupProcessing_ccw;
-            vtbl[8] = (delegate*unmanaged<IAudioProcessor*, bool, ComResult>)&setProcessing_ccw;
+            vtbl[8] = (delegate*unmanaged<IAudioProcessor*, byte, ComResult>)&setProcessing_ccw;
             vtbl[9] = (delegate*unmanaged<IAudioProcessor*, LibVst.ProcessData*, ComResult>)&process_ccw;
             vtbl[10] = (delegate*unmanaged<IAudioProcessor*, uint>)&getTailSamples_ccw;
         }
@@ -4303,7 +4321,7 @@ internal static partial class LibVst
         /// was called).
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult setProcessing_ccw(IAudioProcessor* self, [MarshalAs(UnmanagedType.U1)] bool state);
+        private static partial ComResult setProcessing_ccw(IAudioProcessor* self, [MarshalAs(UnmanagedType.U1)] byte state);
         
         /// <summary>
         /// The Process call, where all information (parameter changes, event, audio buffer) are passed.
@@ -4656,6 +4674,7 @@ internal static partial class LibVst
     /// Audio processing setup.
     /// </summary>
     /// <seealso cref="IAudioProcessor::setupProcessing"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct ProcessSetup
     {
         /// <summary>
@@ -4688,6 +4707,7 @@ internal static partial class LibVst
     /// with bus indices used in IComponent::getBusInfo of media type kAudio.
     /// </summary>
     /// <seealso cref="AudioBusBuffers, IParameterChanges, IEventList, ProcessContext, IProcessContextRequirements"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct ProcessData
     {
         /// <summary>
@@ -4767,6 +4787,7 @@ internal static partial class LibVst
     /// .
     /// </summary>
     /// <seealso cref="ProcessData"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct AudioBusBuffers
     {
         /// <summary>
@@ -4779,7 +4800,7 @@ internal static partial class LibVst
         /// </summary>
         public ulong silenceFlags;
         
-        [StructLayout(LayoutKind.Explicit)]
+        [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
         public unsafe partial struct Union
         {
             /// <summary>
@@ -4812,6 +4833,7 @@ internal static partial class LibVst
     /// this problem.
     /// </summary>
     /// <seealso cref="IAudioProcessor, ProcessData"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct ProcessContext
     {
         /// <summary>
@@ -4975,6 +4997,7 @@ internal static partial class LibVst
     /// A chord is described with a key note, a root note and the@copydoc chordMask
     /// </summary>
     /// <seealso cref="ProcessContext"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct Chord
     {
         /// <summary>
@@ -5024,6 +5047,7 @@ internal static partial class LibVst
     /// - 59.94 fps	     is framesPerSecond: 60 and flags: kPullDownRate
     /// - 60 fps         is framesPerSecond: 60 and flags: 0
     /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct FrameRate
     {
         /// <summary>
@@ -5404,6 +5428,7 @@ internal static partial class LibVst
     /// <summary>
     /// IContextMenuItem is an entry element of the context menu.
     /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct IContextMenuItem
     {
         /// <summary>
@@ -5905,9 +5930,9 @@ internal static partial class LibVst
         /// if true the host should apply a save before quitting.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setDirty([MarshalAs(UnmanagedType.U1)] bool state)
+        public ComResult setDirty([MarshalAs(UnmanagedType.U1)] byte state)
         {
-            return ((delegate*unmanaged<LibVst.IComponentHandler2*, bool, ComResult>)Vtbl[3])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this), state);
+            return ((delegate*unmanaged<LibVst.IComponentHandler2*, byte, ComResult>)Vtbl[3])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this), state);
         }
         
         /// <summary>
@@ -6023,9 +6048,9 @@ internal static partial class LibVst
         /// request the host to activate or deactivate a specific bus.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult requestBusActivation(LibVst.MediaType type, LibVst.BusDirection dir, int index, [MarshalAs(UnmanagedType.U1)] bool state)
+        public ComResult requestBusActivation(LibVst.MediaType type, LibVst.BusDirection dir, int index, [MarshalAs(UnmanagedType.U1)] byte state)
         {
-            return ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, LibVst.MediaType, LibVst.BusDirection, int, bool, ComResult>)Vtbl[3])((LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this), type, dir, index, state);
+            return ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, LibVst.MediaType, LibVst.BusDirection, int, byte, ComResult>)Vtbl[3])((LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this), type, dir, index, state);
         }
         
         /// <summary>
@@ -6329,6 +6354,7 @@ internal static partial class LibVst
     /// A parameter info describes a parameter of the controller.
     /// The id must always be the same for a parameter as this uniquely identifies the parameter.
     /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct ParameterInfo
     {
         /// <summary>
@@ -6443,8 +6469,8 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged<IEditController2*, LibVst.KnobMode, ComResult>)&setKnobMode_ccw;
-            vtbl[4] = (delegate*unmanaged<IEditController2*, bool, ComResult>)&openHelp_ccw;
-            vtbl[5] = (delegate*unmanaged<IEditController2*, bool, ComResult>)&openAboutBox_ccw;
+            vtbl[4] = (delegate*unmanaged<IEditController2*, byte, ComResult>)&openHelp_ccw;
+            vtbl[5] = (delegate*unmanaged<IEditController2*, byte, ComResult>)&openAboutBox_ccw;
         }
         
         // --------------------------------------------------------------
@@ -6463,7 +6489,7 @@ internal static partial class LibVst
         /// Return kResultFalse means not supported function.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult openHelp_ccw(IEditController2* self, [MarshalAs(UnmanagedType.U1)] bool onlyCheck);
+        private static partial ComResult openHelp_ccw(IEditController2* self, [MarshalAs(UnmanagedType.U1)] byte onlyCheck);
         
         /// <summary>
         /// Host could ask to open the plug-in about box.
@@ -6471,7 +6497,7 @@ internal static partial class LibVst
         /// Return kResultFalse means not supported function.
         /// </summary>
         [UnmanagedCallersOnly]
-        private static partial ComResult openAboutBox_ccw(IEditController2* self, [MarshalAs(UnmanagedType.U1)] bool onlyCheck);
+        private static partial ComResult openAboutBox_ccw(IEditController2* self, [MarshalAs(UnmanagedType.U1)] byte onlyCheck);
         
         /// <summary>
         /// DECLARE_CLASS_IID (IEditController2, 0x7F4EFE59, 0xF3204967, 0xAC27A3AE, 0xAFB63038)
@@ -6721,6 +6747,7 @@ internal static partial class LibVst
     /// This structure is used by the method @ref INoteExpressionController::getNoteExpressionInfo.
     /// </summary>
     /// <seealso cref="INoteExpressionController"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct NoteExpressionTypeInfo
     {
         /// <summary>
@@ -6794,6 +6821,7 @@ internal static partial class LibVst
     /// and a stepCount when the given NoteExpressionTypeID is limited to discrete values (like on/off state).
     /// </summary>
     /// <seealso cref="NoteExpressionTypeInfo"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct NoteExpressionValueDescription
     {
         /// <summary>
@@ -6878,6 +6906,7 @@ internal static partial class LibVst
     /// This structure is used by the method @ref IKeyswitchController::getKeyswitchInfo.
     /// </summary>
     /// <seealso cref="IKeyswitchController"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct KeyswitchInfo
     {
         /// <summary>
@@ -7247,6 +7276,7 @@ internal static partial class LibVst
     /// - [mandatory]Informs the plug-in that a VST 3 to VST 2 wrapper is used between the plug-in and the real host.
     /// Implemented by the VST 2 Wrapper.
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct IVst3ToVst2Wrapper
     {
         /// <summary>
@@ -7275,6 +7305,7 @@ internal static partial class LibVst
     /// - [mandatory]Informs the plug-in that a VST 3 to AU wrapper is used between the plug-in and the real host.
     /// Implemented by the AU Wrapper.
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct IVst3ToAUWrapper
     {
         /// <summary>
@@ -7303,6 +7334,7 @@ internal static partial class LibVst
     /// - [mandatory]Informs the plug-in that a VST 3 to AAX wrapper is used between the plug-in and the real host.
     /// Implemented by the AAX Wrapper.
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct IVst3ToAAXWrapper
     {
         /// <summary>
@@ -7383,9 +7415,9 @@ internal static partial class LibVst
         /// <param name="state">true to enable, false to disable MPE processing</param>
         /// <returns>kResultTrue on success</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult enableMPEInputProcessing([MarshalAs(UnmanagedType.U1)] bool state)
+        public ComResult enableMPEInputProcessing([MarshalAs(UnmanagedType.U1)] byte state)
         {
-            return ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, bool, ComResult>)Vtbl[3])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this), state);
+            return ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, byte, ComResult>)Vtbl[3])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this), state);
         }
         
         /// <summary>
@@ -7659,7 +7691,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged<IInterAppAudioConnectionNotification*, bool, void>)&onInterAppAudioConnectionStateChange_ccw;
+            vtbl[3] = (delegate*unmanaged<IInterAppAudioConnectionNotification*, byte, void>)&onInterAppAudioConnectionStateChange_ccw;
         }
         
         // --------------------------------------------------------------
@@ -7670,7 +7702,7 @@ internal static partial class LibVst
         /// </summary>
         /// <param name="newState">true if an Inter-App Audio connection is established, otherwise false</param>
         [UnmanagedCallersOnly]
-        private static partial void onInterAppAudioConnectionStateChange_ccw(IInterAppAudioConnectionNotification* self, [MarshalAs(UnmanagedType.U1)] bool newState);
+        private static partial void onInterAppAudioConnectionStateChange_ccw(IInterAppAudioConnectionNotification* self, [MarshalAs(UnmanagedType.U1)] byte newState);
         
         /// <summary>
         /// DECLARE_CLASS_IID (IInterAppAudioConnectionNotification, 0x6020C72D, 0x5FC24AA1, 0xB0950DB5, 0xD7D6D5CF)
@@ -7998,6 +8030,7 @@ internal static partial class LibVst
     /// PhysicalUIMapList describes a list of PhysicalUIMap
     /// </summary>
     /// <seealso cref="INoteExpressionPhysicalUIMapping"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct PhysicalUIMapList
     {
         /// <summary>
@@ -8016,6 +8049,7 @@ internal static partial class LibVst
     /// It is used in PhysicalUIMapList.
     /// </summary>
     /// <seealso cref="PhysicalUIMapList "/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct PhysicalUIMap
     {
         /// <summary>
@@ -8378,6 +8412,7 @@ internal static partial class LibVst
     /// </summary>
     /// <seealso cref="IXmlRepresentationController "/>
     /// <seealso cref="IXmlRepresentationController::getXmlRepresentationStream."/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct RepresentationInfo
     {
         /// <summary>
@@ -8584,6 +8619,7 @@ internal static partial class LibVst
     ///  pluginBaseEach interface declares its identifier as static member inside the interface
     /// namespace (e.g. FUnknown::iid).
     /// </remarks>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct FUID
     {
         /// <summary>
@@ -9092,6 +9128,7 @@ internal static partial class LibVst
     /// Basic Unit Description.
     /// </summary>
     /// <seealso cref="IUnitInfo"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct UnitInfo
     {
         /// <summary>
@@ -9119,6 +9156,7 @@ internal static partial class LibVst
     /// Basic Program List Description.
     /// </summary>
     /// <seealso cref="IUnitInfo"/>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public unsafe partial struct ProgramListInfo
     {
         /// <summary>

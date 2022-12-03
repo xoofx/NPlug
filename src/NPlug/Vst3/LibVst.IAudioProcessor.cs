@@ -93,11 +93,11 @@ internal static unsafe partial class LibVst
             }
         }
 
-        private static partial ComResult setProcessing_ccw(IAudioProcessor* self, bool state)
+        private static partial ComResult setProcessing_ccw(IAudioProcessor* self, byte state)
         {
             try
             {
-                Get(self).SetProcessing(state);
+                Get(self).SetProcessing(state != 0);
                 return ComResult.Ok;
             }
             catch (Exception)

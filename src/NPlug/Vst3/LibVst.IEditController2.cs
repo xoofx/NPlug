@@ -15,12 +15,12 @@ internal static unsafe partial class LibVst
             throw new NotImplementedException();
         }
 
-        private static partial ComResult openHelp_ccw(IEditController2* self, bool onlyCheck)
+        private static partial ComResult openHelp_ccw(IEditController2* self, byte onlyCheck)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult openAboutBox_ccw(IEditController2* self, bool onlyCheck)
+        private static partial ComResult openAboutBox_ccw(IEditController2* self, byte onlyCheck)
         {
             throw new NotImplementedException();
         }

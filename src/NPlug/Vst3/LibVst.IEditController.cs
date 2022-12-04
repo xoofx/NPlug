@@ -2,6 +2,7 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using System;
 using System.Runtime.CompilerServices;
 
 namespace NPlug.Vst3;
@@ -167,8 +168,7 @@ internal static unsafe partial class LibVst
         {
             try
             {
-                // TODO
-                Get(self).SetControllerHost(new AudioControllerHost());
+                Get(self).SetControllerHost(new AudioControllerHostProxy(handler));
                 return ComResult.Ok;
             }
             catch
@@ -191,6 +191,173 @@ internal static unsafe partial class LibVst
             {
                 return (IPlugView*)0;
             }
+        }
+    }
+
+    private class AudioControllerHostProxy : AudioControllerHost
+    {
+        private readonly IComponentHandler* _handler;
+        private readonly IComponentHandler2* _handler2;
+        private readonly IComponentHandler3* _handler3;
+        private readonly IComponentHandlerBusActivation* _busActivation;
+        private readonly IProgress* _progress;
+        private readonly IUnitHandler* _unitHandler;
+
+        public AudioControllerHostProxy(IComponentHandler* handler)
+        {
+            _handler = handler;
+
+            // Query supported handlers for IComponentHandler
+            var pUnk = (void*)0;
+            _handler->queryInterface(IComponentHandler2.NativeGuid, &pUnk);
+            _handler2 = (IComponentHandler2*)pUnk;
+
+            pUnk = (void*)0;
+            _handler->queryInterface(IComponentHandler3.NativeGuid, &pUnk);
+            _handler3 = (IComponentHandler3*)pUnk;
+
+            pUnk = (void*)0;
+            _handler->queryInterface(IComponentHandlerBusActivation.NativeGuid, &pUnk);
+            _busActivation = (IComponentHandlerBusActivation*)pUnk;
+
+            pUnk = (void*)0;
+            _handler->queryInterface(IProgress.NativeGuid, &pUnk);
+            _progress = (IProgress*)pUnk;
+
+            pUnk = (void*)0;
+            _handler->queryInterface(IUnitHandler.NativeGuid, &pUnk);
+            _unitHandler = (IUnitHandler*)pUnk;
+        }
+        
+        public override void BeginEdit(AudioParameterId id)
+        {
+            _handler->beginEdit(id);
+        }
+
+        public override void PerformEdit(AudioParameterId id, double valueNormalized)
+        {
+            _handler->performEdit(id, valueNormalized);
+        }
+
+        public override void EndEdit(AudioParameterId id)
+        {
+            _handler->endEdit(id);
+        }
+
+        public override void RestartComponent(AudioRestartFlags flags)
+        {
+            _handler->restartComponent((int)flags);
+        }
+
+        public override bool IsAdvancedEditSupported => _handler2 != null;
+
+        public override void SetDirty(bool state)
+        {
+            ThrowIfNotIsAdvancedEditSupported();
+            _handler2->setDirty(state ? (byte)1 : (byte)0);
+        }
+
+        public override void RequestOpenEditor(string name)
+        {
+            ThrowIfNotIsAdvancedEditSupported();
+            using var tempUtf8 = new TempUtf8String(name);
+            fixed (byte* pBuffer = tempUtf8.Buffer)
+            {
+                _handler2->requestOpenEditor(new FIDString() { Value = pBuffer });
+            }
+        }
+
+        public override void StartGroupEdit()
+        {
+            ThrowIfNotIsAdvancedEditSupported();
+            _handler2->startGroupEdit();
+        }
+
+        public override void FinishGroupEdit()
+        {
+            ThrowIfNotIsAdvancedEditSupported();
+            _handler2->finishGroupEdit();
+        }
+
+        private void ThrowIfNotIsAdvancedEditSupported()
+        {
+            if (!IsAdvancedEditSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsAdvancedEditSupported)} is false");
+        }
+
+        public override bool IsCreateContextMenuSupported => _handler3 != null;
+
+        public override AudioContextMenu CreateContextMenu(IAudioPluginView plugView, AudioParameterId paramID)
+        {
+            ThrowIfNotIsCreateContextMenuSupported();
+            //_handler3->createContextMenu()
+            throw new NotImplementedException();
+        }
+
+        private void ThrowIfNotIsCreateContextMenuSupported()
+        {
+            if (!IsCreateContextMenuSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsCreateContextMenuSupported)} is false");
+        }
+
+        public override bool IsRequestBusActivationSupported => _busActivation != null;
+
+        public override void RequestBusActivation(AudioBusMediaType type, AudioBusDirection dir, int index, bool state)
+        {
+            ThrowIfNotIsRequestBusActivationSupported();
+            _busActivation->requestBusActivation(new MediaType((int)type), new BusDirection((int)dir), index, state ? (byte)1 : (byte)0);
+        }
+
+        private void ThrowIfNotIsRequestBusActivationSupported()
+        {
+            if (!IsRequestBusActivationSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsRequestBusActivationSupported)} is false");
+        }
+
+        public override bool IsProgressSupported => _progress != null;
+
+        public override AudioProgressId StartProgress(AudioProgressType type, string? optionalDescription)
+        {
+            ThrowIfNotIsProgressSupported();
+            fixed (char* pOpt = optionalDescription)
+            {
+                AudioProgressId id = default;
+                _progress->start((IProgress.ProgressType)type, pOpt, (ID*)&id);
+                return id;
+            }
+        }
+
+        public override void UpdateProgress(AudioProgressId id, double normValue)
+        {
+            ThrowIfNotIsProgressSupported();
+            _progress->update(new ID(id.Value), normValue);
+        }
+
+        public override void FinishProgress(AudioProgressId id)
+        {
+            ThrowIfNotIsProgressSupported();
+            _progress->finish(new ID(id.Value));
+        }
+
+        private void ThrowIfNotIsProgressSupported()
+        {
+            if (!IsProgressSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsProgressSupported)} is false");
+        }
+
+        public override bool IsUnitAndProgramListSupported => _unitHandler != null;
+
+        public override void NotifyUnitSelection(AudioUnitId unitId)
+        {
+            ThrowIfNotIsUnitAndProgramListSupported();
+            _unitHandler->notifyUnitSelection(new UnitID(unitId.Value));
+        }
+
+        public override void NotifyProgramListChange(AudioProgramListId listId, int programIndex)
+        {
+            ThrowIfNotIsUnitAndProgramListSupported();
+            _unitHandler->notifyProgramListChange(new ProgramListID(listId.Value), programIndex);
+        }
+        
+        private void ThrowIfNotIsUnitAndProgramListSupported()
+        {
+            if (!IsUnitAndProgramListSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsUnitAndProgramListSupported)} is false");
         }
     }
 }

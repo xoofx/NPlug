@@ -167,8 +167,7 @@ public abstract class AudioControllerHost
     public abstract void NotifyProgramListChange(AudioProgramListId listId, int programIndex);
 }
 
-public record struct AudioProgressId(int Value);
-
+public record struct AudioProgressId(ulong Value);
 
 /// <summary>
 /// 

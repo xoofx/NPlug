@@ -68,7 +68,7 @@ internal static unsafe partial class LibVst
         {
             try
             {
-                var parameter = Get(self).GetParameter(paramIndex);
+                var parameter = Get(self).GetParameterInfo(paramIndex);
                 info->id = new ParamID(unchecked((uint)parameter.Id.Value));
                 info->title.CopyFrom(parameter.Title);
                 info->shortTitle.CopyFrom(parameter.ShortTitle);

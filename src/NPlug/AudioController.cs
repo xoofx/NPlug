@@ -29,7 +29,7 @@ public abstract class AudioController : AudioPluginComponent, IAudioController
         get { throw new NotImplementedException(); }
     }
 
-    AudioParameter IAudioController.GetParameter(int paramIndex)
+    AudioParameterInfo IAudioController.GetParameterInfo(int paramIndex)
     {
         throw new NotImplementedException();
     }

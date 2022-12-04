@@ -9,9 +9,9 @@ namespace NPlug;
 /// A parameter info describes a parameter of the controller.
 /// The id must always be the same for a parameter as this uniquely identifies the parameter.
 /// </summary>
-public sealed class AudioParameter
+public sealed class AudioParameterInfo
 {
-    public AudioParameter(AudioParameterId id, string title, string shortTitle, string units)
+    public AudioParameterInfo(AudioParameterId id, string title, string shortTitle, string units)
     {
         Id = id;
         Title = title;

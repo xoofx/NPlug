@@ -12,7 +12,7 @@ public interface IAudioController : IAudioPluginComponent
     void SetState(Stream state);
     void GetState(Stream state);
     int ParameterCount { get; }
-    AudioParameter GetParameter(int paramIndex);
+    AudioParameterInfo GetParameterInfo(int paramIndex);
     string GetParameterStringByValue(AudioParameterId id, double valueNormalized);
     double GetParameterValueByString(AudioParameterId id, string valueAsString);
     double NormalizedParameterToPlain(AudioParameterId id, double valueNormalized);

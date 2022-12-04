@@ -115,8 +115,7 @@ internal static unsafe partial class LibVst
         {
             try
             {
-                // TODO: cache from AudioHostApplication
-                Get(self).SetState(new IBStreamClient() { NativeStream = state });
+                Get(self).SetState(IBStreamClient.GetStream(state));
                 return ComResult.Ok;
             }
             catch (Exception)
@@ -129,8 +128,7 @@ internal static unsafe partial class LibVst
         {
             try
             {
-                // TODO: cache from AudioHostApplication
-                Get(self).GetState(new IBStreamClient() { NativeStream = state });
+                Get(self).GetState(IBStreamClient.GetStream(state));
                 return ComResult.Ok;
             }
             catch (Exception)

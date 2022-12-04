@@ -51,6 +51,6 @@ public readonly ref struct AudioParameterChanges
     }
 }
 
-public record struct AudioParameterId(uint Value);
+public record struct AudioParameterId(int Value);
 
-public record struct AudioParameterValue(double Value);
+public record struct AudioUnitId(int Value);

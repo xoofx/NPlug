@@ -10,99 +10,6 @@ namespace NPlug.Vst3;
 
 internal static unsafe partial class LibVst
 {
-    public sealed class AudioParameterChangesVst : IAudioParameterChangesBackend
-    {
-        public static readonly AudioParameterChangesVst Instance = new AudioParameterChangesVst();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private IParameterChanges* Get(in AudioParameterChanges parameterChanges) => (IParameterChanges*)parameterChanges.NativeContext;
-
-        public int GetParameterCount(in AudioParameterChanges parameterChanges)
-        {
-            return Get(parameterChanges)->getParameterCount();
-        }
-
-        public AudioParameterValueQueue GetParameterData(in AudioParameterChanges parameterChanges, int index)
-        {
-            var queue = Get(parameterChanges)->getParameterData(index);
-            return new AudioParameterValueQueue(AudioParameterValueQueueVst.Instance, (IntPtr)queue);
-        }
-
-        public AudioParameterValueQueue AddParameterData(in AudioParameterChanges parameterChanges, AudioParameterId parameterId, out int index)
-        {
-            var localIndex = 0;
-            var queue = Get(parameterChanges)->addParameterData((ParamID*)&parameterId, &localIndex);
-            index = localIndex;
-            return new AudioParameterValueQueue(AudioParameterValueQueueVst.Instance, (IntPtr)queue);
-        }
-    }
-
-    public sealed class AudioParameterValueQueueVst : IAudioParameterValueQueueBackend
-    {
-        public static readonly AudioParameterValueQueueVst Instance = new AudioParameterValueQueueVst();
-
-        public AudioParameterId GetParameterId(in AudioParameterValueQueue parameterValueQueue)
-        {
-            return new AudioParameterId(Get(parameterValueQueue)->getParameterId().Value);
-        }
-
-        public int GetPointCount(in AudioParameterValueQueue parameterValueQueue)
-        {
-            return Get(parameterValueQueue)->getPointCount();
-        }
-
-        public AudioParameterValue GetPoint(in AudioParameterValueQueue parameterValueQueue, int index, out int sampleOffset)
-        {
-            var localSampleOffset = 0;
-            ParamValue localValue = default;
-            Get(parameterValueQueue)->getPoint(index, &localSampleOffset, &localValue);
-            sampleOffset = localSampleOffset;
-            return new AudioParameterValue(localValue.Value);
-        }
-
-        public int AddPoint(in AudioParameterValueQueue parameterValueQueue, int sampleOffset, AudioParameterValue parameterValue)
-        {
-            var localIndex = 0;
-            if (Get(parameterValueQueue)->addPoint(sampleOffset, new ParamValue(parameterValue.Value), &localIndex))
-            {
-                return localIndex;
-            }
-            return -1;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IParamValueQueue* Get(in AudioParameterValueQueue parameterValueQueue) => (IParamValueQueue*)parameterValueQueue.NativeContext;
-    }
-
-    public sealed class AudioEventListVst : IAudioEventListBackend
-    {
-        public static readonly AudioEventListVst Instance = new AudioEventListVst();
-
-        public int GetEventCount(in AudioEventList eventList)
-        {
-            return Get(eventList)->getEventCount();
-        }
-
-        public bool TryGetEvent(in AudioEventList eventList, int index, out AudioEvent evt)
-        {
-            fixed (void* pEvent = &evt)
-            {
-                return Get(eventList)->getEvent(index, (Event*)pEvent);
-            }
-        }
-
-        public bool TryAddEvent(in AudioEventList eventList, in AudioEvent evt)
-        {
-            fixed (void* pEvent = &evt)
-            {
-                return Get(eventList)->addEvent((Event*)pEvent);
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IEventList* Get(in AudioEventList eventList) => (IEventList*)eventList.NativeContext;
-    }
-
     public partial struct IAudioProcessor
     {
 
@@ -238,5 +145,98 @@ internal static unsafe partial class LibVst
                 return 0;
             }
         }
+    }
+
+    public sealed class AudioParameterChangesVst : IAudioParameterChangesBackend
+    {
+        public static readonly AudioParameterChangesVst Instance = new AudioParameterChangesVst();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private IParameterChanges* Get(in AudioParameterChanges parameterChanges) => (IParameterChanges*)parameterChanges.NativeContext;
+
+        public int GetParameterCount(in AudioParameterChanges parameterChanges)
+        {
+            return Get(parameterChanges)->getParameterCount();
+        }
+
+        public AudioParameterValueQueue GetParameterData(in AudioParameterChanges parameterChanges, int index)
+        {
+            var queue = Get(parameterChanges)->getParameterData(index);
+            return new AudioParameterValueQueue(AudioParameterValueQueueVst.Instance, (IntPtr)queue);
+        }
+
+        public AudioParameterValueQueue AddParameterData(in AudioParameterChanges parameterChanges, AudioParameterId parameterId, out int index)
+        {
+            var localIndex = 0;
+            var queue = Get(parameterChanges)->addParameterData((ParamID*)&parameterId, &localIndex);
+            index = localIndex;
+            return new AudioParameterValueQueue(AudioParameterValueQueueVst.Instance, (IntPtr)queue);
+        }
+    }
+
+    public sealed class AudioParameterValueQueueVst : IAudioParameterValueQueueBackend
+    {
+        public static readonly AudioParameterValueQueueVst Instance = new AudioParameterValueQueueVst();
+
+        public AudioParameterId GetParameterId(in AudioParameterValueQueue parameterValueQueue)
+        {
+            return new AudioParameterId(unchecked((int)Get(parameterValueQueue)->getParameterId().Value));
+        }
+
+        public int GetPointCount(in AudioParameterValueQueue parameterValueQueue)
+        {
+            return Get(parameterValueQueue)->getPointCount();
+        }
+
+        public double GetPoint(in AudioParameterValueQueue parameterValueQueue, int index, out int sampleOffset)
+        {
+            var localSampleOffset = 0;
+            ParamValue localValue = default;
+            Get(parameterValueQueue)->getPoint(index, &localSampleOffset, &localValue);
+            sampleOffset = localSampleOffset;
+            return localValue.Value;
+        }
+
+        public int AddPoint(in AudioParameterValueQueue parameterValueQueue, int sampleOffset, double parameterValue)
+        {
+            var localIndex = 0;
+            if (Get(parameterValueQueue)->addPoint(sampleOffset, new ParamValue(parameterValue), &localIndex))
+            {
+                return localIndex;
+            }
+            return -1;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IParamValueQueue* Get(in AudioParameterValueQueue parameterValueQueue) => (IParamValueQueue*)parameterValueQueue.NativeContext;
+    }
+
+    public sealed class AudioEventListVst : IAudioEventListBackend
+    {
+        public static readonly AudioEventListVst Instance = new AudioEventListVst();
+
+        public int GetEventCount(in AudioEventList eventList)
+        {
+            return Get(eventList)->getEventCount();
+        }
+
+        public bool TryGetEvent(in AudioEventList eventList, int index, out AudioEvent evt)
+        {
+            fixed (void* pEvent = &evt)
+            {
+                return Get(eventList)->getEvent(index, (Event*)pEvent);
+            }
+        }
+
+        public bool TryAddEvent(in AudioEventList eventList, in AudioEvent evt)
+        {
+            fixed (void* pEvent = &evt)
+            {
+                return Get(eventList)->addEvent((Event*)pEvent);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IEventList* Get(in AudioEventList eventList) => (IEventList*)eventList.NativeContext;
     }
 }

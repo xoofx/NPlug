@@ -4,11 +4,11 @@
 
 namespace NPlug;
 
-public abstract class AudioPlugin : IAudioPlugin, IAudioConnectionPoint
+public abstract class AudioPluginComponent : IAudioPluginComponent, IAudioConnectionPoint
 {
     private IAudioConnectionPoint? _connectionPoint;
 
-    protected AudioHostApplication? Host { get; private set; }
+    public AudioHostApplication? Host { get; private set; }
     
     protected virtual void Terminate()
     {
@@ -18,7 +18,7 @@ public abstract class AudioPlugin : IAudioPlugin, IAudioConnectionPoint
     {
     }
 
-    bool IAudioPlugin.Initialize(AudioHostApplication hostApplication)
+    bool IAudioPluginComponent.Initialize(AudioHostApplication hostApplication)
     {
         if (InitializeInternal(hostApplication))
         {
@@ -36,7 +36,7 @@ public abstract class AudioPlugin : IAudioPlugin, IAudioConnectionPoint
         Host = null;
     }
     
-    void IAudioPlugin.Terminate()
+    void IAudioPluginComponent.Terminate()
     {
         try
         {

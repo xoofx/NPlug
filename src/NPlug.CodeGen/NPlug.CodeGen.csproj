@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -20,6 +20,8 @@
     <Reference Include="CppAst">
       <HintPath>..\..\..\CppAst\src\CppAst\bin\Debug\netstandard2.0\CppAst.dll</HintPath>
     </Reference>
+    </ItemGroup>-->
+  <!--<ItemGroup>
     <Reference Include="CppAst.CodeGen">
       <HintPath>..\..\..\CppAst.CodeGen\src\CppAst.CodeGen\bin\Debug\netstandard2.0\CppAst.CodeGen.dll</HintPath>
     </Reference>

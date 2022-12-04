@@ -8,6 +8,6 @@ public interface IAudioParameterValueQueueBackend
 {
     AudioParameterId GetParameterId(in AudioParameterValueQueue queue);
     int GetPointCount(in AudioParameterValueQueue queue);
-    AudioParameterValue GetPoint(in AudioParameterValueQueue queue, int index, out int sampleOffset);
-    int AddPoint(in AudioParameterValueQueue queue, int sampleOffset, AudioParameterValue parameterValue);
+    double GetPoint(in AudioParameterValueQueue queue, int index, out int sampleOffset);
+    int AddPoint(in AudioParameterValueQueue queue, int sampleOffset, double parameterValue);
 }

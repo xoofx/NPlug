@@ -23,12 +23,12 @@ public readonly ref struct AudioParameterValueQueue
 
     public int PointCount => _backend?.GetPointCount(this) ?? 0;
 
-    public AudioParameterValue GetPoint(int index, out int sampleOffset)
+    public double GetPoint(int index, out int sampleOffset)
     {
         return GetSafeBackend().GetPoint(this, index, out sampleOffset);
     }
 
-    public int AddPoint(int sampleOffset, AudioParameterValue parameterValue)
+    public int AddPoint(int sampleOffset, double parameterValue)
     {
         return GetSafeBackend().AddPoint(this, sampleOffset, parameterValue);
     }

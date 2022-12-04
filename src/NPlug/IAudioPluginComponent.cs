@@ -11,7 +11,7 @@ namespace NPlug;
 /// A list of supported host context interfaces should be included in the documentation
 /// of a specific category. 
 /// </summary>
-public interface IAudioPlugin
+public interface IAudioPluginComponent
 {
     /// <summary>
     /// The host passes a number of interfaces as context to initialize the plug-in class.
@@ -25,6 +25,11 @@ public interface IAudioPlugin
     /// </remarks>
     bool Initialize(AudioHostApplication hostApplication);
 
+    /// <summary>
+    /// Gets the associated host, Must be not null after a successful <see cref="Initialize"/>
+    /// </summary>
+    AudioHostApplication? Host { get; }
+    
     /// <summary>
     /// This function is called before the plug-in is unloaded and can be used for
     /// cleanups.You have to release all references to any host application interfaces.

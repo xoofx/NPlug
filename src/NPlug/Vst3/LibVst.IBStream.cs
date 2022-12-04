@@ -12,8 +12,22 @@ internal static unsafe partial class LibVst
     /// <summary>
     /// Proxy implementation to connect a <see cref="Stream"/> to an <see cref="IBStream"/>.
     /// </summary>
-    public class IBStreamClient : Stream
+    public sealed class IBStreamClient : Stream
     {
+        [ThreadStatic]
+        private static IBStreamClient? _stream;
+        internal static IBStreamClient GetStream(IBStream* state)
+        {
+            var stream = _stream;
+            if (stream is null)
+            {
+                stream = new IBStreamClient();
+                _stream = stream;
+            }
+            stream.NativeStream = state;
+            return stream;
+        }
+
         public IBStream* NativeStream { get; set; }
         
         public override void Flush()

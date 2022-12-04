@@ -20,10 +20,10 @@ internal static unsafe partial class LibVst
         // Global map VST internal types to public types
         private static readonly Dictionary<Guid, TryQueryInterfaceDelegate> MapGuidToDelegate = new()
         {
-            { IPluginBase.IId, TryMatchQueryInterface<IPluginBase, IAudioPlugin> },
-            { IComponent.IId, TryMatchQueryInterface<IComponent, IAudioProcessor> },
+            { IPluginBase.IId, TryMatchQueryInterface<IPluginBase, IAudioPluginComponent> },
+            { IComponent.IId, TryMatchQueryInterface<IComponent, NPlug.IAudioProcessor> },
             { IAudioProcessor.IId, TryMatchQueryInterface<IComponent, NPlug.IAudioProcessor> },
-            { IConnectionPoint.IId, TryMatchQueryInterface<IComponent, IAudioProcessor> },
+            { IConnectionPoint.IId, TryMatchQueryInterface<IComponent, IAudioConnectionPoint> },
         };
 
         private static partial ComResult queryInterface_ccw(FUnknown* pObj, Guid* iid, void** pInterface)
@@ -33,11 +33,11 @@ internal static unsafe partial class LibVst
             return MapGuidToDelegate.TryGetValue(*iid, out var match) && match(iid, bridge, pInterface) ? ComResult.Ok : ComResult.NoInterface;
         }
 
-        private static bool TryMatchQueryInterface<TNative, TUser>(Guid* iid, ComObject bridge, void** pInterface) where TNative : INativeGuid, INativeVtbl
+        private static bool TryMatchQueryInterface<TNative, TUser>(Guid* iid, ComObject bridge, void** pInterface) where TNative : unmanaged, INativeGuid, INativeVtbl
         {
             if (bridge.Target is TUser)
             {
-                *pInterface = bridge.GetOrComObjectHandle<TNative>();
+                *pInterface = (void*)bridge.GetOrCreateComInterface<TNative>();
                 return true;
             }
             return false;

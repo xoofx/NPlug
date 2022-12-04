@@ -43,6 +43,7 @@ internal static partial class LibVst
             Manager = manager;
             _handles = (ComObjectHandle*)NativeMemory.AllocZeroed((nuint)(sizeof(ComObjectHandle) * MaxInterfacesPerObject));
             _thisHandle = GCHandle.Alloc(this);
+            _refCount = 1;
         }
 
         public ComObjectManager Manager { get; }
@@ -88,7 +89,7 @@ internal static partial class LibVst
             }
         }
 
-        public ComObjectHandle* GetOrComObjectHandle<T>() where T: INativeGuid, INativeVtbl
+        public T* GetOrCreateComInterface<T>() where T: unmanaged, INativeGuid, INativeVtbl
         {
             var guidToFind = *T.NativeGuid;
             for (int i = 0; i < _interfaceCount; i++)
@@ -96,7 +97,7 @@ internal static partial class LibVst
                 var handle = _handles + i;
                 if (handle->Guid.Equals(guidToFind))
                 {
-                    return handle;
+                    return (T*)handle;
                 }
             }
 
@@ -111,7 +112,7 @@ internal static partial class LibVst
             nextHandle->Vtbl = VtblInitializer<T>.Vtbl;
             nextHandle->Guid = guidToFind;
             nextHandle->Handle = _thisHandle;
-            return nextHandle;
+            return (T*)nextHandle;
         }
 
         public void Reset()
@@ -122,7 +123,7 @@ internal static partial class LibVst
             }
 
             _interfaceCount = 0;
-            _refCount = 0;
+            _refCount = 1;
             _lock = default;
             Target = null;
         }
@@ -153,6 +154,8 @@ internal static partial class LibVst
 
     public sealed class ComObjectManager : IDisposable
     {
+        public static readonly ComObjectManager Instance = new ComObjectManager();
+        
         private const int DefaultComObjectCacheCount = 16;
         private readonly Stack<ComObject> _comObjectCache;
         private SpinLock _lock;
@@ -166,19 +169,24 @@ internal static partial class LibVst
             }
         }
 
-        public ComObject GetOrCreateComObject()
+        public ComObject GetOrCreateComObject(object target)
         {
+            ComObject comObject;
             bool taken = false;
-            try
+            _lock.Enter(ref taken);
+            if (_comObjectCache.Count > 0)
             {
-                _lock.Enter(ref taken);
-                if (_comObjectCache.Count > 0) return _comObjectCache.Pop();
-            }
-            finally
-            {
+                comObject = _comObjectCache.Pop();
                 if (taken) _lock.Exit();
             }
-            return new ComObject(this);
+            else
+            {
+                if (taken) _lock.Exit();
+                comObject = new ComObject(this);
+            }
+
+            comObject.Target = target;
+            return comObject;
         }
 
         public void ReleaseObject(ComObject comObject)

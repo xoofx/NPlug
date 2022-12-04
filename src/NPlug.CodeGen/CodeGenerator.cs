@@ -566,7 +566,7 @@ public class CodeGenerator
         {
             csStruct.Attributes.Add(isUnion
                 ? new CSharpStructLayoutAttribute(LayoutKind.Explicit) { CharSet = CharSet.Unicode }
-                : new CSharpStructLayoutAttribute(LayoutKind.Sequential) { CharSet = CharSet.Unicode }
+                : new CSharpStructLayoutAttribute(LayoutKind.Sequential) { CharSet = CharSet.Unicode, Pack = 16 }
             );
 
             foreach (var cppField in cppClass.Fields)

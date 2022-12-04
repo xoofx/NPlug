@@ -953,7 +953,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct FVariant
     {
         /// <summary>
@@ -1393,7 +1393,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PFactoryInfo
     {
         /// <summary>
@@ -1457,7 +1457,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PClassInfo
     {
         /// <summary>
@@ -1628,7 +1628,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PClassInfo2
     {
         /// <summary>
@@ -1838,7 +1838,7 @@ internal static partial class LibVst
     /// <summary>
     /// Unicode Version of Basic Information about a class provided by the plug-in
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PClassInfoW
     {
         /// <summary>
@@ -2467,7 +2467,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginGUI
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ViewRect
     {
         public int left;
@@ -3335,7 +3335,7 @@ internal static partial class LibVst
     /// BusInfo:
     /// This is the structure used with getBusInfo, informing the host about what is a specific given bus.@n See also: Steinberg::Vst::IComponent::getBusInfo
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct BusInfo
     {
         /// <summary>
@@ -3395,7 +3395,7 @@ internal static partial class LibVst
     /// relation of an event-input-channel to an audio-output-bus in particular is of interest to the host
     /// (in order to relate MIDI-tracks to audio-channels)@n See also: IComponent::getRoutingInfo, @ref vst3Routing
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct RoutingInfo
     {
         /// <summary>
@@ -3517,7 +3517,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrpStructure representing a single Event of different types associated to a specific event (@ref kEvent) bus.
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct Event
     {
         /// <summary>
@@ -3686,7 +3686,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrpPitch uses the twelve-tone equal temperament tuning (12-TET).
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteOnEvent
     {
         /// <summary>
@@ -3726,7 +3726,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteOffEvent
     {
         /// <summary>
@@ -3761,7 +3761,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct DataEvent
     {
         /// <summary>
@@ -3797,7 +3797,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PolyPressureEvent
     {
         /// <summary>
@@ -3830,7 +3830,7 @@ internal static partial class LibVst
     /// The predefined types have a predefined mapping of the normalized values (see @ref NoteExpressionTypeIDs)
     /// </summary>
     /// <seealso cref="INoteExpressionController"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteExpressionValueEvent
     {
         /// <summary>
@@ -3859,7 +3859,7 @@ internal static partial class LibVst
     /// </summary>
     /// <seealso cref="NoteExpressionTypeInfo"/>
     /// <seealso cref="INoteExpressionController"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteExpressionTextEvent
     {
         /// <summary>
@@ -3890,7 +3890,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ChordEvent
     {
         /// <summary>
@@ -3926,7 +3926,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ScaleEvent
     {
         /// <summary>
@@ -3957,7 +3957,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp- [released: 3.6.12]This kind of event is reserved for generating MIDI CC as output event for kEvent Bus during the process call.
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct LegacyMIDICCOutEvent
     {
         /// <summary>
@@ -4674,7 +4674,7 @@ internal static partial class LibVst
     /// Audio processing setup.
     /// </summary>
     /// <seealso cref="IAudioProcessor::setupProcessing"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ProcessSetup
     {
         /// <summary>
@@ -4707,7 +4707,7 @@ internal static partial class LibVst
     /// with bus indices used in IComponent::getBusInfo of media type kAudio.
     /// </summary>
     /// <seealso cref="AudioBusBuffers, IParameterChanges, IEventList, ProcessContext, IProcessContextRequirements"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ProcessData
     {
         /// <summary>
@@ -4787,7 +4787,7 @@ internal static partial class LibVst
     /// .
     /// </summary>
     /// <seealso cref="ProcessData"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct AudioBusBuffers
     {
         /// <summary>
@@ -4833,7 +4833,7 @@ internal static partial class LibVst
     /// this problem.
     /// </summary>
     /// <seealso cref="IAudioProcessor, ProcessData"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ProcessContext
     {
         /// <summary>
@@ -4997,7 +4997,7 @@ internal static partial class LibVst
     /// A chord is described with a key note, a root note and the@copydoc chordMask
     /// </summary>
     /// <seealso cref="ProcessContext"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct Chord
     {
         /// <summary>
@@ -5047,7 +5047,7 @@ internal static partial class LibVst
     /// - 59.94 fps	     is framesPerSecond: 60 and flags: kPullDownRate
     /// - 60 fps         is framesPerSecond: 60 and flags: 0
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct FrameRate
     {
         /// <summary>
@@ -5428,7 +5428,7 @@ internal static partial class LibVst
     /// <summary>
     /// IContextMenuItem is an entry element of the context menu.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct IContextMenuItem
     {
         /// <summary>
@@ -6354,7 +6354,7 @@ internal static partial class LibVst
     /// A parameter info describes a parameter of the controller.
     /// The id must always be the same for a parameter as this uniquely identifies the parameter.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ParameterInfo
     {
         /// <summary>
@@ -6747,7 +6747,7 @@ internal static partial class LibVst
     /// This structure is used by the method @ref INoteExpressionController::getNoteExpressionInfo.
     /// </summary>
     /// <seealso cref="INoteExpressionController"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteExpressionTypeInfo
     {
         /// <summary>
@@ -6821,7 +6821,7 @@ internal static partial class LibVst
     /// and a stepCount when the given NoteExpressionTypeID is limited to discrete values (like on/off state).
     /// </summary>
     /// <seealso cref="NoteExpressionTypeInfo"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteExpressionValueDescription
     {
         /// <summary>
@@ -6906,7 +6906,7 @@ internal static partial class LibVst
     /// This structure is used by the method @ref IKeyswitchController::getKeyswitchInfo.
     /// </summary>
     /// <seealso cref="IKeyswitchController"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct KeyswitchInfo
     {
         /// <summary>
@@ -7276,7 +7276,7 @@ internal static partial class LibVst
     /// - [mandatory]Informs the plug-in that a VST 3 to VST 2 wrapper is used between the plug-in and the real host.
     /// Implemented by the VST 2 Wrapper.
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct IVst3ToVst2Wrapper
     {
         /// <summary>
@@ -7305,7 +7305,7 @@ internal static partial class LibVst
     /// - [mandatory]Informs the plug-in that a VST 3 to AU wrapper is used between the plug-in and the real host.
     /// Implemented by the AU Wrapper.
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct IVst3ToAUWrapper
     {
         /// <summary>
@@ -7334,7 +7334,7 @@ internal static partial class LibVst
     /// - [mandatory]Informs the plug-in that a VST 3 to AAX wrapper is used between the plug-in and the real host.
     /// Implemented by the AAX Wrapper.
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct IVst3ToAAXWrapper
     {
         /// <summary>
@@ -8030,7 +8030,7 @@ internal static partial class LibVst
     /// PhysicalUIMapList describes a list of PhysicalUIMap
     /// </summary>
     /// <seealso cref="INoteExpressionPhysicalUIMapping"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PhysicalUIMapList
     {
         /// <summary>
@@ -8049,7 +8049,7 @@ internal static partial class LibVst
     /// It is used in PhysicalUIMapList.
     /// </summary>
     /// <seealso cref="PhysicalUIMapList "/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PhysicalUIMap
     {
         /// <summary>
@@ -8412,7 +8412,7 @@ internal static partial class LibVst
     /// </summary>
     /// <seealso cref="IXmlRepresentationController "/>
     /// <seealso cref="IXmlRepresentationController::getXmlRepresentationStream."/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct RepresentationInfo
     {
         /// <summary>
@@ -8619,7 +8619,7 @@ internal static partial class LibVst
     ///  pluginBaseEach interface declares its identifier as static member inside the interface
     /// namespace (e.g. FUnknown::iid).
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct FUID
     {
         /// <summary>
@@ -9128,7 +9128,7 @@ internal static partial class LibVst
     /// Basic Unit Description.
     /// </summary>
     /// <seealso cref="IUnitInfo"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct UnitInfo
     {
         /// <summary>
@@ -9156,7 +9156,7 @@ internal static partial class LibVst
     /// Basic Program List Description.
     /// </summary>
     /// <seealso cref="IUnitInfo"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ProgramListInfo
     {
         /// <summary>

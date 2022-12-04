@@ -5,6 +5,8 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.IO.Hashing;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using NPlug.Backend;
@@ -18,7 +20,6 @@ internal static unsafe partial class LibVst
         private readonly IHostApplication* _hostApplication;
         private readonly Dictionary<ulong, string> _nativeUTF8ToManaged;
         private readonly Dictionary<string, IntPtr> _managedToNativeUTF8;
-
 
         public AudioHostApplicationClient(IHostApplication* hostApplication, string name) : base(name)
         {
@@ -51,33 +52,62 @@ internal static unsafe partial class LibVst
             _nativeUTF8ToManaged.Clear();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string GetOrCreateString(byte* str)
         {
-            // var XxHash3.
-            // calculate hashing
             var span = new Span<byte>(str, int.MaxValue);
             var index = span.IndexOf((byte)0);
             span = span.Slice(0, index);
-            ulong hashing = 0UL;
-            if (_nativeUTF8ToManaged.TryGetValue(hashing, out var managedString))
+            return GetOrCreateString(span);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string GetOrCreateString(ReadOnlySpan<byte> span)
+        {
+            var hashValue = XxHash3.HashToUInt64(span);
+            lock (_nativeUTF8ToManaged)
             {
-                managedString = Encoding.UTF8.GetString(span);
-                _nativeUTF8ToManaged.Add(hashing, managedString);
+                ref var managedString = ref CollectionsMarshal.GetValueRefOrNullRef(_nativeUTF8ToManaged, hashValue);
+                return managedString ??= Encoding.UTF8.GetString(span);
             }
-            return managedString;
+        }
+
+        public string GetOrCreateString128(char* pStr)
+        {
+            var span = new Span<char>(pStr, 128);
+            var index = span.IndexOf((char)0);
+            if (index >= 0)
+            {
+                span = span.Slice(0, index);
+            }
+            Span<byte> buffer = stackalloc byte[Encoding.UTF8.GetByteCount(span)];
+            return GetOrCreateString(buffer);
+        }
+
+        public string GetOrCreateString(in String128 str)
+        {
+            fixed (char* pStr = str.Value)
+            {
+                return GetOrCreateString128(pStr);
+            }
         }
 
         public FIDString GetOrCreateString(string str)
         {
-            if (!_managedToNativeUTF8.TryGetValue(str, out var ptr))
+            lock (_managedToNativeUTF8)
             {
-                var byteCount = Encoding.UTF8.GetByteCount(str);
-                // TODO: optimize memory allocation with a global allocator
-                ptr = (IntPtr)NativeMemory.Alloc((nuint)(byteCount + 1));
-                _managedToNativeUTF8.Add(str, ptr);
+                ref var ptr = ref CollectionsMarshal.GetValueRefOrNullRef(_managedToNativeUTF8, str);
+                var localPtr = ptr;
+                if (localPtr == IntPtr.Zero)
+                {
+                    var byteCount = Encoding.UTF8.GetByteCount(str);
+                    // TODO: optimize memory allocation with a global allocator
+                    localPtr = (IntPtr)NativeMemory.Alloc((nuint)(byteCount + 1));
+                    _managedToNativeUTF8.Add(str, localPtr);
+                    ptr = localPtr;
+                }
+                return new FIDString() { Value = (byte*)localPtr };
             }
-
-            return new FIDString() { Value = (byte*)ptr };
         }
 
         string IAudioMessageBackend.GetId(in AudioMessage message)

@@ -11,7 +11,7 @@ using NPlug.IO;
 
 namespace NPlug;
 
-public abstract class AudioProcessor : AudioPlugin, IAudioProcessor
+public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
 {
     internal readonly List<BusInfo> AudioInputBuses;
     internal readonly List<BusInfo> AudioOutputBuses;

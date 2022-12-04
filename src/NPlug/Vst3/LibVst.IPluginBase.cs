@@ -11,7 +11,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IPluginBase
     {
-        private static IAudioPlugin Get(IPluginBase* self) => (IAudioPlugin)((ComObjectHandle*)self)->Handle.Target!;
+        private static IAudioPluginComponent Get(IPluginBase* self) => (IAudioPluginComponent)((ComObjectHandle*)self)->Handle.Target!;
 
         private static partial ComResult initialize_ccw(IPluginBase* self, LibVst.FUnknown* context)
         {

@@ -4,6 +4,8 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using NPlug.Backend;
 
 namespace NPlug.Vst3;
 
@@ -194,6 +196,9 @@ internal static unsafe partial class LibVst
         }
     }
 
+    /// <summary>
+    /// Access to all the optional native handlers.
+    /// </summary>
     private class AudioControllerHostProxy : AudioControllerHost
     {
         private readonly IComponentHandler* _handler;
@@ -207,26 +212,35 @@ internal static unsafe partial class LibVst
         {
             _handler = handler;
 
-            // Query supported handlers for IComponentHandler
             var pUnk = (void*)0;
-            _handler->queryInterface(IComponentHandler2.NativeGuid, &pUnk);
-            _handler2 = (IComponentHandler2*)pUnk;
+            if (_handler->queryInterface(IComponentHandler2.NativeGuid, &pUnk))
+            {
+                _handler2 = (IComponentHandler2*)pUnk;
+            }
 
             pUnk = (void*)0;
-            _handler->queryInterface(IComponentHandler3.NativeGuid, &pUnk);
-            _handler3 = (IComponentHandler3*)pUnk;
+            if (_handler->queryInterface(IComponentHandler3.NativeGuid, &pUnk))
+            {
+                _handler3 = (IComponentHandler3*)pUnk;
+            }
 
             pUnk = (void*)0;
-            _handler->queryInterface(IComponentHandlerBusActivation.NativeGuid, &pUnk);
-            _busActivation = (IComponentHandlerBusActivation*)pUnk;
+            if (_handler->queryInterface(IComponentHandlerBusActivation.NativeGuid, &pUnk))
+            {
+                _busActivation = (IComponentHandlerBusActivation*)pUnk;
+            }
 
             pUnk = (void*)0;
-            _handler->queryInterface(IProgress.NativeGuid, &pUnk);
-            _progress = (IProgress*)pUnk;
+            if (_handler->queryInterface(IProgress.NativeGuid, &pUnk))
+            {
+                _progress = (IProgress*)pUnk;
+            }
 
             pUnk = (void*)0;
-            _handler->queryInterface(IUnitHandler.NativeGuid, &pUnk);
-            _unitHandler = (IUnitHandler*)pUnk;
+            if (_handler->queryInterface(IUnitHandler.NativeGuid, &pUnk))
+            {
+                _unitHandler = (IUnitHandler*)pUnk;
+            }
         }
         
         public override void BeginEdit(AudioParameterId id)
@@ -289,8 +303,12 @@ internal static unsafe partial class LibVst
         public override AudioContextMenu CreateContextMenu(IAudioPluginView plugView, AudioParameterId paramID)
         {
             ThrowIfNotIsCreateContextMenuSupported();
-            //_handler3->createContextMenu()
-            throw new NotImplementedException();
+
+            var comObject = ComObjectManager.Instance.GetOrCreateComObject(plugView);
+            var nativePlugView = comObject.GetOrCreateComInterface<IPlugView>();
+            var nativeContextMenu = _handler3->createContextMenu(nativePlugView, (ParamID*)&paramID);
+            var audioContextMenu = new AudioContextMenu(AudioContextMenuBackendVst.Instance, (IntPtr)nativeContextMenu);
+            return audioContextMenu;
         }
 
         private void ThrowIfNotIsCreateContextMenuSupported()
@@ -358,6 +376,70 @@ internal static unsafe partial class LibVst
         private void ThrowIfNotIsUnitAndProgramListSupported()
         {
             if (!IsUnitAndProgramListSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsUnitAndProgramListSupported)} is false");
+        }
+    }
+
+    private class AudioContextMenuBackendVst : IAudioContextMenuBackend
+    {
+        public static readonly AudioContextMenuBackendVst Instance = new AudioContextMenuBackendVst();
+
+        public int GetItemCount(in AudioContextMenu contextMenu)
+        {
+            return Get(contextMenu)->getItemCount();
+        }
+
+        public void GetItem(in AudioContextMenu contextMenu, int index, out AudioContextMenuItem item, out AudioContextMenuAction? target)
+        {
+            item = new AudioContextMenuItem(string.Empty);
+            target = null;
+            Item nativeItem;
+            IContextMenuTarget* nativeTarget;
+            if (Get(contextMenu)->getItem(index, &nativeItem, &nativeTarget))
+            {
+                item = ConvertTo(nativeItem.Value);
+                // TODO: add target
+            }
+        }
+
+        public void AddItem(in AudioContextMenu contextMenu, in AudioContextMenuItem item, AudioContextMenuAction target)
+        {
+            var nativeItem = ConvertFrom(item);
+
+            // TODO: add the target
+            Get(contextMenu)->addItem((Item*)&nativeItem, null);
+        }
+
+        public void RemoveItem(in AudioContextMenu contextMenu, in AudioContextMenuItem item, AudioContextMenuAction target)
+        {
+            var nativeItem = ConvertFrom(item);
+            // TODO: add the target
+            Get(contextMenu)->removeItem((Item*)&nativeItem, null);
+        }
+
+        public void Popup(in AudioContextMenu contextMenu, int x, int y)
+        {
+            Get(contextMenu)->popup(new UCoord(x), new UCoord(y));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IContextMenu* Get(in AudioContextMenu contextMenu) => (IContextMenu*)contextMenu.NativeContext;
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static IContextMenuItem ConvertFrom(in AudioContextMenuItem item)
+        {
+            var nativeItem = new IContextMenuItem();
+            nativeItem.name.CopyFrom(item.Name);
+            nativeItem.tag = item.Tag;
+            nativeItem.flags = (int)item.Flags;
+            return nativeItem;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static AudioContextMenuItem ConvertTo(in IContextMenuItem item)
+        {
+            var span = MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in item.name.Value[0]), 128);
+            span = span.Slice(0, span.IndexOf((char)0));
+            return new AudioContextMenuItem(new string(span), item.tag, (AudioContextMenuItemFlags)item.flags);
         }
     }
 }

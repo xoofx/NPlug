@@ -78,7 +78,7 @@ internal static partial class LibVst
                     {
                         disposable.Dispose();
                         Reset();
-                        Release();
+                        Manager.Return(this);
                     }
                 }
                 return _refCount;
@@ -125,7 +125,6 @@ internal static partial class LibVst
             _interfaceCount = 0;
             _refCount = 1;
             _lock = default;
-            Target = null;
         }
 
         private static class VtblInitializer<T> where T: INativeVtbl
@@ -144,12 +143,6 @@ internal static partial class LibVst
             NativeMemory.Free(_handles);
             _thisHandle.Free();
         }
-
-        public void Release()
-        {
-            // Pool the object back to the manager
-            Manager.ReleaseObject(this);
-        }
     }
 
     public sealed class ComObjectManager : IDisposable
@@ -158,7 +151,8 @@ internal static partial class LibVst
         
         private const int DefaultComObjectCacheCount = 16;
         private readonly Stack<ComObject> _comObjectCache;
-        private SpinLock _lock;
+        private readonly Dictionary<object, ComObject> _mapTargetToComObject;
+        private readonly object _thisLock;
 
         public ComObjectManager()
         {
@@ -167,52 +161,51 @@ internal static partial class LibVst
             {
                 _comObjectCache.Push(new ComObject(this));
             }
+            _mapTargetToComObject = new Dictionary<object, ComObject>(ReferenceEqualityComparer.Instance);
+            _thisLock = new object();
         }
 
         public ComObject GetOrCreateComObject(object target)
         {
-            ComObject comObject;
-            bool taken = false;
-            _lock.Enter(ref taken);
-            if (_comObjectCache.Count > 0)
+            lock (_thisLock)
             {
-                comObject = _comObjectCache.Pop();
-                if (taken) _lock.Exit();
-            }
-            else
-            {
-                if (taken) _lock.Exit();
-                comObject = new ComObject(this);
-            }
+                if (_mapTargetToComObject.TryGetValue(target, out var comObject))
+                {
+                    return comObject;
+                }
 
-            comObject.Target = target;
-            return comObject;
+                comObject = _comObjectCache.Count > 0 ? _comObjectCache.Pop() : new ComObject(this);
+                _mapTargetToComObject.Add(target, comObject);
+                comObject.Target = target;
+                return comObject;
+            }
         }
 
-        public void ReleaseObject(ComObject comObject)
+        public void Return(ComObject comObject)
         {
-            bool taken = false;
-            try
+            var target = comObject.Target!;
+            comObject.Target = null;
+            lock (_thisLock)
             {
-                _lock.Enter(ref taken);
+                _mapTargetToComObject.Remove(target);
                 _comObjectCache.Push(comObject);
-            }
-            finally
-            {
-                if (taken) _lock.Exit();
             }
         }
 
         public void Dispose()
         {
-            foreach (var comObject in _comObjectCache)
+            lock (_thisLock)
             {
-                comObject.Dispose();
+                foreach (var comObject in _comObjectCache)
+                {
+                    comObject.Dispose();
+                }
+
+                _comObjectCache.Clear();
+                _mapTargetToComObject.Clear();
             }
-            _comObjectCache.Clear();
         }
     }
-
 
     public unsafe interface INativeGuid
     {

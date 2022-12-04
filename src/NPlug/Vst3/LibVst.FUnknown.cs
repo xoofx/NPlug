@@ -24,6 +24,7 @@ internal static unsafe partial class LibVst
             { IComponent.IId, TryMatchQueryInterface<IComponent, NPlug.IAudioProcessor> },
             { IAudioProcessor.IId, TryMatchQueryInterface<IComponent, NPlug.IAudioProcessor> },
             { IConnectionPoint.IId, TryMatchQueryInterface<IComponent, IAudioConnectionPoint> },
+            { IPlugView.IId, TryMatchQueryInterface<IComponent, IAudioPluginView> },
         };
 
         private static partial ComResult queryInterface_ccw(FUnknown* pObj, Guid* iid, void** pInterface)

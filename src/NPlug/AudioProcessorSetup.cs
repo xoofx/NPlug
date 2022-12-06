@@ -33,28 +33,28 @@ public readonly ref struct AudioProcessorSetup
         AddEventInput("Event Input", 1);
     }
 
-    public void AddAudioInput(string name, SpeakerArrangement speaker, AudioBusType busType = AudioBusType.Main, AudioBusFlags flags = AudioBusFlags.DefaultActive)
+    public void AddAudioInput(string name, SpeakerArrangement speaker, BusType busType = BusType.Main, BusFlags flags = BusFlags.DefaultActive)
     {
         AssertInitialize();
-        _processor.AudioInputBuses.Add(new AudioBusInfo(name, speaker, AudioBusDirection.Input, busType, flags));
+        _processor.AudioInputBuses.Add(new AudioBusInfo(name, speaker, BusDirection.Input, busType, flags));
     }
 
-    public void AddAudioOutput(string name, SpeakerArrangement speaker, AudioBusType busType = AudioBusType.Main, AudioBusFlags flags = AudioBusFlags.DefaultActive)
+    public void AddAudioOutput(string name, SpeakerArrangement speaker, BusType busType = BusType.Main, BusFlags flags = BusFlags.DefaultActive)
     {
         AssertInitialize();
-        _processor.AudioOutputBuses.Add(new AudioBusInfo(name, speaker, AudioBusDirection.Output, busType, flags));
+        _processor.AudioOutputBuses.Add(new AudioBusInfo(name, speaker, BusDirection.Output, busType, flags));
     }
 
-    public void AddEventInput(string name, int channelCount, AudioBusType busType = AudioBusType.Main, AudioBusFlags flags = AudioBusFlags.DefaultActive)
+    public void AddEventInput(string name, int channelCount, BusType busType = BusType.Main, BusFlags flags = BusFlags.DefaultActive)
     {
         AssertInitialize();
-        _processor.EventInputBuses.Add(new EventBusInfo(name, channelCount, AudioBusDirection.Input, busType, flags));
+        _processor.EventInputBuses.Add(new EventBusInfo(name, channelCount, BusDirection.Input, busType, flags));
     }
 
-    public void AddEventOutput(string name, int channelCount, AudioBusType busType = AudioBusType.Main, AudioBusFlags flags = AudioBusFlags.DefaultActive)
+    public void AddEventOutput(string name, int channelCount, BusType busType = BusType.Main, BusFlags flags = BusFlags.DefaultActive)
     {
         AssertInitialize();
-        _processor.EventOutputBuses.Add(new EventBusInfo(name, channelCount, AudioBusDirection.Output, busType, flags));
+        _processor.EventOutputBuses.Add(new EventBusInfo(name, channelCount, BusDirection.Output, busType, flags));
     }
 
     private void AssertInitialize()

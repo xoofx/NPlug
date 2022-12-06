@@ -7,39 +7,44 @@ using System.Runtime.CompilerServices;
 
 namespace NPlug;
 
-public ref struct AudioProcessData
+public readonly ref struct AudioProcessData
 {
     private readonly IntPtr _context;
 
-    internal AudioProcessData(IntPtr context)
+    public AudioProcessData(IntPtr context, AudioProcessMode processMode, AudioSampleSize sampleSize, int sampleCount, in AudioBusData input, in AudioBusData output)
     {
         _context = context;
+        ProcessMode = processMode;
+        SampleSize = sampleSize;
+        SampleCount = sampleCount;
+        Input = input;
+        Output = output;
     }
-
+    
     /// <summary>
     /// processing mode - value of @ref ProcessModes
     /// </summary>
-    public AudioProcessMode ProcessMode;
+    public readonly AudioProcessMode ProcessMode;
 
     /// <summary>
     /// sample size - value of @ref SymbolicSampleSizes
     /// </summary>
-    public AudioSampleSize SampleSize;
+    public readonly AudioSampleSize SampleSize;
 
     /// <summary>
     /// number of samples to process
     /// </summary>
-    public int SampleCount;
+    public readonly int SampleCount;
 
     /// <summary>
     /// The input data.
     /// </summary>
-    public AudioBusData Input;
+    public readonly AudioBusData Input;
 
     /// <summary>
     /// The output data.
     /// </summary>
-    public AudioBusData Output;
+    public readonly AudioBusData Output;
 
     /// <summary>
     /// Gets a boolean indicating if <see cref="GetContext"/> will return a value.

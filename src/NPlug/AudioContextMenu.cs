@@ -5,7 +5,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using NPlug.Backend;
-using NPlug.Vst3;
 
 namespace NPlug;
 

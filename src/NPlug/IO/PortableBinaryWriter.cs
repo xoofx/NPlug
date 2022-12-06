@@ -14,6 +14,10 @@ public class PortableBinaryWriter
 {
     private Stream _stream;
 
+    internal PortableBinaryWriter() : this(Stream.Null)
+    {
+    }
+
     public PortableBinaryWriter(Stream stream)
     {
         _stream = stream;

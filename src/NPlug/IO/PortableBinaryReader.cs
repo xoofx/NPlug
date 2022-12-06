@@ -16,9 +16,13 @@ public class PortableBinaryReader
 {
     private Stream _stream;
 
+    internal PortableBinaryReader() : this(Stream.Null)
+    {
+    }
+
     public PortableBinaryReader(Stream stream)
     {
-        _stream = stream;
+        _stream = Stream.Null;
     }
     
     public Stream Stream

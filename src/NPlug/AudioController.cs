@@ -2,37 +2,113 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using NPlug.IO;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace NPlug;
 
-public abstract class AudioController : AudioPluginComponent, IAudioController
+public abstract class AudioController : AudioPluginComponent
+    , IAudioController
+    , IAudioControllerExtended
+    , IAudioControllerMidiMapping
 {
-    void IAudioController.SetComponentState(Stream state)
+    private PortableBinaryReader? _streamReader;
+    private PortableBinaryWriter? _streamWriter;
+
+    internal readonly List<AudioParameterInfo> ParameterInfos;
+
+    protected AudioController()
     {
-        throw new NotImplementedException();
+        ParameterInfos = new List<AudioParameterInfo>();
     }
 
-    void IAudioController.SetState(Stream state)
+    protected abstract bool Initialize(AudioControllerSetup setup);
+
+    protected virtual void RestoreComponentState(PortableBinaryReader reader)
     {
-        throw new NotImplementedException();
     }
 
-    void IAudioController.GetState(Stream state)
+    protected abstract void SaveState(PortableBinaryWriter writer);
+
+    protected abstract void RestoreState(PortableBinaryReader reader);
+
+    // IEditController2
+
+    protected virtual bool TrySetKnobMode(AudioControllerKnobModes mode)
     {
-        throw new NotImplementedException();
+        return false;
     }
 
-    int IAudioController.ParameterCount
+    protected virtual bool TryOpenHelp(byte onlyCheck)
     {
-        get { throw new NotImplementedException(); }
+        return false;
     }
 
-    AudioParameterInfo IAudioController.GetParameterInfo(int paramIndex)
+    protected virtual bool TryOpenAboutBox(bool onlyCheck)
     {
-        throw new NotImplementedException();
+        return false;
     }
+
+    // IMidiMapping
+
+    protected virtual bool TryGetMidiControllerAssignment(int busIndex, int channel, AudioMidiControllerNumber midiControllerNumber, out AudioParameterId id)
+    {
+        id = default;
+        return false;
+    }
+
+    internal override bool InitializeInternal(AudioHostApplication hostApplication)
+    {
+        return Initialize(new AudioControllerSetup(this, hostApplication));
+    }
+    
+    void IAudioController.SetComponentState(Stream streamInput)
+    {
+        var reader = _streamReader;
+        if (reader is null)
+        {
+            reader = new PortableBinaryReader();
+            _streamReader = reader;
+        }
+        reader.Stream = streamInput;
+        RestoreComponentState(reader);
+    }
+
+    void IAudioController.SetState(Stream streamInput)
+    {
+        var reader = _streamReader;
+        if (reader is null)
+        {
+            reader = new PortableBinaryReader(streamInput);
+            _streamReader = reader;
+        }
+        else
+        {
+            reader.Stream = streamInput;
+        }
+        RestoreState(reader);
+    }
+
+    void IAudioController.GetState(Stream streamOutput)
+    {
+        var writer = _streamWriter;
+        if (writer is null)
+        {
+            writer = new PortableBinaryWriter(streamOutput);
+            _streamWriter = writer;
+        }
+        else
+        {
+            writer.Stream = streamOutput;
+        }
+        SaveState(writer);
+    }
+
+    int IAudioController.ParameterCount => ParameterInfos.Count;
+
+    AudioParameterInfo IAudioController.GetParameterInfo(int paramIndex) => ParameterInfos[paramIndex];
 
     string IAudioController.GetParameterStringByValue(AudioParameterId id, double valueNormalized)
     {
@@ -72,5 +148,25 @@ public abstract class AudioController : AudioPluginComponent, IAudioController
     IAudioPluginView IAudioController.CreateView(string name)
     {
         throw new NotImplementedException();
+    }
+    
+    bool IAudioControllerExtended.TrySetKnobMode(AudioControllerKnobModes mode)
+    {
+        return TrySetKnobMode(mode);
+    }
+
+    bool IAudioControllerExtended.TryOpenHelp(byte onlyCheck)
+    {
+        return TryOpenHelp(onlyCheck);
+    }
+
+    bool IAudioControllerExtended.TryOpenAboutBox(bool onlyCheck)
+    {
+        return TryOpenAboutBox(onlyCheck);
+    }
+
+    bool IAudioControllerMidiMapping.TryGetMidiControllerAssignment(int busIndex, int channel, AudioMidiControllerNumber midiControllerNumber, out AudioParameterId id)
+    {
+        return TryGetMidiControllerAssignment(busIndex, channel, midiControllerNumber, out id);
     }
 }

@@ -6,11 +6,27 @@ using System;
 
 namespace NPlug;
 
-public ref struct AudioBusData
+public readonly unsafe ref struct AudioBusData
 {
-    public Span<AudioBusBuffers> Buffers;
+    public AudioBusData(int bufferCount, AudioBusBuffers* audioBuffers, AudioParameterChanges parameterChanges, AudioEventList events)
+    {
+        BufferCount = bufferCount;
+        _audioBuffers = audioBuffers;
+        ParameterChanges = parameterChanges;
+        Events = events;
+    }
 
-    public AudioParameterChanges ParameterChanges;
+    public readonly int BufferCount;
 
-    public AudioEventList Events;
+    private readonly AudioBusBuffers* _audioBuffers;
+
+    public AudioBusBuffers GetBuffer(int index)
+    {
+        if ((uint)index >= (uint)BufferCount) throw new ArgumentOutOfRangeException(nameof(index));
+        return _audioBuffers[index];
+    }
+
+    public readonly AudioParameterChanges ParameterChanges;
+
+    public readonly AudioEventList Events;
 }

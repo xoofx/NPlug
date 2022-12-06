@@ -3,22 +3,23 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+// ReSharper disable UnassignedReadonlyField
 
 namespace NPlug;
 
-public unsafe struct AudioBusBuffers
+public readonly unsafe ref struct AudioBusBuffers
 {
     /// <summary>
     /// number of audio channels in bus
     /// </summary>
-    public int ChannelCount;
+    public readonly int ChannelCount;
 
     /// <summary>
     /// Bitset of silence state per channel
     /// </summary>
-    public ulong SilenceFlags;
+    public readonly ulong SilenceFlags;
 
-    private void** _channelBuffers;
+    private readonly void** _channelBuffers;
 
     public bool IsChannelSilence(int index) => (SilenceFlags & (1UL << index)) != 0;
     
@@ -28,6 +29,7 @@ public unsafe struct AudioBusBuffers
         if ((uint)channelIndex >= (uint)ChannelCount) throw new ArgumentException($"Invalid Channel Index {channelIndex}", nameof(channelIndex));
         return new Span<float>((float*)_channelBuffers[channelIndex], processData.SampleCount);
     }
+
     public Span<double> AsFloat64(in AudioProcessSetupData setupData, in AudioProcessData processData, int channelIndex)
     {
         if (setupData.SampleSize != AudioSampleSize.Float64) throw new InvalidOperationException($"Expecting 64-bit samples but getting {setupData.SampleSize}");

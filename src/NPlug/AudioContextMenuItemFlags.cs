@@ -2,8 +2,11 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using System;
+
 namespace NPlug;
 
+[Flags]
 public enum AudioContextMenuItemFlags
 {
     /// <summary>

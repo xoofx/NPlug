@@ -21,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NPlug.CodeGen", "NPlug.CodeGen\NPlug.CodeGen.csproj", "{FE008A3C-77E5-4404-8E95-D1EF59E0CA17}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NPlug.HelloWorldPlugin", "NPlug.HelloWorldPlugin\NPlug.HelloWorldPlugin.csproj", "{445EEBC3-0FA4-42F7-AB39-1C24B007807E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesterVst", "TesterVst\TesterVst.csproj", "{321ABD50-0321-4D06-B137-ADE05A2BA387}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{FE008A3C-77E5-4404-8E95-D1EF59E0CA17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE008A3C-77E5-4404-8E95-D1EF59E0CA17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE008A3C-77E5-4404-8E95-D1EF59E0CA17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{445EEBC3-0FA4-42F7-AB39-1C24B007807E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{445EEBC3-0FA4-42F7-AB39-1C24B007807E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{445EEBC3-0FA4-42F7-AB39-1C24B007807E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{445EEBC3-0FA4-42F7-AB39-1C24B007807E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{321ABD50-0321-4D06-B137-ADE05A2BA387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{321ABD50-0321-4D06-B137-ADE05A2BA387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{321ABD50-0321-4D06-B137-ADE05A2BA387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{321ABD50-0321-4D06-B137-ADE05A2BA387}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

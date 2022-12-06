@@ -8,6 +8,6 @@ internal class Program
     {
         var sdkFolder = @"C:\code\VST_SDK\vst3sdk";
         var codeGenerator = new CodeGenerator(sdkFolder);
-        codeGenerator.Generate(@"C:\code\NPlug\src\NPlug\Vst3\");
+        codeGenerator.Generate(@"C:\code\NPlug\src\NPlug\Interop\");
     }
 }

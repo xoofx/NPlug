@@ -16,6 +16,12 @@ namespace NPlug;
 // [3.0.0] Interfaces supported by the host
 // https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical+Documentation/Change+History/3.0.0/Host+Interfaces.html
 
+// TODO: To add
+// - IProcessContextRequirements
+// - IAudioPresentationLatency
+// 
+
+
 public interface IAudioProcessor : IAudioPluginComponent
 {
     /// <summary>
@@ -28,13 +34,13 @@ public interface IAudioProcessor : IAudioPluginComponent
     /// Called before 'initialize' to set the component usage (optional). See \ref IoModes.
     /// </summary>
     /// <param name="mode"></param>
-    void SetInputOutputMode(AudioInputOutputMode mode);
+    void SetInputOutputMode(InputOutputMode mode);
 
     /** Called after the plug-in is initialized. See \ref MediaTypes, BusDirections */
-    int GetBusCount(AudioBusMediaType type, AudioBusDirection dir);
+    int GetBusCount(BusMediaType type, BusDirection dir);
 
     /** Called after the plug-in is initialized. See \ref MediaTypes, BusDirections */
-    BusInfo GetBusInfo(AudioBusMediaType type, AudioBusDirection dir, int index);
+    BusInfo GetBusInfo(BusMediaType type, BusDirection dir, int index);
 
     /// <summary>
     /// Retrieves routing information (to be implemented when more than one regular input or output bus exists).
@@ -42,7 +48,7 @@ public interface IAudioProcessor : IAudioPluginComponent
     /// <param name="inInfo">always refers to an input bus while the returned outInfo must refer to an output bus!</param>
     /// <param name="outInfo">The output routing info associated to the input routing.</param>
     /// <returns><c>true</c> if the routing info is available; otherwise <c>false</c>.</returns>
-    bool TryGetBusRoutingInfo(in AudioBusRoutingInfo inInfo, out AudioBusRoutingInfo outInfo);
+    bool TryGetBusRoutingInfo(in BusRoutingInfo inInfo, out BusRoutingInfo outInfo);
 
     /// <summary>
     /// Called upon (de-)activating a bus in the host application. The plug-in should only processed
@@ -55,7 +61,7 @@ public interface IAudioProcessor : IAudioPluginComponent
     /// <param name="index"></param>
     /// <param name="state"></param>
     /// <returns></returns>
-    bool ActivateBus(AudioBusMediaType type, AudioBusDirection dir, int index, bool state);
+    bool ActivateBus(BusMediaType type, BusDirection dir, int index, bool state);
 
     /// <summary>
     /// Activates / deactivates the component.
@@ -77,7 +83,7 @@ public interface IAudioProcessor : IAudioPluginComponent
 
     bool SetBusArrangements(Span<SpeakerArrangement> inputs, Span<SpeakerArrangement> outputs);
 
-    SpeakerArrangement GetBusArrangement(AudioBusDirection direction, int index);
+    SpeakerArrangement GetBusArrangement(BusDirection direction, int index);
 
     bool CanProcessSampleSize(AudioSampleSize sampleSize);
 

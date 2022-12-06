@@ -51,6 +51,12 @@ public readonly ref struct AudioParameterChanges
     }
 }
 
-public record struct AudioParameterId(int Value);
+public record struct AudioParameterId(int Value)
+{
+    public static implicit operator AudioParameterId(int value) => new(value);
+}
 
-public record struct AudioUnitId(int Value);
+public record struct AudioUnitId(int Value)
+{
+    public static implicit operator AudioUnitId(int value) => new(value);
+}

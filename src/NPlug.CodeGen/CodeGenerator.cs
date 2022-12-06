@@ -91,7 +91,7 @@ public class CodeGenerator
 
         // Prepare for the C# generated file
         var csFile = new CSharpGeneratedFile("/LibVst.generated.cs");
-        csFile.Members.Add(new CSharpNamespace("NPlug.Vst3") { IsFileScoped = true });
+        csFile.Members.Add(new CSharpNamespace("NPlug.Interop") { IsFileScoped = true });
 
         csFile.Members.Add(new CSharpUsingDeclaration("System.Runtime.InteropServices"));
         csFile.Members.Add(new CSharpUsingDeclaration("System.Runtime.CompilerServices"));

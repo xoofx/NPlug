@@ -22,7 +22,11 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
     private PortableBinaryReader? _streamReader;
     private PortableBinaryWriter? _streamWriter;
 
-    protected AudioProcessor(AudioSampleSizeSupport sampleSizeSupport, uint latencySamples = 0, uint tailSamples = 0)
+    protected AudioProcessor(AudioSampleSizeSupport sampleSizeSupport) : this(sampleSizeSupport, 0, 0)
+    {
+    }
+
+    protected AudioProcessor(AudioSampleSizeSupport sampleSizeSupport, uint latencySamples, uint tailSamples)
     {
         SampleSizeSupport = sampleSizeSupport;
         AudioInputBuses = new List<BusInfo>();
@@ -32,12 +36,14 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
         LatencySamples = latencySamples;
         TailSamples = tailSamples;
     }
-    
+
+
+
     public AudioSampleSizeSupport SampleSizeSupport { get; }
 
-    public virtual Guid ControllerId => Guid.Empty;
+    public abstract Guid ControllerId { get; }
 
-    public AudioInputOutputMode InputOutputMode { get; private set; }
+    public InputOutputMode InputOutputMode { get; private set; }
 
     public uint LatencySamples { get; }
 
@@ -54,7 +60,7 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
 
     protected abstract bool Initialize(AudioProcessorSetup setup);
 
-    protected virtual bool TryGetBusRoutingInfo(in AudioBusRoutingInfo inInfo, out AudioBusRoutingInfo outInfo)
+    protected virtual bool TryGetBusRoutingInfo(in BusRoutingInfo inInfo, out BusRoutingInfo outInfo)
     {
         outInfo = default;
         return false;
@@ -80,11 +86,11 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
     protected abstract void Process(in AudioProcessSetupData setupData, in AudioProcessData data);
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected ReadOnlySpan<BusInfo> GetBusInfoList(AudioBusMediaType type, AudioBusDirection dir)
+    protected ReadOnlySpan<BusInfo> GetBusInfoList(BusMediaType type, BusDirection dir)
     {
-        var list = type == AudioBusMediaType.Audio
-            ? (dir == AudioBusDirection.Input ? AudioInputBuses : AudioOutputBuses)
-            : (dir == AudioBusDirection.Input ? EventInputBuses : EventOutputBuses);
+        var list = type == BusMediaType.Audio
+            ? (dir == BusDirection.Input ? AudioInputBuses : AudioOutputBuses)
+            : (dir == BusDirection.Input ? EventInputBuses : EventOutputBuses);
 
         return CollectionsMarshal.AsSpan(list);
     }
@@ -94,13 +100,12 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
         return Initialize(new AudioProcessorSetup(this, hostApplication));
     }
 
-
-    void IAudioProcessor.SetInputOutputMode(AudioInputOutputMode mode)
+    void IAudioProcessor.SetInputOutputMode(InputOutputMode mode)
     {
         InputOutputMode = mode;
     }
 
-    bool IAudioProcessor.TryGetBusRoutingInfo(in AudioBusRoutingInfo inInfo, out AudioBusRoutingInfo outInfo)
+    bool IAudioProcessor.TryGetBusRoutingInfo(in BusRoutingInfo inInfo, out BusRoutingInfo outInfo)
     {
         return TryGetBusRoutingInfo(inInfo, out outInfo);
     }
@@ -153,23 +158,23 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
         return true;
     }
 
-    SpeakerArrangement IAudioProcessor.GetBusArrangement(AudioBusDirection direction, int index)
+    SpeakerArrangement IAudioProcessor.GetBusArrangement(BusDirection direction, int index)
     {
-        var busInfo = (AudioBusInfo)GetBusInfoList(AudioBusMediaType.Audio, direction)[index];
+        var busInfo = (AudioBusInfo)GetBusInfoList(BusMediaType.Audio, direction)[index];
         return busInfo.SpeakerArrangement;
     }
 
-    int IAudioProcessor.GetBusCount(AudioBusMediaType type, AudioBusDirection dir)
+    int IAudioProcessor.GetBusCount(BusMediaType type, BusDirection dir)
     {
         return GetBusInfoList(type, dir).Length;
     }
     
-    BusInfo IAudioProcessor.GetBusInfo(AudioBusMediaType type, AudioBusDirection dir, int index)
+    BusInfo IAudioProcessor.GetBusInfo(BusMediaType type, BusDirection dir, int index)
     {
         return GetBusInfoList(type, dir)[index];
     }
 
-    bool IAudioProcessor.ActivateBus(AudioBusMediaType type, AudioBusDirection dir, int index, bool state)
+    bool IAudioProcessor.ActivateBus(BusMediaType type, BusDirection dir, int index, bool state)
     {
         var busInfo = GetBusInfoList(type, dir)[index];
         busInfo.IsActive = OnBusActivate(busInfo, state);

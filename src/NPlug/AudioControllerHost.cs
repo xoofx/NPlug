@@ -105,7 +105,7 @@ public abstract class AudioControllerHost
     /// <remarks>
     /// Only supported if <see cref="IsRequestBusActivationSupported"/> is <c>true</c>.
     /// </remarks>
-    public abstract void RequestBusActivation(AudioBusMediaType type, AudioBusDirection dir, int index, bool state);
+    public abstract void RequestBusActivation(BusMediaType type, BusDirection dir, int index, bool state);
 
     /// <summary>
     /// Returns <c>true</c> if <see cref="StartProgress"/> is supported.

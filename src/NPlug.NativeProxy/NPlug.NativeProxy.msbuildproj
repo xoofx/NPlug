@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.Build.NoTargets">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+  </PropertyGroup>
+
+  <Target Name="ShowTarget" BeforeTargets="Build" Outputs="$(NetCoreTargetingPackRoot)">
+    <Message Importance="high" Text="$(NETCoreSDKRuntimeIdentifier);$(BundledNETCoreAppPackageVersion);$(NetCoreTargetingPackRoot)"/>
+  </Target>
+</Project>

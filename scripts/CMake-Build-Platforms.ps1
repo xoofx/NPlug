@@ -70,10 +70,11 @@ function Build-Project {
 
     Write-Host "Building $NETPlatform-$NETArch" -ForegroundColor Green
 
-    $BuildPlatformFolder = "$BuildFolder/$NETPlatform-$NETArch"
-    $PackageFolder = "$BuildFolder/package/$NETPlatform-$NETArch/native/"
+    $DotNetRid = "$NETPlatform-$NETArch"
+    $BuildPlatformFolder = "$BuildFolder/$DotNetRid"
+    $PackageFolder = "$BuildFolder/package/$DotNetRid/native/"
 
-    & "$CMakeExePath" -G"$CMakeBuilder" $CMakeArch -B"$BuildPlatformFolder" @CMakeArgs "$CMakeSource"
+    & "$CMakeExePath" -G"$CMakeBuilder" $CMakeArch -B"$BuildPlatformFolder" "-DDOTNET_RID=$DotNetRid" @CMakeArgs "$CMakeSource"
     if ($LastExitCode -ne 0) {
         throw "error with cmake"
     }
@@ -102,7 +103,7 @@ if ($IsWindows -Or $IsLinux) {
     if ($bit32) {
         Build-Project arm
     }
-    Build-Project arm64
+    #Build-Project arm64
 }
 
 if ($IsMacOS) {

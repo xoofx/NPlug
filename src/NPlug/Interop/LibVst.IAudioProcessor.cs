@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using NPlug.Backend;
 
@@ -18,8 +19,8 @@ internal static unsafe partial class LibVst
         {
             Debug.Assert(AudioSampleSize.Float32 == (AudioSampleSize)SymbolicSampleSizes.kSample32);
             Debug.Assert(AudioSampleSize.Float64 == (AudioSampleSize)SymbolicSampleSizes.kSample64);
-            Debug.Assert(NPlug.AudioBusDirection.Input == (NPlug.AudioBusDirection)BusDirections.kInput);
-            Debug.Assert(NPlug.AudioBusDirection.Output == (NPlug.AudioBusDirection)BusDirections.kOutput);
+            Debug.Assert(NPlug.BusDirection.Input == (NPlug.BusDirection)BusDirections.kInput);
+            Debug.Assert(NPlug.BusDirection.Output == (NPlug.BusDirection)BusDirections.kOutput);
             // TODO: Check SpeakerArrangement
         }
 #endif

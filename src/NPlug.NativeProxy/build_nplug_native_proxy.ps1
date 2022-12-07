@@ -14,4 +14,24 @@
 #   osx-x64
 #   osx-arm64
 # -------------------------------------------------------------
-& "$PSScriptRoot/../../scripts/CMake-Build-Platforms.ps1" -bit32 $false
+$ErrorActionPreference = "Stop"
+
+$result = & dotnet msbuild -nologo "$PSScriptRoot/NPlug.NativeProxy.msbuildproj" -t:ShowTarget
+if ($? -eq $false) {
+    Write-Error "Calling msbuild failed"
+    exit 1
+}
+$result = $result.Trim()
+$DotNetPackInfo = $result.Split(";")
+
+if ($DotNetPackInfo.Count -ne 3) {
+    Write-Error "Invalid msbuild output: $result`nExpecting 3 items separated by ;";
+    exit 1
+}
+
+Write-Host $DotNetPackInfo
+
+$dotnet_pack_version = $DotNetPackInfo[1]
+$dotnet_pack_folder = $DotNetPackInfo[2]
+
+& "$PSScriptRoot/../../scripts/CMake-Build-Platforms.ps1" -bit32 $false -CMakeConfig RelWithDebInfo -CMakeArgs """-DDOTNET_PACK_FOLDER=$dotnet_pack_folder""","""-DDOTNET_PACK_VERSION=$dotnet_pack_version"""

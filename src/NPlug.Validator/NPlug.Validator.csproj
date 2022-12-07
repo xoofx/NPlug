@@ -1,10 +1,50 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.dll" Link="nplug_validator.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <!--<Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.pdb" Link="nplug_validator.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>-->
+  </ItemGroup>
+  
+  
+  
+    <ItemGroup>
+    <Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.dll" Link="nplug_validator.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <!--<Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.pdb" Link="nplug_validator.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>-->
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\NPlug.NativeProxy\build\package\win-x64\native\nplug_native_proxy.dll" Link="NPlug.HelloWorldPlugin.proxy.vst3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\NPlug.NativeProxy\build\package\win-x64\native\nplug_native_proxy.pdb" Link="NPlug.HelloWorldPlugin.proxy.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NPlug.HelloWorldPlugin\NPlug.HelloWorldPlugin.csproj" />
+    <ProjectReference Include="..\NPlug\NPlug.csproj" />
+  </ItemGroup>
+
+  <Target Name="CheckNetCoreTargetingPackRoot" BeforeTargets="Build">
+    <Message Importance="high" Text="This is the root $(NetCoreTargetingPackRoot)" />
+  </Target>
 
 </Project>

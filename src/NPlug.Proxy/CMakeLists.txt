@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(nplug_native_proxy)
+project(nplug_proxy)
 include_directories(.)
 
 message(STATUS "Variable DOTNET_RID = ${DOTNET_RID}")
@@ -19,5 +19,5 @@ if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 
-add_library(nplug_native_proxy SHARED plugin.cpp)
-target_link_libraries(nplug_native_proxy PRIVATE libnethost.lib)
+add_library(nplug_proxy SHARED plugin.cpp)
+target_link_libraries(nplug_proxy PRIVATE libnethost.lib)

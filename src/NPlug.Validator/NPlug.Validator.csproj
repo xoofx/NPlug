@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,33 +10,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.dll" Link="nplug_validator.dll">
+    <!--<Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.dll" Link="nplug_validator.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <!--<Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.pdb" Link="nplug_validator.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
     </Content>-->
-  </ItemGroup>
-  
-  
-  
-    <ItemGroup>
-    <Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.dll" Link="nplug_validator.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <!--<Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.pdb" Link="nplug_validator.pdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>-->
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="..\NPlug.NativeProxy\build\package\win-x64\native\nplug_native_proxy.dll" Link="NPlug.HelloWorldPlugin.proxy.vst3">
+  <!--<ItemGroup>
+    <Content Include="..\NPlug.NativeProxy\build\package\win-x64\native\nplug_proxy.dll" Link="NPlug.HelloWorldPlugin.proxy.vst3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\NPlug.NativeProxy\build\package\win-x64\native\nplug_native_proxy.pdb" Link="NPlug.HelloWorldPlugin.proxy.pdb">
+    <Content Include="..\NPlug.NativeProxy\build\package\win-x64\native\nplug_proxy.pdb" Link="NPlug.HelloWorldPlugin.proxy.pdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <ProjectReference Include="..\NPlug.HelloWorldPlugin\NPlug.HelloWorldPlugin.csproj" />

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <NPlugProxyVersion>1.0.0</NPlugProxyVersion>
+    <NPlugRuntimeIdentifier Condition="'$(NPlugRuntimeIdentifier)' == ''">$(RuntimeIdentifier)</NPlugRuntimeIdentifier>
+    <NPlugRuntimeIdentifier Condition="'$(NPlugRuntimeIdentifier)' == ''">$(NETCoreSdkRuntimeIdentifier)</NPlugRuntimeIdentifier>
+
+    <NPlugNativeLibraryPrefix Condition="'$(NPlugNativeLibraryPrefix)' == '' and !$(NPlugRuntimeIdentifier.StartsWith('win'))">lib</NPlugNativeLibraryPrefix>
+
+    <NPlugNativeLibraryExtension Condition="'$(NPlugNativeLibraryExtension)' == '' and $(NPlugRuntimeIdentifier.StartsWith('win'))">.dll</NPlugNativeLibraryExtension>
+    <NPlugNativeLibraryExtension Condition="'$(NPlugNativeLibraryExtension)' == '' and $(NPlugRuntimeIdentifier.StartsWith('osx'))">.dylib</NPlugNativeLibraryExtension>
+    <NPlugNativeLibraryExtension Condition="'$(NPlugNativeLibraryExtension)' == ''">.so</NPlugNativeLibraryExtension>
+
+    <NPlugProxyLibraryFile Condition="'$(NPlugProxyLibraryFile)' == ''">$(MSBuildThisFileDirectory)$(NPlugRuntimeIdentifier)/native/$(NPlugNativeLibraryPrefix)nplug_proxy.$(NPlugNativeLibraryExtension)</NPlugProxyLibraryFile>
+  </PropertyGroup>
+</Project>

@@ -16,7 +16,7 @@
 # -------------------------------------------------------------
 $ErrorActionPreference = "Stop"
 
-$result = & dotnet msbuild -nologo "$PSScriptRoot/NPlug.NativeProxy.msbuildproj" -t:ShowTarget
+$result = & dotnet msbuild -nologo "$PSScriptRoot/NPlug.Proxy.msbuildproj" -t:Get_nplug_proxy_Target
 if ($? -eq $false) {
     Write-Error "Calling msbuild failed"
     exit 1

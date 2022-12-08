@@ -22,14 +22,13 @@ param(
     [String] $CMakeSource = ".",
     [String] $CMakeConfig = "Release",
     [String[]] $CMakeArgs = @(),
+    [String] $BuildFolder = "build",
     [String] $CMakeRelativeBuildFolder = ".",
     [String] $CMakeExePath = "cmake"
 )
 
 $ErrorActionPreference = "Stop"
 Try {
-$BuildFolder = "build"
-
 $CMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
 
 # Common function used for building x86/x64/arm/arm64

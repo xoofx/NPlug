@@ -1,15 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>NPlug is a library that allow to easily develop VST audio plugin in .NET</Description>
+    <Description>Package providing a native proxy for NPlug. This package is not meant to be used directly.</Description>
     <Copyright>Alexandre Mutel</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Authors>Alexandre Mutel</Authors>
@@ -26,13 +25,15 @@
 
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)../../img/NPlug.png" Pack="true" PackagePath="/" />
-    <None Include="$(MSBuildThisFileDirectory)../../readme.md" Pack="true" PackagePath="/" />
+    <None Include="readme.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
+  <Target Name="Get_nplug_proxy_Target" Outputs="$(NetCoreTargetingPackRoot)">
+    <Message Importance="high" Text="$(NETCoreSDKRuntimeIdentifier);$(BundledNETCoreAppPackageVersion);$(NetCoreTargetingPackRoot)" />
+  </Target>
+
   <ItemGroup>
-    <PackageReference Include="MinVer" Version="4.2.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <None Include="build/win-x64/native/nplug_proxy.dll" Pack="true" PackagePath="/build/win-x64/native/nplug_proxy.dll"/>
+    <None Include="build/NPlug.Proxy.props" Pack="true" PackagePath="/build/NPlug.Proxy.props" />
   </ItemGroup>
 </Project>

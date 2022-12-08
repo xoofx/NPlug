@@ -34,4 +34,4 @@ Write-Host $DotNetPackInfo
 $dotnet_pack_version = $DotNetPackInfo[1]
 $dotnet_pack_folder = $DotNetPackInfo[2]
 
-& "$PSScriptRoot/../../scripts/CMake-Build-Platforms.ps1" -bit32 $false -CMakeConfig RelWithDebInfo -CMakeArgs """-DDOTNET_PACK_FOLDER=$dotnet_pack_folder""","""-DDOTNET_PACK_VERSION=$dotnet_pack_version"""
+& "$PSScriptRoot/../../scripts/CMake-Build-Platforms.ps1" -bit32 $false -BuildFolder "bin/native" -CMakeConfig RelWithDebInfo -CMakeArgs """-DDOTNET_PACK_FOLDER=$dotnet_pack_folder""","""-DDOTNET_PACK_VERSION=$dotnet_pack_version"""

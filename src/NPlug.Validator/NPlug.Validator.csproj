@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,7 +9,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)../NPlug.Proxy/package/NPlug.Proxy.props"/>
+  <Import Project="$(MSBuildThisFileDirectory)../NPlug.Proxy/build/NPlug.Proxy.props"/>
 
   <ItemGroup>
     <!--<Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.dll" Link="nplug_validator.dll">

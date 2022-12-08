@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "NPlug.Validator": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

@@ -1,14 +1,13 @@
 <Project Sdk="Microsoft.Build.NoTargets">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <Target Name="Get_nplug_proxy_Target" Outputs="$(NetCoreTargetingPackRoot)">
     <Message Importance="high" Text="$(NETCoreSDKRuntimeIdentifier);$(BundledNETCoreAppPackageVersion);$(NetCoreTargetingPackRoot)" />
   </Target>
   <ItemGroup>
-    <Content Include="CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="CMakeLists.txt" />
     <None Include="build_nplug_proxy.ps1" />
     <None Include="NPlug.Proxy.nuspec" />
     <None Include="package\NPlug.Proxy.props" />

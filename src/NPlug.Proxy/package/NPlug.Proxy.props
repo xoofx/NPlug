@@ -11,6 +11,7 @@
     <NPlugNativeLibraryExtension Condition="'$(NPlugNativeLibraryExtension)' == '' and $(NPlugRuntimeIdentifier.StartsWith('osx'))">.dylib</NPlugNativeLibraryExtension>
     <NPlugNativeLibraryExtension Condition="'$(NPlugNativeLibraryExtension)' == ''">.so</NPlugNativeLibraryExtension>
 
-    <NPlugProxyLibraryFile Condition="'$(NPlugProxyLibraryFile)' == ''">$(MSBuildThisFileDirectory)$(NPlugRuntimeIdentifier)/native/$(NPlugNativeLibraryPrefix)nplug_proxy.$(NPlugNativeLibraryExtension)</NPlugProxyLibraryFile>
+    <NPlugProxyLibraryLink Condition="'$(NPlugProxyLibraryLink)' == ''">$(NPlugNativeLibraryPrefix)nplug_proxy$(NPlugNativeLibraryExtension)</NPlugProxyLibraryLink>
+    <NPlugProxyLibraryFile Condition="'$(NPlugProxyLibraryFile)' == ''">$(MSBuildThisFileDirectory)$(NPlugRuntimeIdentifier)/native/$(NPlugProxyLibraryLink)</NPlugProxyLibraryFile>
   </PropertyGroup>
 </Project>

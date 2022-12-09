@@ -156,7 +156,11 @@ public class CodeGenerator
 
         // Add SdkVersion field
         _container!.Members.Add(new CSharpField("SdkVersion") { FieldType = CSharpPrimitiveType.String(), Modifiers = CSharpModifiers.Const, Visibility = CSharpVisibility.Public , InitValue = macroSdkVersion.Value});
-        
+
+        // AudioEffectCategory
+        var vstAudioEffectClass = cppAst.Macros.FirstOrDefault(x => x.Name == "kVstAudioEffectClass");
+        _container!.Members.Add(new CSharpField("AudioEffectCategory") { FieldType = CSharpPrimitiveType.String(), Modifiers = CSharpModifiers.Const, Visibility = CSharpVisibility.Public, InitValue = vstAudioEffectClass.Value });
+
         var namespaces = new List<CppNamespace>();
         foreach (var ns in cppAst.Namespaces)
         {

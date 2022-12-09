@@ -18,16 +18,15 @@ public sealed class AudioPluginClassInfo
     /// </summary>
     /// <param name="guid"></param>
     /// <param name="name"></param>
-    public AudioPluginClassInfo(Guid guid, string name)
+    /// <param name="category"></param>
+    public AudioPluginClassInfo(Guid guid, string name, AudioPluginCategory category)
     {
         Id = guid;
         Name = name;
-        Category = string.Empty;
-        Name = name;
+        Category = category;
         ClassFlags = AudioPluginFlags.None;
-        SubCategories = string.Empty;
+        Cardinality = int.MaxValue;
         Vendor = string.Empty;
-        Cardinality = -1;
         Version = EmptyVersion;
     }
 
@@ -37,19 +36,14 @@ public sealed class AudioPluginClassInfo
     public Guid Id { get; }
 
     /// <summary>
-    /// see @ref PClassInfo
-    /// </summary>
-    public int Cardinality { get; init; }
-
-    /// <summary>
-    /// Gets or init the category.
-    /// </summary>
-    public string Category { get; init; }
-
-    /// <summary>
     /// Gets or init the category.
     /// </summary>
     public string Name { get; }
+
+    /// <summary>
+    /// Gets or init the category.
+    /// </summary>
+    public AudioPluginCategory Category { get; init; }
 
     /// <summary>
     /// flags used for a specific category, must be defined where category is defined
@@ -57,9 +51,9 @@ public sealed class AudioPluginClassInfo
     public AudioPluginFlags ClassFlags { get; init; }
 
     /// <summary>
-    /// module specific subcategories, can be more than one, logically added by the OR operator
+    /// see @ref PClassInfo
     /// </summary>
-    public string SubCategories { get; init; }
+    public int Cardinality { get; init; }
 
     /// <summary>
     /// overwrite vendor information from factory info

@@ -20,6 +20,8 @@ internal static partial class LibVst
 {
     public const string SdkVersion = "VST 3.7.6";
     
+    public const string AudioEffectCategory = "Audio Module Class";
+    
     /// <summary>
     /// FUnknown
     /// The basic interface of all interfaces.

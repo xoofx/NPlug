@@ -26,7 +26,7 @@ internal static unsafe partial class LibVst
             { IPlugView.IId, TryMatchQueryInterface<IComponent, IAudioPluginView> },
         };
 
-        private static partial ComResult queryInterface_ccw(FUnknown* pObj, Guid* iid, void** pInterface)
+        private static partial ComResult queryInterface_ToManaged(FUnknown* pObj, Guid* iid, void** pInterface)
         {
             *pInterface = (void*)0;
             var bridge = Get(pObj)->ComObject;
@@ -43,12 +43,12 @@ internal static unsafe partial class LibVst
             return false;
         }
 
-        private static partial uint addRef_ccw(FUnknown* pObj)
+        private static partial uint addRef_ToManaged(FUnknown* pObj)
         {
             return Get(pObj)->ComObject.AddRef();
         }
 
-        private static partial uint release_ccw(FUnknown* pObj)
+        private static partial uint release_ToManaged(FUnknown* pObj)
         {
             return Get(pObj)->ComObject.ReleaseRef();
         }

@@ -124,61 +124,33 @@ internal static unsafe partial class LibVst
     {
         private static Stream Get(IBStream* stream) => (Stream)((ComObjectHandle*)stream)->Handle.Target!;
 
-        private static partial ComResult read_ccw(IBStream* self, void* buffer, int numBytes, int* numBytesRead)
+        private static partial ComResult read_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesRead)
         {
             var stream = Get(self);
-            try
-            {
-                *numBytesRead = stream.Read(new Span<byte>(buffer, numBytes));
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.InternalError;
-            }
+            *numBytesRead = stream.Read(new Span<byte>(buffer, numBytes));
+            return true;
         }
 
-        private static partial ComResult write_ccw(IBStream* self, void* buffer, int numBytes, int* numBytesWritten)
+        private static partial ComResult write_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesWritten)
         {
             var stream = Get(self);
-            try
-            {
-                stream.Write(new Span<byte>(buffer, numBytes));
-                *numBytesWritten = numBytes;
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.InternalError;
-            }
+            stream.Write(new Span<byte>(buffer, numBytes));
+            *numBytesWritten = numBytes;
+            return true;
         }
 
-        private static partial ComResult seek_ccw(IBStream* self, long pos, int mode, long* result)
+        private static partial ComResult seek_ToManaged(IBStream* self, long pos, int mode, long* result)
         {
             var stream = Get(self);
-            try
-            {
-                *result = stream.Seek(pos, mode == 0 ? SeekOrigin.Begin : mode == 1 ? SeekOrigin.Current : SeekOrigin.End);
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.InternalError;
-            }
+            *result = stream.Seek(pos, mode == 0 ? SeekOrigin.Begin : mode == 1 ? SeekOrigin.Current : SeekOrigin.End);
+            return true;
         }
 
-        private static partial ComResult tell_ccw(IBStream* self, long* pos)
+        private static partial ComResult tell_ToManaged(IBStream* self, long* pos)
         {
             var stream = Get(self);
-            try
-            {
-                *pos = stream.Position;
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.InternalError;
-            }
+            *pos = stream.Position;
+            return true;
         }
     }
 }

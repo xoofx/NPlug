@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IInterAppAudioConnectionNotification
     {
-        private static partial void onInterAppAudioConnectionStateChange_ccw(IInterAppAudioConnectionNotification* self, byte newState)
+        private static partial void onInterAppAudioConnectionStateChange_ToManaged(IInterAppAudioConnectionNotification* self, byte newState)
         {
             throw new NotImplementedException();
         }

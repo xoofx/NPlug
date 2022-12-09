@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IContextMenuTarget
     {
-        private static partial ComResult executeMenuItem_ccw(IContextMenuTarget* self, int tag)
+        private static partial ComResult executeMenuItem_ToManaged(IContextMenuTarget* self, int tag)
         {
             throw new NotImplementedException();
         }

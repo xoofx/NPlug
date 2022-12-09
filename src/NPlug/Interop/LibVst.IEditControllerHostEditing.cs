@@ -10,12 +10,12 @@ internal static unsafe partial class LibVst
 {
     public partial struct IEditControllerHostEditing
     {
-        private static partial ComResult beginEditFromHost_ccw(IEditControllerHostEditing* self, LibVst.ParamID paramID)
+        private static partial ComResult beginEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult endEditFromHost_ccw(IEditControllerHostEditing* self, LibVst.ParamID paramID)
+        private static partial ComResult endEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID)
         {
             throw new NotImplementedException();
         }

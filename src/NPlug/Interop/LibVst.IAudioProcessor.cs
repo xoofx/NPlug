@@ -27,120 +27,61 @@ internal static unsafe partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static NPlug.IAudioProcessor Get(IAudioProcessor* self) => (NPlug.IAudioProcessor)((ComObjectHandle*)self)->Handle.Target!;
 
-        private static partial ComResult setBusArrangements_ccw(IAudioProcessor* self, SpeakerArrangement* inputs, int numIns, SpeakerArrangement* outputs, int numOuts)
+        private static partial ComResult setBusArrangements_ToManaged(IAudioProcessor* self, SpeakerArrangement* inputs, int numIns, SpeakerArrangement* outputs, int numOuts)
         {
-            if (numIns < 0 || numOuts < 0) return ComResult.InvalidArg;
-            try
-            {
-                return Get(self).SetBusArrangements(new Span<NPlug.SpeakerArrangement>((NPlug.SpeakerArrangement*)inputs, numIns), new Span<NPlug.SpeakerArrangement>((NPlug.SpeakerArrangement*)outputs, numOuts));
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            if (numIns < 0) throw new ArgumentOutOfRangeException(nameof(numIns));
+            if (numOuts < 0) throw new ArgumentOutOfRangeException(nameof(numOuts));
+            return Get(self).SetBusArrangements(new Span<NPlug.SpeakerArrangement>((NPlug.SpeakerArrangement*)inputs, numIns), new Span<NPlug.SpeakerArrangement>((NPlug.SpeakerArrangement*)outputs, numOuts));
         }
 
-        private static partial ComResult getBusArrangement_ccw(IAudioProcessor* self, BusDirection dir, int index, SpeakerArrangement* arr)
+        private static partial ComResult getBusArrangement_ToManaged(IAudioProcessor* self, BusDirection dir, int index, SpeakerArrangement* arr)
         {
-            if (index < 0) return ComResult.InvalidArg;
-            try
-            {
-                *arr = (SpeakerArrangement)((ulong)Get(self).GetBusArrangement((NPlug.BusDirection)dir.Value, index));
-                return ComResult.Ok;
-            }
-            catch (ArgumentException)
-            {
-                return ComResult.InvalidArg;
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+            *arr = (SpeakerArrangement)((ulong)Get(self).GetBusArrangement((NPlug.BusDirection)dir.Value, index));
+            return true;
         }
 
-        private static partial ComResult canProcessSampleSize_ccw(IAudioProcessor* self, int symbolicSampleSize)
+        private static partial ComResult canProcessSampleSize_ToManaged(IAudioProcessor* self, int symbolicSampleSize)
         {
-            try
-            {
-                return Get(self).CanProcessSampleSize((AudioSampleSize)symbolicSampleSize);
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            return Get(self).CanProcessSampleSize((AudioSampleSize)symbolicSampleSize);
         }
 
-        private static partial uint getLatencySamples_ccw(IAudioProcessor* self)
+        private static partial uint getLatencySamples_ToManaged(IAudioProcessor* self)
         {
-            try
-            {
-                return Get(self).LatencySamples;
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
+            return Get(self).LatencySamples;
         }
 
-        private static partial ComResult setupProcessing_ccw(IAudioProcessor* self, ProcessSetup* setup)
+        private static partial ComResult setupProcessing_ToManaged(IAudioProcessor* self, ProcessSetup* setup)
         {
-            try
-            {
-                return Get(self).SetupProcessing(*(AudioProcessSetupData*)setup);
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            return Get(self).SetupProcessing(*(AudioProcessSetupData*)setup);
         }
 
-        private static partial ComResult setProcessing_ccw(IAudioProcessor* self, byte state)
+        private static partial ComResult setProcessing_ToManaged(IAudioProcessor* self, byte state)
         {
-            try
-            {
-                Get(self).SetProcessing(state != 0);
-                return ComResult.Ok;
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            Get(self).SetProcessing(state != 0);
+            return true;
         }
 
         [SkipLocalsInit]
-        private static partial ComResult process_ccw(IAudioProcessor* self, ProcessData* data)
+        private static partial ComResult process_ToManaged(IAudioProcessor* self, ProcessData* data)
         {
-            try
-            {
-                var audioProcessor = Get(self);
-                var processData = new AudioProcessData((IntPtr)data->processContext,
-                    (AudioProcessMode)data->processMode,
-                    (AudioSampleSize)data->symbolicSampleSize,
-                    data->numSamples,
-                    new AudioBusData(data->numInputs, (NPlug.AudioBusBuffers*)data->inputs, new AudioParameterChanges(AudioParameterChangesVst.Instance, (IntPtr)data->inputParameterChanges),
-                        new AudioEventList(AudioEventListVst.Instance, (IntPtr)data->inputEvents)),
-                    new AudioBusData(data->numOutputs, (NPlug.AudioBusBuffers*)data->outputs, new AudioParameterChanges(AudioParameterChangesVst.Instance, (IntPtr)data->outputParameterChanges),
-                        new AudioEventList(AudioEventListVst.Instance, (IntPtr)data->outputEvents))
-                );
-                audioProcessor.Process(in processData);
-                return ComResult.Ok;
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            var audioProcessor = Get(self);
+            var processData = new AudioProcessData((IntPtr)data->processContext,
+                (AudioProcessMode)data->processMode,
+                (AudioSampleSize)data->symbolicSampleSize,
+                data->numSamples,
+                new AudioBusData(data->numInputs, (NPlug.AudioBusBuffers*)data->inputs, new AudioParameterChanges(AudioParameterChangesVst.Instance, (IntPtr)data->inputParameterChanges),
+                    new AudioEventList(AudioEventListVst.Instance, (IntPtr)data->inputEvents)),
+                new AudioBusData(data->numOutputs, (NPlug.AudioBusBuffers*)data->outputs, new AudioParameterChanges(AudioParameterChangesVst.Instance, (IntPtr)data->outputParameterChanges),
+                    new AudioEventList(AudioEventListVst.Instance, (IntPtr)data->outputEvents))
+            );
+            audioProcessor.Process(in processData);
+            return true;
         }
 
-        private static partial uint getTailSamples_ccw(IAudioProcessor* self)
+        private static partial uint getTailSamples_ToManaged(IAudioProcessor* self)
         {
-            try
-            {
-                return Get(self).TailSamples;
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
+            return Get(self).TailSamples;
         }
     }
 

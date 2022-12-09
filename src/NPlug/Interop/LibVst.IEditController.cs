@@ -16,183 +16,92 @@ internal static unsafe partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static NPlug.IAudioController Get(IEditController* self) => (NPlug.IAudioController)((ComObjectHandle*)self)->Handle.Target!;
 
-        private static partial ComResult setComponentState_ccw(IEditController* self, IBStream* state)
+        private static partial ComResult setComponentState_ToManaged(IEditController* self, IBStream* state)
         {
-            try
-            {
-                Get(self).SetComponentState(IBStreamClient.GetStream(state));
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.InternalError;
-            }
+            Get(self).SetComponentState(IBStreamClient.GetStream(state));
+            return true;
         }
 
-        private static partial ComResult setState_ccw(IEditController* self, IBStream* state)
+        private static partial ComResult setState_ToManaged(IEditController* self, IBStream* state)
         {
-            try
-            {
-                Get(self).SetState(IBStreamClient.GetStream(state));
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.InternalError;
-            }
+            Get(self).SetState(IBStreamClient.GetStream(state));
+            return true;
         }
 
-        private static partial ComResult getState_ccw(IEditController* self, IBStream* state)
+        private static partial ComResult getState_ToManaged(IEditController* self, IBStream* state)
         {
-            try
-            {
-                Get(self).GetState(IBStreamClient.GetStream(state));
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.InternalError;
-            }
+            Get(self).GetState(IBStreamClient.GetStream(state));
+            return true;
         }
 
-        private static partial int getParameterCount_ccw(IEditController* self)
+        private static partial int getParameterCount_ToManaged(IEditController* self)
         {
-            try
-            {
-                return Get(self).ParameterCount;
-            }
-            catch
-            {
-                return 0;
-            }
+            return Get(self).ParameterCount;
         }
 
-        private static partial ComResult getParameterInfo_ccw(IEditController* self, int paramIndex, ParameterInfo* info)
+        private static partial ComResult getParameterInfo_ToManaged(IEditController* self, int paramIndex, ParameterInfo* info)
         {
-            try
-            {
-                var parameter = Get(self).GetParameterInfo(paramIndex);
-                info->id = new ParamID(unchecked((uint)parameter.Id.Value));
-                info->title.CopyFrom(parameter.Title);
-                info->shortTitle.CopyFrom(parameter.ShortTitle);
-                info->units.CopyFrom(parameter.Units);
-                info->stepCount = parameter.StepCount;
-                info->defaultNormalizedValue = new ParamValue(parameter.DefaultNormalizedValue);
-                info->unitId = new UnitID(parameter.UnitId.Value);
-                info->flags = (int)parameter.Flags;
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.False;
-            }
+            var parameter = Get(self).GetParameterInfo(paramIndex);
+            info->id = new ParamID(unchecked((uint)parameter.Id.Value));
+            info->title.CopyFrom(parameter.Title);
+            info->shortTitle.CopyFrom(parameter.ShortTitle);
+            info->units.CopyFrom(parameter.Units);
+            info->stepCount = parameter.StepCount;
+            info->defaultNormalizedValue = new ParamValue(parameter.DefaultNormalizedValue);
+            info->unitId = new UnitID(parameter.UnitId.Value);
+            info->flags = (int)parameter.Flags;
+            return true;
         }
 
-        private static partial ComResult getParamStringByValue_ccw(IEditController* self, ParamID id, ParamValue valueNormalized, String128* @string)
+        private static partial ComResult getParamStringByValue_ToManaged(IEditController* self, ParamID id, ParamValue valueNormalized, String128* @string)
         {
-            try
-            {
-                var stringResult = Get(self).GetParameterStringByValue(new AudioParameterId(unchecked((int)id.Value)), valueNormalized.Value);
-                @string->CopyFrom(stringResult);
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.False;
-            }
+            var stringResult = Get(self).GetParameterStringByValue(new AudioParameterId(unchecked((int)id.Value)), valueNormalized.Value);
+            @string->CopyFrom(stringResult);
+            return true;
         }
 
-        private static partial ComResult getParamValueByString_ccw(IEditController* self, ParamID id, char* @string, ParamValue* valueNormalized)
+        private static partial ComResult getParamValueByString_ToManaged(IEditController* self, ParamID id, char* @string, ParamValue* valueNormalized)
         {
-            try
-            {
-                var audioProcessor = Get(self);
-                var host = (AudioHostApplicationClient)audioProcessor.Host!;
-                valueNormalized->Value = Get(self).GetParameterValueByString(new AudioParameterId(unchecked((int)id.Value)), host.GetOrCreateString128(@string));
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.False;
-            }
+            var audioProcessor = Get(self);
+            var host = (AudioHostApplicationClient)audioProcessor.Host!;
+            valueNormalized->Value = Get(self).GetParameterValueByString(new AudioParameterId(unchecked((int)id.Value)), host.GetOrCreateString128(@string));
+            return true;
         }
 
-        private static partial ParamValue normalizedParamToPlain_ccw(IEditController* self, ParamID id, ParamValue valueNormalized)
+        private static partial ParamValue normalizedParamToPlain_ToManaged(IEditController* self, ParamID id, ParamValue valueNormalized)
         {
-            try
-            {
-                return new ParamValue(Get(self).NormalizedParameterToPlain(new AudioParameterId(unchecked((int)id.Value)), valueNormalized.Value));
-            }
-            catch
-            {
-                return new ParamValue(0.0);
-            }
+            return new ParamValue(Get(self).NormalizedParameterToPlain(new AudioParameterId(unchecked((int)id.Value)), valueNormalized.Value));
         }
 
-        private static partial ParamValue plainParamToNormalized_ccw(IEditController* self, ParamID id, ParamValue plainValue)
+        private static partial ParamValue plainParamToNormalized_ToManaged(IEditController* self, ParamID id, ParamValue plainValue)
         {
-            try
-            {
-                return new ParamValue(Get(self).NormalizedParameterToPlain(new AudioParameterId(unchecked((int)id.Value)), plainValue.Value));
-            }
-            catch
-            {
-                return new ParamValue(0.0);
-            }
+            return new ParamValue(Get(self).NormalizedParameterToPlain(new AudioParameterId(unchecked((int)id.Value)), plainValue.Value));
         }
 
-        private static partial ParamValue getParamNormalized_ccw(IEditController* self, ParamID id)
+        private static partial ParamValue getParamNormalized_ToManaged(IEditController* self, ParamID id)
         {
-            try
-            {
-                return new ParamValue(Get(self).GetParameterNormalized(new AudioParameterId(unchecked((int)id.Value))));
-            }
-            catch
-            {
-                return new ParamValue(0.0);
-            }
+            return new ParamValue(Get(self).GetParameterNormalized(new AudioParameterId(unchecked((int)id.Value))));
         }
 
-        private static partial ComResult setParamNormalized_ccw(IEditController* self, ParamID id, ParamValue value)
+        private static partial ComResult setParamNormalized_ToManaged(IEditController* self, ParamID id, ParamValue value)
         {
-            try
-            {
-                Get(self).SetParameterNormalized(new AudioParameterId(unchecked((int)id.Value)), value.Value);
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.False;
-            }
+            Get(self).SetParameterNormalized(new AudioParameterId(unchecked((int)id.Value)), value.Value);
+            return true;
         }
 
-        private static partial ComResult setComponentHandler_ccw(IEditController* self, IComponentHandler* handler)
+        private static partial ComResult setComponentHandler_ToManaged(IEditController* self, IComponentHandler* handler)
         {
-            try
-            {
-                Get(self).SetControllerHost(new AudioControllerHostProxy(handler));
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.False;
-            }
+            Get(self).SetControllerHost(new AudioControllerHostProxy(handler));
+            return true;
         }
 
-        private static partial IPlugView* createView_ccw(IEditController* self, FIDString name)
+        private static partial IPlugView* createView_ToManaged(IEditController* self, FIDString name)
         {
-            try
-            {
-                var audioProcessor = Get(self);
-                var host = (AudioHostApplicationClient)audioProcessor.Host!;
-                var view = Get(self).CreateView(host.GetOrCreateString(name.Value));
-                var comObject = ComObjectManager.Instance.GetOrCreateComObject(view);
-                return comObject.GetOrCreateComInterface<IPlugView>();
-            }
-            catch
-            {
-                return (IPlugView*)0;
-            }
+            var audioProcessor = Get(self);
+            var host = (AudioHostApplicationClient)audioProcessor.Host!;
+            var view = Get(self).CreateView(host.GetOrCreateString(name.Value));
+            var comObject = ComObjectManager.Instance.GetOrCreateComObject(view);
+            return comObject.GetOrCreateComInterface<IPlugView>();
         }
     }
 

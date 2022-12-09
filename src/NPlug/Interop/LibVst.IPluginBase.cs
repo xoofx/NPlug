@@ -2,6 +2,8 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using System;
+
 namespace NPlug.Interop;
 
 internal static unsafe partial class LibVst
@@ -10,41 +12,27 @@ internal static unsafe partial class LibVst
     {
         private static IAudioPluginComponent Get(IPluginBase* self) => (IAudioPluginComponent)((ComObjectHandle*)self)->Handle.Target!;
 
-        private static partial ComResult initialize_ccw(IPluginBase* self, LibVst.FUnknown* context)
+        private static partial ComResult initialize_ToManaged(IPluginBase* self, LibVst.FUnknown* context)
         {
-            try
+            IHostApplication* hostApplication;
+            var result = context->queryInterface(IHostApplication.NativeGuid, (void**)&hostApplication);
+            if (result.IsSuccess)
             {
-                IHostApplication* hostApplication;
-                var result = context->queryInterface(IHostApplication.NativeGuid, (void**)&hostApplication);
-                if (result.IsSuccess)
-                {
-                    String128 name = default;
-                    _ = hostApplication->getName(&name);
-                    return Get(self).Initialize(new AudioHostApplicationClient(hostApplication, name.ToString()));
-                }
-                else
-                {
-                    // TODO Free self->Handle
-                    return false;
-                }
+                String128 name = default;
+                _ = hostApplication->getName(&name);
+                return Get(self).Initialize(new AudioHostApplicationClient(hostApplication, name.ToString()));
             }
-            catch
+            else
             {
-                return ComResult.InternalError;
+                // TODO Free self->Handle
+                return false;
             }
         }
 
-        private static partial ComResult terminate_ccw(IPluginBase* self)
+        private static partial ComResult terminate_ToManaged(IPluginBase* self)
         {
-            try
-            {
-                Get(self).Terminate();
-                return ComResult.Ok;
-            }
-            catch
-            {
-                return ComResult.InternalError;
-            }
+            Get(self).Terminate();
+            return true;
         }
     }
 }

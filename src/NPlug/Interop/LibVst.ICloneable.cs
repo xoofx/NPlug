@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct ICloneable
     {
-        private static partial LibVst.FUnknown* clone_ccw(ICloneable* self)
+        private static partial LibVst.FUnknown* clone_ToManaged(ICloneable* self)
         {
             throw new NotImplementedException();
         }

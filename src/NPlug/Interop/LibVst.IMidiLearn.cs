@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IMidiLearn
     {
-        private static partial ComResult onLiveMIDIControllerInput_ccw(IMidiLearn* self, int busIndex, short channel, LibVst.CtrlNumber midiCC)
+        private static partial ComResult onLiveMIDIControllerInput_ToManaged(IMidiLearn* self, int busIndex, short channel, LibVst.CtrlNumber midiCC)
         {
             throw new NotImplementedException();
         }

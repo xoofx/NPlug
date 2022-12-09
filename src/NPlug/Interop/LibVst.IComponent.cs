@@ -17,124 +17,61 @@ internal static unsafe partial class LibVst
             return (NPlug.IAudioProcessor)((ComObjectHandle*)self)->Handle.Target!;
         }
         
-        private static partial ComResult getControllerClassId_ccw(IComponent* self, Guid* classId)
+        private static partial ComResult getControllerClassId_ToManaged(IComponent* self, Guid* classId)
         {
-            try
-            {
-                *classId = Get(self).ControllerId;
-                return ComResult.Ok;
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            *classId = Get(self).ControllerId;
+            return true;
         }
 
-        private static partial ComResult setIoMode_ccw(IComponent* self, IoMode mode)
+        private static partial ComResult setIoMode_ToManaged(IComponent* self, IoMode mode)
         {
-            try
-            {
-                Get(self).SetInputOutputMode((InputOutputMode)mode.Value);
-                return ComResult.Ok;
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            Get(self).SetInputOutputMode((InputOutputMode)mode.Value);
+            return true;
         }
 
-        private static partial int getBusCount_ccw(IComponent* self, MediaType type, BusDirection dir)
+        private static partial int getBusCount_ToManaged(IComponent* self, MediaType type, BusDirection dir)
         {
-            try
-            {
-                return Get(self).GetBusCount((BusMediaType)type.Value, (NPlug.BusDirection)dir.Value);
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
+            return Get(self).GetBusCount((BusMediaType)type.Value, (NPlug.BusDirection)dir.Value);
         }
 
-        private static partial ComResult getBusInfo_ccw(IComponent* self, MediaType type, BusDirection dir, int index, BusInfo* bus)
+        private static partial ComResult getBusInfo_ToManaged(IComponent* self, MediaType type, BusDirection dir, int index, BusInfo* bus)
         {
-            try
-            {
-                var busInfo = Get(self).GetBusInfo((BusMediaType)type.Value, (NPlug.BusDirection)dir.Value, index);
-                bus->mediaType.Value = (int)busInfo.MediaType;
-                bus->direction.Value = (int)busInfo.Direction;
-                bus->channelCount = busInfo.ChannelCount;
-                bus->name.CopyFrom(busInfo.Name);
-                bus->busType.Value = (int)busInfo.BusType;
-                bus->flags = (uint)busInfo.Flags;
-                return ComResult.Ok;
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            var busInfo = Get(self).GetBusInfo((BusMediaType)type.Value, (NPlug.BusDirection)dir.Value, index);
+            bus->mediaType.Value = (int)busInfo.MediaType;
+            bus->direction.Value = (int)busInfo.Direction;
+            bus->channelCount = busInfo.ChannelCount;
+            bus->name.CopyFrom(busInfo.Name);
+            bus->busType.Value = (int)busInfo.BusType;
+            bus->flags = (uint)busInfo.Flags;
+            return true;
         }
 
-        private static partial ComResult getRoutingInfo_ccw(IComponent* self, RoutingInfo* inInfo, RoutingInfo* outInfo)
+        private static partial ComResult getRoutingInfo_ToManaged(IComponent* self, RoutingInfo* inInfo, RoutingInfo* outInfo)
         {
-            try
-            {
-                return Get(self).TryGetBusRoutingInfo(in *(BusRoutingInfo*)inInfo, out *(BusRoutingInfo*)outInfo);
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            return Get(self).TryGetBusRoutingInfo(in *(BusRoutingInfo*)inInfo, out *(BusRoutingInfo*)outInfo);
         }
 
-        private static partial ComResult activateBus_ccw(IComponent* self, MediaType type, BusDirection dir, int index, byte state)
+        private static partial ComResult activateBus_ToManaged(IComponent* self, MediaType type, BusDirection dir, int index, byte state)
         {
-            try
-            {
-                return Get(self).ActivateBus((BusMediaType)type.Value, (NPlug.BusDirection)dir.Value, index, state != 0);
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            return Get(self).ActivateBus((BusMediaType)type.Value, (NPlug.BusDirection)dir.Value, index, state != 0);
         }
 
-        private static partial ComResult setActive_ccw(IComponent* self, byte state)
+        private static partial ComResult setActive_ToManaged(IComponent* self, byte state)
         {
-            try
-            {
-                Get(self).SetActive(state != 0);
-                return ComResult.Ok;
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            Get(self).SetActive(state != 0);
+            return true;
         }
 
-        private static partial ComResult setState_ccw(IComponent* self, IBStream* state)
+        private static partial ComResult setState_ToManaged(IComponent* self, IBStream* state)
         {
-            try
-            {
-                Get(self).SetState(IBStreamClient.GetStream(state));
-                return ComResult.Ok;
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            Get(self).SetState(IBStreamClient.GetStream(state));
+            return true;
         }
 
-        private static partial ComResult getState_ccw(IComponent* self, IBStream* state)
+        private static partial ComResult getState_ToManaged(IComponent* self, IBStream* state)
         {
-            try
-            {
-                Get(self).GetState(IBStreamClient.GetStream(state));
-                return ComResult.Ok;
-            }
-            catch (Exception)
-            {
-                return ComResult.InternalError;
-            }
+            Get(self).GetState(IBStreamClient.GetStream(state));
+            return true;
         }
     }
 }

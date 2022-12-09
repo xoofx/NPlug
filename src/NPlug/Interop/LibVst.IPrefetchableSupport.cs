@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IPrefetchableSupport
     {
-        private static partial ComResult getPrefetchableSupport_ccw(IPrefetchableSupport* self, LibVst.PrefetchableSupport* prefetchable)
+        private static partial ComResult getPrefetchableSupport_ToManaged(IPrefetchableSupport* self, LibVst.PrefetchableSupport* prefetchable)
         {
             throw new NotImplementedException();
         }

@@ -10,17 +10,17 @@ internal static unsafe partial class LibVst
 {
     public partial struct IUnitData
     {
-        private static partial ComResult unitDataSupported_ccw(IUnitData* self, UnitID unitID)
+        private static partial ComResult unitDataSupported_ToManaged(IUnitData* self, UnitID unitID)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult getUnitData_ccw(IUnitData* self, UnitID unitId, IBStream* data)
+        private static partial ComResult getUnitData_ToManaged(IUnitData* self, UnitID unitId, IBStream* data)
         {
             throw new NotImplementedException();
         }
 
-        private static partial ComResult setUnitData_ccw(IUnitData* self, UnitID unitId, IBStream* data)
+        private static partial ComResult setUnitData_ToManaged(IUnitData* self, UnitID unitId, IBStream* data)
         {
             throw new NotImplementedException();
         }

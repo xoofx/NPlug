@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct INoteExpressionPhysicalUIMapping
     {
-        private static partial ComResult getPhysicalUIMapping_ccw(INoteExpressionPhysicalUIMapping* self, int busIndex, short channel, LibVst.PhysicalUIMapList* list)
+        private static partial ComResult getPhysicalUIMapping_ToManaged(INoteExpressionPhysicalUIMapping* self, int busIndex, short channel, LibVst.PhysicalUIMapList* list)
         {
             throw new NotImplementedException();
         }

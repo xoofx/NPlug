@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IProcessContextRequirements
     {
-        private static partial uint getProcessContextRequirements_ccw(IProcessContextRequirements* self)
+        private static partial uint getProcessContextRequirements_ToManaged(IProcessContextRequirements* self)
         {
             throw new NotImplementedException();
         }

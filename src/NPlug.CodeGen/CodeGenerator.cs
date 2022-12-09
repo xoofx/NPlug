@@ -36,7 +36,7 @@ public class CodeGenerator
     private readonly Dictionary<string, string[]> _fileToContent;
     private readonly Dictionary<string, CSharpType> _cppTypeToCSharpType;
     private readonly HashSet<string> _hostOnly;
-    private readonly List<CSharpGeneratedFile> _ccwFiles;
+    private readonly List<CSharpGeneratedFile> _toManagedFiles;
     private readonly List<CSharpStruct> _allGeneratedVtbls;
     private CSharpClass? _container;
 
@@ -51,7 +51,7 @@ public class CodeGenerator
         _generatedCSharpElements = new Dictionary<string, CSharpElement>();
         _fileToContent = new Dictionary<string, string[]>();
         _cppTypeToCSharpType = new Dictionary<string, CSharpType>();
-        _ccwFiles = new List<CSharpGeneratedFile>();
+        _toManagedFiles = new List<CSharpGeneratedFile>();
         _allGeneratedVtbls = new List<CSharpStruct>();
         _sdkFolder = sdkFolder;
         _pluginInterfacesFolder = Path.Combine(_sdkFolder, "pluginterfaces");
@@ -117,7 +117,7 @@ public class CodeGenerator
 
         var codeWriter = new CodeWriter(new CodeWriterOptions(subFs));
         csFile.DumpTo(codeWriter);
-        foreach (var ccwFile in _ccwFiles)
+        foreach (var ccwFile in _toManagedFiles)
         {
             ccwFile.DumpTo(codeWriter);
         }
@@ -754,20 +754,30 @@ public class CodeGenerator
                             };
                             csLibVst.Members.Add(ccwStructImpl);
 
-                            _ccwFiles.Add(csFile);
+                            _toManagedFiles.Add(csFile);
                         }
                     }
 
                     var csMethod = new CSharpMethod
                     {
-                        Name = $"{cppMethod.Name}_ccw",
+                        Name = $"{cppMethod.Name}_ToManaged",
                         Modifiers = CSharpModifiers.Static | CSharpModifiers.Partial,
                         Visibility = CSharpVisibility.Private,
                         CppElement = cppMethod,
                     };
                     UpdateComment(csMethod);
-                    csMethod.Attributes.Add(new CSharpFreeAttribute("UnmanagedCallersOnly"));
+
+                    var csMethodWrap = new CSharpMethod
+                    {
+                        Name = $"{cppMethod.Name}_Wrapper",
+                        Modifiers = CSharpModifiers.Static,
+                        Visibility = CSharpVisibility.Private,
+                        CppElement = cppMethod,
+                    };
+                    csMethodWrap.Attributes.Add(new CSharpFreeAttribute("UnmanagedCallersOnly"));
+
                     csMethod.ReturnType = GetCSharpReturnOrParameterType(cppMethod.ReturnType);
+                    csMethodWrap.ReturnType = csMethod.ReturnType;
                     csMethod.Parameters.Add(new CSharpParameter("self") { ParameterType = new CSharpFreeType($"{name}*") });
                     foreach (var cppMethodParameter in cppMethod.Parameters)
                     {
@@ -778,12 +788,58 @@ public class CodeGenerator
                         };
                         csMethod.Parameters.Add(csParameter);
                     }
+                    csMethodWrap.Parameters.AddRange(csMethod.Parameters);
+                    csMethodWrap.Body = (writer, element) =>
+                    {
+                        var returnTypeAsStr = csMethodWrap.ReturnType.ToString();
+                        var isComResult = returnTypeAsStr == "ComResult";
+
+                        writer.WriteLine($"var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof({csStruct.Name}), \"{cppMethod.Name}\");");
+                        writer.WriteLine("try");
+                        writer.OpenBraceBlock();
+
+                        if (returnTypeAsStr != "void")
+                        {
+                            writer.Write("return ");
+                        }
+
+                        writer.Write(csMethod.Name);
+                        writer.Write("(");
+                        for (var i = 0; i < csMethod.Parameters.Count; i++)
+                        {
+                            var csParameter = csMethod.Parameters[i];
+                            if (i > 0)
+                            {
+                                writer.Write(", ");
+                            }
+                            writer.Write(csParameter.Name);
+                        }
+                        writer.WriteLine(");");
+
+                        writer.CloseBraceBlock();
+                        writer.WriteLine("catch (Exception ex)");
+                        writer.OpenBraceBlock();
+                        writer.WriteLine("__evt__.Exception = ex;");
+                        if (isComResult)
+                        {
+                            writer.WriteLine("return ex;");
+                        }
+                        else if (returnTypeAsStr != "void")
+                        {
+                            writer.WriteLine("return default;");
+                        }
+                        writer.CloseBraceBlock();
+                        writer.WriteLine("finally");
+                        writer.OpenBraceBlock();
+                        writer.WriteLine("__evt__.Dispose();");
+                        writer.CloseBraceBlock();
+                    };
 
                     if (ccwStructImpl is not null)
                     {
                         var csMethodImpl = new CSharpMethod
                         {
-                            Name = $"{cppMethod.Name}_ccw",
+                            Name = $"{cppMethod.Name}_ToManaged",
                             Modifiers = CSharpModifiers.Static | CSharpModifiers.Partial,
                             Visibility = CSharpVisibility.Private,
                             Body = (writer, element) =>
@@ -797,6 +853,7 @@ public class CodeGenerator
                     }
 
                     ccwMethods.Add(csMethod);
+                    ccwMethods.Add(csMethodWrap);
                 }
 
                 virtualMethodIndex++;
@@ -834,10 +891,13 @@ public class CodeGenerator
 
                     foreach (var method in ccwMethods)
                     {
-                        var functionPointer = method.ToFunctionPointer();
-                        functionPointer.IsUnmanaged = true;
-                        writer.WriteLine($"vtbl[{vtblIndex}] = ({functionPointer})&{method.Name};");
-                        vtblIndex++;
+                        if (method.Name.EndsWith("Wrapper"))
+                        {
+                            var functionPointer = method.ToFunctionPointer();
+                            functionPointer.IsUnmanaged = true;
+                            writer.WriteLine($"vtbl[{vtblIndex}] = ({functionPointer})&{method.Name};");
+                            vtblIndex++;
+                        }
                     }
                 };
 
@@ -911,12 +971,15 @@ public class CodeGenerator
             functionPointer.IsUnmanaged = true;
             functionPointer.Parameters.Insert(0, thisPointer);
             var builder = new StringBuilder();
+
+            writer.WriteLine($"var __self__ = ({thisPointer})Unsafe.AsPointer(ref this);");
+            writer.WriteLine($"var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof({csClass.Name}), \"{cppMethod.Name}\");");
+
             if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
             {
-                builder.Append("return ");
+                builder.Append("var __result__ = ");
             }
-
-            builder.Append($"(({functionPointer})Vtbl[{localVirtualMethodIndex}])(({thisPointer})Unsafe.AsPointer(ref this)");
+            builder.Append($"(({functionPointer})Vtbl[{localVirtualMethodIndex}])(__self__");
             for (var i = 0; i < csMethod.Parameters.Count; i++)
             {
                 var csParam = csMethod.Parameters[i];
@@ -926,6 +989,16 @@ public class CodeGenerator
 
             builder.Append(");");
             writer.WriteLine(builder.ToString());
+
+            if (csMethod.ReturnType.ToString() == "ComResult")
+            {
+                writer.WriteLine("__evt__.Result = __result__.Value;");
+            }
+            writer.WriteLine("__evt__.Dispose();");
+            if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
+            {
+                writer.WriteLine("return __result__;");
+            }
         };
         return csMethod;
     }

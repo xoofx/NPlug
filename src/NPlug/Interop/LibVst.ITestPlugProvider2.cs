@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct ITestPlugProvider2
     {
-        private static partial LibVst.IPluginFactory* getPluginFactory_ccw(ITestPlugProvider2* self)
+        private static partial LibVst.IPluginFactory* getPluginFactory_ToManaged(ITestPlugProvider2* self)
         {
             throw new NotImplementedException();
         }

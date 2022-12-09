@@ -10,17 +10,17 @@ internal static unsafe partial class LibVst
 {
     public partial struct IPersistent
     {
-        private static partial ComResult getClassID_ccw(IPersistent* self, byte* uid)
+        private static partial ComResult getClassID_ToManaged(IPersistent* self, byte* uid)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult saveAttributes_ccw(IPersistent* self, LibVst.IAttributes* arg)
+        private static partial ComResult saveAttributes_ToManaged(IPersistent* self, LibVst.IAttributes* arg)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult loadAttributes_ccw(IPersistent* self, LibVst.IAttributes* arg)
+        private static partial ComResult loadAttributes_ToManaged(IPersistent* self, LibVst.IAttributes* arg)
         {
             throw new NotImplementedException();
         }

@@ -24,6 +24,8 @@ internal static partial class LibVst
         public ComObject ComObject => (ComObject)Handle.Target!;
 
         public object? Target => ((ComObject)Handle.Target!).Target;
+
+        public T As<T>() where T : class => (T)Target!;
     }
 
     /// <summary>
@@ -109,10 +111,35 @@ internal static partial class LibVst
             var nextHandle = _handles + _interfaceCount;
             _interfaceCount++;
 
-            nextHandle->Vtbl = VtblInitializer<T>.Vtbl;
+            nextHandle->Vtbl = (void**)ComObjectManager.GetVtbl<T>();
             nextHandle->Guid = guidToFind;
             nextHandle->Handle = _thisHandle;
             return (T*)nextHandle;
+        }
+
+        public IntPtr GetOrCreateComInterface(in Guid guidToFind)
+        {
+            for (int i = 0; i < _interfaceCount; i++)
+            {
+                var handle = _handles + i;
+                if (handle->Guid.Equals(guidToFind))
+                {
+                    return (IntPtr)handle;
+                }
+            }
+
+            if (_interfaceCount == MaxInterfacesPerObject)
+            {
+                throw new InvalidOperationException($"Cannot create more handle for a COM object. Maximum of {MaxInterfacesPerObject} interfaces has been reached.");
+            }
+
+            var nextHandle = _handles + _interfaceCount;
+            _interfaceCount++;
+
+            nextHandle->Vtbl = (void**)ComObjectManager.GetVtbl(guidToFind);
+            nextHandle->Guid = guidToFind;
+            nextHandle->Handle = _thisHandle;
+            return (IntPtr)nextHandle;
         }
 
         public void Reset()
@@ -127,16 +154,7 @@ internal static partial class LibVst
             _lock = default;
         }
 
-        private static class VtblInitializer<T> where T: INativeVtbl
-        {
-            public static readonly void** Vtbl;
 
-            static VtblInitializer()
-            {
-                Vtbl = (void**)RuntimeHelpers.AllocateTypeAssociatedMemory(typeof(T), T.VtblCount * IntPtr.Size);
-                T.InitializeVtbl(Vtbl);
-            }
-        }
 
         public void Dispose()
         {
@@ -145,8 +163,10 @@ internal static partial class LibVst
         }
     }
 
-    public sealed class ComObjectManager : IDisposable
+    public sealed unsafe partial class ComObjectManager : IDisposable
     {
+        private static readonly Dictionary<Guid, Func<IntPtr>> MapGuidToVtblFunc = new Dictionary<Guid, Func<IntPtr>>();
+
         public static readonly ComObjectManager Instance = new ComObjectManager();
         
         private const int DefaultComObjectCacheCount = 16;
@@ -204,6 +224,41 @@ internal static partial class LibVst
                 _comObjectCache.Clear();
                 _mapTargetToComObject.Clear();
             }
+        }
+
+        private static void Register<T>() where T : struct, INativeGuid, INativeVtbl
+        {
+            MapGuidToVtblFunc[*(T.NativeGuid)] = () => (IntPtr)VtblInitializer<T>.Vtbl;
+        }
+
+        public static IntPtr GetVtbl<T>() where T : struct, INativeGuid, INativeVtbl
+        {
+            return (IntPtr)VtblInitializer<T>.Vtbl;
+        }
+
+        public static IntPtr GetVtbl(in Guid guid)
+        {
+            if (MapGuidToVtblFunc.TryGetValue(guid, out var vtbFuncl))
+            {
+                return vtbFuncl();
+            }
+            return IntPtr.Zero;
+        }
+
+        private static class VtblInitializer<T> where T : INativeVtbl
+        {
+            public static readonly void** Vtbl;
+
+            static VtblInitializer()
+            {
+                Vtbl = (void**)RuntimeHelpers.AllocateTypeAssociatedMemory(typeof(T), T.VtblCount * IntPtr.Size);
+                T.InitializeVtbl(Vtbl);
+            }
+        }
+
+        static ComObjectManager()
+        {
+            RegisterAllInterfaces();
         }
     }
 

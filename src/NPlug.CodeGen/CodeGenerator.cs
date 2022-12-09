@@ -37,6 +37,7 @@ public class CodeGenerator
     private readonly Dictionary<string, CSharpType> _cppTypeToCSharpType;
     private readonly HashSet<string> _hostOnly;
     private readonly List<CSharpGeneratedFile> _ccwFiles;
+    private readonly List<CSharpStruct> _allGeneratedVtbls;
     private CSharpClass? _container;
 
 
@@ -51,6 +52,7 @@ public class CodeGenerator
         _fileToContent = new Dictionary<string, string[]>();
         _cppTypeToCSharpType = new Dictionary<string, CSharpType>();
         _ccwFiles = new List<CSharpGeneratedFile>();
+        _allGeneratedVtbls = new List<CSharpStruct>();
         _sdkFolder = sdkFolder;
         _pluginInterfacesFolder = Path.Combine(_sdkFolder, "pluginterfaces");
         if (!Directory.Exists(_pluginInterfacesFolder))
@@ -76,6 +78,7 @@ public class CodeGenerator
         var options = new CppParserOptions()
         {
             IncludeFolders = { _sdkFolder },
+            ParseMacros = true,
         };
         options.ConfigureForWindowsMsvc(CppTargetCpu.X86_64);
 
@@ -144,6 +147,16 @@ public class CodeGenerator
 
     private void Process(CppCompilation cppAst)
     {
+        var macroSdkVersion = cppAst.Macros.FirstOrDefault(x => x.Name == "kVstVersionString");
+        if (macroSdkVersion == null)
+        {
+            throw new InvalidOperationException("Unable to find sdk version");
+        }
+        Console.WriteLine($"Processing {macroSdkVersion.Value}");
+
+        // Add SdkVersion field
+        _container!.Members.Add(new CSharpField("SdkVersion") { FieldType = CSharpPrimitiveType.String(), Modifiers = CSharpModifiers.Const, Visibility = CSharpVisibility.Public , InitValue = macroSdkVersion.Value});
+        
         var namespaces = new List<CppNamespace>();
         foreach (var ns in cppAst.Namespaces)
         {
@@ -169,6 +182,32 @@ public class CodeGenerator
                 }
             }
         }
+
+        GenerateComObjectManager();
+    }
+
+    private void GenerateComObjectManager()
+    {
+        // public sealed unsafe partial class ComObjectManager : IDisposable
+        var comObjectManager = new CSharpClass("ComObjectManager");
+        comObjectManager.Modifiers = CSharpModifiers.Partial;
+        comObjectManager.Visibility = CSharpVisibility.Public;
+        var staticMethod = new CSharpMethod()
+        {
+            Name = "RegisterAllInterfaces",
+            ReturnType = CSharpPrimitiveType.Void(),
+            Modifiers = CSharpModifiers.Static,
+            Visibility = CSharpVisibility.Private,
+        };
+        comObjectManager.Members.Add(staticMethod);
+        staticMethod.Body = (writer, element) =>
+        {
+            foreach (var item in _allGeneratedVtbls)
+            {
+                writer.WriteLine($"Register<{item.Name}>();");
+            }
+        };
+        _container!.Members.Add(comObjectManager);
     }
 
     private static string GetParentNamespace(CppNamespace ns)
@@ -249,13 +288,6 @@ public class CodeGenerator
             }
         }
     }
-
-    private void ProcessConstSpeakers(CppNamespace ns, CppField cppField, string text)
-    {
-
-    }
-
-
 
     private void ProcessConstString(CppNamespace ns, CppField cppField, string text)
     {
@@ -689,6 +721,7 @@ public class CodeGenerator
                         initializeVtbl.ReturnType = CSharpPrimitiveType.Void();
                         initializeVtbl.Attributes.Add(MethodImplAggressiveInliningAttribute);
                         csStruct.Members.Add(initializeVtbl);
+                        _allGeneratedVtbls.Add(csStruct);
 
                         var ccwFile = $"LibVst.{name}.cs";
                         if (!File.Exists(Path.Combine(_destinationFolder, ccwFile)))
@@ -700,7 +733,7 @@ public class CodeGenerator
                             csFile.Members.Add(new CSharpSimpleComment() { Children = { new CSharpTextComment("Copyright (c) Alexandre Mutel. All rights reserved.") } });
                             csFile.Members.Add(new CSharpSimpleComment() { Children = { new CSharpTextComment("Licensed under the BSD-Clause 2 license.") } });
                             csFile.Members.Add(new CSharpSimpleComment() { Children = { new CSharpTextComment("See license.txt file in the project root for full license information.") } });
-                            csFile.Members.Add(new CSharpNamespace("NPlug.Vst3") { IsFileScoped = true });
+                            csFile.Members.Add(new CSharpNamespace("NPlug.Interop") { IsFileScoped = true });
                             csFile.Members.Add(new CSharpUsingDeclaration("System"));
 
                             var csLibVst = new CSharpClass("LibVst")

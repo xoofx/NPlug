@@ -35,4 +35,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.csproj" />
+  </ItemGroup>
 </Project>

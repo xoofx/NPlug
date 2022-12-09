@@ -18,6 +18,8 @@ using System.Runtime.CompilerServices;
 
 internal static partial class LibVst
 {
+    public const string SdkVersion = "VST 3.7.6";
+    
     /// <summary>
     /// FUnknown
     /// The basic interface of all interfaces.
@@ -14800,5 +14802,55 @@ internal static partial class LibVst
         public const string kOneShot = "One Shot";
         
         public static ReadOnlySpan<byte> kOneShot_u8 => "One Shot\0"u8;
+    }
+    
+    public partial class ComObjectManager
+    {
+        private static void RegisterAllInterfaces()
+        {
+            Register<FUnknown>();
+            Register<IBStream>();
+            Register<ISizeableStream>();
+            Register<ICloneable>();
+            Register<IString>();
+            Register<IErrorContext>();
+            Register<IPersistent>();
+            Register<IPluginBase>();
+            Register<IPluginFactory>();
+            Register<IPluginFactory2>();
+            Register<IPluginFactory3>();
+            Register<IPluginCompatibility>();
+            Register<IStringResult>();
+            Register<IDependent>();
+            Register<IPlugView>();
+            Register<IPlugViewContentScaleSupport>();
+            Register<IComponent>();
+            Register<IAudioProcessor>();
+            Register<IAudioPresentationLatency>();
+            Register<IProcessContextRequirements>();
+            Register<IAutomationState>();
+            Register<IContextMenuTarget>();
+            Register<IEditController>();
+            Register<IEditController2>();
+            Register<IMidiMapping>();
+            Register<IEditControllerHostEditing>();
+            Register<INoteExpressionController>();
+            Register<IKeyswitchController>();
+            Register<IConnectionPoint>();
+            Register<IInterAppAudioPresetManager>();
+            Register<IInterAppAudioConnectionNotification>();
+            Register<IMidiLearn>();
+            Register<IParameterFunctionName>();
+            Register<INoteExpressionPhysicalUIMapping>();
+            Register<IParameterFinder>();
+            Register<IPrefetchableSupport>();
+            Register<IXmlRepresentationController>();
+            Register<ITestPlugProvider>();
+            Register<ITestPlugProvider2>();
+            Register<IUnitInfo>();
+            Register<IProgramListData>();
+            Register<IUnitData>();
+            Register<IInfoListener>();
+        }
     }
 }

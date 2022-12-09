@@ -32,5 +32,13 @@ internal static partial class LibVst
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator bool(ComResult value) => value.IsSuccess;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator ComResult(Exception value)
+        {
+            if (value is ArgumentException) return InvalidArg;
+            if (value is NotImplementedException) return NotImplemented;
+            return InternalError;
+        }
     }
 }

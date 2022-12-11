@@ -22,11 +22,11 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
     private PortableBinaryReader? _streamReader;
     private PortableBinaryWriter? _streamWriter;
 
-    protected AudioProcessor(AudioSampleSizeSupport sampleSizeSupport) : this(sampleSizeSupport, 0, 0)
+    protected AudioProcessor(AudioSampleSizeSupport sampleSizeSupport) : this(sampleSizeSupport, 0, 0, AudioProcessContextRequirementFlags.None)
     {
     }
 
-    protected AudioProcessor(AudioSampleSizeSupport sampleSizeSupport, uint latencySamples, uint tailSamples)
+    protected AudioProcessor(AudioSampleSizeSupport sampleSizeSupport, uint latencySamples, uint tailSamples, AudioProcessContextRequirementFlags processContextRequirementFlags)
     {
         SampleSizeSupport = sampleSizeSupport;
         AudioInputBuses = new List<BusInfo>();
@@ -35,11 +35,12 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
         EventOutputBuses = new List<BusInfo>();
         LatencySamples = latencySamples;
         TailSamples = tailSamples;
+        ProcessContextRequirementFlags = processContextRequirementFlags;
     }
-
-
-
+    
     public AudioSampleSizeSupport SampleSizeSupport { get; }
+
+    public AudioProcessContextRequirementFlags ProcessContextRequirementFlags { get; }
 
     public abstract Guid ControllerId { get; }
 

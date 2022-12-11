@@ -29,6 +29,11 @@ public interface IAudioProcessor : IAudioPluginComponent
     /// </summary>
     /// <value></value>
     Guid ControllerId { get; }
+    
+    /// <summary>
+    /// Gets the requirement flags for the content of the <see cref="AudioProcessContext"/> during processing audio.
+    /// </summary>
+    AudioProcessContextRequirementFlags ProcessContextRequirementFlags { get; }
 
     /// <summary>
     /// Called before 'initialize' to set the component usage (optional). See \ref IoModes.

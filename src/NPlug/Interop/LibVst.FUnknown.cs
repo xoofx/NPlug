@@ -28,6 +28,7 @@ internal static unsafe partial class LibVst
             { IPluginFactory.IId, TryMatchQueryInterface<IPluginFactory, IAudioPluginFactory> },
             { IPluginFactory2.IId, TryMatchQueryInterface<IPluginFactory2, IAudioPluginFactory> },
             { IPluginFactory3.IId, TryMatchQueryInterface<IPluginFactory3, IAudioPluginFactory> },
+            { IProcessContextRequirements.IId, TryMatchQueryInterface<IProcessContextRequirements, NPlug.IAudioProcessor> },
         };
 
         private static partial ComResult queryInterface_ToManaged(FUnknown* pObj, Guid* iid, void** pInterface)

@@ -85,6 +85,10 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
     protected abstract void RestoreState(PortableBinaryReader reader);
 
     protected abstract void Process(in AudioProcessSetupData setupData, in AudioProcessData data);
+
+    protected virtual void OnAudioBusPresentationLatencyChanged(AudioBusInfo busInfo, uint previousPresentationLatencyInSamples)
+    {
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected ReadOnlySpan<BusInfo> GetBusInfoList(BusMediaType type, BusDirection dir)
@@ -209,6 +213,14 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
     void IAudioProcessor.Process(in AudioProcessData processData)
     {
         Process(in _processSetupData, in processData);
+    }
+
+    void IAudioProcessor.SetAudioPresentationLatencySamples(BusDirection dir, int busIndex, uint latencyInSamples)
+    {
+        var audioBusInfo = (AudioBusInfo)GetBusInfoList(BusMediaType.Audio, dir)[busIndex];
+        var previousValue = audioBusInfo.PresentationLatencyInSamples;
+        audioBusInfo.PresentationLatencyInSamples = latencyInSamples;
+        OnAudioBusPresentationLatencyChanged(audioBusInfo, previousValue);
     }
 
     internal override void TerminateInternal()

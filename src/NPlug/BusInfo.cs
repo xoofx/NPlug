@@ -79,6 +79,12 @@ public sealed class AudioBusInfo : BusInfo
             ChannelCount = _speakerArrangement.GetChannelCount();
         }
     }
+
+    /// <summary>
+    /// Gets how long from the moment of generation/acquiring (from file or from Input)
+    /// it will take for its input to arrive, and how long it will take for its output to be presented (to output or to speaker).
+    /// </summary>
+    public uint PresentationLatencyInSamples { get; internal set; }
 }
 
 /// <summary>

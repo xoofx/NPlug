@@ -29,10 +29,13 @@ public interface IAudioProcessor : IAudioPluginComponent
     /// </summary>
     /// <value></value>
     Guid ControllerId { get; }
-    
+
     /// <summary>
     /// Gets the requirement flags for the content of the <see cref="AudioProcessContext"/> during processing audio.
     /// </summary>
+    /// <remarks>
+    /// Implementation of VST3 `IProcessContextRequirements`.
+    /// </remarks>
     AudioProcessContextRequirementFlags ProcessContextRequirementFlags { get; }
 
     /// <summary>
@@ -101,4 +104,15 @@ public interface IAudioProcessor : IAudioPluginComponent
     void SetProcessing(bool state);
 
     void Process(in AudioProcessData processData);
+
+    // IAudioPresentationLatency
+
+    /// <summary>
+    /// Informs the plug-in about the Audio Presentation Latency in samples for a given direction (kInput/kOutput) and bus index.
+    /// </summary>
+    /// <remarks>
+    /// Implementation of VST3 `IAudioPresentationLatency`.
+    /// </remarks>
+    void SetAudioPresentationLatencySamples(BusDirection dir, int busIndex, uint latencyInSamples);
+
 }

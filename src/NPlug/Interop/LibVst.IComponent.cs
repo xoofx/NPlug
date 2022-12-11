@@ -50,7 +50,8 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult activateBus_ToManaged(IComponent* self, MediaType type, BusDirection dir, int index, byte state)
         {
-            return Get(self).ActivateBus((BusMediaType)type.Value, (NPlug.BusDirection)dir.Value, index, state != 0);
+            Get(self).ActivateBus((BusMediaType)type.Value, (NPlug.BusDirection)dir.Value, index, state != 0);
+            return true;
         }
 
         private static partial ComResult setActive_ToManaged(IComponent* self, byte state)

@@ -174,11 +174,10 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
         return GetBusInfoList(type, dir)[index];
     }
 
-    bool IAudioProcessor.ActivateBus(BusMediaType type, BusDirection dir, int index, bool state)
+    void IAudioProcessor.ActivateBus(BusMediaType type, BusDirection dir, int index, bool state)
     {
         var busInfo = GetBusInfoList(type, dir)[index];
         busInfo.IsActive = OnBusActivate(busInfo, state);
-        return busInfo.IsActive;
     }
 
     bool IAudioProcessor.CanProcessSampleSize(AudioSampleSize sampleSize) => IsSampleSizeSupported(sampleSize);

@@ -61,7 +61,7 @@ public interface IAudioProcessor : IAudioPluginComponent
     /// <param name="index"></param>
     /// <param name="state"></param>
     /// <returns></returns>
-    bool ActivateBus(BusMediaType type, BusDirection dir, int index, bool state);
+    void ActivateBus(BusMediaType type, BusDirection dir, int index, bool state);
 
     /// <summary>
     /// Activates / deactivates the component.

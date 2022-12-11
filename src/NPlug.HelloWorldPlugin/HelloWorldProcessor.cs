@@ -18,7 +18,7 @@ public class HelloWorldProcessor : AudioProcessor
     public static AudioPluginFactory GetFactory()
     {
         var factory = new AudioPluginFactory(new("My Company", "https://plugin_corp.com", "contact@plugin_corp.com"));
-        factory.RegisterPlugin<HelloWorldProcessor>(new (ClassId, "HelloWorld", AudioPluginCategory.Effect));
+        factory.RegisterPlugin<HelloWorldProcessor>(new (ClassId, "HelloWorld", AudioProcessorCategory.Effect));
         factory.RegisterPlugin<HelloWorldController>(new(HelloWorldController.ClassId, "HelloWorld Controller"));
         return factory;
     }

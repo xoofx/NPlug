@@ -73,7 +73,7 @@ public sealed class AudioProcessorClassInfo : AudioPluginClassInfo
     /// <param name="guid"></param>
     /// <param name="name"></param>
     /// <param name="category"></param>
-    public AudioProcessorClassInfo(Guid guid, string name, AudioPluginCategory category) : base(guid, name)
+    public AudioProcessorClassInfo(Guid guid, string name, AudioProcessorCategory category) : base(guid, name)
     {
         Category = category;
     }
@@ -81,7 +81,7 @@ public sealed class AudioProcessorClassInfo : AudioPluginClassInfo
     /// <summary>
     /// Gets or init the category.
     /// </summary>
-    public AudioPluginCategory Category { get; init; }
+    public AudioProcessorCategory Category { get; init; }
 }
 
 

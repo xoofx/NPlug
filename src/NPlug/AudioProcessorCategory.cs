@@ -5,9 +5,9 @@
 namespace NPlug;
 
 /// <summary>
-/// Category of an audio plugin.
+/// Category of an audio processor.
 /// </summary>
-public enum AudioPluginCategory
+public enum AudioProcessorCategory
 {
     /// <summary>Scope, FFT-Display, Loudness Processing...</summary>
     EffectAnalyzer,

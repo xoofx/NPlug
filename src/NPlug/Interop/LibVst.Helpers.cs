@@ -30,36 +30,36 @@ internal static unsafe partial class LibVst
         }
     }
 
-    private static string GetPluginSubCategory(AudioPluginCategory category)
+    private static string GetPluginSubCategory(AudioProcessorCategory category)
     {
         return category switch
         {
-            AudioPluginCategory.EffectAnalyzer => PlugType.kFxAnalyzer,
-            AudioPluginCategory.EffectDelay => PlugType.kFxDelay,
-            AudioPluginCategory.EffectDistortion => PlugType.kFxDistortion,
-            AudioPluginCategory.EffectDynamics => PlugType.kFxDynamics,
-            AudioPluginCategory.EffectEQ => PlugType.kFxEQ,
-            AudioPluginCategory.EffectFilter => PlugType.kFxFilter,
-            AudioPluginCategory.Effect => PlugType.kFx,
-            AudioPluginCategory.EffectInstrument => PlugType.kFxInstrument,
-            AudioPluginCategory.EffectInstrumentExternal => PlugType.kFxInstrumentExternal,
-            AudioPluginCategory.EffectSpatial => PlugType.kFxSpatial,
-            AudioPluginCategory.EffectGenerator => PlugType.kFxGenerator,
-            AudioPluginCategory.EffectMastering => PlugType.kFxMastering,
-            AudioPluginCategory.EffectModulation => PlugType.kFxModulation,
-            AudioPluginCategory.EffectPitchShift => PlugType.kFxPitchShift,
-            AudioPluginCategory.EffectRestoration => PlugType.kFxRestoration,
-            AudioPluginCategory.EffectReverb => PlugType.kFxReverb,
-            AudioPluginCategory.EffectSurround => PlugType.kFxSurround,
-            AudioPluginCategory.EffectTools => PlugType.kFxTools,
-            AudioPluginCategory.EffectNetwork => PlugType.kFxNetwork,
-            AudioPluginCategory.Instrument => PlugType.kInstrument,
-            AudioPluginCategory.InstrumentDrum => PlugType.kInstrumentDrum,
-            AudioPluginCategory.InstrumentExternal => PlugType.kInstrumentExternal,
-            AudioPluginCategory.InstrumentPiano => PlugType.kInstrumentPiano,
-            AudioPluginCategory.InstrumentSampler => PlugType.kInstrumentSampler,
-            AudioPluginCategory.InstrumentSynthesizer => PlugType.kInstrumentSynth,
-            AudioPluginCategory.InstrumentSynthesizerSampler => PlugType.kInstrumentSynthSampler,
+            AudioProcessorCategory.EffectAnalyzer => PlugType.kFxAnalyzer,
+            AudioProcessorCategory.EffectDelay => PlugType.kFxDelay,
+            AudioProcessorCategory.EffectDistortion => PlugType.kFxDistortion,
+            AudioProcessorCategory.EffectDynamics => PlugType.kFxDynamics,
+            AudioProcessorCategory.EffectEQ => PlugType.kFxEQ,
+            AudioProcessorCategory.EffectFilter => PlugType.kFxFilter,
+            AudioProcessorCategory.Effect => PlugType.kFx,
+            AudioProcessorCategory.EffectInstrument => PlugType.kFxInstrument,
+            AudioProcessorCategory.EffectInstrumentExternal => PlugType.kFxInstrumentExternal,
+            AudioProcessorCategory.EffectSpatial => PlugType.kFxSpatial,
+            AudioProcessorCategory.EffectGenerator => PlugType.kFxGenerator,
+            AudioProcessorCategory.EffectMastering => PlugType.kFxMastering,
+            AudioProcessorCategory.EffectModulation => PlugType.kFxModulation,
+            AudioProcessorCategory.EffectPitchShift => PlugType.kFxPitchShift,
+            AudioProcessorCategory.EffectRestoration => PlugType.kFxRestoration,
+            AudioProcessorCategory.EffectReverb => PlugType.kFxReverb,
+            AudioProcessorCategory.EffectSurround => PlugType.kFxSurround,
+            AudioProcessorCategory.EffectTools => PlugType.kFxTools,
+            AudioProcessorCategory.EffectNetwork => PlugType.kFxNetwork,
+            AudioProcessorCategory.Instrument => PlugType.kInstrument,
+            AudioProcessorCategory.InstrumentDrum => PlugType.kInstrumentDrum,
+            AudioProcessorCategory.InstrumentExternal => PlugType.kInstrumentExternal,
+            AudioProcessorCategory.InstrumentPiano => PlugType.kInstrumentPiano,
+            AudioProcessorCategory.InstrumentSampler => PlugType.kInstrumentSampler,
+            AudioProcessorCategory.InstrumentSynthesizer => PlugType.kInstrumentSynth,
+            AudioProcessorCategory.InstrumentSynthesizerSampler => PlugType.kInstrumentSynthSampler,
             _ => throw new ArgumentOutOfRangeException(nameof(category), category, null)
         };
     }

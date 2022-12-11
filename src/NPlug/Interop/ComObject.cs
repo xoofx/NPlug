@@ -45,7 +45,7 @@ internal static partial class LibVst
             Manager = manager;
             _handles = (ComObjectHandle*)NativeMemory.AllocZeroed((nuint)(sizeof(ComObjectHandle) * MaxInterfacesPerObject));
             _thisHandle = GCHandle.Alloc(this);
-            _refCount = 1;
+            _refCount = 0;
         }
 
         public ComObjectManager Manager { get; }
@@ -69,6 +69,7 @@ internal static partial class LibVst
 
         public uint ReleaseRef()
         {
+            bool needToReturn = false;
             bool lockTaken = false;
             try
             {
@@ -76,11 +77,13 @@ internal static partial class LibVst
                 if (_refCount > 0)
                 {
                     _refCount--;
-                    if (_refCount == 0 && Target is IDisposable disposable)
+                    if (_refCount == 0)
                     {
-                        disposable.Dispose();
-                        Reset();
-                        Manager.Return(this);
+                        if (Target is IDisposable disposable)
+                        {
+                            disposable.Dispose();
+                        }
+                        needToReturn = true;
                     }
                 }
                 return _refCount;
@@ -88,58 +91,88 @@ internal static partial class LibVst
             finally
             {
                 if (lockTaken) _lock.Exit();
+                if (needToReturn)
+                {
+                    Reset();
+                    Manager.Return(this);
+                }
             }
         }
 
-        public T* GetOrCreateComInterface<T>() where T: unmanaged, INativeGuid, INativeVtbl
+        public T* QueryInterface<T>() where T: unmanaged, INativeGuid, INativeVtbl
         {
-            var guidToFind = *T.NativeGuid;
-            for (int i = 0; i < _interfaceCount; i++)
+            bool lockTaken = false;
+            try
             {
-                var handle = _handles + i;
-                if (handle->Guid.Equals(guidToFind))
+                _lock.Enter(ref lockTaken);
+                _refCount++;
+
+                var guidToFind = *T.NativeGuid;
+                for (int i = 0; i < _interfaceCount; i++)
                 {
-                    return (T*)handle;
+                    var handle = _handles + i;
+                    if (handle->Guid.Equals(guidToFind))
+                    {
+                        return (T*)handle;
+                    }
                 }
-            }
 
-            if (_interfaceCount == MaxInterfacesPerObject)
+                if (_interfaceCount == MaxInterfacesPerObject)
+                {
+                    _refCount--;
+                    throw new InvalidOperationException($"Cannot create more handle for a COM object. Maximum of {MaxInterfacesPerObject} interfaces has been reached.");
+                }
+
+                var nextHandle = _handles + _interfaceCount;
+                _interfaceCount++;
+
+                nextHandle->Vtbl = (void**)ComObjectManager.GetVtbl<T>();
+                nextHandle->Guid = guidToFind;
+                nextHandle->Handle = _thisHandle;
+                return (T*)nextHandle;
+            }
+            finally
             {
-                throw new InvalidOperationException($"Cannot create more handle for a COM object. Maximum of {MaxInterfacesPerObject} interfaces has been reached.");
+                if (lockTaken) _lock.Exit();
             }
-
-            var nextHandle = _handles + _interfaceCount;
-            _interfaceCount++;
-
-            nextHandle->Vtbl = (void**)ComObjectManager.GetVtbl<T>();
-            nextHandle->Guid = guidToFind;
-            nextHandle->Handle = _thisHandle;
-            return (T*)nextHandle;
         }
 
-        public IntPtr GetOrCreateComInterface(in Guid guidToFind)
+        public IntPtr QueryInterface(in Guid guidToFind)
         {
-            for (int i = 0; i < _interfaceCount; i++)
+            bool lockTaken = false;
+            try
             {
-                var handle = _handles + i;
-                if (handle->Guid.Equals(guidToFind))
+                _lock.Enter(ref lockTaken);
+                _refCount++;
+
+
+                for (int i = 0; i < _interfaceCount; i++)
                 {
-                    return (IntPtr)handle;
+                    var handle = _handles + i;
+                    if (handle->Guid.Equals(guidToFind))
+                    {
+                        return (IntPtr)handle;
+                    }
                 }
-            }
 
-            if (_interfaceCount == MaxInterfacesPerObject)
+                if (_interfaceCount == MaxInterfacesPerObject)
+                {
+                    _refCount--;
+                    throw new InvalidOperationException($"Cannot create more handle for a COM object. Maximum of {MaxInterfacesPerObject} interfaces has been reached.");
+                }
+
+                var nextHandle = _handles + _interfaceCount;
+                _interfaceCount++;
+
+                nextHandle->Vtbl = (void**)ComObjectManager.GetVtbl(guidToFind);
+                nextHandle->Guid = guidToFind;
+                nextHandle->Handle = _thisHandle;
+                return (IntPtr)nextHandle;
+            }
+            finally
             {
-                throw new InvalidOperationException($"Cannot create more handle for a COM object. Maximum of {MaxInterfacesPerObject} interfaces has been reached.");
+                if (lockTaken) _lock.Exit();
             }
-
-            var nextHandle = _handles + _interfaceCount;
-            _interfaceCount++;
-
-            nextHandle->Vtbl = (void**)ComObjectManager.GetVtbl(guidToFind);
-            nextHandle->Guid = guidToFind;
-            nextHandle->Handle = _thisHandle;
-            return (IntPtr)nextHandle;
         }
 
         public void Reset()
@@ -150,11 +183,9 @@ internal static partial class LibVst
             }
 
             _interfaceCount = 0;
-            _refCount = 1;
+            _refCount = 0;
             _lock = default;
         }
-
-
 
         public void Dispose()
         {

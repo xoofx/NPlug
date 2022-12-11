@@ -13,15 +13,21 @@ internal static unsafe partial class LibVst
     private static void CopyStringToUTF8(string text, byte* dest, int maxLength)
     {
         var encodedLength = Encoding.UTF8.GetBytes(text, new Span<byte>(dest, maxLength));
-        // Null terminate
-        dest[Math.Min(encodedLength, maxLength - 1)] = 0;
+        if (encodedLength < maxLength)
+        {
+            // Null terminate
+            dest[encodedLength] = 0;
+        }
     }
 
     private static void CopyStringToUTF16(string text, char* dest, int maxLength)
     {
         var lengthToCopy = Math.Min(text.Length, maxLength);
         text.AsSpan(0, lengthToCopy).CopyTo(new Span<char>(dest, lengthToCopy));
-        dest[Math.Min(text.Length, maxLength - 1)] = (char)0;
+        if (lengthToCopy < maxLength)
+        {
+            dest[lengthToCopy] = (char)0;
+        }
     }
 
     private static string GetPluginSubCategory(AudioPluginCategory category)

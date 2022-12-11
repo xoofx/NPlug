@@ -29,7 +29,6 @@ param(
 
 $ErrorActionPreference = "Stop"
 Try {
-$CMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
 
 # Common function used for building x86/x64/arm/arm64
 function Build-Project {
@@ -47,6 +46,7 @@ function Build-Project {
     if ($IsMacOS) {
         $NETPlatform = "osx"
         $NETSharedLibExtension = "dylib"
+        $CMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
     }
     elseif ($IsWindows) {
         $MsvcArch = $NETArch
@@ -59,6 +59,7 @@ function Build-Project {
         $CMakeArch = "-A$MsvcArch"
         $BuildPlatformSubFolder = "$BuildPlatformSubFolder/$CMakeConfig"
     } elseif ($IsLinux) {
+        $CMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
         if ($NETArch -eq "arm64") {
             $CMakeArch = "-DCMAKE_TOOLCHAIN_FILE=toolchains/aarch64-linux-gnu.toolchain.cmake"
         }
@@ -67,13 +68,13 @@ function Build-Project {
         }
     }
 
-    Write-Host "Building $NETPlatform-$NETArch" -ForegroundColor Green
+    Write-Host "Building $NETPlatform-$NETArch $CMakeConfig" -ForegroundColor Green
 
     $DotNetRid = "$NETPlatform-$NETArch"
     $BuildPlatformFolder = "$BuildFolder/$DotNetRid"
     $PackageFolder = "$BuildFolder/package/$DotNetRid/native/"
 
-    & "$CMakeExePath" -G"$CMakeBuilder" $CMakeArch -B"$BuildPlatformFolder" "-DDOTNET_RID=$DotNetRid" @CMakeArgs "$CMakeSource"
+    & "$CMakeExePath" -G"$CMakeBuilder" "$CMakeArch" -B"$BuildPlatformFolder" "-DDOTNET_RID=$DotNetRid" @CMakeArgs "$CMakeSource"
     if ($LastExitCode -ne 0) {
         throw "error with cmake"
     }

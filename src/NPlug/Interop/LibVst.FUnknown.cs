@@ -21,9 +21,13 @@ internal static unsafe partial class LibVst
         {
             { IPluginBase.IId, TryMatchQueryInterface<IPluginBase, IAudioPluginComponent> },
             { IComponent.IId, TryMatchQueryInterface<IComponent, NPlug.IAudioProcessor> },
-            { IAudioProcessor.IId, TryMatchQueryInterface<IComponent, NPlug.IAudioProcessor> },
-            { IConnectionPoint.IId, TryMatchQueryInterface<IComponent, IAudioConnectionPoint> },
-            { IPlugView.IId, TryMatchQueryInterface<IComponent, IAudioPluginView> },
+            { IAudioProcessor.IId, TryMatchQueryInterface<IAudioProcessor, NPlug.IAudioProcessor> },
+            { IEditController.IId, TryMatchQueryInterface<IEditController, NPlug.IAudioController> },
+            { IConnectionPoint.IId, TryMatchQueryInterface<IConnectionPoint, IAudioConnectionPoint> },
+            { IPlugView.IId, TryMatchQueryInterface<IPlugView, IAudioPluginView> },
+            { IPluginFactory.IId, TryMatchQueryInterface<IPluginFactory, IAudioPluginFactory> },
+            { IPluginFactory2.IId, TryMatchQueryInterface<IPluginFactory2, IAudioPluginFactory> },
+            { IPluginFactory3.IId, TryMatchQueryInterface<IPluginFactory3, IAudioPluginFactory> },
         };
 
         private static partial ComResult queryInterface_ToManaged(FUnknown* pObj, Guid* iid, void** pInterface)
@@ -33,11 +37,11 @@ internal static unsafe partial class LibVst
             return MapGuidToDelegate.TryGetValue(*iid, out var match) && match(iid, bridge, pInterface) ? ComResult.Ok : ComResult.NoInterface;
         }
 
-        private static bool TryMatchQueryInterface<TNative, TUser>(Guid* iid, ComObject bridge, void** pInterface) where TNative : unmanaged, INativeGuid, INativeVtbl
+        private static bool TryMatchQueryInterface<TNative, TUser>(Guid* iid, ComObject comObject, void** pInterface) where TNative : unmanaged, INativeGuid, INativeVtbl
         {
-            if (bridge.Target is TUser)
+            if (comObject.Target is TUser)
             {
-                *pInterface = (void*)bridge.GetOrCreateComInterface<TNative>();
+                *pInterface = (void*)comObject.QueryInterface<TNative>();
                 return true;
             }
             return false;

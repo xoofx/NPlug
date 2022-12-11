@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<linker>
+  <assembly fullname="NPlug" feature="NPlug.Interop.InteropHelper.IsTracerEnabled" featurevalue="false">
+    <type fullname="NPlug.Interop.InteropHelper">
+      <method signature="System.Boolean GetIsTracedEnabled()" body="stub" value="false">
+      </method>
+    </type>
+  </assembly>
+</linker>

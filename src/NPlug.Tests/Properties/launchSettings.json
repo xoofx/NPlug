@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "NPlug.Tests": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

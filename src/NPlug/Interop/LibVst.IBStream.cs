@@ -122,7 +122,7 @@ internal static unsafe partial class LibVst
     /// </summary>
     public partial struct IBStream
     {
-        private static Stream Get(IBStream* stream) => (Stream)((ComObjectHandle*)stream)->Handle.Target!;
+        private static Stream Get(IBStream* stream) => (Stream)((ComObjectHandle*)stream)->Target!;
 
         private static partial ComResult read_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesRead)
         {

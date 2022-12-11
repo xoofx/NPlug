@@ -9,25 +9,24 @@ namespace NPlug.Interop;
 
 public static class InteropHelper
 {
-    public static unsafe IntPtr ExportToVst3(object managed)
-    {
-        var comObject = LibVst.ComObjectManager.Instance.GetOrCreateComObject(managed);
-        return (IntPtr)comObject.GetOrCreateComInterface<LibVst.FUnknown>();
-    }
-}
+    public static readonly bool IsTracerEnabled = GetIsTracedEnabled();
 
-/// <summary>
-/// A class used to debug interop managed &lt;-&gt; native transitions.
-/// </summary>
-public static class InteropDebugger
-{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static bool GetIsTracedEnabled() => AppContext.TryGetSwitch("NPlug.Interop.InteropHelper.IsTracerEnabled", out var isEnabled) && isEnabled;
+
     /// <summary>
     /// A watcher for interop events.
     /// </summary>
-    public static IInteropDebugger? Instance { get; set; }
+    public static IInteropTracer? Tracer { get; set; }
+
+    public static unsafe IntPtr ExportToVst3(object managed)
+    {
+        var comObject = LibVst.ComObjectManager.Instance.GetOrCreateComObject(managed);
+        return (IntPtr)comObject.QueryInterface<LibVst.FUnknown>();
+    }
 }
 
-public interface IInteropDebugger
+public interface IInteropTracer
 {
     void OnEnter(in NativeToManagedEvent evt);
 
@@ -50,7 +49,7 @@ public struct NativeToManagedEvent
         NativePointer = nativePointer;
         InterfaceName = interfaceName;
         MethodName = methodName;
-        InteropDebugger.Instance?.OnEnter(this);
+        InteropHelper.Tracer?.OnEnter(this);
     }
 
     public readonly IntPtr NativePointer;
@@ -64,7 +63,7 @@ public struct NativeToManagedEvent
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal void Dispose()
     {
-        var watcher = InteropDebugger.Instance;
+        var watcher = InteropHelper.Tracer;
         if (watcher != null)
         {
             if (Exception != null)
@@ -87,7 +86,7 @@ public struct ManagedToNativeEvent
         NativePointer = nativePointer;
         InterfaceName = interfaceName;
         MethodName = methodName;
-        InteropDebugger.Instance?.OnEnter(this);
+        InteropHelper.Tracer?.OnEnter(this);
     }
 
     public readonly IntPtr NativePointer;
@@ -101,7 +100,7 @@ public struct ManagedToNativeEvent
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal void Dispose()
     {
-        var watcher = InteropDebugger.Instance;
+        var watcher = InteropHelper.Tracer;
         if (watcher != null)
         {
             if (Result != LibVst.ComResult.Ok && Result != LibVst.ComResult.False)

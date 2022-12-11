@@ -1,10 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <NPlugInteropTracer>true</NPlugInteropTracer>
+    <StartupObject>NPlug.Tests.BasicPluginValidation</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NPlug.HelloWorldPlugin\NPlug.HelloWorldPlugin.csproj" />
+    <ProjectReference Include="..\NPlug.Validator\NPlug.Validator.csproj" />
     <ProjectReference Include="..\NPlug\NPlug.csproj" />
   </ItemGroup>
 
+  <Import Project="$(MSBuildThisFileDirectory)../NPlug/build/NPlug.targets" />
 </Project>

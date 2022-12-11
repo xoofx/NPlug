@@ -9,7 +9,7 @@ namespace NPlug;
 /// <summary>
 /// A plugin class info
 /// </summary>
-public sealed class AudioPluginClassInfo
+public abstract class AudioPluginClassInfo
 {
     private static readonly Version EmptyVersion = new (0, 0);
 
@@ -19,11 +19,10 @@ public sealed class AudioPluginClassInfo
     /// <param name="guid"></param>
     /// <param name="name"></param>
     /// <param name="category"></param>
-    public AudioPluginClassInfo(Guid guid, string name, AudioPluginCategory category)
+    internal AudioPluginClassInfo(Guid guid, string name)
     {
         Id = guid;
         Name = name;
-        Category = category;
         ClassFlags = AudioPluginFlags.None;
         Cardinality = int.MaxValue;
         Vendor = string.Empty;
@@ -39,11 +38,6 @@ public sealed class AudioPluginClassInfo
     /// Gets or init the category.
     /// </summary>
     public string Name { get; }
-
-    /// <summary>
-    /// Gets or init the category.
-    /// </summary>
-    public AudioPluginCategory Category { get; init; }
 
     /// <summary>
     /// flags used for a specific category, must be defined where category is defined
@@ -64,4 +58,46 @@ public sealed class AudioPluginClassInfo
     /// Version string (e.g. "1.0.0.512" with Major.Minor.Subversion.Build)
     /// </summary>
     public Version Version { get; init; }
+}
+
+/// <summary>
+/// An <see cref="AudioProcessor"/> plugin class info
+/// </summary>
+public sealed class AudioProcessorClassInfo : AudioPluginClassInfo
+{
+    private static readonly Version EmptyVersion = new(0, 0);
+
+    /// <summary>
+    /// Creates a new instance of this plugin info.
+    /// </summary>
+    /// <param name="guid"></param>
+    /// <param name="name"></param>
+    /// <param name="category"></param>
+    public AudioProcessorClassInfo(Guid guid, string name, AudioPluginCategory category) : base(guid, name)
+    {
+        Category = category;
+    }
+
+    /// <summary>
+    /// Gets or init the category.
+    /// </summary>
+    public AudioPluginCategory Category { get; init; }
+}
+
+
+/// <summary>
+/// An <see cref="AudioController"/> plugin class info
+/// </summary>
+public sealed class AudioControllerClassInfo : AudioPluginClassInfo
+{
+    private static readonly Version EmptyVersion = new(0, 0);
+
+    /// <summary>
+    /// Creates a new instance of this plugin info.
+    /// </summary>
+    /// <param name="guid"></param>
+    /// <param name="name"></param>
+    public AudioControllerClassInfo(Guid guid, string name) : base(guid, name)
+    {
+    }
 }

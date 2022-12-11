@@ -158,8 +158,10 @@ public class CodeGenerator
         _container!.Members.Add(new CSharpField("SdkVersion") { FieldType = CSharpPrimitiveType.String(), Modifiers = CSharpModifiers.Const, Visibility = CSharpVisibility.Public , InitValue = macroSdkVersion.Value});
 
         // AudioEffectCategory
-        var vstAudioEffectClass = cppAst.Macros.FirstOrDefault(x => x.Name == "kVstAudioEffectClass");
-        _container!.Members.Add(new CSharpField("AudioEffectCategory") { FieldType = CSharpPrimitiveType.String(), Modifiers = CSharpModifiers.Const, Visibility = CSharpVisibility.Public, InitValue = vstAudioEffectClass.Value });
+        var macro = cppAst.Macros.FirstOrDefault(x => x.Name == "kVstAudioEffectClass");
+        _container!.Members.Add(new CSharpField("AudioEffectCategory") { FieldType = CSharpPrimitiveType.String(), Modifiers = CSharpModifiers.Const, Visibility = CSharpVisibility.Public, InitValue = macro.Value });
+        macro = cppAst.Macros.FirstOrDefault(x => x.Name == "kVstComponentControllerClass");
+        _container!.Members.Add(new CSharpField("ComponentControllerCategory") { FieldType = CSharpPrimitiveType.String(), Modifiers = CSharpModifiers.Const, Visibility = CSharpVisibility.Public, InitValue = macro.Value });
 
         var namespaces = new List<CppNamespace>();
         foreach (var ns in cppAst.Namespaces)
@@ -422,7 +424,7 @@ public class CodeGenerator
         {
             case "bool":
             case "TBool":
-                return new CSharpTypeWithAttributes(CSharpPrimitiveType.Byte()) { Attributes = { new CSharpMarshalAttribute(CSharpUnmanagedKind.U1) } };
+                return CSharpPrimitiveType.Byte();
 
             case "int8":
                 return CSharpPrimitiveType.SByte();
@@ -680,7 +682,8 @@ public class CodeGenerator
             var voidPtrPtr = new CSharpPointerType(new CSharpPointerType(CSharpPrimitiveType.Void()));
 
             var rcwMethods = new List<CSharpMethod>();
-            var ccwMethods = new List<CSharpMethod>();
+            var toManagedMethods = new List<CSharpMethod>();
+            var wrapperMethods = new List<CSharpMethod>();
             int virtualMethodIndex = 0;
 
             if ((kind & InterfaceKind.Host) != 0)
@@ -774,10 +777,14 @@ public class CodeGenerator
                         Visibility = CSharpVisibility.Private,
                         CppElement = cppMethod,
                     };
-                    csMethodWrap.Attributes.Add(new CSharpFreeAttribute("UnmanagedCallersOnly"));
+                    csMethodWrap.Attributes.Add(new CSharpFreeAttribute("UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})"));
 
                     csMethod.ReturnType = GetCSharpReturnOrParameterType(cppMethod.ReturnType);
                     csMethodWrap.ReturnType = csMethod.ReturnType;
+                    if (csMethodWrap.ReturnType.ToString() == "ComResult")
+                    {
+                        csMethodWrap.ReturnType = CSharpPrimitiveType.Int();
+                    }
                     csMethod.Parameters.Add(new CSharpParameter("self") { ParameterType = new CSharpFreeType($"{name}*") });
                     foreach (var cppMethodParameter in cppMethod.Parameters)
                     {
@@ -852,8 +859,8 @@ public class CodeGenerator
                         ccwStructImpl.Members.Add(csMethodImpl);
                     }
 
-                    ccwMethods.Add(csMethod);
-                    ccwMethods.Add(csMethodWrap);
+                    toManagedMethods.Add(csMethod);
+                    wrapperMethods.Add(csMethodWrap);
                 }
 
                 virtualMethodIndex++;
@@ -873,39 +880,49 @@ public class CodeGenerator
 
             if (initializeVtbl != null && vtblCount != null)
             {
-                vtblCount.GetBodyInlined = $"{virtualMethodIndex}";
+                var baseType = GetBaseType(cppClass);
+                int baseComMethodIndex = 0;
+                if (baseType != null)
+                {
+                    var csBaseType = GetOrCreateStruct(baseType);
+                    baseComMethodIndex = csBaseType.BaseComMethodIndex + csBaseType.ComMethodCount;
+                }
+
+                csStruct.ComMethodCount = wrapperMethods.Count;
+
+                var totalMethodCount = baseComMethodIndex + csStruct.ComMethodCount;
+
+                vtblCount.GetBodyInlined = $"{totalMethodCount}";
 
                 csStruct.Members.Add(new CSharpSimpleComment() { Children = { new CSharpTextComment("--------------------------------------------------------------") } });
                 csStruct.Members.Add(new CSharpSimpleComment() { Children = { new CSharpTextComment("CCW methods") } });
                 csStruct.Members.Add(new CSharpSimpleComment() { Children = { new CSharpTextComment("--------------------------------------------------------------") } });
                 initializeVtbl.Body = (writer, element) =>
                 {
-                    var baseType = GetBaseType(cppClass);
-                    int vtblIndex = 0;
+                    int vtblIndex = baseComMethodIndex;
                     if (baseType != null)
                     {
                         writer.WriteLine($"{baseType.Name}.InitializeVtbl(vtbl);");
-                        var csBaseType = GetOrCreateStruct(baseType);
-                        vtblIndex = csBaseType.BaseComMethodIndex + csBaseType.ComMethodCount;
                     }
 
-                    foreach (var method in ccwMethods)
+                    foreach (var method in wrapperMethods)
                     {
-                        if (method.Name.EndsWith("Wrapper"))
-                        {
-                            var functionPointer = method.ToFunctionPointer();
-                            functionPointer.IsUnmanaged = true;
-                            writer.WriteLine($"vtbl[{vtblIndex}] = ({functionPointer})&{method.Name};");
-                            vtblIndex++;
-                        }
+                        var functionPointer = method.ToFunctionPointer();
+                        functionPointer.IsUnmanaged = true;
+                        functionPointer.UnmanagedCallingConvention.Add("MemberFunction");
+                        writer.WriteLine($"vtbl[{vtblIndex}] = ({functionPointer})&{method.Name};");
+                        vtblIndex++;
                     }
                 };
 
-                foreach (var cSharpMethod in ccwMethods)
+                for (var i = 0; i < wrapperMethods.Count; i++)
                 {
-                    csStruct.Members.Add(cSharpMethod);
+                    var toManagedMethod = toManagedMethods[i];
+                    var wrapperMethod = wrapperMethods[i];
+                    csStruct.Members.Add(toManagedMethod);
+                    csStruct.Members.Add(wrapperMethod);
                 }
-                csStruct.ComMethodCount = ccwMethods.Count;
+
             }
         }
 
@@ -1050,21 +1067,37 @@ public class CodeGenerator
     {
         WriteByte(builder, uuid.Value1, bigEndian);
         builder.Append(", ");
-        WriteByte(builder, uuid.Value2, bigEndian);
+        WriteByte(builder, uuid.Value2High, bigEndian);
         builder.Append(", ");
-        WriteByte(builder, uuid.Value3, bigEndian);
+        WriteByte(builder, uuid.Value2Low, bigEndian);
         builder.Append(", ");
-        WriteByte(builder, uuid.Value4, bigEndian);
+        WriteByte(builder, uuid.Value3, !bigEndian);
+        builder.Append(", ");
+        WriteByte(builder, uuid.Value4, !bigEndian);
     }
 
     private void WriteByte(StringBuilder builder, uint value, bool bigEndian)
     {
         byte[] bytes = BitConverter.GetBytes(value);
-        if (bigEndian != BitConverter.IsLittleEndian)
+        if (bigEndian == BitConverter.IsLittleEndian)
         {
             bytes = bytes.Reverse().ToArray();
         }
+        WriteByte(builder, bytes);
+    }
 
+    private void WriteByte(StringBuilder builder, ushort value, bool bigEndian)
+    {
+        byte[] bytes = BitConverter.GetBytes(value);
+        if (bigEndian == BitConverter.IsLittleEndian)
+        {
+            bytes = bytes.Reverse().ToArray();
+        }
+        WriteByte(builder, bytes);
+    }
+
+    private void WriteByte(StringBuilder builder, byte[] bytes)
+    {
         for (var i = 0; i < bytes.Length; i++)
         {
             var b = bytes[i];
@@ -1072,6 +1105,7 @@ public class CodeGenerator
             builder.Append($"0x{b:x2}");
         }
     }
+
 
     private static readonly Regex RegexMatchIID = new Regex(@"\w+\s*\((\w+)\s*,\s*(0x\w+)\s*,\s*(0x\w+)\s*,\s*(0x\w+)\s*,\s*(0x\w+)\s*\)");
     private string _destinationFolder;
@@ -1108,6 +1142,10 @@ public class CodeGenerator
     
     record struct Uuid(uint Value1, uint Value2, uint Value3, uint Value4)
     {
+        public ushort Value2High => (ushort)(Value2 >> 16);
+
+        public ushort Value2Low => (ushort)Value2;
+
         public override string ToString()
         {
             return $"0x{Value1:x8}, 0x{Value2:x8}, 0x{Value3:x8}, 0x{Value4:x8}";

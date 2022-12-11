@@ -25,6 +25,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ILLink.Substitutions.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ILLink.Substitutions.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="build/NPlug.targets" Pack="true" PackagePath="/build/NPlug.targets" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)../../img/NPlug.png" Pack="true" PackagePath="/" />
     <None Include="$(MSBuildThisFileDirectory)../../readme.md" Pack="true" PackagePath="/" />
   </ItemGroup>

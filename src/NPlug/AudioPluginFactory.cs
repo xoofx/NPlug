@@ -21,7 +21,12 @@ public sealed class AudioPluginFactory : IAudioPluginFactory
 
     public AudioPluginFactoryInfo FactoryInfo { get; }
     
-    public void RegisterPlugin<TPlugin>(AudioPluginClassInfo pluginClassInfo) where TPlugin: class, IAudioPluginComponent, new()
+    public void RegisterPlugin<TPlugin>(AudioProcessorClassInfo pluginClassInfo) where TPlugin: class, IAudioProcessor, new()
+    {
+        RegisterPlugin(pluginClassInfo, static () => new TPlugin());
+    }
+
+    public void RegisterPlugin<TPlugin>(AudioControllerClassInfo pluginClassInfo) where TPlugin : class, IAudioController, new()
     {
         RegisterPlugin(pluginClassInfo, static () => new TPlugin());
     }

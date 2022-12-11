@@ -28,6 +28,9 @@ internal static partial class LibVst
         public static implicit operator ComResult(int value) => new(value);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator int(ComResult value) => value.Value;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator ComResult(bool value) => value ? new(Ok) : new(False);
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

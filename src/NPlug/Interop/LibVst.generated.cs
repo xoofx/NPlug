@@ -22,6 +22,8 @@ internal static partial class LibVst
     
     public const string AudioEffectCategory = "Audio Module Class";
     
+    public const string ComponentControllerCategory = "Component Controller Class";
+    
     /// <summary>
     /// FUnknown
     /// The basic interface of all interfaces.
@@ -44,9 +46,9 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
-            vtbl[0] = (delegate*unmanaged<FUnknown*, Guid*, void**, ComResult>)&queryInterface_Wrapper;
-            vtbl[1] = (delegate*unmanaged<FUnknown*, uint>)&addRef_Wrapper;
-            vtbl[2] = (delegate*unmanaged<FUnknown*, uint>)&release_Wrapper;
+            vtbl[0] = (delegate*unmanaged[MemberFunction]<FUnknown*, Guid*, void**, int>)&queryInterface_Wrapper;
+            vtbl[1] = (delegate*unmanaged[MemberFunction]<FUnknown*, uint>)&addRef_Wrapper;
+            vtbl[2] = (delegate*unmanaged[MemberFunction]<FUnknown*, uint>)&release_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -113,8 +115,8 @@ internal static partial class LibVst
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         private static partial ComResult queryInterface_ToManaged(FUnknown* self, Guid* _iid, void** obj);
         
-        [UnmanagedCallersOnly]
-        private static ComResult queryInterface_Wrapper(FUnknown* self, Guid* _iid, void** obj)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int queryInterface_Wrapper(FUnknown* self, Guid* _iid, void** obj)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(FUnknown), "queryInterface");
             try
@@ -124,7 +126,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -141,7 +143,7 @@ internal static partial class LibVst
         /// </par>
         private static partial uint addRef_ToManaged(FUnknown* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint addRef_Wrapper(FUnknown* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(FUnknown), "addRef");
@@ -166,7 +168,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial uint release_ToManaged(FUnknown* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint release_Wrapper(FUnknown* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(FUnknown), "release");
@@ -220,10 +222,10 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IBStream*, void*, int, int*, ComResult>)&read_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IBStream*, void*, int, int*, ComResult>)&write_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IBStream*, long, int, long*, ComResult>)&seek_Wrapper;
-            vtbl[9] = (delegate*unmanaged<IBStream*, long*, ComResult>)&tell_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IBStream*, void*, int, int*, int>)&read_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IBStream*, void*, int, int*, int>)&write_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IBStream*, long, int, long*, int>)&seek_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IBStream*, long*, int>)&tell_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -355,8 +357,8 @@ internal static partial class LibVst
         /// <param name="numBytesRead">: result - how many bytes have been read from stream (set to 0 if this is of no interest)</param>
         private static partial ComResult read_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesRead);
         
-        [UnmanagedCallersOnly]
-        private static ComResult read_Wrapper(IBStream* self, void* buffer, int numBytes, int* numBytesRead)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int read_Wrapper(IBStream* self, void* buffer, int numBytes, int* numBytesRead)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "read");
             try
@@ -366,7 +368,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -382,8 +384,8 @@ internal static partial class LibVst
         /// <param name="numBytesWritten">: result - how many bytes have been written to stream (set to 0 if this is of no interest)</param>
         private static partial ComResult write_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesWritten);
         
-        [UnmanagedCallersOnly]
-        private static ComResult write_Wrapper(IBStream* self, void* buffer, int numBytes, int* numBytesWritten)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int write_Wrapper(IBStream* self, void* buffer, int numBytes, int* numBytesWritten)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "write");
             try
@@ -393,7 +395,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -409,8 +411,8 @@ internal static partial class LibVst
         /// <param name="result">: new seek position (set to 0 if this is of no interest)</param>
         private static partial ComResult seek_ToManaged(IBStream* self, long pos, int mode, long* result);
         
-        [UnmanagedCallersOnly]
-        private static ComResult seek_Wrapper(IBStream* self, long pos, int mode, long* result)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int seek_Wrapper(IBStream* self, long pos, int mode, long* result)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "seek");
             try
@@ -420,7 +422,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -434,8 +436,8 @@ internal static partial class LibVst
         /// <param name="pos">: is assigned the current position if function succeeds</param>
         private static partial ComResult tell_ToManaged(IBStream* self, long* pos);
         
-        [UnmanagedCallersOnly]
-        private static ComResult tell_Wrapper(IBStream* self, long* pos)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int tell_Wrapper(IBStream* self, long* pos)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "tell");
             try
@@ -445,7 +447,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -480,8 +482,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xc3, 0xbf, 0x6e, 0xa2, 0x30, 0x99, 0x47, 0x52, 0x9b, 0x6b, 0xf9, 0x90, 0x1e, 0xe3, 0x3e, 0x9b })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xa2, 0x6e, 0xbf, 0xc3, 0x52, 0x47, 0x99, 0x30, 0x90, 0xf9, 0x6b, 0x9b, 0x9b, 0x3e, 0xe3, 0x1e })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xa2, 0x6e, 0xbf, 0xc3, 0x99, 0x30, 0x52, 0x47, 0x9b, 0x6b, 0xf9, 0x90, 0x1e, 0xe3, 0x3e, 0x9b })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xc3, 0xbf, 0x6e, 0xa2, 0x30, 0x99, 0x47, 0x52, 0x90, 0xf9, 0x6b, 0x9b, 0x9b, 0x3e, 0xe3, 0x1e })
                     )));
             }
         }
@@ -505,8 +507,8 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<ISizeableStream*, long*, ComResult>)&getStreamSize_Wrapper;
-            vtbl[7] = (delegate*unmanaged<ISizeableStream*, long, ComResult>)&setStreamSize_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<ISizeableStream*, long*, int>)&getStreamSize_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<ISizeableStream*, long, int>)&setStreamSize_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -597,8 +599,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getStreamSize_ToManaged(ISizeableStream* self, long* size);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getStreamSize_Wrapper(ISizeableStream* self, long* size)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getStreamSize_Wrapper(ISizeableStream* self, long* size)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ISizeableStream), "getStreamSize");
             try
@@ -608,7 +610,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -621,8 +623,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setStreamSize_ToManaged(ISizeableStream* self, long size);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setStreamSize_Wrapper(ISizeableStream* self, long size)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setStreamSize_Wrapper(ISizeableStream* self, long size)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ISizeableStream), "setStreamSize");
             try
@@ -632,7 +634,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -649,8 +651,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x04, 0xf9, 0x54, 0x9e, 0xe0, 0x2f, 0x4e, 0x6e, 0x87, 0xe8, 0x6a, 0x87, 0x47, 0xf4, 0xe1, 0x7f })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x9e, 0x54, 0xf9, 0x04, 0x6e, 0x4e, 0x2f, 0xe0, 0x87, 0x6a, 0xe8, 0x87, 0x7f, 0xe1, 0xf4, 0x47 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x9e, 0x54, 0xf9, 0x04, 0x2f, 0xe0, 0x6e, 0x4e, 0x87, 0xe8, 0x6a, 0x87, 0x47, 0xf4, 0xe1, 0x7f })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x04, 0xf9, 0x54, 0x9e, 0xe0, 0x2f, 0x4e, 0x6e, 0x87, 0x6a, 0xe8, 0x87, 0x7f, 0xe1, 0xf4, 0x47 })
                     )));
             }
         }
@@ -675,7 +677,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<ICloneable*, LibVst.FUnknown*>)&clone_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<ICloneable*, LibVst.FUnknown*>)&clone_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -751,7 +753,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial LibVst.FUnknown* clone_ToManaged(ICloneable* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.FUnknown* clone_Wrapper(ICloneable* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ICloneable), "clone");
@@ -779,8 +781,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xd4, 0x54, 0x06, 0xb9, 0x3a, 0x2d, 0x44, 0x43, 0x9d, 0xad, 0x9b, 0xa9, 0x85, 0xa1, 0x45, 0x4b })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xb9, 0x06, 0x54, 0xd4, 0x43, 0x44, 0x2d, 0x3a, 0xa9, 0x9b, 0xad, 0x9d, 0x4b, 0x45, 0xa1, 0x85 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xb9, 0x06, 0x54, 0xd4, 0x2d, 0x3a, 0x43, 0x44, 0x9d, 0xad, 0x9b, 0xa9, 0x85, 0xa1, 0x45, 0x4b })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xd4, 0x54, 0x06, 0xb9, 0x3a, 0x2d, 0x44, 0x43, 0xa9, 0x9b, 0xad, 0x9d, 0x4b, 0x45, 0xa1, 0x85 })
                     )));
             }
         }
@@ -803,12 +805,12 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IString*, byte*, void>)&setText8_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IString*, char*, void>)&setText16_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IString*, byte*>)&getText8_Wrapper;
-            vtbl[9] = (delegate*unmanaged<IString*, char*>)&getText16_Wrapper;
-            vtbl[10] = (delegate*unmanaged<IString*, void*, byte, void>)&take_Wrapper;
-            vtbl[11] = (delegate*unmanaged<IString*, byte>)&isWideString_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IString*, byte*, void>)&setText8_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IString*, char*, void>)&setText16_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IString*, byte*>)&getText8_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IString*, char*>)&getText16_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IString*, void*, byte, void>)&take_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IString*, byte>)&isWideString_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -921,7 +923,7 @@ internal static partial class LibVst
         /// Later implementations will redirect 'take' to setText8 and setText16
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void take(void* s, [MarshalAs(UnmanagedType.U1)] byte isWide)
+        public void take(void* s, byte isWide)
         {
             var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
             var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "take");
@@ -933,7 +935,6 @@ internal static partial class LibVst
         /// Returns true if the string is in unicode format, returns false if the string is ASCII
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [return:MarshalAs(UnmanagedType.U1)]
         public byte isWideString()
         {
             var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
@@ -951,7 +952,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial void setText8_ToManaged(IString* self, byte* text);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void setText8_Wrapper(IString* self, byte* text)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "setText8");
@@ -974,7 +975,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial void setText16_ToManaged(IString* self, char* text);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void setText16_Wrapper(IString* self, char* text)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "setText16");
@@ -999,7 +1000,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial byte* getText8_ToManaged(IString* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static byte* getText8_Wrapper(IString* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "getText8");
@@ -1023,7 +1024,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial char* getText16_ToManaged(IString* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static char* getText16_Wrapper(IString* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "getText16");
@@ -1047,10 +1048,10 @@ internal static partial class LibVst
         /// internal string and this will cause problems because 'free' will be used to delete the passed memory.
         /// Later implementations will redirect 'take' to setText8 and setText16
         /// </summary>
-        private static partial void take_ToManaged(IString* self, void* s, [MarshalAs(UnmanagedType.U1)] byte isWide);
+        private static partial void take_ToManaged(IString* self, void* s, byte isWide);
         
-        [UnmanagedCallersOnly]
-        private static void take_Wrapper(IString* self, void* s, [MarshalAs(UnmanagedType.U1)] byte isWide)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void take_Wrapper(IString* self, void* s, byte isWide)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "take");
             try
@@ -1070,11 +1071,9 @@ internal static partial class LibVst
         /// <summary>
         /// Returns true if the string is in unicode format, returns false if the string is ASCII
         /// </summary>
-        [return:MarshalAs(UnmanagedType.U1)]
         private static partial byte isWideString_ToManaged(IString* self);
         
-        [UnmanagedCallersOnly]
-        [return:MarshalAs(UnmanagedType.U1)]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static byte isWideString_Wrapper(IString* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "isWideString");
@@ -1102,8 +1101,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xf9, 0x9d, 0xb7, 0xa3, 0x0f, 0xc1, 0x48, 0x21, 0x80, 0x0b, 0x0c, 0xf9, 0x8e, 0x34, 0x8e, 0xdf })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xa3, 0xb7, 0x9d, 0xf9, 0x21, 0x48, 0xc1, 0x0f, 0xf9, 0x0c, 0x0b, 0x80, 0xdf, 0x8e, 0x34, 0x8e })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xa3, 0xb7, 0x9d, 0xf9, 0xc1, 0x0f, 0x21, 0x48, 0x80, 0x0b, 0x0c, 0xf9, 0x8e, 0x34, 0x8e, 0xdf })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf9, 0x9d, 0xb7, 0xa3, 0x0f, 0xc1, 0x48, 0x21, 0xf9, 0x0c, 0x0b, 0x80, 0xdf, 0x8e, 0x34, 0x8e })
                     )));
             }
         }
@@ -1118,15 +1117,15 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 3;
+        public static int VtblCount => 6;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IErrorContext*, byte, void>)&disableErrorUI_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IErrorContext*, ComResult>)&errorMessageShown_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IErrorContext*, LibVst.IString*, ComResult>)&getErrorMessage_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IErrorContext*, byte, void>)&disableErrorUI_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IErrorContext*, int>)&errorMessageShown_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IErrorContext*, LibVst.IString*, int>)&getErrorMessage_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -1135,10 +1134,10 @@ internal static partial class LibVst
         /// <summary>
         /// Tells the plug-in to not show any UI elements on errors.
         /// </summary>
-        private static partial void disableErrorUI_ToManaged(IErrorContext* self, [MarshalAs(UnmanagedType.U1)] byte state);
+        private static partial void disableErrorUI_ToManaged(IErrorContext* self, byte state);
         
-        [UnmanagedCallersOnly]
-        private static void disableErrorUI_Wrapper(IErrorContext* self, [MarshalAs(UnmanagedType.U1)] byte state)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void disableErrorUI_Wrapper(IErrorContext* self, byte state)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IErrorContext), "disableErrorUI");
             try
@@ -1160,8 +1159,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult errorMessageShown_ToManaged(IErrorContext* self);
         
-        [UnmanagedCallersOnly]
-        private static ComResult errorMessageShown_Wrapper(IErrorContext* self)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int errorMessageShown_Wrapper(IErrorContext* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IErrorContext), "errorMessageShown");
             try
@@ -1171,7 +1170,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -1184,8 +1183,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getErrorMessage_ToManaged(IErrorContext* self, LibVst.IString* message);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getErrorMessage_Wrapper(IErrorContext* self, LibVst.IString* message)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getErrorMessage_Wrapper(IErrorContext* self, LibVst.IString* message)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IErrorContext), "getErrorMessage");
             try
@@ -1195,7 +1194,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -1212,8 +1211,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x12, 0xbc, 0xd0, 0x7b, 0x7c, 0x69, 0x43, 0x36, 0xb7, 0xda, 0x77, 0xc3, 0x44, 0x4a, 0x0c, 0xd0 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x7b, 0xd0, 0xbc, 0x12, 0x36, 0x43, 0x69, 0x7c, 0xc3, 0x77, 0xda, 0xb7, 0xd0, 0x0c, 0x4a, 0x44 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x7b, 0xd0, 0xbc, 0x12, 0x69, 0x7c, 0x36, 0x43, 0xb7, 0xda, 0x77, 0xc3, 0x44, 0x4a, 0x0c, 0xd0 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x12, 0xbc, 0xd0, 0x7b, 0x7c, 0x69, 0x43, 0x36, 0xc3, 0x77, 0xda, 0xb7, 0xd0, 0x0c, 0x4a, 0x44 })
                     )));
             }
         }
@@ -1335,7 +1334,7 @@ internal static partial class LibVst
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, [MarshalAs(UnmanagedType.U1)] byte copyBytes)
+        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
         {
             var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
             var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "setBinaryData");
@@ -1456,8 +1455,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xfa, 0x1e, 0x32, 0xf9, 0xca, 0x6d, 0x46, 0xf5, 0xa9, 0x82, 0xf9, 0x56, 0xb1, 0x19, 0x1b, 0x58 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xf9, 0x32, 0x1e, 0xfa, 0xf5, 0x46, 0x6d, 0xca, 0x56, 0xf9, 0x82, 0xa9, 0x58, 0x1b, 0x19, 0xb1 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xf9, 0x32, 0x1e, 0xfa, 0x6d, 0xca, 0xf5, 0x46, 0xa9, 0x82, 0xf9, 0x56, 0xb1, 0x19, 0x1b, 0x58 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xfa, 0x1e, 0x32, 0xf9, 0xca, 0x6d, 0x46, 0xf5, 0x56, 0xf9, 0x82, 0xa9, 0x58, 0x1b, 0x19, 0xb1 })
                     )));
             }
         }
@@ -1529,15 +1528,15 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 3;
+        public static int VtblCount => 6;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IPersistent*, byte*, ComResult>)&getClassID_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IPersistent*, LibVst.IAttributes*, ComResult>)&saveAttributes_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IPersistent*, LibVst.IAttributes*, ComResult>)&loadAttributes_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPersistent*, byte*, int>)&getClassID_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IPersistent*, LibVst.IAttributes*, int>)&saveAttributes_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IPersistent*, LibVst.IAttributes*, int>)&loadAttributes_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -1549,8 +1548,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getClassID_ToManaged(IPersistent* self, byte* uid);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getClassID_Wrapper(IPersistent* self, byte* uid)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getClassID_Wrapper(IPersistent* self, byte* uid)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPersistent), "getClassID");
             try
@@ -1560,7 +1559,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -1573,8 +1572,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult saveAttributes_ToManaged(IPersistent* self, LibVst.IAttributes* arg);
         
-        [UnmanagedCallersOnly]
-        private static ComResult saveAttributes_Wrapper(IPersistent* self, LibVst.IAttributes* arg)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int saveAttributes_Wrapper(IPersistent* self, LibVst.IAttributes* arg)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPersistent), "saveAttributes");
             try
@@ -1584,7 +1583,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -1597,8 +1596,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult loadAttributes_ToManaged(IPersistent* self, LibVst.IAttributes* arg);
         
-        [UnmanagedCallersOnly]
-        private static ComResult loadAttributes_Wrapper(IPersistent* self, LibVst.IAttributes* arg)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int loadAttributes_Wrapper(IPersistent* self, LibVst.IAttributes* arg)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPersistent), "loadAttributes");
             try
@@ -1608,7 +1607,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -1625,8 +1624,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xba, 0x1a, 0x46, 0x37, 0x3c, 0x9f, 0x46, 0xd0, 0xa6, 0x5d, 0xba, 0x0e, 0xb8, 0x5d, 0xa8, 0x29 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x37, 0x46, 0x1a, 0xba, 0xd0, 0x46, 0x9f, 0x3c, 0x0e, 0xba, 0x5d, 0xa6, 0x29, 0xa8, 0x5d, 0xb8 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x37, 0x46, 0x1a, 0xba, 0x9f, 0x3c, 0xd0, 0x46, 0xa6, 0x5d, 0xba, 0x0e, 0xb8, 0x5d, 0xa8, 0x29 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xba, 0x1a, 0x46, 0x37, 0x3c, 0x9f, 0x46, 0xd0, 0x0e, 0xba, 0x5d, 0xa6, 0x29, 0xa8, 0x5d, 0xb8 })
                     )));
             }
         }
@@ -1745,7 +1744,7 @@ internal static partial class LibVst
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, [MarshalAs(UnmanagedType.U1)] byte copyBytes)
+        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
         {
             var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
             var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "setBinaryData");
@@ -1892,8 +1891,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x13, 0x82, 0x12, 0x6a, 0xfe, 0xca, 0x48, 0x71, 0x97, 0xd5, 0x2a, 0x45, 0xb0, 0x42, 0xae, 0x99 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x6a, 0x12, 0x82, 0x13, 0x71, 0x48, 0xca, 0xfe, 0x45, 0x2a, 0xd5, 0x97, 0x99, 0xae, 0x42, 0xb0 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x6a, 0x12, 0x82, 0x13, 0xca, 0xfe, 0x71, 0x48, 0x97, 0xd5, 0x2a, 0x45, 0xb0, 0x42, 0xae, 0x99 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x13, 0x82, 0x12, 0x6a, 0xfe, 0xca, 0x48, 0x71, 0x45, 0x2a, 0xd5, 0x97, 0x99, 0xae, 0x42, 0xb0 })
                     )));
             }
         }
@@ -1914,14 +1913,14 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 2;
+        public static int VtblCount => 5;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IPluginBase*, LibVst.FUnknown*, ComResult>)&initialize_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IPluginBase*, ComResult>)&terminate_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPluginBase*, LibVst.FUnknown*, int>)&initialize_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IPluginBase*, int>)&terminate_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -1938,8 +1937,8 @@ internal static partial class LibVst
         /// </note>
         private static partial ComResult initialize_ToManaged(IPluginBase* self, LibVst.FUnknown* context);
         
-        [UnmanagedCallersOnly]
-        private static ComResult initialize_Wrapper(IPluginBase* self, LibVst.FUnknown* context)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int initialize_Wrapper(IPluginBase* self, LibVst.FUnknown* context)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginBase), "initialize");
             try
@@ -1949,7 +1948,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -1963,8 +1962,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult terminate_ToManaged(IPluginBase* self);
         
-        [UnmanagedCallersOnly]
-        private static ComResult terminate_Wrapper(IPluginBase* self)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int terminate_Wrapper(IPluginBase* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginBase), "terminate");
             try
@@ -1974,7 +1973,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -1991,8 +1990,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x22, 0x88, 0x8d, 0xdb, 0x15, 0x6e, 0x45, 0xae, 0x83, 0x58, 0xb3, 0x48, 0x08, 0x19, 0x06, 0x25 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xdb, 0x8d, 0x88, 0x22, 0xae, 0x45, 0x6e, 0x15, 0x48, 0xb3, 0x58, 0x83, 0x25, 0x06, 0x19, 0x08 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xdb, 0x8d, 0x88, 0x22, 0x6e, 0x15, 0xae, 0x45, 0x83, 0x58, 0xb3, 0x48, 0x08, 0x19, 0x06, 0x25 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x22, 0x88, 0x8d, 0xdb, 0x15, 0x6e, 0x45, 0xae, 0x48, 0xb3, 0x58, 0x83, 0x25, 0x06, 0x19, 0x08 })
                     )));
             }
         }
@@ -2013,16 +2012,16 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 4;
+        public static int VtblCount => 7;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IPluginFactory*, LibVst.PFactoryInfo*, ComResult>)&getFactoryInfo_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IPluginFactory*, int>)&countClasses_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IPluginFactory*, int, LibVst.PClassInfo*, ComResult>)&getClassInfo_Wrapper;
-            vtbl[9] = (delegate*unmanaged<IPluginFactory*, LibVst.FIDString, LibVst.FIDString, void**, ComResult>)&createInstance_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, LibVst.PFactoryInfo*, int>)&getFactoryInfo_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, int>)&countClasses_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, int, LibVst.PClassInfo*, int>)&getClassInfo_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, LibVst.FIDString, LibVst.FIDString, void**, int>)&createInstance_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -2033,8 +2032,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getFactoryInfo_ToManaged(IPluginFactory* self, LibVst.PFactoryInfo* info);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getFactoryInfo_Wrapper(IPluginFactory* self, LibVst.PFactoryInfo* info)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getFactoryInfo_Wrapper(IPluginFactory* self, LibVst.PFactoryInfo* info)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "getFactoryInfo");
             try
@@ -2044,7 +2043,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -2059,7 +2058,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial int countClasses_ToManaged(IPluginFactory* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int countClasses_Wrapper(IPluginFactory* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "countClasses");
@@ -2083,8 +2082,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getClassInfo_ToManaged(IPluginFactory* self, int index, LibVst.PClassInfo* info);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getClassInfo_Wrapper(IPluginFactory* self, int index, LibVst.PClassInfo* info)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getClassInfo_Wrapper(IPluginFactory* self, int index, LibVst.PClassInfo* info)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "getClassInfo");
             try
@@ -2094,7 +2093,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -2107,8 +2106,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult createInstance_ToManaged(IPluginFactory* self, LibVst.FIDString cid, LibVst.FIDString _iid, void** obj);
         
-        [UnmanagedCallersOnly]
-        private static ComResult createInstance_Wrapper(IPluginFactory* self, LibVst.FIDString cid, LibVst.FIDString _iid, void** obj)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int createInstance_Wrapper(IPluginFactory* self, LibVst.FIDString cid, LibVst.FIDString _iid, void** obj)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "createInstance");
             try
@@ -2118,7 +2117,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -2135,8 +2134,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x7a, 0x4d, 0x81, 0x1c, 0x52, 0x11, 0x4a, 0x1f, 0xae, 0xd9, 0xd2, 0xee, 0x0b, 0x43, 0xbf, 0x9f })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x1c, 0x81, 0x4d, 0x7a, 0x1f, 0x4a, 0x11, 0x52, 0xee, 0xd2, 0xd9, 0xae, 0x9f, 0xbf, 0x43, 0x0b })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x1c, 0x81, 0x4d, 0x7a, 0x11, 0x52, 0x1f, 0x4a, 0xae, 0xd9, 0xd2, 0xee, 0x0b, 0x43, 0xbf, 0x9f })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x7a, 0x4d, 0x81, 0x1c, 0x52, 0x11, 0x4a, 0x1f, 0xee, 0xd2, 0xd9, 0xae, 0x9f, 0xbf, 0x43, 0x0b })
                     )));
             }
         }
@@ -2263,7 +2262,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             IPluginFactory.InitializeVtbl(vtbl);
-            vtbl[14] = (delegate*unmanaged<IPluginFactory2*, int, LibVst.PClassInfo2*, ComResult>)&getClassInfo2_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IPluginFactory2*, int, LibVst.PClassInfo2*, int>)&getClassInfo2_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -2397,8 +2396,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getClassInfo2_ToManaged(IPluginFactory2* self, int index, LibVst.PClassInfo2* info);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getClassInfo2_Wrapper(IPluginFactory2* self, int index, LibVst.PClassInfo2* info)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getClassInfo2_Wrapper(IPluginFactory2* self, int index, LibVst.PClassInfo2* info)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory2), "getClassInfo2");
             try
@@ -2408,7 +2407,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -2425,8 +2424,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x00, 0x07, 0xb6, 0x50, 0xf2, 0x4b, 0x4c, 0x0b, 0xa4, 0x64, 0xed, 0xb9, 0xf0, 0x0b, 0x2a, 0xbb })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x50, 0xb6, 0x07, 0x00, 0x0b, 0x4c, 0x4b, 0xf2, 0xb9, 0xed, 0x64, 0xa4, 0xbb, 0x2a, 0x0b, 0xf0 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x50, 0xb6, 0x07, 0x00, 0x4b, 0xf2, 0x0b, 0x4c, 0xa4, 0x64, 0xed, 0xb9, 0xf0, 0x0b, 0x2a, 0xbb })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x00, 0x07, 0xb6, 0x50, 0xf2, 0x4b, 0x4c, 0x0b, 0xb9, 0xed, 0x64, 0xa4, 0xbb, 0x2a, 0x0b, 0xf0 })
                     )));
             }
         }
@@ -2506,8 +2505,8 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             IPluginFactory2.InitializeVtbl(vtbl);
-            vtbl[16] = (delegate*unmanaged<IPluginFactory3*, int, LibVst.PClassInfoW*, ComResult>)&getClassInfoUnicode_Wrapper;
-            vtbl[17] = (delegate*unmanaged<IPluginFactory3*, LibVst.FUnknown*, ComResult>)&setHostContext_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IPluginFactory3*, int, LibVst.PClassInfoW*, int>)&getClassInfoUnicode_Wrapper;
+            vtbl[9] = (delegate*unmanaged[MemberFunction]<IPluginFactory3*, LibVst.FUnknown*, int>)&setHostContext_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -2669,8 +2668,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getClassInfoUnicode_ToManaged(IPluginFactory3* self, int index, LibVst.PClassInfoW* info);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getClassInfoUnicode_Wrapper(IPluginFactory3* self, int index, LibVst.PClassInfoW* info)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getClassInfoUnicode_Wrapper(IPluginFactory3* self, int index, LibVst.PClassInfoW* info)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory3), "getClassInfoUnicode");
             try
@@ -2680,7 +2679,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -2693,8 +2692,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setHostContext_ToManaged(IPluginFactory3* self, LibVst.FUnknown* context);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setHostContext_Wrapper(IPluginFactory3* self, LibVst.FUnknown* context)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setHostContext_Wrapper(IPluginFactory3* self, LibVst.FUnknown* context)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory3), "setHostContext");
             try
@@ -2704,7 +2703,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -2721,8 +2720,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x45, 0x55, 0xa2, 0xab, 0xc1, 0x23, 0x4e, 0x57, 0x9b, 0x12, 0x29, 0x10, 0x36, 0x87, 0x89, 0x31 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xab, 0xa2, 0x55, 0x45, 0x57, 0x4e, 0x23, 0xc1, 0x10, 0x29, 0x12, 0x9b, 0x31, 0x89, 0x87, 0x36 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xab, 0xa2, 0x55, 0x45, 0x23, 0xc1, 0x57, 0x4e, 0x9b, 0x12, 0x29, 0x10, 0x36, 0x87, 0x89, 0x31 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x45, 0x55, 0xa2, 0xab, 0xc1, 0x23, 0x4e, 0x57, 0x10, 0x29, 0x12, 0x9b, 0x31, 0x89, 0x87, 0x36 })
                     )));
             }
         }
@@ -2802,13 +2801,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IPluginCompatibility*, LibVst.IBStream*, ComResult>)&getCompatibilityJSON_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPluginCompatibility*, LibVst.IBStream*, int>)&getCompatibilityJSON_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -2822,8 +2821,8 @@ internal static partial class LibVst
         /// <returns>kResultTrue on success</returns>
         private static partial ComResult getCompatibilityJSON_ToManaged(IPluginCompatibility* self, LibVst.IBStream* stream);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getCompatibilityJSON_Wrapper(IPluginCompatibility* self, LibVst.IBStream* stream)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getCompatibilityJSON_Wrapper(IPluginCompatibility* self, LibVst.IBStream* stream)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginCompatibility), "getCompatibilityJSON");
             try
@@ -2833,7 +2832,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -2850,8 +2849,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x4a, 0xfd, 0x4b, 0x6a, 0x35, 0xd7, 0xc2, 0x40, 0xa5, 0xc3, 0x14, 0x14, 0xfb, 0x7d, 0x15, 0xe6 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x6a, 0x4b, 0xfd, 0x4a, 0x40, 0xc2, 0xd7, 0x35, 0x14, 0x14, 0xc3, 0xa5, 0xe6, 0x15, 0x7d, 0xfb })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x6a, 0x4b, 0xfd, 0x4a, 0xd7, 0x35, 0x40, 0xc2, 0xa5, 0xc3, 0x14, 0x14, 0xfb, 0x7d, 0x15, 0xe6 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x4a, 0xfd, 0x4b, 0x6a, 0x35, 0xd7, 0xc2, 0x40, 0x14, 0x14, 0xc3, 0xa5, 0xe6, 0x15, 0x7d, 0xfb })
                     )));
             }
         }
@@ -2877,7 +2876,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IStringResult*, byte*, void>)&setText_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IStringResult*, byte*, void>)&setText_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -2952,7 +2951,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial void setText_ToManaged(IStringResult* self, byte* text);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void setText_Wrapper(IStringResult* self, byte* text)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IStringResult), "setText");
@@ -2979,8 +2978,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x55, 0x07, 0x98, 0xbc, 0x87, 0x20, 0x49, 0xdb, 0x84, 0x92, 0x0a, 0x15, 0x3b, 0x50, 0xb7, 0xa8 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xbc, 0x98, 0x07, 0x55, 0xdb, 0x49, 0x20, 0x87, 0x15, 0x0a, 0x92, 0x84, 0xa8, 0xb7, 0x50, 0x3b })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xbc, 0x98, 0x07, 0x55, 0x20, 0x87, 0xdb, 0x49, 0x84, 0x92, 0x0a, 0x15, 0x3b, 0x50, 0xb7, 0xa8 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x55, 0x07, 0x98, 0xbc, 0x87, 0x20, 0x49, 0xdb, 0x15, 0x0a, 0x92, 0x84, 0xa8, 0xb7, 0x50, 0x3b })
                     )));
             }
         }
@@ -2999,13 +2998,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IDependent*, LibVst.FUnknown*, int, void>)&update_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IDependent*, LibVst.FUnknown*, int, void>)&update_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -3016,7 +3015,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial void update_ToManaged(IDependent* self, LibVst.FUnknown* changedUnknown, int message);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void update_Wrapper(IDependent* self, LibVst.FUnknown* changedUnknown, int message)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDependent), "update");
@@ -3056,8 +3055,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xf5, 0x2b, 0x7a, 0xae, 0xde, 0x72, 0x41, 0x6d, 0x8a, 0xf1, 0x8a, 0xce, 0x9d, 0xd7, 0xbd, 0x5e })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xae, 0x7a, 0x2b, 0xf5, 0x6d, 0x41, 0x72, 0xde, 0xce, 0x8a, 0xf1, 0x8a, 0x5e, 0xbd, 0xd7, 0x9d })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xae, 0x7a, 0x2b, 0xf5, 0x72, 0xde, 0x6d, 0x41, 0x8a, 0xf1, 0x8a, 0xce, 0x9d, 0xd7, 0xbd, 0x5e })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf5, 0x2b, 0x7a, 0xae, 0xde, 0x72, 0x41, 0x6d, 0xce, 0x8a, 0xf1, 0x8a, 0x5e, 0xbd, 0xd7, 0x9d })
                     )));
             }
         }
@@ -3205,8 +3204,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xf5, 0x24, 0x6d, 0x56, 0x86, 0x54, 0x4d, 0x60, 0xb0, 0x26, 0xaf, 0xb5, 0x7b, 0x69, 0x7b, 0x37 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x56, 0x6d, 0x24, 0xf5, 0x60, 0x4d, 0x54, 0x86, 0xb5, 0xaf, 0x26, 0xb0, 0x37, 0x7b, 0x69, 0x7b })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x56, 0x6d, 0x24, 0xf5, 0x54, 0x86, 0x60, 0x4d, 0xb0, 0x26, 0xaf, 0xb5, 0x7b, 0x69, 0x7b, 0x37 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf5, 0x24, 0x6d, 0x56, 0x86, 0x54, 0x4d, 0x60, 0xb5, 0xaf, 0x26, 0xb0, 0x37, 0x7b, 0x69, 0x7b })
                     )));
             }
         }
@@ -3302,8 +3301,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x36, 0x7f, 0xaf, 0x01, 0xaf, 0xa9, 0x46, 0x93, 0x8d, 0x4d, 0xa2, 0xa0, 0xed, 0x08, 0x82, 0xa3 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x01, 0xaf, 0x7f, 0x36, 0x93, 0x46, 0xa9, 0xaf, 0xa0, 0xa2, 0x4d, 0x8d, 0xa3, 0x82, 0x08, 0xed })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x01, 0xaf, 0x7f, 0x36, 0xa9, 0xaf, 0x93, 0x46, 0x8d, 0x4d, 0xa2, 0xa0, 0xed, 0x08, 0x82, 0xa3 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x36, 0x7f, 0xaf, 0x01, 0xaf, 0xa9, 0x46, 0x93, 0xa0, 0xa2, 0x4d, 0x8d, 0xa3, 0x82, 0x08, 0xed })
                     )));
             }
         }
@@ -3343,24 +3342,24 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 12;
+        public static int VtblCount => 15;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IPlugView*, LibVst.FIDString, ComResult>)&isPlatformTypeSupported_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IPlugView*, void*, LibVst.FIDString, ComResult>)&attached_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IPlugView*, ComResult>)&removed_Wrapper;
-            vtbl[9] = (delegate*unmanaged<IPlugView*, float, ComResult>)&onWheel_Wrapper;
-            vtbl[10] = (delegate*unmanaged<IPlugView*, ushort, short, short, ComResult>)&onKeyDown_Wrapper;
-            vtbl[11] = (delegate*unmanaged<IPlugView*, ushort, short, short, ComResult>)&onKeyUp_Wrapper;
-            vtbl[12] = (delegate*unmanaged<IPlugView*, LibVst.ViewRect*, ComResult>)&getSize_Wrapper;
-            vtbl[13] = (delegate*unmanaged<IPlugView*, LibVst.ViewRect*, ComResult>)&onSize_Wrapper;
-            vtbl[14] = (delegate*unmanaged<IPlugView*, byte, ComResult>)&onFocus_Wrapper;
-            vtbl[15] = (delegate*unmanaged<IPlugView*, LibVst.IPlugFrame*, ComResult>)&setFrame_Wrapper;
-            vtbl[16] = (delegate*unmanaged<IPlugView*, ComResult>)&canResize_Wrapper;
-            vtbl[17] = (delegate*unmanaged<IPlugView*, LibVst.ViewRect*, ComResult>)&checkSizeConstraint_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPlugView*, LibVst.FIDString, int>)&isPlatformTypeSupported_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IPlugView*, void*, LibVst.FIDString, int>)&attached_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IPlugView*, int>)&removed_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IPlugView*, float, int>)&onWheel_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IPlugView*, ushort, short, short, int>)&onKeyDown_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IPlugView*, ushort, short, short, int>)&onKeyUp_Wrapper;
+            vtbl[9] = (delegate*unmanaged[MemberFunction]<IPlugView*, LibVst.ViewRect*, int>)&getSize_Wrapper;
+            vtbl[10] = (delegate*unmanaged[MemberFunction]<IPlugView*, LibVst.ViewRect*, int>)&onSize_Wrapper;
+            vtbl[11] = (delegate*unmanaged[MemberFunction]<IPlugView*, byte, int>)&onFocus_Wrapper;
+            vtbl[12] = (delegate*unmanaged[MemberFunction]<IPlugView*, LibVst.IPlugFrame*, int>)&setFrame_Wrapper;
+            vtbl[13] = (delegate*unmanaged[MemberFunction]<IPlugView*, int>)&canResize_Wrapper;
+            vtbl[14] = (delegate*unmanaged[MemberFunction]<IPlugView*, LibVst.ViewRect*, int>)&checkSizeConstraint_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -3372,8 +3371,8 @@ internal static partial class LibVst
         /// <param name="type">: IDString of @ref platformUIType</param>
         private static partial ComResult isPlatformTypeSupported_ToManaged(IPlugView* self, LibVst.FIDString type);
         
-        [UnmanagedCallersOnly]
-        private static ComResult isPlatformTypeSupported_Wrapper(IPlugView* self, LibVst.FIDString type)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int isPlatformTypeSupported_Wrapper(IPlugView* self, LibVst.FIDString type)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "isPlatformTypeSupported");
             try
@@ -3383,7 +3382,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3402,8 +3401,8 @@ internal static partial class LibVst
         /// <param name="parent">: platform handle of the parent window or view</param>
         private static partial ComResult attached_ToManaged(IPlugView* self, void* parent, LibVst.FIDString type);
         
-        [UnmanagedCallersOnly]
-        private static ComResult attached_Wrapper(IPlugView* self, void* parent, LibVst.FIDString type)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int attached_Wrapper(IPlugView* self, void* parent, LibVst.FIDString type)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "attached");
             try
@@ -3413,7 +3412,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3427,8 +3426,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult removed_ToManaged(IPlugView* self);
         
-        [UnmanagedCallersOnly]
-        private static ComResult removed_Wrapper(IPlugView* self)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int removed_Wrapper(IPlugView* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "removed");
             try
@@ -3438,7 +3437,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3451,8 +3450,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult onWheel_ToManaged(IPlugView* self, float distance);
         
-        [UnmanagedCallersOnly]
-        private static ComResult onWheel_Wrapper(IPlugView* self, float distance)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int onWheel_Wrapper(IPlugView* self, float distance)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onWheel");
             try
@@ -3462,7 +3461,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3480,8 +3479,8 @@ internal static partial class LibVst
         /// handled. &lt;/b&gt;Otherwise key command handling of the host might be blocked!</returns>
         private static partial ComResult onKeyDown_ToManaged(IPlugView* self, ushort key, short keyCode, short modifiers);
         
-        [UnmanagedCallersOnly]
-        private static ComResult onKeyDown_Wrapper(IPlugView* self, ushort key, short keyCode, short modifiers)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int onKeyDown_Wrapper(IPlugView* self, ushort key, short keyCode, short modifiers)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onKeyDown");
             try
@@ -3491,7 +3490,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3508,8 +3507,8 @@ internal static partial class LibVst
         /// <returns>kResultTrue if the key is handled, otherwise return kResultFalse.</returns>
         private static partial ComResult onKeyUp_ToManaged(IPlugView* self, ushort key, short keyCode, short modifiers);
         
-        [UnmanagedCallersOnly]
-        private static ComResult onKeyUp_Wrapper(IPlugView* self, ushort key, short keyCode, short modifiers)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int onKeyUp_Wrapper(IPlugView* self, ushort key, short keyCode, short modifiers)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onKeyUp");
             try
@@ -3519,7 +3518,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3532,8 +3531,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getSize_ToManaged(IPlugView* self, LibVst.ViewRect* size);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getSize_Wrapper(IPlugView* self, LibVst.ViewRect* size)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getSize_Wrapper(IPlugView* self, LibVst.ViewRect* size)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "getSize");
             try
@@ -3543,7 +3542,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3557,8 +3556,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult onSize_ToManaged(IPlugView* self, LibVst.ViewRect* newSize);
         
-        [UnmanagedCallersOnly]
-        private static ComResult onSize_Wrapper(IPlugView* self, LibVst.ViewRect* newSize)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int onSize_Wrapper(IPlugView* self, LibVst.ViewRect* newSize)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onSize");
             try
@@ -3568,7 +3567,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3579,10 +3578,10 @@ internal static partial class LibVst
         /// <summary>
         /// Focus changed message.
         /// </summary>
-        private static partial ComResult onFocus_ToManaged(IPlugView* self, [MarshalAs(UnmanagedType.U1)] byte state);
+        private static partial ComResult onFocus_ToManaged(IPlugView* self, byte state);
         
-        [UnmanagedCallersOnly]
-        private static ComResult onFocus_Wrapper(IPlugView* self, [MarshalAs(UnmanagedType.U1)] byte state)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int onFocus_Wrapper(IPlugView* self, byte state)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onFocus");
             try
@@ -3592,7 +3591,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3605,8 +3604,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setFrame_ToManaged(IPlugView* self, LibVst.IPlugFrame* frame);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setFrame_Wrapper(IPlugView* self, LibVst.IPlugFrame* frame)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setFrame_Wrapper(IPlugView* self, LibVst.IPlugFrame* frame)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "setFrame");
             try
@@ -3616,7 +3615,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3629,8 +3628,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult canResize_ToManaged(IPlugView* self);
         
-        [UnmanagedCallersOnly]
-        private static ComResult canResize_Wrapper(IPlugView* self)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int canResize_Wrapper(IPlugView* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "canResize");
             try
@@ -3640,7 +3639,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3654,8 +3653,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult checkSizeConstraint_ToManaged(IPlugView* self, LibVst.ViewRect* rect);
         
-        [UnmanagedCallersOnly]
-        private static ComResult checkSizeConstraint_Wrapper(IPlugView* self, LibVst.ViewRect* rect)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int checkSizeConstraint_Wrapper(IPlugView* self, LibVst.ViewRect* rect)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "checkSizeConstraint");
             try
@@ -3665,7 +3664,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3682,8 +3681,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x5b, 0xc3, 0x25, 0x07, 0xd0, 0x60, 0x49, 0xea, 0xa6, 0x15, 0x1b, 0x52, 0x2b, 0x75, 0x5b, 0x29 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x07, 0x25, 0xc3, 0x5b, 0xea, 0x49, 0x60, 0xd0, 0x52, 0x1b, 0x15, 0xa6, 0x29, 0x5b, 0x75, 0x2b })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x07, 0x25, 0xc3, 0x5b, 0x60, 0xd0, 0xea, 0x49, 0xa6, 0x15, 0x1b, 0x52, 0x2b, 0x75, 0x5b, 0x29 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x5b, 0xc3, 0x25, 0x07, 0xd0, 0x60, 0x49, 0xea, 0x52, 0x1b, 0x15, 0xa6, 0x29, 0x5b, 0x75, 0x2b })
                     )));
             }
         }
@@ -3737,7 +3736,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IPlugViewContentScaleSupport*, LibVst.ScaleFactor, ComResult>)&setContentScaleFactor_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPlugViewContentScaleSupport*, LibVst.ScaleFactor, int>)&setContentScaleFactor_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -3808,8 +3807,8 @@ internal static partial class LibVst
         // --------------------------------------------------------------
         private static partial ComResult setContentScaleFactor_ToManaged(IPlugViewContentScaleSupport* self, LibVst.ScaleFactor factor);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setContentScaleFactor_Wrapper(IPlugViewContentScaleSupport* self, LibVst.ScaleFactor factor)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setContentScaleFactor_Wrapper(IPlugViewContentScaleSupport* self, LibVst.ScaleFactor factor)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugViewContentScaleSupport), "setContentScaleFactor");
             try
@@ -3819,7 +3818,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -3836,8 +3835,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x65, 0xed, 0x96, 0x90, 0x8a, 0xc4, 0x45, 0x25, 0x8a, 0xad, 0xef, 0x7a, 0x72, 0xea, 0x70, 0x3f })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x90, 0x96, 0xed, 0x65, 0x25, 0x45, 0xc4, 0x8a, 0x7a, 0xef, 0xad, 0x8a, 0x3f, 0x70, 0xea, 0x72 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x90, 0x96, 0xed, 0x65, 0xc4, 0x8a, 0x25, 0x45, 0x8a, 0xad, 0xef, 0x7a, 0x72, 0xea, 0x70, 0x3f })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x65, 0xed, 0x96, 0x90, 0x8a, 0xc4, 0x45, 0x25, 0x7a, 0xef, 0xad, 0x8a, 0x3f, 0x70, 0xea, 0x72 })
                     )));
             }
         }
@@ -4386,8 +4385,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x1e, 0x5f, 0x0a, 0xeb, 0xcc, 0x7f, 0x45, 0x33, 0xa2, 0x54, 0x40, 0x11, 0x38, 0xad, 0x5e, 0xe4 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xeb, 0x0a, 0x5f, 0x1e, 0x33, 0x45, 0x7f, 0xcc, 0x11, 0x40, 0x54, 0xa2, 0xe4, 0x5e, 0xad, 0x38 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xeb, 0x0a, 0x5f, 0x1e, 0x7f, 0xcc, 0x33, 0x45, 0xa2, 0x54, 0x40, 0x11, 0x38, 0xad, 0x5e, 0xe4 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x1e, 0x5f, 0x0a, 0xeb, 0xcc, 0x7f, 0x45, 0x33, 0x11, 0x40, 0x54, 0xa2, 0xe4, 0x5e, 0xad, 0x38 })
                     )));
             }
         }
@@ -4541,8 +4540,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xd6, 0xce, 0x2f, 0xfc, 0xef, 0xaf, 0x4b, 0x8c, 0x9e, 0x74, 0xf1, 0xbb, 0x12, 0xda, 0x44, 0xb4 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xfc, 0x2f, 0xce, 0xd6, 0x8c, 0x4b, 0xaf, 0xef, 0xbb, 0xf1, 0x74, 0x9e, 0xb4, 0x44, 0xda, 0x12 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xfc, 0x2f, 0xce, 0xd6, 0xaf, 0xef, 0x8c, 0x4b, 0x9e, 0x74, 0xf1, 0xbb, 0x12, 0xda, 0x44, 0xb4 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xd6, 0xce, 0x2f, 0xfc, 0xef, 0xaf, 0x4b, 0x8c, 0xbb, 0xf1, 0x74, 0x9e, 0xb4, 0x44, 0xda, 0x12 })
                     )));
             }
         }
@@ -4570,21 +4569,21 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 9;
+        public static int VtblCount => 14;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             IPluginBase.InitializeVtbl(vtbl);
-            vtbl[10] = (delegate*unmanaged<IComponent*, Guid*, ComResult>)&getControllerClassId_Wrapper;
-            vtbl[11] = (delegate*unmanaged<IComponent*, LibVst.IoMode, ComResult>)&setIoMode_Wrapper;
-            vtbl[12] = (delegate*unmanaged<IComponent*, LibVst.MediaType, LibVst.BusDirection, int>)&getBusCount_Wrapper;
-            vtbl[13] = (delegate*unmanaged<IComponent*, LibVst.MediaType, LibVst.BusDirection, int, LibVst.BusInfo*, ComResult>)&getBusInfo_Wrapper;
-            vtbl[14] = (delegate*unmanaged<IComponent*, LibVst.RoutingInfo*, LibVst.RoutingInfo*, ComResult>)&getRoutingInfo_Wrapper;
-            vtbl[15] = (delegate*unmanaged<IComponent*, LibVst.MediaType, LibVst.BusDirection, int, byte, ComResult>)&activateBus_Wrapper;
-            vtbl[16] = (delegate*unmanaged<IComponent*, byte, ComResult>)&setActive_Wrapper;
-            vtbl[17] = (delegate*unmanaged<IComponent*, LibVst.IBStream*, ComResult>)&setState_Wrapper;
-            vtbl[18] = (delegate*unmanaged<IComponent*, LibVst.IBStream*, ComResult>)&getState_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IComponent*, Guid*, int>)&getControllerClassId_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.IoMode, int>)&setIoMode_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.MediaType, LibVst.BusDirection, int>)&getBusCount_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.MediaType, LibVst.BusDirection, int, LibVst.BusInfo*, int>)&getBusInfo_Wrapper;
+            vtbl[9] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.RoutingInfo*, LibVst.RoutingInfo*, int>)&getRoutingInfo_Wrapper;
+            vtbl[10] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.MediaType, LibVst.BusDirection, int, byte, int>)&activateBus_Wrapper;
+            vtbl[11] = (delegate*unmanaged[MemberFunction]<IComponent*, byte, int>)&setActive_Wrapper;
+            vtbl[12] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.IBStream*, int>)&setState_Wrapper;
+            vtbl[13] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.IBStream*, int>)&getState_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -4595,8 +4594,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getControllerClassId_ToManaged(IComponent* self, Guid* classId);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getControllerClassId_Wrapper(IComponent* self, Guid* classId)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getControllerClassId_Wrapper(IComponent* self, Guid* classId)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getControllerClassId");
             try
@@ -4606,7 +4605,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -4619,8 +4618,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setIoMode_ToManaged(IComponent* self, LibVst.IoMode mode);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setIoMode_Wrapper(IComponent* self, LibVst.IoMode mode)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setIoMode_Wrapper(IComponent* self, LibVst.IoMode mode)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "setIoMode");
             try
@@ -4630,7 +4629,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -4643,7 +4642,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial int getBusCount_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getBusCount_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getBusCount");
@@ -4667,8 +4666,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getBusInfo_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, LibVst.BusInfo* bus);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getBusInfo_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, LibVst.BusInfo* bus)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getBusInfo_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, LibVst.BusInfo* bus)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getBusInfo");
             try
@@ -4678,7 +4677,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -4692,8 +4691,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getRoutingInfo_ToManaged(IComponent* self, LibVst.RoutingInfo* inInfo, LibVst.RoutingInfo* outInfo);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getRoutingInfo_Wrapper(IComponent* self, LibVst.RoutingInfo* inInfo, LibVst.RoutingInfo* outInfo)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getRoutingInfo_Wrapper(IComponent* self, LibVst.RoutingInfo* inInfo, LibVst.RoutingInfo* outInfo)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getRoutingInfo");
             try
@@ -4703,7 +4702,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -4717,10 +4716,10 @@ internal static partial class LibVst
         /// (see @ref IAudioProcessor::process) if last busses are not activated. An already activated bus 
         /// does not need to be reactivated after a IAudioProcessor::setBusArrangements call.
         /// </summary>
-        private static partial ComResult activateBus_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, [MarshalAs(UnmanagedType.U1)] byte state);
+        private static partial ComResult activateBus_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state);
         
-        [UnmanagedCallersOnly]
-        private static ComResult activateBus_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, [MarshalAs(UnmanagedType.U1)] byte state)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int activateBus_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "activateBus");
             try
@@ -4730,7 +4729,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -4741,10 +4740,10 @@ internal static partial class LibVst
         /// <summary>
         /// Activates / deactivates the component.
         /// </summary>
-        private static partial ComResult setActive_ToManaged(IComponent* self, [MarshalAs(UnmanagedType.U1)] byte state);
+        private static partial ComResult setActive_ToManaged(IComponent* self, byte state);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setActive_Wrapper(IComponent* self, [MarshalAs(UnmanagedType.U1)] byte state)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setActive_Wrapper(IComponent* self, byte state)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "setActive");
             try
@@ -4754,7 +4753,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -4767,8 +4766,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setState_ToManaged(IComponent* self, LibVst.IBStream* state);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setState_Wrapper(IComponent* self, LibVst.IBStream* state)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setState_Wrapper(IComponent* self, LibVst.IBStream* state)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "setState");
             try
@@ -4778,7 +4777,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -4791,8 +4790,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getState_ToManaged(IComponent* self, LibVst.IBStream* state);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getState_Wrapper(IComponent* self, LibVst.IBStream* state)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getState_Wrapper(IComponent* self, LibVst.IBStream* state)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getState");
             try
@@ -4802,7 +4801,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -4819,8 +4818,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xe8, 0x31, 0xff, 0x31, 0xf2, 0xd5, 0x43, 0x01, 0x92, 0x8e, 0xbb, 0xee, 0x25, 0x69, 0x78, 0x02 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x31, 0xff, 0x31, 0xe8, 0x01, 0x43, 0xd5, 0xf2, 0xee, 0xbb, 0x8e, 0x92, 0x02, 0x78, 0x69, 0x25 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x31, 0xff, 0x31, 0xe8, 0xd5, 0xf2, 0x01, 0x43, 0x92, 0x8e, 0xbb, 0xee, 0x25, 0x69, 0x78, 0x02 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xe8, 0x31, 0xff, 0x31, 0xf2, 0xd5, 0x43, 0x01, 0xee, 0xbb, 0x8e, 0x92, 0x02, 0x78, 0x69, 0x25 })
                     )));
             }
         }
@@ -5032,8 +5031,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x3a, 0x2c, 0x42, 0x14, 0x34, 0x63, 0x49, 0xfe, 0xb2, 0xc4, 0xf3, 0x97, 0xb9, 0x69, 0x5a, 0x44 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x14, 0x42, 0x2c, 0x3a, 0xfe, 0x49, 0x63, 0x34, 0x97, 0xf3, 0xc4, 0xb2, 0x44, 0x5a, 0x69, 0xb9 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x14, 0x42, 0x2c, 0x3a, 0x63, 0x34, 0xfe, 0x49, 0xb2, 0xc4, 0xf3, 0x97, 0xb9, 0x69, 0x5a, 0x44 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x3a, 0x2c, 0x42, 0x14, 0x34, 0x63, 0x49, 0xfe, 0x97, 0xf3, 0xc4, 0xb2, 0x44, 0x5a, 0x69, 0xb9 })
                     )));
             }
         }
@@ -5627,8 +5626,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xa4, 0x77, 0x96, 0x63, 0x0b, 0xb6, 0x4a, 0x56, 0xb4, 0x43, 0x84, 0xa8, 0x46, 0x6f, 0xeb, 0x9d })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x63, 0x96, 0x77, 0xa4, 0x56, 0x4a, 0xb6, 0x0b, 0xa8, 0x84, 0x43, 0xb4, 0x9d, 0xeb, 0x6f, 0x46 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x63, 0x96, 0x77, 0xa4, 0xb6, 0x0b, 0x56, 0x4a, 0xb4, 0x43, 0x84, 0xa8, 0x46, 0x6f, 0xeb, 0x9d })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xa4, 0x77, 0x96, 0x63, 0x0b, 0xb6, 0x4a, 0x56, 0xa8, 0x84, 0x43, 0xb4, 0x9d, 0xeb, 0x6f, 0x46 })
                     )));
             }
         }
@@ -5796,8 +5795,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x01, 0x26, 0x3a, 0x18, 0xed, 0x07, 0x4f, 0x6f, 0x98, 0xc9, 0xd3, 0x56, 0x46, 0x86, 0xf9, 0xba })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x18, 0x3a, 0x26, 0x01, 0x6f, 0x4f, 0x07, 0xed, 0x56, 0xd3, 0xc9, 0x98, 0xba, 0xf9, 0x86, 0x46 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x18, 0x3a, 0x26, 0x01, 0x07, 0xed, 0x6f, 0x4f, 0x98, 0xc9, 0xd3, 0x56, 0x46, 0x86, 0xf9, 0xba })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x01, 0x26, 0x3a, 0x18, 0xed, 0x07, 0x4f, 0x6f, 0x56, 0xd3, 0xc9, 0x98, 0xba, 0xf9, 0x86, 0x46 })
                     )));
             }
         }
@@ -5820,20 +5819,20 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 8;
+        public static int VtblCount => 11;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IAudioProcessor*, LibVst.SpeakerArrangement*, int, LibVst.SpeakerArrangement*, int, ComResult>)&setBusArrangements_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IAudioProcessor*, LibVst.BusDirection, int, LibVst.SpeakerArrangement*, ComResult>)&getBusArrangement_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IAudioProcessor*, int, ComResult>)&canProcessSampleSize_Wrapper;
-            vtbl[9] = (delegate*unmanaged<IAudioProcessor*, uint>)&getLatencySamples_Wrapper;
-            vtbl[10] = (delegate*unmanaged<IAudioProcessor*, LibVst.ProcessSetup*, ComResult>)&setupProcessing_Wrapper;
-            vtbl[11] = (delegate*unmanaged<IAudioProcessor*, byte, ComResult>)&setProcessing_Wrapper;
-            vtbl[12] = (delegate*unmanaged<IAudioProcessor*, LibVst.ProcessData*, ComResult>)&process_Wrapper;
-            vtbl[13] = (delegate*unmanaged<IAudioProcessor*, uint>)&getTailSamples_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, LibVst.SpeakerArrangement*, int, LibVst.SpeakerArrangement*, int, int>)&setBusArrangements_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, LibVst.BusDirection, int, LibVst.SpeakerArrangement*, int>)&getBusArrangement_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, int, int>)&canProcessSampleSize_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, uint>)&getLatencySamples_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, LibVst.ProcessSetup*, int>)&setupProcessing_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, byte, int>)&setProcessing_Wrapper;
+            vtbl[9] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, LibVst.ProcessData*, int>)&process_Wrapper;
+            vtbl[10] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, uint>)&getTailSamples_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -5860,8 +5859,8 @@ internal static partial class LibVst
         /// Returns kResultTrue when Arrangements is supported and is the current one, else returns kResultFalse.</param>
         private static partial ComResult setBusArrangements_ToManaged(IAudioProcessor* self, LibVst.SpeakerArrangement* inputs, int numIns, LibVst.SpeakerArrangement* outputs, int numOuts);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setBusArrangements_Wrapper(IAudioProcessor* self, LibVst.SpeakerArrangement* inputs, int numIns, LibVst.SpeakerArrangement* outputs, int numOuts)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setBusArrangements_Wrapper(IAudioProcessor* self, LibVst.SpeakerArrangement* inputs, int numIns, LibVst.SpeakerArrangement* outputs, int numOuts)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "setBusArrangements");
             try
@@ -5871,7 +5870,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -5886,8 +5885,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getBusArrangement_ToManaged(IAudioProcessor* self, LibVst.BusDirection dir, int index, LibVst.SpeakerArrangement* arr);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getBusArrangement_Wrapper(IAudioProcessor* self, LibVst.BusDirection dir, int index, LibVst.SpeakerArrangement* arr)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getBusArrangement_Wrapper(IAudioProcessor* self, LibVst.BusDirection dir, int index, LibVst.SpeakerArrangement* arr)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "getBusArrangement");
             try
@@ -5897,7 +5896,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -5910,8 +5909,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult canProcessSampleSize_ToManaged(IAudioProcessor* self, int symbolicSampleSize);
         
-        [UnmanagedCallersOnly]
-        private static ComResult canProcessSampleSize_Wrapper(IAudioProcessor* self, int symbolicSampleSize)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int canProcessSampleSize_Wrapper(IAudioProcessor* self, int symbolicSampleSize)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "canProcessSampleSize");
             try
@@ -5921,7 +5920,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -5940,7 +5939,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial uint getLatencySamples_ToManaged(IAudioProcessor* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint getLatencySamples_Wrapper(IAudioProcessor* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "getLatencySamples");
@@ -5964,8 +5963,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setupProcessing_ToManaged(IAudioProcessor* self, LibVst.ProcessSetup* setup);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setupProcessing_Wrapper(IAudioProcessor* self, LibVst.ProcessSetup* setup)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setupProcessing_Wrapper(IAudioProcessor* self, LibVst.ProcessSetup* setup)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "setupProcessing");
             try
@@ -5975,7 +5974,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -5994,10 +5993,10 @@ internal static partial class LibVst
         /// The host has to be sure that it is called only when the plug-in is enable (setActive (true)
         /// was called).
         /// </summary>
-        private static partial ComResult setProcessing_ToManaged(IAudioProcessor* self, [MarshalAs(UnmanagedType.U1)] byte state);
+        private static partial ComResult setProcessing_ToManaged(IAudioProcessor* self, byte state);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setProcessing_Wrapper(IAudioProcessor* self, [MarshalAs(UnmanagedType.U1)] byte state)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setProcessing_Wrapper(IAudioProcessor* self, byte state)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "setProcessing");
             try
@@ -6007,7 +6006,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -6020,8 +6019,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult process_ToManaged(IAudioProcessor* self, LibVst.ProcessData* data);
         
-        [UnmanagedCallersOnly]
-        private static ComResult process_Wrapper(IAudioProcessor* self, LibVst.ProcessData* data)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int process_Wrapper(IAudioProcessor* self, LibVst.ProcessData* data)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "process");
             try
@@ -6031,7 +6030,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -6052,7 +6051,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial uint getTailSamples_ToManaged(IAudioProcessor* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint getTailSamples_Wrapper(IAudioProcessor* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "getTailSamples");
@@ -6080,8 +6079,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x42, 0x04, 0x3f, 0x99, 0xb7, 0xda, 0x45, 0x3c, 0xa5, 0x69, 0xe7, 0x9d, 0x9a, 0xae, 0xc3, 0x3d })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x99, 0x3f, 0x04, 0x42, 0x3c, 0x45, 0xda, 0xb7, 0x9d, 0xe7, 0x69, 0xa5, 0x3d, 0xc3, 0xae, 0x9a })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x99, 0x3f, 0x04, 0x42, 0xda, 0xb7, 0x3c, 0x45, 0xa5, 0x69, 0xe7, 0x9d, 0x9a, 0xae, 0xc3, 0x3d })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x42, 0x04, 0x3f, 0x99, 0xb7, 0xda, 0x45, 0x3c, 0x9d, 0xe7, 0x69, 0xa5, 0x3d, 0xc3, 0xae, 0x9a })
                     )));
             }
         }
@@ -6820,13 +6819,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IAudioPresentationLatency*, LibVst.BusDirection, int, uint, ComResult>)&setAudioPresentationLatencySamples_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IAudioPresentationLatency*, LibVst.BusDirection, int, uint, int>)&setAudioPresentationLatencySamples_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -6837,8 +6836,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setAudioPresentationLatencySamples_ToManaged(IAudioPresentationLatency* self, LibVst.BusDirection dir, int busIndex, uint latencyInSamples);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setAudioPresentationLatencySamples_Wrapper(IAudioPresentationLatency* self, LibVst.BusDirection dir, int busIndex, uint latencyInSamples)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setAudioPresentationLatencySamples_Wrapper(IAudioPresentationLatency* self, LibVst.BusDirection dir, int busIndex, uint latencyInSamples)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioPresentationLatency), "setAudioPresentationLatencySamples");
             try
@@ -6848,7 +6847,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -6865,8 +6864,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x30, 0x9e, 0xce, 0x78, 0xeb, 0x7d, 0x4f, 0xae, 0x8b, 0x22, 0x25, 0xd9, 0x09, 0xfd, 0x08, 0xb6 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x78, 0xce, 0x9e, 0x30, 0xae, 0x4f, 0x7d, 0xeb, 0xd9, 0x25, 0x22, 0x8b, 0xb6, 0x08, 0xfd, 0x09 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x78, 0xce, 0x9e, 0x30, 0x7d, 0xeb, 0xae, 0x4f, 0x8b, 0x22, 0x25, 0xd9, 0x09, 0xfd, 0x08, 0xb6 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x30, 0x9e, 0xce, 0x78, 0xeb, 0x7d, 0x4f, 0xae, 0xd9, 0x25, 0x22, 0x8b, 0xb6, 0x08, 0xfd, 0x09 })
                     )));
             }
         }
@@ -6891,13 +6890,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IProcessContextRequirements*, uint>)&getProcessContextRequirements_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IProcessContextRequirements*, uint>)&getProcessContextRequirements_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -6905,7 +6904,7 @@ internal static partial class LibVst
         // --------------------------------------------------------------
         private static partial uint getProcessContextRequirements_ToManaged(IProcessContextRequirements* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint getProcessContextRequirements_Wrapper(IProcessContextRequirements* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProcessContextRequirements), "getProcessContextRequirements");
@@ -6991,8 +6990,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x2a, 0x65, 0x43, 0x03, 0xef, 0x76, 0x4e, 0x3d, 0x95, 0xb5, 0xfe, 0x83, 0x73, 0x0e, 0xf6, 0xd0 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x03, 0x43, 0x65, 0x2a, 0x3d, 0x4e, 0x76, 0xef, 0x83, 0xfe, 0xb5, 0x95, 0xd0, 0xf6, 0x0e, 0x73 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x03, 0x43, 0x65, 0x2a, 0x76, 0xef, 0x3d, 0x4e, 0x95, 0xb5, 0xfe, 0x83, 0x73, 0x0e, 0xf6, 0xd0 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x2a, 0x65, 0x43, 0x03, 0xef, 0x76, 0x4e, 0x3d, 0x83, 0xfe, 0xb5, 0x95, 0xd0, 0xf6, 0x0e, 0x73 })
                     )));
             }
         }
@@ -7011,13 +7010,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IAutomationState*, int, ComResult>)&setAutomationState_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IAutomationState*, int, int>)&setAutomationState_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -7028,8 +7027,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setAutomationState_ToManaged(IAutomationState* self, int state);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setAutomationState_Wrapper(IAutomationState* self, int state)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setAutomationState_Wrapper(IAutomationState* self, int state)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAutomationState), "setAutomationState");
             try
@@ -7039,7 +7038,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -7082,8 +7081,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xb4, 0xe8, 0x28, 0x7f, 0x1b, 0xb3, 0x46, 0xaa, 0x83, 0xa4, 0x66, 0x67, 0x68, 0x93, 0x7b, 0xab })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x7f, 0x28, 0xe8, 0xb4, 0xaa, 0x46, 0xb3, 0x1b, 0x67, 0x66, 0xa4, 0x83, 0xab, 0x7b, 0x93, 0x68 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x7f, 0x28, 0xe8, 0xb4, 0xb3, 0x1b, 0xaa, 0x46, 0x83, 0xa4, 0x66, 0x67, 0x68, 0x93, 0x7b, 0xab })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xb4, 0xe8, 0x28, 0x7f, 0x1b, 0xb3, 0x46, 0xaa, 0x67, 0x66, 0xa4, 0x83, 0xab, 0x7b, 0x93, 0x68 })
                     )));
             }
         }
@@ -7237,8 +7236,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x2e, 0x93, 0xc8, 0x63, 0x0c, 0x9c, 0x45, 0x88, 0x97, 0xdb, 0xec, 0xf5, 0xad, 0x17, 0x81, 0x7d })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x63, 0xc8, 0x93, 0x2e, 0x88, 0x45, 0x9c, 0x0c, 0xf5, 0xec, 0xdb, 0x97, 0x7d, 0x81, 0x17, 0xad })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x63, 0xc8, 0x93, 0x2e, 0x9c, 0x0c, 0x88, 0x45, 0x97, 0xdb, 0xec, 0xf5, 0xad, 0x17, 0x81, 0x7d })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x2e, 0x93, 0xc8, 0x63, 0x0c, 0x9c, 0x45, 0x88, 0xf5, 0xec, 0xdb, 0x97, 0x7d, 0x81, 0x17, 0xad })
                     )));
             }
         }
@@ -7319,7 +7318,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IContextMenuTarget*, int, ComResult>)&executeMenuItem_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IContextMenuTarget*, int, int>)&executeMenuItem_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -7396,8 +7395,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult executeMenuItem_ToManaged(IContextMenuTarget* self, int tag);
         
-        [UnmanagedCallersOnly]
-        private static ComResult executeMenuItem_Wrapper(IContextMenuTarget* self, int tag)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int executeMenuItem_Wrapper(IContextMenuTarget* self, int tag)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IContextMenuTarget), "executeMenuItem");
             try
@@ -7407,7 +7406,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -7424,8 +7423,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x3c, 0xdf, 0x2e, 0x75, 0x85, 0xd3, 0x41, 0x44, 0xbf, 0x86, 0xd3, 0x6b, 0xd7, 0xc4, 0x89, 0x4d })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x75, 0x2e, 0xdf, 0x3c, 0x44, 0x41, 0xd3, 0x85, 0x6b, 0xd3, 0x86, 0xbf, 0x4d, 0x89, 0xc4, 0xd7 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x75, 0x2e, 0xdf, 0x3c, 0xd3, 0x85, 0x44, 0x41, 0xbf, 0x86, 0xd3, 0x6b, 0xd7, 0xc4, 0x89, 0x4d })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x3c, 0xdf, 0x2e, 0x75, 0x85, 0xd3, 0x41, 0x44, 0x6b, 0xd3, 0x86, 0xbf, 0x4d, 0x89, 0xc4, 0xd7 })
                     )));
             }
         }
@@ -7585,8 +7584,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x69, 0xf1, 0x16, 0x17, 0xd2, 0x6b, 0x40, 0x0d, 0xa4, 0xb6, 0xb9, 0x64, 0x7b, 0x6e, 0xbb, 0xab })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x17, 0x16, 0xf1, 0x69, 0x0d, 0x40, 0x6b, 0xd2, 0x64, 0xb9, 0xb6, 0xa4, 0xab, 0xbb, 0x6e, 0x7b })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x17, 0x16, 0xf1, 0x69, 0x6b, 0xd2, 0x0d, 0x40, 0xa4, 0xb6, 0xb9, 0x64, 0x7b, 0x6e, 0xbb, 0xab })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x69, 0xf1, 0x16, 0x17, 0xd2, 0x6b, 0x40, 0x0d, 0x64, 0xb9, 0xb6, 0xa4, 0xab, 0xbb, 0x6e, 0x7b })
                     )));
             }
         }
@@ -7729,8 +7728,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x93, 0xa0, 0xbe, 0xa3, 0x0b, 0xd0, 0x45, 0xdb, 0x8e, 0x89, 0x0b, 0x0c, 0xc1, 0xe4, 0x6a, 0xc6 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xa3, 0xbe, 0xa0, 0x93, 0xdb, 0x45, 0xd0, 0x0b, 0x0c, 0x0b, 0x89, 0x8e, 0xc6, 0x6a, 0xe4, 0xc1 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xa3, 0xbe, 0xa0, 0x93, 0xd0, 0x0b, 0xdb, 0x45, 0x8e, 0x89, 0x0b, 0x0c, 0xc1, 0xe4, 0x6a, 0xc6 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x93, 0xa0, 0xbe, 0xa3, 0x0b, 0xd0, 0x45, 0xdb, 0x0c, 0x0b, 0x89, 0x8e, 0xc6, 0x6a, 0xe4, 0xc1 })
                     )));
             }
         }
@@ -7848,7 +7847,7 @@ internal static partial class LibVst
         /// if true the host should apply a save before quitting.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setDirty([MarshalAs(UnmanagedType.U1)] byte state)
+        public ComResult setDirty(byte state)
         {
             var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
             var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "setDirty");
@@ -7910,8 +7909,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xf0, 0x40, 0xb4, 0xb3, 0xa3, 0x60, 0x45, 0xec, 0xab, 0xcd, 0xc0, 0x45, 0xb4, 0xd5, 0xa2, 0xcc })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xb3, 0xb4, 0x40, 0xf0, 0xec, 0x45, 0x60, 0xa3, 0x45, 0xc0, 0xcd, 0xab, 0xcc, 0xa2, 0xd5, 0xb4 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xb3, 0xb4, 0x40, 0xf0, 0x60, 0xa3, 0xec, 0x45, 0xab, 0xcd, 0xc0, 0x45, 0xb4, 0xd5, 0xa2, 0xcc })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf0, 0x40, 0xb4, 0xb3, 0xa3, 0x60, 0x45, 0xec, 0x45, 0xc0, 0xcd, 0xab, 0xcc, 0xa2, 0xd5, 0xb4 })
                     )));
             }
         }
@@ -7999,7 +7998,7 @@ internal static partial class LibVst
         /// request the host to activate or deactivate a specific bus.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult requestBusActivation(LibVst.MediaType type, LibVst.BusDirection dir, int index, [MarshalAs(UnmanagedType.U1)] byte state)
+        public ComResult requestBusActivation(LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state)
         {
             var __self__ = (LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this);
             var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandlerBusActivation), "requestBusActivation");
@@ -8018,8 +8017,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x06, 0x7d, 0x02, 0xc1, 0x5b, 0x4e, 0x27, 0x4d, 0xa9, 0x2d, 0x90, 0xfd, 0x6e, 0xaf, 0x72, 0x40 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xc1, 0x02, 0x7d, 0x06, 0x4d, 0x27, 0x4e, 0x5b, 0xfd, 0x90, 0x2d, 0xa9, 0x40, 0x72, 0xaf, 0x6e })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xc1, 0x02, 0x7d, 0x06, 0x4e, 0x5b, 0x4d, 0x27, 0xa9, 0x2d, 0x90, 0xfd, 0x6e, 0xaf, 0x72, 0x40 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x06, 0x7d, 0x02, 0xc1, 0x5b, 0x4e, 0x27, 0x4d, 0xfd, 0x90, 0x2d, 0xa9, 0x40, 0x72, 0xaf, 0x6e })
                     )));
             }
         }
@@ -8186,8 +8185,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x00, 0xc9, 0xdc, 0x5b, 0x9d, 0x90, 0x42, 0x54, 0x91, 0xa3, 0x88, 0xc8, 0xb4, 0xe9, 0x1b, 0x69 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x5b, 0xdc, 0xc9, 0x00, 0x54, 0x42, 0x90, 0x9d, 0xc8, 0x88, 0xa3, 0x91, 0x69, 0x1b, 0xe9, 0xb4 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x5b, 0xdc, 0xc9, 0x00, 0x90, 0x9d, 0x54, 0x42, 0x91, 0xa3, 0x88, 0xc8, 0xb4, 0xe9, 0x1b, 0x69 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x00, 0xc9, 0xdc, 0x5b, 0x9d, 0x90, 0x42, 0x54, 0xc8, 0x88, 0xa3, 0x91, 0x69, 0x1b, 0xe9, 0xb4 })
                     )));
             }
         }
@@ -8208,25 +8207,25 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 13;
+        public static int VtblCount => 18;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             IPluginBase.InitializeVtbl(vtbl);
-            vtbl[10] = (delegate*unmanaged<IEditController*, LibVst.IBStream*, ComResult>)&setComponentState_Wrapper;
-            vtbl[11] = (delegate*unmanaged<IEditController*, LibVst.IBStream*, ComResult>)&setState_Wrapper;
-            vtbl[12] = (delegate*unmanaged<IEditController*, LibVst.IBStream*, ComResult>)&getState_Wrapper;
-            vtbl[13] = (delegate*unmanaged<IEditController*, int>)&getParameterCount_Wrapper;
-            vtbl[14] = (delegate*unmanaged<IEditController*, int, LibVst.ParameterInfo*, ComResult>)&getParameterInfo_Wrapper;
-            vtbl[15] = (delegate*unmanaged<IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128*, ComResult>)&getParamStringByValue_Wrapper;
-            vtbl[16] = (delegate*unmanaged<IEditController*, LibVst.ParamID, char*, LibVst.ParamValue*, ComResult>)&getParamValueByString_Wrapper;
-            vtbl[17] = (delegate*unmanaged<IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&normalizedParamToPlain_Wrapper;
-            vtbl[18] = (delegate*unmanaged<IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&plainParamToNormalized_Wrapper;
-            vtbl[19] = (delegate*unmanaged<IEditController*, LibVst.ParamID, LibVst.ParamValue>)&getParamNormalized_Wrapper;
-            vtbl[20] = (delegate*unmanaged<IEditController*, LibVst.ParamID, LibVst.ParamValue, ComResult>)&setParamNormalized_Wrapper;
-            vtbl[21] = (delegate*unmanaged<IEditController*, LibVst.IComponentHandler*, ComResult>)&setComponentHandler_Wrapper;
-            vtbl[22] = (delegate*unmanaged<IEditController*, LibVst.FIDString, LibVst.IPlugView*>)&createView_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.IBStream*, int>)&setComponentState_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.IBStream*, int>)&setState_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.IBStream*, int>)&getState_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IEditController*, int>)&getParameterCount_Wrapper;
+            vtbl[9] = (delegate*unmanaged[MemberFunction]<IEditController*, int, LibVst.ParameterInfo*, int>)&getParameterInfo_Wrapper;
+            vtbl[10] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128*, int>)&getParamStringByValue_Wrapper;
+            vtbl[11] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, char*, LibVst.ParamValue*, int>)&getParamValueByString_Wrapper;
+            vtbl[12] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&normalizedParamToPlain_Wrapper;
+            vtbl[13] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&plainParamToNormalized_Wrapper;
+            vtbl[14] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue>)&getParamNormalized_Wrapper;
+            vtbl[15] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, int>)&setParamNormalized_Wrapper;
+            vtbl[16] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.IComponentHandler*, int>)&setComponentHandler_Wrapper;
+            vtbl[17] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.FIDString, LibVst.IPlugView*>)&createView_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -8237,8 +8236,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setComponentState_ToManaged(IEditController* self, LibVst.IBStream* state);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setComponentState_Wrapper(IEditController* self, LibVst.IBStream* state)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setComponentState_Wrapper(IEditController* self, LibVst.IBStream* state)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setComponentState");
             try
@@ -8248,7 +8247,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8261,8 +8260,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setState_ToManaged(IEditController* self, LibVst.IBStream* state);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setState_Wrapper(IEditController* self, LibVst.IBStream* state)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setState_Wrapper(IEditController* self, LibVst.IBStream* state)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setState");
             try
@@ -8272,7 +8271,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8285,8 +8284,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getState_ToManaged(IEditController* self, LibVst.IBStream* state);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getState_Wrapper(IEditController* self, LibVst.IBStream* state)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getState_Wrapper(IEditController* self, LibVst.IBStream* state)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getState");
             try
@@ -8296,7 +8295,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8310,7 +8309,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial int getParameterCount_ToManaged(IEditController* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getParameterCount_Wrapper(IEditController* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParameterCount");
@@ -8334,8 +8333,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getParameterInfo_ToManaged(IEditController* self, int paramIndex, LibVst.ParameterInfo* info);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getParameterInfo_Wrapper(IEditController* self, int paramIndex, LibVst.ParameterInfo* info)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getParameterInfo_Wrapper(IEditController* self, int paramIndex, LibVst.ParameterInfo* info)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParameterInfo");
             try
@@ -8345,7 +8344,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8358,8 +8357,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getParamStringByValue_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getParamStringByValue_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getParamStringByValue_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParamStringByValue");
             try
@@ -8369,7 +8368,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8382,8 +8381,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getParamValueByString_ToManaged(IEditController* self, LibVst.ParamID id, char* @string, LibVst.ParamValue* valueNormalized);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getParamValueByString_Wrapper(IEditController* self, LibVst.ParamID id, char* @string, LibVst.ParamValue* valueNormalized)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getParamValueByString_Wrapper(IEditController* self, LibVst.ParamID id, char* @string, LibVst.ParamValue* valueNormalized)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParamValueByString");
             try
@@ -8393,7 +8392,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8407,7 +8406,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial LibVst.ParamValue normalizedParamToPlain_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.ParamValue normalizedParamToPlain_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "normalizedParamToPlain");
@@ -8431,7 +8430,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial LibVst.ParamValue plainParamToNormalized_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue plainValue);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.ParamValue plainParamToNormalized_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue plainValue)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "plainParamToNormalized");
@@ -8455,7 +8454,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial LibVst.ParamValue getParamNormalized_ToManaged(IEditController* self, LibVst.ParamID id);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.ParamValue getParamNormalized_Wrapper(IEditController* self, LibVst.ParamID id)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParamNormalized");
@@ -8481,8 +8480,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setParamNormalized_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue value);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setParamNormalized_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue value)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setParamNormalized_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue value)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setParamNormalized");
             try
@@ -8492,7 +8491,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8507,8 +8506,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setComponentHandler_ToManaged(IEditController* self, LibVst.IComponentHandler* handler);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setComponentHandler_Wrapper(IEditController* self, LibVst.IComponentHandler* handler)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setComponentHandler_Wrapper(IEditController* self, LibVst.IComponentHandler* handler)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setComponentHandler");
             try
@@ -8518,7 +8517,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8532,7 +8531,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial LibVst.IPlugView* createView_ToManaged(IEditController* self, LibVst.FIDString name);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IPlugView* createView_Wrapper(IEditController* self, LibVst.FIDString name)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "createView");
@@ -8560,8 +8559,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xdc, 0xd7, 0xbb, 0xe3, 0x77, 0x42, 0x44, 0x8d, 0xa8, 0x74, 0xaa, 0xcc, 0x97, 0x9c, 0x75, 0x9e })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xe3, 0xbb, 0xd7, 0xdc, 0x8d, 0x44, 0x42, 0x77, 0xcc, 0xaa, 0x74, 0xa8, 0x9e, 0x75, 0x9c, 0x97 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xe3, 0xbb, 0xd7, 0xdc, 0x42, 0x77, 0x8d, 0x44, 0xa8, 0x74, 0xaa, 0xcc, 0x97, 0x9c, 0x75, 0x9e })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xdc, 0xd7, 0xbb, 0xe3, 0x77, 0x42, 0x44, 0x8d, 0xcc, 0xaa, 0x74, 0xa8, 0x9e, 0x75, 0x9c, 0x97 })
                     )));
             }
         }
@@ -8680,15 +8679,15 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 3;
+        public static int VtblCount => 6;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IEditController2*, LibVst.KnobMode, ComResult>)&setKnobMode_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IEditController2*, byte, ComResult>)&openHelp_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IEditController2*, byte, ComResult>)&openAboutBox_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IEditController2*, LibVst.KnobMode, int>)&setKnobMode_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IEditController2*, byte, int>)&openHelp_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IEditController2*, byte, int>)&openAboutBox_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -8700,8 +8699,8 @@ internal static partial class LibVst
         /// <seealso cref="KnobModes. "/>
         private static partial ComResult setKnobMode_ToManaged(IEditController2* self, LibVst.KnobMode mode);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setKnobMode_Wrapper(IEditController2* self, LibVst.KnobMode mode)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setKnobMode_Wrapper(IEditController2* self, LibVst.KnobMode mode)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController2), "setKnobMode");
             try
@@ -8711,7 +8710,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8724,10 +8723,10 @@ internal static partial class LibVst
         /// The host could call it with onlyCheck set to true for testing support of open Help. 
         /// Return kResultFalse means not supported function.
         /// </summary>
-        private static partial ComResult openHelp_ToManaged(IEditController2* self, [MarshalAs(UnmanagedType.U1)] byte onlyCheck);
+        private static partial ComResult openHelp_ToManaged(IEditController2* self, byte onlyCheck);
         
-        [UnmanagedCallersOnly]
-        private static ComResult openHelp_Wrapper(IEditController2* self, [MarshalAs(UnmanagedType.U1)] byte onlyCheck)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int openHelp_Wrapper(IEditController2* self, byte onlyCheck)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController2), "openHelp");
             try
@@ -8737,7 +8736,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8750,10 +8749,10 @@ internal static partial class LibVst
         /// The host could call it with onlyCheck set to true for testing support of open AboutBox. 
         /// Return kResultFalse means not supported function.
         /// </summary>
-        private static partial ComResult openAboutBox_ToManaged(IEditController2* self, [MarshalAs(UnmanagedType.U1)] byte onlyCheck);
+        private static partial ComResult openAboutBox_ToManaged(IEditController2* self, byte onlyCheck);
         
-        [UnmanagedCallersOnly]
-        private static ComResult openAboutBox_Wrapper(IEditController2* self, [MarshalAs(UnmanagedType.U1)] byte onlyCheck)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int openAboutBox_Wrapper(IEditController2* self, byte onlyCheck)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController2), "openAboutBox");
             try
@@ -8763,7 +8762,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8780,8 +8779,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x7f, 0x4e, 0xfe, 0x59, 0xf3, 0x20, 0x49, 0x67, 0xac, 0x27, 0xa3, 0xae, 0xaf, 0xb6, 0x30, 0x38 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x59, 0xfe, 0x4e, 0x7f, 0x67, 0x49, 0x20, 0xf3, 0xae, 0xa3, 0x27, 0xac, 0x38, 0x30, 0xb6, 0xaf })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x59, 0xfe, 0x4e, 0x7f, 0x20, 0xf3, 0x67, 0x49, 0xac, 0x27, 0xa3, 0xae, 0xaf, 0xb6, 0x30, 0x38 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x7f, 0x4e, 0xfe, 0x59, 0xf3, 0x20, 0x49, 0x67, 0xae, 0xa3, 0x27, 0xac, 0x38, 0x30, 0xb6, 0xaf })
                     )));
             }
         }
@@ -8838,13 +8837,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IMidiMapping*, int, short, LibVst.CtrlNumber, LibVst.ParamID*, ComResult>)&getMidiControllerAssignment_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiMapping*, int, short, LibVst.CtrlNumber, LibVst.ParamID*, int>)&getMidiControllerAssignment_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -8859,8 +8858,8 @@ internal static partial class LibVst
         /// <param name="id">- return the associated ParamID to the given midiControllerNumber</param>
         private static partial ComResult getMidiControllerAssignment_ToManaged(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getMidiControllerAssignment_Wrapper(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getMidiControllerAssignment_Wrapper(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiMapping), "getMidiControllerAssignment");
             try
@@ -8870,7 +8869,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8887,8 +8886,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xdf, 0x0f, 0xf9, 0xf7, 0x49, 0xb7, 0x46, 0x69, 0xb6, 0x3a, 0xb7, 0x32, 0x7a, 0xdb, 0xf5, 0xe5 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xf7, 0xf9, 0x0f, 0xdf, 0x69, 0x46, 0xb7, 0x49, 0x32, 0xb7, 0x3a, 0xb6, 0xe5, 0xf5, 0xdb, 0x7a })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xf7, 0xf9, 0x0f, 0xdf, 0xb7, 0x49, 0x69, 0x46, 0xb6, 0x3a, 0xb7, 0x32, 0x7a, 0xdb, 0xf5, 0xe5 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xdf, 0x0f, 0xf9, 0xf7, 0x49, 0xb7, 0x46, 0x69, 0x32, 0xb7, 0x3a, 0xb6, 0xe5, 0xf5, 0xdb, 0x7a })
                     )));
             }
         }
@@ -8920,14 +8919,14 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 2;
+        public static int VtblCount => 5;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IEditControllerHostEditing*, LibVst.ParamID, ComResult>)&beginEditFromHost_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IEditControllerHostEditing*, LibVst.ParamID, ComResult>)&endEditFromHost_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IEditControllerHostEditing*, LibVst.ParamID, int>)&beginEditFromHost_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IEditControllerHostEditing*, LibVst.ParamID, int>)&endEditFromHost_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -8938,8 +8937,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult beginEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID);
         
-        [UnmanagedCallersOnly]
-        private static ComResult beginEditFromHost_Wrapper(IEditControllerHostEditing* self, LibVst.ParamID paramID)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int beginEditFromHost_Wrapper(IEditControllerHostEditing* self, LibVst.ParamID paramID)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditControllerHostEditing), "beginEditFromHost");
             try
@@ -8949,7 +8948,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8962,8 +8961,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult endEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID);
         
-        [UnmanagedCallersOnly]
-        private static ComResult endEditFromHost_Wrapper(IEditControllerHostEditing* self, LibVst.ParamID paramID)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int endEditFromHost_Wrapper(IEditControllerHostEditing* self, LibVst.ParamID paramID)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditControllerHostEditing), "endEditFromHost");
             try
@@ -8973,7 +8972,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -8990,8 +8989,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xc1, 0x27, 0x12, 0x08, 0x70, 0x59, 0x40, 0x98, 0xb9, 0xdd, 0x34, 0xb3, 0x6b, 0xb0, 0x19, 0x5e })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x08, 0x12, 0x27, 0xc1, 0x98, 0x40, 0x59, 0x70, 0xb3, 0x34, 0xdd, 0xb9, 0x5e, 0x19, 0xb0, 0x6b })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x08, 0x12, 0x27, 0xc1, 0x59, 0x70, 0x98, 0x40, 0xb9, 0xdd, 0x34, 0xb3, 0x6b, 0xb0, 0x19, 0x5e })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xc1, 0x27, 0x12, 0x08, 0x70, 0x59, 0x40, 0x98, 0xb3, 0x34, 0xdd, 0xb9, 0x5e, 0x19, 0xb0, 0x6b })
                     )));
             }
         }
@@ -9013,16 +9012,16 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 4;
+        public static int VtblCount => 7;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<INoteExpressionController*, int, short, int>)&getNoteExpressionCount_Wrapper;
-            vtbl[7] = (delegate*unmanaged<INoteExpressionController*, int, short, int, LibVst.NoteExpressionTypeInfo*, ComResult>)&getNoteExpressionInfo_Wrapper;
-            vtbl[8] = (delegate*unmanaged<INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128*, ComResult>)&getNoteExpressionStringByValue_Wrapper;
-            vtbl[9] = (delegate*unmanaged<INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, char*, LibVst.NoteExpressionValue*, ComResult>)&getNoteExpressionValueByString_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, int>)&getNoteExpressionCount_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, int, LibVst.NoteExpressionTypeInfo*, int>)&getNoteExpressionInfo_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128*, int>)&getNoteExpressionStringByValue_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, char*, LibVst.NoteExpressionValue*, int>)&getNoteExpressionValueByString_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -9033,7 +9032,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial int getNoteExpressionCount_ToManaged(INoteExpressionController* self, int busIndex, short channel);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getNoteExpressionCount_Wrapper(INoteExpressionController* self, int busIndex, short channel)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionCount");
@@ -9057,8 +9056,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getNoteExpressionInfo_ToManaged(INoteExpressionController* self, int busIndex, short channel, int noteExpressionIndex, LibVst.NoteExpressionTypeInfo* info);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getNoteExpressionInfo_Wrapper(INoteExpressionController* self, int busIndex, short channel, int noteExpressionIndex, LibVst.NoteExpressionTypeInfo* info)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getNoteExpressionInfo_Wrapper(INoteExpressionController* self, int busIndex, short channel, int noteExpressionIndex, LibVst.NoteExpressionTypeInfo* info)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionInfo");
             try
@@ -9068,7 +9067,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -9081,8 +9080,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getNoteExpressionStringByValue_ToManaged(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getNoteExpressionStringByValue_Wrapper(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getNoteExpressionStringByValue_Wrapper(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionStringByValue");
             try
@@ -9092,7 +9091,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -9105,8 +9104,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getNoteExpressionValueByString_ToManaged(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, char* @string, LibVst.NoteExpressionValue* valueNormalized);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getNoteExpressionValueByString_Wrapper(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, char* @string, LibVst.NoteExpressionValue* valueNormalized)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getNoteExpressionValueByString_Wrapper(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, char* @string, LibVst.NoteExpressionValue* valueNormalized)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionValueByString");
             try
@@ -9116,7 +9115,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -9133,8 +9132,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xb7, 0xf8, 0xf8, 0x59, 0x41, 0x23, 0x48, 0x72, 0x91, 0x16, 0x95, 0x81, 0x4f, 0x37, 0x21, 0xa3 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x59, 0xf8, 0xf8, 0xb7, 0x72, 0x48, 0x23, 0x41, 0x81, 0x95, 0x16, 0x91, 0xa3, 0x21, 0x37, 0x4f })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x59, 0xf8, 0xf8, 0xb7, 0x23, 0x41, 0x72, 0x48, 0x91, 0x16, 0x95, 0x81, 0x4f, 0x37, 0x21, 0xa3 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xb7, 0xf8, 0xf8, 0x59, 0x41, 0x23, 0x48, 0x72, 0x81, 0x95, 0x16, 0x91, 0xa3, 0x21, 0x37, 0x4f })
                     )));
             }
         }
@@ -9258,14 +9257,14 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 2;
+        public static int VtblCount => 5;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IKeyswitchController*, int, short, int>)&getKeyswitchCount_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IKeyswitchController*, int, short, int, LibVst.KeyswitchInfo*, ComResult>)&getKeyswitchInfo_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IKeyswitchController*, int, short, int>)&getKeyswitchCount_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IKeyswitchController*, int, short, int, LibVst.KeyswitchInfo*, int>)&getKeyswitchInfo_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -9276,7 +9275,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial int getKeyswitchCount_ToManaged(IKeyswitchController* self, int busIndex, short channel);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getKeyswitchCount_Wrapper(IKeyswitchController* self, int busIndex, short channel)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IKeyswitchController), "getKeyswitchCount");
@@ -9300,8 +9299,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getKeyswitchInfo_ToManaged(IKeyswitchController* self, int busIndex, short channel, int keySwitchIndex, LibVst.KeyswitchInfo* info);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getKeyswitchInfo_Wrapper(IKeyswitchController* self, int busIndex, short channel, int keySwitchIndex, LibVst.KeyswitchInfo* info)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getKeyswitchInfo_Wrapper(IKeyswitchController* self, int busIndex, short channel, int keySwitchIndex, LibVst.KeyswitchInfo* info)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IKeyswitchController), "getKeyswitchInfo");
             try
@@ -9311,7 +9310,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -9328,8 +9327,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x1f, 0x2f, 0x76, 0xd3, 0xbf, 0xfb, 0x4b, 0x96, 0xb9, 0x95, 0x27, 0xa5, 0x5e, 0xbc, 0xce, 0xf4 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xd3, 0x76, 0x2f, 0x1f, 0x96, 0x4b, 0xfb, 0xbf, 0xa5, 0x27, 0x95, 0xb9, 0xf4, 0xce, 0xbc, 0x5e })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xd3, 0x76, 0x2f, 0x1f, 0xfb, 0xbf, 0x96, 0x4b, 0xb9, 0x95, 0x27, 0xa5, 0x5e, 0xbc, 0xce, 0xf4 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x1f, 0x2f, 0x76, 0xd3, 0xbf, 0xfb, 0x4b, 0x96, 0xa5, 0x27, 0x95, 0xb9, 0xf4, 0xce, 0xbc, 0x5e })
                     )));
             }
         }
@@ -9498,8 +9497,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x93, 0x6f, 0x03, 0x3b, 0xc6, 0xc0, 0x47, 0xdb, 0xbb, 0x08, 0x82, 0xf8, 0x13, 0xc1, 0xe6, 0x13 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x3b, 0x03, 0x6f, 0x93, 0xdb, 0x47, 0xc0, 0xc6, 0xf8, 0x82, 0x08, 0xbb, 0x13, 0xe6, 0xc1, 0x13 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x3b, 0x03, 0x6f, 0x93, 0xc0, 0xc6, 0xdb, 0x47, 0xbb, 0x08, 0x82, 0xf8, 0x13, 0xc1, 0xe6, 0x13 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x93, 0x6f, 0x03, 0x3b, 0xc6, 0xc0, 0x47, 0xdb, 0xf8, 0x82, 0x08, 0xbb, 0x13, 0xe6, 0xc1, 0x13 })
                     )));
             }
         }
@@ -9528,9 +9527,9 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IConnectionPoint*, LibVst.IConnectionPoint*, ComResult>)&connect_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IConnectionPoint*, LibVst.IConnectionPoint*, ComResult>)&disconnect_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IConnectionPoint*, LibVst.IMessage*, ComResult>)&notify_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IConnectionPoint*, LibVst.IConnectionPoint*, int>)&connect_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IConnectionPoint*, LibVst.IConnectionPoint*, int>)&disconnect_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IConnectionPoint*, LibVst.IMessage*, int>)&notify_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -9635,8 +9634,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult connect_ToManaged(IConnectionPoint* self, LibVst.IConnectionPoint* other);
         
-        [UnmanagedCallersOnly]
-        private static ComResult connect_Wrapper(IConnectionPoint* self, LibVst.IConnectionPoint* other)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int connect_Wrapper(IConnectionPoint* self, LibVst.IConnectionPoint* other)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IConnectionPoint), "connect");
             try
@@ -9646,7 +9645,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -9659,8 +9658,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult disconnect_ToManaged(IConnectionPoint* self, LibVst.IConnectionPoint* other);
         
-        [UnmanagedCallersOnly]
-        private static ComResult disconnect_Wrapper(IConnectionPoint* self, LibVst.IConnectionPoint* other)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int disconnect_Wrapper(IConnectionPoint* self, LibVst.IConnectionPoint* other)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IConnectionPoint), "disconnect");
             try
@@ -9670,7 +9669,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -9683,8 +9682,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult notify_ToManaged(IConnectionPoint* self, LibVst.IMessage* message);
         
-        [UnmanagedCallersOnly]
-        private static ComResult notify_Wrapper(IConnectionPoint* self, LibVst.IMessage* message)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int notify_Wrapper(IConnectionPoint* self, LibVst.IMessage* message)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IConnectionPoint), "notify");
             try
@@ -9694,7 +9693,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -9711,8 +9710,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x70, 0xa4, 0x15, 0x6f, 0x6e, 0x6e, 0x40, 0x26, 0x98, 0x91, 0x48, 0xbf, 0xaa, 0x60, 0xd8, 0xd1 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x6f, 0x15, 0xa4, 0x70, 0x26, 0x40, 0x6e, 0x6e, 0xbf, 0x48, 0x91, 0x98, 0xd1, 0xd8, 0x60, 0xaa })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x6f, 0x15, 0xa4, 0x70, 0x6e, 0x6e, 0x26, 0x40, 0x98, 0x91, 0x48, 0xbf, 0xaa, 0x60, 0xd8, 0xd1 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x70, 0xa4, 0x15, 0x6f, 0x6e, 0x6e, 0x40, 0x26, 0xbf, 0x48, 0x91, 0x98, 0xd1, 0xd8, 0x60, 0xaa })
                     )));
             }
         }
@@ -9822,8 +9821,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x58, 0xe5, 0x95, 0xcc, 0xdb, 0x2d, 0x49, 0x69, 0x8b, 0x6a, 0xaf, 0x8c, 0x36, 0xa6, 0x64, 0xe5 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xcc, 0x95, 0xe5, 0x58, 0x69, 0x49, 0x2d, 0xdb, 0x8c, 0xaf, 0x6a, 0x8b, 0xe5, 0x64, 0xa6, 0x36 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xcc, 0x95, 0xe5, 0x58, 0x2d, 0xdb, 0x69, 0x49, 0x8b, 0x6a, 0xaf, 0x8c, 0x36, 0xa6, 0x64, 0xe5 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x58, 0xe5, 0x95, 0xcc, 0xdb, 0x2d, 0x49, 0x69, 0x8c, 0xaf, 0x6a, 0x8b, 0xe5, 0x64, 0xa6, 0x36 })
                     )));
             }
         }
@@ -9851,8 +9850,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x29, 0x63, 0x3a, 0xec, 0x1d, 0x1c, 0x47, 0xe2, 0xbb, 0x85, 0xb9, 0x7b, 0xd3, 0x6e, 0xac, 0x61 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xec, 0x3a, 0x63, 0x29, 0xe2, 0x47, 0x1c, 0x1d, 0x7b, 0xb9, 0x85, 0xbb, 0x61, 0xac, 0x6e, 0xd3 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xec, 0x3a, 0x63, 0x29, 0x1c, 0x1d, 0xe2, 0x47, 0xbb, 0x85, 0xb9, 0x7b, 0xd3, 0x6e, 0xac, 0x61 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x29, 0x63, 0x3a, 0xec, 0x1d, 0x1c, 0x47, 0xe2, 0x7b, 0xb9, 0x85, 0xbb, 0x61, 0xac, 0x6e, 0xd3 })
                     )));
             }
         }
@@ -9880,8 +9879,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xa3, 0xb8, 0xc6, 0xc5, 0xc0, 0x95, 0x46, 0x88, 0xb0, 0x91, 0x6f, 0x0b, 0xb6, 0x97, 0xaa, 0x44 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xc5, 0xc6, 0xb8, 0xa3, 0x88, 0x46, 0x95, 0xc0, 0x0b, 0x6f, 0x91, 0xb0, 0x44, 0xaa, 0x97, 0xb6 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xc5, 0xc6, 0xb8, 0xa3, 0x95, 0xc0, 0x88, 0x46, 0xb0, 0x91, 0x6f, 0x0b, 0xb6, 0x97, 0xaa, 0x44 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xa3, 0xb8, 0xc6, 0xc5, 0xc0, 0x95, 0x46, 0x88, 0x0b, 0x6f, 0x91, 0xb0, 0x44, 0xaa, 0x97, 0xb6 })
                     )));
             }
         }
@@ -9909,8 +9908,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x6d, 0x31, 0x9d, 0xc6, 0x60, 0xc5, 0x62, 0x42, 0xb3, 0x2c, 0x95, 0x1b, 0x93, 0xbe, 0xf4, 0xc6 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xc6, 0x9d, 0x31, 0x6d, 0x42, 0x62, 0xc5, 0x60, 0x1b, 0x95, 0x2c, 0xb3, 0xc6, 0xf4, 0xbe, 0x93 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xc6, 0x9d, 0x31, 0x6d, 0xc5, 0x60, 0x42, 0x62, 0xb3, 0x2c, 0x95, 0x1b, 0x93, 0xbe, 0xf4, 0xc6 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x6d, 0x31, 0x9d, 0xc6, 0x60, 0xc5, 0x62, 0x42, 0x1b, 0x95, 0x2c, 0xb3, 0xc6, 0xf4, 0xbe, 0x93 })
                     )));
             }
         }
@@ -9991,7 +9990,7 @@ internal static partial class LibVst
         /// <param name="state">true to enable, false to disable MPE processing</param>
         /// <returns>kResultTrue on success</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult enableMPEInputProcessing([MarshalAs(UnmanagedType.U1)] byte state)
+        public ComResult enableMPEInputProcessing(byte state)
         {
             var __self__ = (LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this);
             var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IVst3WrapperMPESupport), "enableMPEInputProcessing");
@@ -10028,8 +10027,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x44, 0x14, 0x90, 0x67, 0x42, 0xcf, 0x4b, 0xf9, 0x88, 0x00, 0xb7, 0x50, 0xf7, 0x35, 0x9f, 0xe3 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x67, 0x90, 0x14, 0x44, 0xf9, 0x4b, 0xcf, 0x42, 0x50, 0xb7, 0x00, 0x88, 0xe3, 0x9f, 0x35, 0xf7 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x67, 0x90, 0x14, 0x44, 0xcf, 0x42, 0xf9, 0x4b, 0x88, 0x00, 0xb7, 0x50, 0xf7, 0x35, 0x9f, 0xe3 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x44, 0x14, 0x90, 0x67, 0x42, 0xcf, 0x4b, 0xf9, 0x50, 0xb7, 0x00, 0x88, 0xe3, 0x9f, 0x35, 0xf7 })
                     )));
             }
         }
@@ -10047,16 +10046,16 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 4;
+        public static int VtblCount => 7;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IInterAppAudioPresetManager*, ComResult>)&runLoadPresetBrowser_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IInterAppAudioPresetManager*, ComResult>)&runSavePresetBrowser_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IInterAppAudioPresetManager*, ComResult>)&loadNextPreset_Wrapper;
-            vtbl[9] = (delegate*unmanaged<IInterAppAudioPresetManager*, ComResult>)&loadPreviousPreset_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IInterAppAudioPresetManager*, int>)&runLoadPresetBrowser_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IInterAppAudioPresetManager*, int>)&runSavePresetBrowser_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IInterAppAudioPresetManager*, int>)&loadNextPreset_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IInterAppAudioPresetManager*, int>)&loadPreviousPreset_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -10067,8 +10066,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult runLoadPresetBrowser_ToManaged(IInterAppAudioPresetManager* self);
         
-        [UnmanagedCallersOnly]
-        private static ComResult runLoadPresetBrowser_Wrapper(IInterAppAudioPresetManager* self)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int runLoadPresetBrowser_Wrapper(IInterAppAudioPresetManager* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "runLoadPresetBrowser");
             try
@@ -10078,7 +10077,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -10091,8 +10090,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult runSavePresetBrowser_ToManaged(IInterAppAudioPresetManager* self);
         
-        [UnmanagedCallersOnly]
-        private static ComResult runSavePresetBrowser_Wrapper(IInterAppAudioPresetManager* self)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int runSavePresetBrowser_Wrapper(IInterAppAudioPresetManager* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "runSavePresetBrowser");
             try
@@ -10102,7 +10101,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -10115,8 +10114,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult loadNextPreset_ToManaged(IInterAppAudioPresetManager* self);
         
-        [UnmanagedCallersOnly]
-        private static ComResult loadNextPreset_Wrapper(IInterAppAudioPresetManager* self)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int loadNextPreset_Wrapper(IInterAppAudioPresetManager* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "loadNextPreset");
             try
@@ -10126,7 +10125,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -10139,8 +10138,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult loadPreviousPreset_ToManaged(IInterAppAudioPresetManager* self);
         
-        [UnmanagedCallersOnly]
-        private static ComResult loadPreviousPreset_Wrapper(IInterAppAudioPresetManager* self)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int loadPreviousPreset_Wrapper(IInterAppAudioPresetManager* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "loadPreviousPreset");
             try
@@ -10150,7 +10149,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -10167,8 +10166,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xad, 0xe6, 0xfc, 0xc4, 0x46, 0xc9, 0x4e, 0x1d, 0xb3, 0xb4, 0x9a, 0x80, 0xc9, 0x3f, 0xef, 0xdd })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xc4, 0xfc, 0xe6, 0xad, 0x1d, 0x4e, 0xc9, 0x46, 0x80, 0x9a, 0xb4, 0xb3, 0xdd, 0xef, 0x3f, 0xc9 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xc4, 0xfc, 0xe6, 0xad, 0xc9, 0x46, 0x1d, 0x4e, 0xb3, 0xb4, 0x9a, 0x80, 0xc9, 0x3f, 0xef, 0xdd })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xad, 0xe6, 0xfc, 0xc4, 0x46, 0xc9, 0x4e, 0x1d, 0x80, 0x9a, 0xb4, 0xb3, 0xdd, 0xef, 0x3f, 0xc9 })
                     )));
             }
         }
@@ -10376,8 +10375,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x0c, 0xe5, 0x74, 0x3d, 0x68, 0xdf, 0x41, 0x5e, 0xae, 0x28, 0x5b, 0xd4, 0xe2, 0xcd, 0xc8, 0xfd })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x3d, 0x74, 0xe5, 0x0c, 0x5e, 0x41, 0xdf, 0x68, 0xd4, 0x5b, 0x28, 0xae, 0xfd, 0xc8, 0xcd, 0xe2 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x3d, 0x74, 0xe5, 0x0c, 0xdf, 0x68, 0x5e, 0x41, 0xae, 0x28, 0x5b, 0xd4, 0xe2, 0xcd, 0xc8, 0xfd })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x0c, 0xe5, 0x74, 0x3d, 0x68, 0xdf, 0x41, 0x5e, 0xd4, 0x5b, 0x28, 0xae, 0xfd, 0xc8, 0xcd, 0xe2 })
                     )));
             }
         }
@@ -10395,13 +10394,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IInterAppAudioConnectionNotification*, byte, void>)&onInterAppAudioConnectionStateChange_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IInterAppAudioConnectionNotification*, byte, void>)&onInterAppAudioConnectionStateChange_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -10411,10 +10410,10 @@ internal static partial class LibVst
         /// called when the Inter-App Audio connection state changes
         /// </summary>
         /// <param name="newState">true if an Inter-App Audio connection is established, otherwise false</param>
-        private static partial void onInterAppAudioConnectionStateChange_ToManaged(IInterAppAudioConnectionNotification* self, [MarshalAs(UnmanagedType.U1)] byte newState);
+        private static partial void onInterAppAudioConnectionStateChange_ToManaged(IInterAppAudioConnectionNotification* self, byte newState);
         
-        [UnmanagedCallersOnly]
-        private static void onInterAppAudioConnectionStateChange_Wrapper(IInterAppAudioConnectionNotification* self, [MarshalAs(UnmanagedType.U1)] byte newState)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void onInterAppAudioConnectionStateChange_Wrapper(IInterAppAudioConnectionNotification* self, byte newState)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioConnectionNotification), "onInterAppAudioConnectionStateChange");
             try
@@ -10440,8 +10439,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x60, 0x20, 0xc7, 0x2d, 0x5f, 0xc2, 0x4a, 0xa1, 0xb0, 0x95, 0x0d, 0xb5, 0xd7, 0xd6, 0xd5, 0xcf })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x2d, 0xc7, 0x20, 0x60, 0xa1, 0x4a, 0xc2, 0x5f, 0xb5, 0x0d, 0x95, 0xb0, 0xcf, 0xd5, 0xd6, 0xd7 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x2d, 0xc7, 0x20, 0x60, 0xc2, 0x5f, 0xa1, 0x4a, 0xb0, 0x95, 0x0d, 0xb5, 0xd7, 0xd6, 0xd5, 0xcf })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x60, 0x20, 0xc7, 0x2d, 0x5f, 0xc2, 0x4a, 0xa1, 0xb5, 0x0d, 0x95, 0xb0, 0xcf, 0xd5, 0xd6, 0xd7 })
                     )));
             }
         }
@@ -10512,13 +10511,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IMidiLearn*, int, short, LibVst.CtrlNumber, ComResult>)&onLiveMIDIControllerInput_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiLearn*, int, short, LibVst.CtrlNumber, int>)&onLiveMIDIControllerInput_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -10529,8 +10528,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult onLiveMIDIControllerInput_ToManaged(IMidiLearn* self, int busIndex, short channel, LibVst.CtrlNumber midiCC);
         
-        [UnmanagedCallersOnly]
-        private static ComResult onLiveMIDIControllerInput_Wrapper(IMidiLearn* self, int busIndex, short channel, LibVst.CtrlNumber midiCC)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int onLiveMIDIControllerInput_Wrapper(IMidiLearn* self, int busIndex, short channel, LibVst.CtrlNumber midiCC)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiLearn), "onLiveMIDIControllerInput");
             try
@@ -10540,7 +10539,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -10557,8 +10556,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x6b, 0x24, 0x49, 0xcc, 0x41, 0x97, 0x40, 0xb5, 0xab, 0x3c, 0x79, 0xda, 0xc5, 0xfe, 0x5c, 0x86 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xcc, 0x49, 0x24, 0x6b, 0xb5, 0x40, 0x97, 0x41, 0xda, 0x79, 0x3c, 0xab, 0x86, 0x5c, 0xfe, 0xc5 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xcc, 0x49, 0x24, 0x6b, 0x97, 0x41, 0xb5, 0x40, 0xab, 0x3c, 0x79, 0xda, 0xc5, 0xfe, 0x5c, 0x86 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x6b, 0x24, 0x49, 0xcc, 0x41, 0x97, 0x40, 0xb5, 0xda, 0x79, 0x3c, 0xab, 0x86, 0x5c, 0xfe, 0xc5 })
                     )));
             }
         }
@@ -10639,13 +10638,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IParameterFunctionName*, LibVst.UnitID, LibVst.FIDString, LibVst.ParamID*, ComResult>)&getParameterIDFromFunctionName_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IParameterFunctionName*, LibVst.UnitID, LibVst.FIDString, LibVst.ParamID*, int>)&getParameterIDFromFunctionName_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -10657,8 +10656,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getParameterIDFromFunctionName_ToManaged(IParameterFunctionName* self, LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getParameterIDFromFunctionName_Wrapper(IParameterFunctionName* self, LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getParameterIDFromFunctionName_Wrapper(IParameterFunctionName* self, LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParameterFunctionName), "getParameterIDFromFunctionName");
             try
@@ -10668,7 +10667,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -10685,8 +10684,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x6d, 0x21, 0xe1, 0xdc, 0x91, 0x19, 0x9d, 0x4b, 0xa2, 0xa0, 0x2f, 0xef, 0x6c, 0x1a, 0xe5, 0x5c })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xdc, 0xe1, 0x21, 0x6d, 0x4b, 0x9d, 0x19, 0x91, 0xef, 0x2f, 0xa0, 0xa2, 0x5c, 0xe5, 0x1a, 0x6c })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xdc, 0xe1, 0x21, 0x6d, 0x19, 0x91, 0x4b, 0x9d, 0xa2, 0xa0, 0x2f, 0xef, 0x6c, 0x1a, 0xe5, 0x5c })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x6d, 0x21, 0xe1, 0xdc, 0x91, 0x19, 0x9d, 0x4b, 0xef, 0x2f, 0xa0, 0xa2, 0x5c, 0xe5, 0x1a, 0x6c })
                     )));
             }
         }
@@ -10754,13 +10753,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<INoteExpressionPhysicalUIMapping*, int, short, LibVst.PhysicalUIMapList*, ComResult>)&getPhysicalUIMapping_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<INoteExpressionPhysicalUIMapping*, int, short, LibVst.PhysicalUIMapList*, int>)&getPhysicalUIMapping_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -10772,8 +10771,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getPhysicalUIMapping_ToManaged(INoteExpressionPhysicalUIMapping* self, int busIndex, short channel, LibVst.PhysicalUIMapList* list);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getPhysicalUIMapping_Wrapper(INoteExpressionPhysicalUIMapping* self, int busIndex, short channel, LibVst.PhysicalUIMapList* list)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getPhysicalUIMapping_Wrapper(INoteExpressionPhysicalUIMapping* self, int busIndex, short channel, LibVst.PhysicalUIMapList* list)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionPhysicalUIMapping), "getPhysicalUIMapping");
             try
@@ -10783,7 +10782,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -10800,8 +10799,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xb0, 0x30, 0x78, 0xff, 0x94, 0xd2, 0x4a, 0xc8, 0x90, 0xcc, 0xd3, 0x03, 0xd4, 0x13, 0x33, 0x24 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xff, 0x78, 0x30, 0xb0, 0xc8, 0x4a, 0xd2, 0x94, 0x03, 0xd3, 0xcc, 0x90, 0x24, 0x33, 0x13, 0xd4 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xff, 0x78, 0x30, 0xb0, 0xd2, 0x94, 0xc8, 0x4a, 0x90, 0xcc, 0xd3, 0x03, 0xd4, 0x13, 0x33, 0x24 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xb0, 0x30, 0x78, 0xff, 0x94, 0xd2, 0x4a, 0xc8, 0x03, 0xd3, 0xcc, 0x90, 0x24, 0x33, 0x13, 0xd4 })
                     )));
             }
         }
@@ -10953,8 +10952,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x4f, 0xb5, 0x8b, 0x9e, 0x9e, 0xaa, 0x4e, 0x0f, 0xab, 0x36, 0x1c, 0x1c, 0xcc, 0xb5, 0x6f, 0xea })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x9e, 0x8b, 0xb5, 0x4f, 0x0f, 0x4e, 0xaa, 0x9e, 0x1c, 0x1c, 0x36, 0xab, 0xea, 0x6f, 0xb5, 0xcc })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x9e, 0x8b, 0xb5, 0x4f, 0xaa, 0x9e, 0x0f, 0x4e, 0xab, 0x36, 0x1c, 0x1c, 0xcc, 0xb5, 0x6f, 0xea })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x4f, 0xb5, 0x8b, 0x9e, 0x9e, 0xaa, 0x4e, 0x0f, 0x1c, 0x1c, 0x36, 0xab, 0xea, 0x6f, 0xb5, 0xcc })
                     )));
             }
         }
@@ -10975,13 +10974,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IParameterFinder*, int, int, LibVst.ParamID*, ComResult>)&findParameter_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IParameterFinder*, int, int, LibVst.ParamID*, int>)&findParameter_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -10992,8 +10991,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult findParameter_ToManaged(IParameterFinder* self, int xPos, int yPos, LibVst.ParamID* resultTag);
         
-        [UnmanagedCallersOnly]
-        private static ComResult findParameter_Wrapper(IParameterFinder* self, int xPos, int yPos, LibVst.ParamID* resultTag)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int findParameter_Wrapper(IParameterFinder* self, int xPos, int yPos, LibVst.ParamID* resultTag)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParameterFinder), "findParameter");
             try
@@ -11003,7 +11002,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -11020,8 +11019,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x0f, 0x61, 0x83, 0x02, 0x21, 0x5d, 0x45, 0x87, 0xa5, 0x12, 0x07, 0x3c, 0x77, 0xb9, 0xd3, 0x83 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x02, 0x83, 0x61, 0x0f, 0x87, 0x45, 0x5d, 0x21, 0x3c, 0x07, 0x12, 0xa5, 0x83, 0xd3, 0xb9, 0x77 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x02, 0x83, 0x61, 0x0f, 0x5d, 0x21, 0x87, 0x45, 0xa5, 0x12, 0x07, 0x3c, 0x77, 0xb9, 0xd3, 0x83 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x0f, 0x61, 0x83, 0x02, 0x21, 0x5d, 0x45, 0x87, 0x3c, 0x07, 0x12, 0xa5, 0x83, 0xd3, 0xb9, 0x77 })
                     )));
             }
         }
@@ -11057,13 +11056,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IPrefetchableSupport*, LibVst.PrefetchableSupport*, ComResult>)&getPrefetchableSupport_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPrefetchableSupport*, LibVst.PrefetchableSupport*, int>)&getPrefetchableSupport_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -11075,8 +11074,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getPrefetchableSupport_ToManaged(IPrefetchableSupport* self, LibVst.PrefetchableSupport* prefetchable);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getPrefetchableSupport_Wrapper(IPrefetchableSupport* self, LibVst.PrefetchableSupport* prefetchable)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getPrefetchableSupport_Wrapper(IPrefetchableSupport* self, LibVst.PrefetchableSupport* prefetchable)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPrefetchableSupport), "getPrefetchableSupport");
             try
@@ -11086,7 +11085,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -11103,8 +11102,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x8a, 0xe5, 0x4f, 0xda, 0xe9, 0x30, 0x46, 0xb9, 0xa2, 0x85, 0x55, 0xbc, 0xdc, 0x98, 0xe2, 0x1e })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xda, 0x4f, 0xe5, 0x8a, 0xb9, 0x46, 0x30, 0xe9, 0xbc, 0x55, 0x85, 0xa2, 0x1e, 0xe2, 0x98, 0xdc })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xda, 0x4f, 0xe5, 0x8a, 0x30, 0xe9, 0xb9, 0x46, 0xa2, 0x85, 0x55, 0xbc, 0xdc, 0x98, 0xe2, 0x1e })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x8a, 0xe5, 0x4f, 0xda, 0xe9, 0x30, 0x46, 0xb9, 0xbc, 0x55, 0x85, 0xa2, 0x1e, 0xe2, 0x98, 0xdc })
                     )));
             }
         }
@@ -11207,13 +11206,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IXmlRepresentationController*, LibVst.RepresentationInfo*, LibVst.IBStream*, ComResult>)&getXmlRepresentationStream_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IXmlRepresentationController*, LibVst.RepresentationInfo*, LibVst.IBStream*, int>)&getXmlRepresentationStream_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -11224,8 +11223,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getXmlRepresentationStream_ToManaged(IXmlRepresentationController* self, LibVst.RepresentationInfo* info, LibVst.IBStream* stream);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getXmlRepresentationStream_Wrapper(IXmlRepresentationController* self, LibVst.RepresentationInfo* info, LibVst.IBStream* stream)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getXmlRepresentationStream_Wrapper(IXmlRepresentationController* self, LibVst.RepresentationInfo* info, LibVst.IBStream* stream)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IXmlRepresentationController), "getXmlRepresentationStream");
             try
@@ -11235,7 +11234,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -11252,8 +11251,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xa8, 0x1a, 0x04, 0x71, 0x48, 0xc3, 0x4d, 0xc4, 0xac, 0x30, 0xc9, 0xe1, 0x3c, 0x83, 0x93, 0xd5 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x71, 0x04, 0x1a, 0xa8, 0xc4, 0x4d, 0xc3, 0x48, 0xe1, 0xc9, 0x30, 0xac, 0xd5, 0x93, 0x83, 0x3c })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x71, 0x04, 0x1a, 0xa8, 0xc3, 0x48, 0xc4, 0x4d, 0xac, 0x30, 0xc9, 0xe1, 0x3c, 0x83, 0x93, 0xd5 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xa8, 0x1a, 0x04, 0x71, 0x48, 0xc3, 0x4d, 0xc4, 0xe1, 0xc9, 0x30, 0xac, 0xd5, 0x93, 0x83, 0x3c })
                     )));
             }
         }
@@ -11309,11 +11308,11 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<ITestPlugProvider*, LibVst.IComponent*>)&getComponent_Wrapper;
-            vtbl[7] = (delegate*unmanaged<ITestPlugProvider*, LibVst.IEditController*>)&getController_Wrapper;
-            vtbl[8] = (delegate*unmanaged<ITestPlugProvider*, LibVst.IComponent*, LibVst.IEditController*, ComResult>)&releasePlugIn_Wrapper;
-            vtbl[9] = (delegate*unmanaged<ITestPlugProvider*, LibVst.IStringResult*, ComResult>)&getSubCategories_Wrapper;
-            vtbl[10] = (delegate*unmanaged<ITestPlugProvider*, LibVst.FUID*, ComResult>)&getComponentUID_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<ITestPlugProvider*, LibVst.IComponent*>)&getComponent_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<ITestPlugProvider*, LibVst.IEditController*>)&getController_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<ITestPlugProvider*, LibVst.IComponent*, LibVst.IEditController*, int>)&releasePlugIn_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<ITestPlugProvider*, LibVst.IStringResult*, int>)&getSubCategories_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<ITestPlugProvider*, LibVst.FUID*, int>)&getComponentUID_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -11456,7 +11455,7 @@ internal static partial class LibVst
         /// </remarks>
         private static partial LibVst.IComponent* getComponent_ToManaged(ITestPlugProvider* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IComponent* getComponent_Wrapper(ITestPlugProvider* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getComponent");
@@ -11484,7 +11483,7 @@ internal static partial class LibVst
         /// </remarks>
         private static partial LibVst.IEditController* getController_ToManaged(ITestPlugProvider* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IEditController* getController_Wrapper(ITestPlugProvider* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getController");
@@ -11508,8 +11507,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult releasePlugIn_ToManaged(ITestPlugProvider* self, LibVst.IComponent* component, LibVst.IEditController* controller);
         
-        [UnmanagedCallersOnly]
-        private static ComResult releasePlugIn_Wrapper(ITestPlugProvider* self, LibVst.IComponent* component, LibVst.IEditController* controller)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int releasePlugIn_Wrapper(ITestPlugProvider* self, LibVst.IComponent* component, LibVst.IEditController* controller)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "releasePlugIn");
             try
@@ -11519,7 +11518,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -11532,8 +11531,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getSubCategories_ToManaged(ITestPlugProvider* self, LibVst.IStringResult* result);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getSubCategories_Wrapper(ITestPlugProvider* self, LibVst.IStringResult* result)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getSubCategories_Wrapper(ITestPlugProvider* self, LibVst.IStringResult* result)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getSubCategories");
             try
@@ -11543,7 +11542,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -11556,8 +11555,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getComponentUID_ToManaged(ITestPlugProvider* self, LibVst.FUID* uid);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getComponentUID_Wrapper(ITestPlugProvider* self, LibVst.FUID* uid)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getComponentUID_Wrapper(ITestPlugProvider* self, LibVst.FUID* uid)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getComponentUID");
             try
@@ -11567,7 +11566,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -11584,8 +11583,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x86, 0xbe, 0x70, 0xee, 0x4e, 0x99, 0x43, 0x0f, 0x97, 0x8f, 0x1e, 0x6e, 0xd6, 0x8f, 0xb5, 0xba })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xee, 0x70, 0xbe, 0x86, 0x0f, 0x43, 0x99, 0x4e, 0x6e, 0x1e, 0x8f, 0x97, 0xba, 0xb5, 0x8f, 0xd6 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xee, 0x70, 0xbe, 0x86, 0x99, 0x4e, 0x0f, 0x43, 0x97, 0x8f, 0x1e, 0x6e, 0xd6, 0x8f, 0xb5, 0xba })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x86, 0xbe, 0x70, 0xee, 0x4e, 0x99, 0x43, 0x0f, 0x6e, 0x1e, 0x8f, 0x97, 0xba, 0xb5, 0x8f, 0xd6 })
                     )));
             }
         }
@@ -11648,7 +11647,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             ITestPlugProvider.InitializeVtbl(vtbl);
-            vtbl[16] = (delegate*unmanaged<ITestPlugProvider2*, LibVst.IPluginFactory*>)&getPluginFactory_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<ITestPlugProvider2*, LibVst.IPluginFactory*>)&getPluginFactory_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -11808,7 +11807,7 @@ internal static partial class LibVst
         /// </remarks>
         private static partial LibVst.IPluginFactory* getPluginFactory_ToManaged(ITestPlugProvider2* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IPluginFactory* getPluginFactory_Wrapper(ITestPlugProvider2* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider2), "getPluginFactory");
@@ -11836,8 +11835,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xc7, 0xc7, 0x53, 0x64, 0x7b, 0x83, 0x43, 0xac, 0xa4, 0x49, 0x5b, 0x0a, 0x3e, 0x5a, 0x46, 0xc7 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x64, 0x53, 0xc7, 0xc7, 0xac, 0x43, 0x83, 0x7b, 0x0a, 0x5b, 0x49, 0xa4, 0xc7, 0x46, 0x5a, 0x3e })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x64, 0x53, 0xc7, 0xc7, 0x83, 0x7b, 0xac, 0x43, 0xa4, 0x49, 0x5b, 0x0a, 0x3e, 0x5a, 0x46, 0xc7 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xc7, 0xc7, 0x53, 0x64, 0x7b, 0x83, 0x43, 0xac, 0x0a, 0x5b, 0x49, 0xa4, 0xc7, 0x46, 0x5a, 0x3e })
                     )));
             }
         }
@@ -11951,8 +11950,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x4b, 0x51, 0x47, 0xf8, 0x46, 0x54, 0x48, 0x6b, 0x8d, 0xab, 0x30, 0xba, 0x16, 0x3a, 0x3c, 0x56 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xf8, 0x47, 0x51, 0x4b, 0x6b, 0x48, 0x54, 0x46, 0xba, 0x30, 0xab, 0x8d, 0x56, 0x3c, 0x3a, 0x16 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xf8, 0x47, 0x51, 0x4b, 0x54, 0x46, 0x6b, 0x48, 0x8d, 0xab, 0x30, 0xba, 0x16, 0x3a, 0x3c, 0x56 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x4b, 0x51, 0x47, 0xf8, 0x46, 0x54, 0x48, 0x6b, 0xba, 0x30, 0xab, 0x8d, 0x56, 0x3c, 0x3a, 0x16 })
                     )));
             }
         }
@@ -12054,8 +12053,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0xf8, 0x9f, 0x8c, 0xdf, 0x69, 0x9e, 0x4b, 0xa5, 0x96, 0xaa, 0xc9, 0xa4, 0x81, 0x45, 0x2b, 0x01 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xdf, 0x8c, 0x9f, 0xf8, 0xa5, 0x4b, 0x9e, 0x69, 0xa4, 0xc9, 0xaa, 0x96, 0x01, 0x2b, 0x45, 0x81 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xdf, 0x8c, 0x9f, 0xf8, 0x9e, 0x69, 0xa5, 0x4b, 0x96, 0xaa, 0xc9, 0xa4, 0x81, 0x45, 0x2b, 0x01 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf8, 0x9f, 0x8c, 0xdf, 0x69, 0x9e, 0x4b, 0xa5, 0xa4, 0xc9, 0xaa, 0x96, 0x01, 0x2b, 0x45, 0x81 })
                     )));
             }
         }
@@ -12079,24 +12078,24 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 12;
+        public static int VtblCount => 15;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IUnitInfo*, int>)&getUnitCount_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IUnitInfo*, int, LibVst.UnitInfo*, ComResult>)&getUnitInfo_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IUnitInfo*, int>)&getProgramListCount_Wrapper;
-            vtbl[9] = (delegate*unmanaged<IUnitInfo*, int, LibVst.ProgramListInfo*, ComResult>)&getProgramListInfo_Wrapper;
-            vtbl[10] = (delegate*unmanaged<IUnitInfo*, LibVst.ProgramListID, int, LibVst.String128*, ComResult>)&getProgramName_Wrapper;
-            vtbl[11] = (delegate*unmanaged<IUnitInfo*, LibVst.ProgramListID, int, LibVst.CString, LibVst.String128*, ComResult>)&getProgramInfo_Wrapper;
-            vtbl[12] = (delegate*unmanaged<IUnitInfo*, LibVst.ProgramListID, int, ComResult>)&hasProgramPitchNames_Wrapper;
-            vtbl[13] = (delegate*unmanaged<IUnitInfo*, LibVst.ProgramListID, int, short, LibVst.String128*, ComResult>)&getProgramPitchName_Wrapper;
-            vtbl[14] = (delegate*unmanaged<IUnitInfo*, LibVst.UnitID>)&getSelectedUnit_Wrapper;
-            vtbl[15] = (delegate*unmanaged<IUnitInfo*, LibVst.UnitID, ComResult>)&selectUnit_Wrapper;
-            vtbl[16] = (delegate*unmanaged<IUnitInfo*, LibVst.MediaType, LibVst.BusDirection, int, int, LibVst.UnitID*, ComResult>)&getUnitByBus_Wrapper;
-            vtbl[17] = (delegate*unmanaged<IUnitInfo*, int, int, LibVst.IBStream*, ComResult>)&setUnitProgramData_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int>)&getUnitCount_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, LibVst.UnitInfo*, int>)&getUnitInfo_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int>)&getProgramListCount_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, LibVst.ProgramListInfo*, int>)&getProgramListInfo_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.ProgramListID, int, LibVst.String128*, int>)&getProgramName_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.ProgramListID, int, LibVst.CString, LibVst.String128*, int>)&getProgramInfo_Wrapper;
+            vtbl[9] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.ProgramListID, int, int>)&hasProgramPitchNames_Wrapper;
+            vtbl[10] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.ProgramListID, int, short, LibVst.String128*, int>)&getProgramPitchName_Wrapper;
+            vtbl[11] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.UnitID>)&getSelectedUnit_Wrapper;
+            vtbl[12] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.UnitID, int>)&selectUnit_Wrapper;
+            vtbl[13] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.MediaType, LibVst.BusDirection, int, int, LibVst.UnitID*, int>)&getUnitByBus_Wrapper;
+            vtbl[14] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int, LibVst.IBStream*, int>)&setUnitProgramData_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -12107,7 +12106,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial int getUnitCount_ToManaged(IUnitInfo* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getUnitCount_Wrapper(IUnitInfo* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getUnitCount");
@@ -12131,8 +12130,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getUnitInfo_ToManaged(IUnitInfo* self, int unitIndex, LibVst.UnitInfo* info);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getUnitInfo_Wrapper(IUnitInfo* self, int unitIndex, LibVst.UnitInfo* info)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getUnitInfo_Wrapper(IUnitInfo* self, int unitIndex, LibVst.UnitInfo* info)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getUnitInfo");
             try
@@ -12142,7 +12141,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12158,7 +12157,7 @@ internal static partial class LibVst
         /// </remarks>
         private static partial int getProgramListCount_ToManaged(IUnitInfo* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramListCount_Wrapper(IUnitInfo* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramListCount");
@@ -12182,8 +12181,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getProgramListInfo_ToManaged(IUnitInfo* self, int listIndex, LibVst.ProgramListInfo* info);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getProgramListInfo_Wrapper(IUnitInfo* self, int listIndex, LibVst.ProgramListInfo* info)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getProgramListInfo_Wrapper(IUnitInfo* self, int listIndex, LibVst.ProgramListInfo* info)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramListInfo");
             try
@@ -12193,7 +12192,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12206,8 +12205,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getProgramName_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.String128* name);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getProgramName_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.String128* name)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getProgramName_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.String128* name)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramName");
             try
@@ -12217,7 +12216,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12230,8 +12229,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getProgramInfo_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getProgramInfo_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getProgramInfo_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramInfo");
             try
@@ -12241,7 +12240,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12254,8 +12253,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult hasProgramPitchNames_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex);
         
-        [UnmanagedCallersOnly]
-        private static ComResult hasProgramPitchNames_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int hasProgramPitchNames_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "hasProgramPitchNames");
             try
@@ -12265,7 +12264,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12279,8 +12278,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getProgramPitchName_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getProgramPitchName_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getProgramPitchName_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramPitchName");
             try
@@ -12290,7 +12289,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12304,7 +12303,7 @@ internal static partial class LibVst
         /// </summary>
         private static partial LibVst.UnitID getSelectedUnit_ToManaged(IUnitInfo* self);
         
-        [UnmanagedCallersOnly]
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.UnitID getSelectedUnit_Wrapper(IUnitInfo* self)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getSelectedUnit");
@@ -12328,8 +12327,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult selectUnit_ToManaged(IUnitInfo* self, LibVst.UnitID unitId);
         
-        [UnmanagedCallersOnly]
-        private static ComResult selectUnit_Wrapper(IUnitInfo* self, LibVst.UnitID unitId)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int selectUnit_Wrapper(IUnitInfo* self, LibVst.UnitID unitId)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "selectUnit");
             try
@@ -12339,7 +12338,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12353,8 +12352,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getUnitByBus_ToManaged(IUnitInfo* self, LibVst.MediaType type, LibVst.BusDirection dir, int busIndex, int channel, LibVst.UnitID* unitId);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getUnitByBus_Wrapper(IUnitInfo* self, LibVst.MediaType type, LibVst.BusDirection dir, int busIndex, int channel, LibVst.UnitID* unitId)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getUnitByBus_Wrapper(IUnitInfo* self, LibVst.MediaType type, LibVst.BusDirection dir, int busIndex, int channel, LibVst.UnitID* unitId)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getUnitByBus");
             try
@@ -12364,7 +12363,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12383,8 +12382,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setUnitProgramData_ToManaged(IUnitInfo* self, int listOrUnitId, int programIndex, LibVst.IBStream* data);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setUnitProgramData_Wrapper(IUnitInfo* self, int listOrUnitId, int programIndex, LibVst.IBStream* data)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setUnitProgramData_Wrapper(IUnitInfo* self, int listOrUnitId, int programIndex, LibVst.IBStream* data)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "setUnitProgramData");
             try
@@ -12394,7 +12393,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12411,8 +12410,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x3d, 0x4b, 0xd6, 0xb5, 0x91, 0x3a, 0x4f, 0xd2, 0xa8, 0x86, 0xe7, 0x68, 0xa5, 0xeb, 0x92, 0xc1 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xb5, 0xd6, 0x4b, 0x3d, 0xd2, 0x4f, 0x3a, 0x91, 0x68, 0xe7, 0x86, 0xa8, 0xc1, 0x92, 0xeb, 0xa5 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xb5, 0xd6, 0x4b, 0x3d, 0x3a, 0x91, 0xd2, 0x4f, 0xa8, 0x86, 0xe7, 0x68, 0xa5, 0xeb, 0x92, 0xc1 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x3d, 0x4b, 0xd6, 0xb5, 0x91, 0x3a, 0x4f, 0xd2, 0x68, 0xe7, 0x86, 0xa8, 0xc1, 0x92, 0xeb, 0xa5 })
                     )));
             }
         }
@@ -12489,15 +12488,15 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 3;
+        public static int VtblCount => 6;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IProgramListData*, LibVst.ProgramListID, ComResult>)&programDataSupported_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, ComResult>)&getProgramData_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, ComResult>)&setProgramData_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IProgramListData*, LibVst.ProgramListID, int>)&programDataSupported_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, int>)&getProgramData_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, int>)&setProgramData_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -12508,8 +12507,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult programDataSupported_ToManaged(IProgramListData* self, LibVst.ProgramListID listId);
         
-        [UnmanagedCallersOnly]
-        private static ComResult programDataSupported_Wrapper(IProgramListData* self, LibVst.ProgramListID listId)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int programDataSupported_Wrapper(IProgramListData* self, LibVst.ProgramListID listId)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgramListData), "programDataSupported");
             try
@@ -12519,7 +12518,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12532,8 +12531,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getProgramData_ToManaged(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getProgramData_Wrapper(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getProgramData_Wrapper(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgramListData), "getProgramData");
             try
@@ -12543,7 +12542,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12556,8 +12555,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setProgramData_ToManaged(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setProgramData_Wrapper(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setProgramData_Wrapper(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgramListData), "setProgramData");
             try
@@ -12567,7 +12566,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12584,8 +12583,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x86, 0x83, 0xb0, 0x1f, 0x7b, 0x35, 0x4f, 0x70, 0xa2, 0x65, 0x1d, 0xec, 0x35, 0x3a, 0xf4, 0xff })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x1f, 0xb0, 0x83, 0x86, 0x70, 0x4f, 0x35, 0x7b, 0xec, 0x1d, 0x65, 0xa2, 0xff, 0xf4, 0x3a, 0x35 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x1f, 0xb0, 0x83, 0x86, 0x35, 0x7b, 0x70, 0x4f, 0xa2, 0x65, 0x1d, 0xec, 0x35, 0x3a, 0xf4, 0xff })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x86, 0x83, 0xb0, 0x1f, 0x7b, 0x35, 0x4f, 0x70, 0xec, 0x1d, 0x65, 0xa2, 0xff, 0xf4, 0x3a, 0x35 })
                     )));
             }
         }
@@ -12606,15 +12605,15 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 3;
+        public static int VtblCount => 6;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IUnitData*, LibVst.UnitID, ComResult>)&unitDataSupported_Wrapper;
-            vtbl[7] = (delegate*unmanaged<IUnitData*, LibVst.UnitID, LibVst.IBStream*, ComResult>)&getUnitData_Wrapper;
-            vtbl[8] = (delegate*unmanaged<IUnitData*, LibVst.UnitID, LibVst.IBStream*, ComResult>)&setUnitData_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IUnitData*, LibVst.UnitID, int>)&unitDataSupported_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IUnitData*, LibVst.UnitID, LibVst.IBStream*, int>)&getUnitData_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IUnitData*, LibVst.UnitID, LibVst.IBStream*, int>)&setUnitData_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -12625,8 +12624,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult unitDataSupported_ToManaged(IUnitData* self, LibVst.UnitID unitID);
         
-        [UnmanagedCallersOnly]
-        private static ComResult unitDataSupported_Wrapper(IUnitData* self, LibVst.UnitID unitID)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int unitDataSupported_Wrapper(IUnitData* self, LibVst.UnitID unitID)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitData), "unitDataSupported");
             try
@@ -12636,7 +12635,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12649,8 +12648,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult getUnitData_ToManaged(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data);
         
-        [UnmanagedCallersOnly]
-        private static ComResult getUnitData_Wrapper(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getUnitData_Wrapper(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitData), "getUnitData");
             try
@@ -12660,7 +12659,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12673,8 +12672,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setUnitData_ToManaged(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setUnitData_Wrapper(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setUnitData_Wrapper(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitData), "setUnitData");
             try
@@ -12684,7 +12683,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -12701,8 +12700,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x6c, 0x38, 0x96, 0x11, 0xd3, 0x91, 0x45, 0x5d, 0xb8, 0x70, 0xb8, 0x33, 0x94, 0xa0, 0xef, 0xdd })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x11, 0x96, 0x38, 0x6c, 0x5d, 0x45, 0x91, 0xd3, 0x33, 0xb8, 0x70, 0xb8, 0xdd, 0xef, 0xa0, 0x94 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x11, 0x96, 0x38, 0x6c, 0x91, 0xd3, 0x5d, 0x45, 0xb8, 0x70, 0xb8, 0x33, 0x94, 0xa0, 0xef, 0xdd })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x6c, 0x38, 0x96, 0x11, 0xd3, 0x91, 0x45, 0x5d, 0x33, 0xb8, 0x70, 0xb8, 0xdd, 0xef, 0xa0, 0x94 })
                     )));
             }
         }
@@ -13563,13 +13562,13 @@ internal static partial class LibVst
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
-        public static int VtblCount => 1;
+        public static int VtblCount => 4;
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[6] = (delegate*unmanaged<IInfoListener*, LibVst.IAttributeList*, ComResult>)&setChannelContextInfos_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IInfoListener*, LibVst.IAttributeList*, int>)&setChannelContextInfos_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -13580,8 +13579,8 @@ internal static partial class LibVst
         /// </summary>
         private static partial ComResult setChannelContextInfos_ToManaged(IInfoListener* self, LibVst.IAttributeList* list);
         
-        [UnmanagedCallersOnly]
-        private static ComResult setChannelContextInfos_Wrapper(IInfoListener* self, LibVst.IAttributeList* list)
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setChannelContextInfos_Wrapper(IInfoListener* self, LibVst.IAttributeList* list)
         {
             var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInfoListener), "setChannelContextInfos");
             try
@@ -13591,7 +13590,7 @@ internal static partial class LibVst
             catch (Exception ex)
             {
                 __evt__.Exception = ex;
-                return ex;
+                return default;
             }
             finally
             {
@@ -13608,8 +13607,8 @@ internal static partial class LibVst
             get
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
-                        ? new ReadOnlySpan<byte>(new byte[] { 0x0f, 0x19, 0x47, 0x81, 0x8d, 0x98, 0x4a, 0xda, 0xbb, 0xa0, 0xc1, 0xef, 0xc0, 0x11, 0xd8, 0xd0 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x81, 0x47, 0x19, 0x0f, 0xda, 0x4a, 0x98, 0x8d, 0xef, 0xc1, 0xa0, 0xbb, 0xd0, 0xd8, 0x11, 0xc0 })
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x81, 0x47, 0x19, 0x0f, 0x98, 0x8d, 0xda, 0x4a, 0xbb, 0xa0, 0xc1, 0xef, 0xc0, 0x11, 0xd8, 0xd0 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x0f, 0x19, 0x47, 0x81, 0x8d, 0x98, 0x4a, 0xda, 0xef, 0xc1, 0xa0, 0xbb, 0xd0, 0xd8, 0x11, 0xc0 })
                     )));
             }
         }

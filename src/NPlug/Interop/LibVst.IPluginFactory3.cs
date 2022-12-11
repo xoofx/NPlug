@@ -18,12 +18,12 @@ internal static unsafe partial class LibVst
             info->cid = pluginClassInfo.Id;
             info->cardinality = pluginClassInfo.Cardinality;
             //public fixed byte category[32];
-            CopyStringToUTF8(AudioEffectCategory, info->category, 32);
+            CopyStringToUTF8(pluginClassInfo is AudioProcessorClassInfo ? AudioEffectCategory : ComponentControllerCategory, info->category, 32);
             //public fixed char name[64];
             CopyStringToUTF16(pluginClassInfo.Name, info->name, 64);
             info->classFlags = (uint)pluginClassInfo.ClassFlags;
             //public fixed byte subCategories[128];
-            CopyStringToUTF8(GetPluginSubCategory(pluginClassInfo.Category), info->subCategories, 128);
+            CopyStringToUTF8(pluginClassInfo is AudioProcessorClassInfo audioProcessorClassInfo ? GetPluginSubCategory(audioProcessorClassInfo.Category) : string.Empty, info->subCategories, 128);
             //public fixed char vendor[64];
             CopyStringToUTF16(pluginClassInfo.Vendor, info->vendor, 64);
             var version = pluginClassInfo.Version.ToString();

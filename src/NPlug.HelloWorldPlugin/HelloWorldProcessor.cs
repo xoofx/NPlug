@@ -1,11 +1,15 @@
+using System.ComponentModel;
+using System.Runtime.InteropServices;
 using NPlug.IO;
 
 namespace NPlug.HelloWorldPlugin;
 
+
+
+//[AudioPlugin("HelloWorld", AudioPluginCategory.Effect, "493cc995-b69e-40b8-bf6f-fc7a57134fd1")]
 public class HelloWorldProcessor : AudioProcessor
 {
-    private static readonly Guid ClassId = new("A1F15211-4DE0-4430-B1CE-8676927F3374");
-
+    public static readonly Guid ClassId = new Guid("493cc995-b69e-40b8-bf6f-fc7a57134fd1");
     public HelloWorldProcessor() : base(AudioSampleSizeSupport.Any)
     {
     }
@@ -15,7 +19,7 @@ public class HelloWorldProcessor : AudioProcessor
     {
         var factory = new AudioPluginFactory(new("My Company", "https://plugin_corp.com", "contact@plugin_corp.com"));
         factory.RegisterPlugin<HelloWorldProcessor>(new (ClassId, "HelloWorld", AudioPluginCategory.Effect));
-        factory.RegisterPlugin<HelloWorldController>(new(HelloWorldController.ClassId, "HelloWorld Controller", AudioPluginCategory.Effect));
+        factory.RegisterPlugin<HelloWorldController>(new(HelloWorldController.ClassId, "HelloWorld Controller"));
         return factory;
     }
 

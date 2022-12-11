@@ -15,6 +15,7 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult getFactoryInfo_ToManaged(IPluginFactory* self, PFactoryInfo* info)
         {
+            *info = default;
             var factoryInfo = Get(self).FactoryInfo;
             // vendor[64]
             CopyStringToUTF8(factoryInfo.Vendor, info->vendor, 64);
@@ -22,6 +23,8 @@ internal static unsafe partial class LibVst
             CopyStringToUTF8(factoryInfo.Url, info->url, 256);
             // email[128]
             CopyStringToUTF8(factoryInfo.Email, info->email, 128);
+            // flags
+            info->flags = (int)factoryInfo.Flags | (int)PFactoryInfo.FactoryFlags.kUnicode;
             return true;
         }
 
@@ -47,7 +50,7 @@ internal static unsafe partial class LibVst
             if (pluginComponent != null)
             {
                 var comObject = ComObjectManager.Instance.GetOrCreateComObject(pluginComponent);
-                var nativePointerForRequestedInterfaceIid = comObject.GetOrCreateComInterface(*(Guid*)iid.Value);
+                var nativePointerForRequestedInterfaceIid = comObject.QueryInterface(*(Guid*)iid.Value);
                 if (nativePointerForRequestedInterfaceIid != IntPtr.Zero)
                 {
                     *obj = (void*)nativePointerForRequestedInterfaceIid;

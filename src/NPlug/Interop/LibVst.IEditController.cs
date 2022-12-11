@@ -14,7 +14,7 @@ internal static unsafe partial class LibVst
     public partial struct IEditController
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static NPlug.IAudioController Get(IEditController* self) => (NPlug.IAudioController)((ComObjectHandle*)self)->Handle.Target!;
+        private static NPlug.IAudioController Get(IEditController* self) => (NPlug.IAudioController)((ComObjectHandle*)self)->Target!;
 
         private static partial ComResult setComponentState_ToManaged(IEditController* self, IBStream* state)
         {
@@ -101,7 +101,7 @@ internal static unsafe partial class LibVst
             var host = (AudioHostApplicationClient)audioProcessor.Host!;
             var view = Get(self).CreateView(host.GetOrCreateString(name.Value));
             var comObject = ComObjectManager.Instance.GetOrCreateComObject(view);
-            return comObject.GetOrCreateComInterface<IPlugView>();
+            return comObject.QueryInterface<IPlugView>();
         }
     }
 
@@ -214,7 +214,7 @@ internal static unsafe partial class LibVst
             ThrowIfNotIsCreateContextMenuSupported();
 
             var comObject = ComObjectManager.Instance.GetOrCreateComObject(plugView);
-            var nativePlugView = comObject.GetOrCreateComInterface<IPlugView>();
+            var nativePlugView = comObject.QueryInterface<IPlugView>();
             var nativeContextMenu = _handler3->createContextMenu(nativePlugView, (ParamID*)&paramID);
             var audioContextMenu = new AudioContextMenu(AudioContextMenuBackendVst.Instance, (IntPtr)nativeContextMenu);
             return audioContextMenu;

@@ -14,6 +14,12 @@ public class BasicPluginValidation
         //InteropHelper.Tracer = new InteropTracer();
         var factory = HelloWorldProcessor.GetFactory();
         AudioPluginValidator.Validate(factory, Console.Out, Console.Error);
+
+        if (InteropHelper.HasObjectAlive())
+        {
+            Console.WriteLine("=============================================================");
+            Console.WriteLine(InteropHelper.DumpObjectAlive());
+        }
     }
 
     [Test]
@@ -29,37 +35,37 @@ public class BasicPluginValidation
     {
         public void OnEnter(in NativeToManagedEvent evt)
         {
-            Console.WriteLine($"<- {evt.InterfaceName}.{evt.MethodName} (enter)");
+            Console.WriteLine($"<- 0x{evt.NativePointer:X16} {evt.InterfaceName}.{evt.MethodName} (enter)");
             Console.Out.Flush();
         }
 
         public void OnExit(in NativeToManagedEvent evt)
         {
-            Console.WriteLine($"<- {evt.InterfaceName}.{evt.MethodName} (exit)");
-            Console.Out.Flush();
+            //Console.WriteLine($"<- 0x{evt.NativePointer:X16} {evt.InterfaceName}.{evt.MethodName} (exit)");
+            //Console.Out.Flush();
         }
 
         public void OnExitWithError(in NativeToManagedEvent evt)
         {
-            Console.WriteLine($"<- {evt.InterfaceName}.{evt.MethodName} (exit with exception: {evt.Exception})");
+            Console.WriteLine($"<- 0x{evt.NativePointer:X16} {evt.InterfaceName}.{evt.MethodName} (exit with exception: {evt.Exception})");
             Console.Out.Flush();
         }
 
         public void OnEnter(in ManagedToNativeEvent evt)
         {
-            Console.WriteLine($"-> {evt.InterfaceName}.{evt.MethodName} (enter)");
+            Console.WriteLine($"-> 0x{evt.NativePointer:X16} {evt.InterfaceName}.{evt.MethodName} (enter)");
             Console.Out.Flush();
         }
 
         public void OnExit(in ManagedToNativeEvent evt)
         {
-            Console.WriteLine($"-> {evt.InterfaceName}.{evt.MethodName} (exit)");
-            Console.Out.Flush();
+            //Console.WriteLine($"-> 0x{evt.NativePointer:X16} {evt.InterfaceName}.{evt.MethodName} (exit)");
+            //Console.Out.Flush();
         }
 
         public void OnExitWithError(in ManagedToNativeEvent evt)
         {
-            Console.WriteLine($"-> {evt.InterfaceName}.{evt.MethodName} (exit with error {evt.Result})");
+            Console.WriteLine($"-> 0x{evt.NativePointer:X16} {evt.InterfaceName}.{evt.MethodName} (exit with error {evt.Result})");
             Console.Out.Flush();
         }
     }

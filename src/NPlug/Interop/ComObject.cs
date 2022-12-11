@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -50,6 +51,22 @@ internal static partial class LibVst
 
         public ComObjectManager Manager { get; }
 
+        public int InterfaceCount => _interfaceCount;
+
+        public uint ReferenceCount => _refCount;
+
+        public IntPtr GetInterfacePointer(int index, out Guid guid)
+        {
+            if ((uint)index >= (uint)_interfaceCount)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index));
+            }
+
+            var ptr = _handles + index;
+            guid = ptr->Guid;
+            return (IntPtr)ptr;
+        }
+        
         public object? Target { get; set; }
 
         public uint AddRef()
@@ -229,6 +246,14 @@ internal static partial class LibVst
                 _mapTargetToComObject.Add(target, comObject);
                 comObject.Target = target;
                 return comObject;
+            }
+        }
+
+        public ComObject[] GetAliveComObjects()
+        {
+            lock (_thisLock)
+            {
+                return _mapTargetToComObject.Values.ToArray();
             }
         }
 

@@ -5,6 +5,7 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq.Expressions;
 using System.Numerics;
 using System.Resources;
 using System.Runtime.CompilerServices;
@@ -801,44 +802,87 @@ public class CodeGenerator
                         var returnTypeAsStr = csMethodWrap.ReturnType.ToString();
                         var isComResult = returnTypeAsStr == "ComResult";
 
-                        writer.WriteLine($"var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof({csStruct.Name}), \"{cppMethod.Name}\");");
-                        writer.WriteLine("try");
+                        writer.WriteLine("if (InteropHelper.IsTracerEnabled)");
                         writer.OpenBraceBlock();
-
-                        if (returnTypeAsStr != "void")
                         {
-                            writer.Write("return ");
-                        }
+                            writer.WriteLine($"var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof({csStruct.Name}), \"{cppMethod.Name}\");");
+                            writer.WriteLine("try");
+                            writer.OpenBraceBlock();
 
-                        writer.Write(csMethod.Name);
-                        writer.Write("(");
-                        for (var i = 0; i < csMethod.Parameters.Count; i++)
-                        {
-                            var csParameter = csMethod.Parameters[i];
-                            if (i > 0)
+                            if (returnTypeAsStr != "void")
                             {
-                                writer.Write(", ");
+                                writer.Write("return ");
                             }
-                            writer.Write(csParameter.Name);
-                        }
-                        writer.WriteLine(");");
 
-                        writer.CloseBraceBlock();
-                        writer.WriteLine("catch (Exception ex)");
-                        writer.OpenBraceBlock();
-                        writer.WriteLine("__evt__.Exception = ex;");
-                        if (isComResult)
-                        {
-                            writer.WriteLine("return ex;");
+                            writer.Write(csMethod.Name);
+                            writer.Write("(");
+                            for (var i = 0; i < csMethod.Parameters.Count; i++)
+                            {
+                                var csParameter = csMethod.Parameters[i];
+                                if (i > 0)
+                                {
+                                    writer.Write(", ");
+                                }
+                                writer.Write(csParameter.Name);
+                            }
+                            writer.WriteLine(");");
+
+                            writer.CloseBraceBlock();
+                            writer.WriteLine("catch (Exception ex)");
+                            writer.OpenBraceBlock();
+                            writer.WriteLine("__evt__.Exception = ex;");
+                            if (isComResult)
+                            {
+                                writer.WriteLine("return ex;");
+                            }
+                            else if (returnTypeAsStr != "void")
+                            {
+                                writer.WriteLine("return default;");
+                            }
+                            writer.CloseBraceBlock();
+                            writer.WriteLine("finally");
+                            writer.OpenBraceBlock();
+                            writer.WriteLine("__evt__.Dispose();");
+                            writer.CloseBraceBlock();
                         }
-                        else if (returnTypeAsStr != "void")
-                        {
-                            writer.WriteLine("return default;");
-                        }
                         writer.CloseBraceBlock();
-                        writer.WriteLine("finally");
+                        writer.WriteLine("else");
                         writer.OpenBraceBlock();
-                        writer.WriteLine("__evt__.Dispose();");
+                        {
+                            writer.WriteLine("try");
+                            writer.OpenBraceBlock();
+
+                            if (returnTypeAsStr != "void")
+                            {
+                                writer.Write("return ");
+                            }
+
+                            writer.Write(csMethod.Name);
+                            writer.Write("(");
+                            for (var i = 0; i < csMethod.Parameters.Count; i++)
+                            {
+                                var csParameter = csMethod.Parameters[i];
+                                if (i > 0)
+                                {
+                                    writer.Write(", ");
+                                }
+                                writer.Write(csParameter.Name);
+                            }
+                            writer.WriteLine(");");
+
+                            writer.CloseBraceBlock();
+                            writer.WriteLine(isComResult ? "catch (Exception ex)" : "catch");
+                            writer.OpenBraceBlock();
+                            if (isComResult)
+                            {
+                                writer.WriteLine("return ex;");
+                            }
+                            else if (returnTypeAsStr != "void")
+                            {
+                                writer.WriteLine("return default;");
+                            }
+                            writer.CloseBraceBlock();
+                        }
                         writer.CloseBraceBlock();
                     };
 
@@ -989,33 +1033,58 @@ public class CodeGenerator
             functionPointer.Parameters.Insert(0, thisPointer);
             var builder = new StringBuilder();
 
-            writer.WriteLine($"var __self__ = ({thisPointer})Unsafe.AsPointer(ref this);");
-            writer.WriteLine($"var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof({csClass.Name}), \"{cppMethod.Name}\");");
+            writer.WriteLine("if (InteropHelper.IsTracerEnabled)");
+            writer.OpenBraceBlock();
+            {
+                writer.WriteLine($"var __self__ = ({thisPointer})Unsafe.AsPointer(ref this);");
+                writer.WriteLine($"var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof({csClass.Name}), \"{cppMethod.Name}\");");
 
-            if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
-            {
-                builder.Append("var __result__ = ");
-            }
-            builder.Append($"(({functionPointer})Vtbl[{localVirtualMethodIndex}])(__self__");
-            for (var i = 0; i < csMethod.Parameters.Count; i++)
-            {
-                var csParam = csMethod.Parameters[i];
-                builder.Append(", ");
-                builder.Append(csParam.Name);
-            }
+                if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
+                {
+                    builder.Append("var __result__ = ");
+                }
+                builder.Append($"(({functionPointer})Vtbl[{localVirtualMethodIndex}])(__self__");
+                for (var i = 0; i < csMethod.Parameters.Count; i++)
+                {
+                    var csParam = csMethod.Parameters[i];
+                    builder.Append(", ");
+                    builder.Append(csParam.Name);
+                }
 
-            builder.Append(");");
-            writer.WriteLine(builder.ToString());
+                builder.Append(");");
+                writer.WriteLine(builder.ToString());
 
-            if (csMethod.ReturnType.ToString() == "ComResult")
-            {
-                writer.WriteLine("__evt__.Result = __result__.Value;");
+                if (csMethod.ReturnType.ToString() == "ComResult")
+                {
+                    writer.WriteLine("__evt__.Result = __result__.Value;");
+                }
+                writer.WriteLine("__evt__.Dispose();");
+                if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
+                {
+                    writer.WriteLine("return __result__;");
+                }
             }
-            writer.WriteLine("__evt__.Dispose();");
-            if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
+            writer.CloseBraceBlock();
+            writer.WriteLine("else");
+            writer.OpenBraceBlock();
             {
-                writer.WriteLine("return __result__;");
+                builder.Clear();
+                if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
+                {
+                    builder.Append("return ");
+                }
+                builder.Append($"(({functionPointer})Vtbl[{localVirtualMethodIndex}])(({thisPointer})Unsafe.AsPointer(ref this)");
+                for (var i = 0; i < csMethod.Parameters.Count; i++)
+                {
+                    var csParam = csMethod.Parameters[i];
+                    builder.Append(", ");
+                    builder.Append(csParam.Name);
+                }
+
+                builder.Append(");");
+                writer.WriteLine(builder.ToString());
             }
+            writer.CloseBraceBlock();
         };
         return csMethod;
     }
@@ -1037,10 +1106,10 @@ public class CodeGenerator
                 var builder = new StringBuilder();
                 builder.AppendLine("return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()");
                 builder.Append("        ? new ReadOnlySpan<byte>(new byte[] { ");
-                WriteUuid(builder, uuid, false);
+                builder.Append(uuid.ToBytes(true));
                 builder.AppendLine(" })");
                 builder.Append("        : new ReadOnlySpan<byte>(new byte[] { ");
-                WriteUuid(builder, uuid, true);
+                builder.Append(uuid.ToBytes(false));
                 builder.AppendLine(" })");
                 builder.Append("    )));");
                 writer.WriteLine(builder.ToString());
@@ -1062,50 +1131,6 @@ public class CodeGenerator
 
         csStruct.Members.Add(prop);
     }
-
-    private void WriteUuid(StringBuilder builder, Uuid uuid, bool bigEndian)
-    {
-        WriteByte(builder, uuid.Value1, bigEndian);
-        builder.Append(", ");
-        WriteByte(builder, uuid.Value2High, bigEndian);
-        builder.Append(", ");
-        WriteByte(builder, uuid.Value2Low, bigEndian);
-        builder.Append(", ");
-        WriteByte(builder, uuid.Value3, !bigEndian);
-        builder.Append(", ");
-        WriteByte(builder, uuid.Value4, !bigEndian);
-    }
-
-    private void WriteByte(StringBuilder builder, uint value, bool bigEndian)
-    {
-        byte[] bytes = BitConverter.GetBytes(value);
-        if (bigEndian == BitConverter.IsLittleEndian)
-        {
-            bytes = bytes.Reverse().ToArray();
-        }
-        WriteByte(builder, bytes);
-    }
-
-    private void WriteByte(StringBuilder builder, ushort value, bool bigEndian)
-    {
-        byte[] bytes = BitConverter.GetBytes(value);
-        if (bigEndian == BitConverter.IsLittleEndian)
-        {
-            bytes = bytes.Reverse().ToArray();
-        }
-        WriteByte(builder, bytes);
-    }
-
-    private void WriteByte(StringBuilder builder, byte[] bytes)
-    {
-        for (var i = 0; i < bytes.Length; i++)
-        {
-            var b = bytes[i];
-            if (i > 0) builder.Append(", ");
-            builder.Append($"0x{b:x2}");
-        }
-    }
-
 
     private static readonly Regex RegexMatchIID = new Regex(@"\w+\s*\((\w+)\s*,\s*(0x\w+)\s*,\s*(0x\w+)\s*,\s*(0x\w+)\s*,\s*(0x\w+)\s*\)");
     private string _destinationFolder;
@@ -1149,6 +1174,20 @@ public class CodeGenerator
         public override string ToString()
         {
             return $"0x{Value1:x8}, 0x{Value2:x8}, 0x{Value3:x8}, 0x{Value4:x8}";
+        }
+
+        public string ToBytes(bool isWindows)
+        {
+            return isWindows
+                    ? $"0x{Value1 & 0xFF:x2}, 0x{(Value1 >> 8) & 0xFF:x2}, 0x{(Value1 >> 16) & 0xFF:x2}, 0x{(Value1 >> 24) & 0xFF:x2}, " +
+                      $"0x{(Value2 >> 16) & 0xFF:x2}, 0x{(Value2 >> 24) & 0xFF:x2}, 0x{Value2 & 0xFF:x2}, 0x{(Value2 >> 8) & 0xFF:x2}, " +
+                      $"0x{(Value3 >> 24) & 0xFF:x2}, 0x{(Value3 >> 16) & 0xFF:x2}, 0x{(Value3 >> 8) & 0xFF:x2}, 0x{Value3 & 0xFF:x2}, " +
+                      $"0x{(Value4 >> 24) & 0xFF:x2}, 0x{(Value4 >> 16) & 0xFF:x2}, 0x{(Value4 >> 8) & 0xFF:x2}, 0x{Value4 & 0xFF:x2}"
+                    : $"0x{(Value1 >> 24) & 0xFF:x2}, 0x{(Value1 >> 16) & 0xFF:x2}, 0x{(Value1 >> 8) & 0xFF:x2}, 0x{Value1 & 0xFF:x2}, " +
+                      $"0x{(Value2 >> 24) & 0xFF:x2}, 0x{(Value2 >> 16) & 0xFF:x2}, 0x{(Value2 >> 8) & 0xFF:x2}, 0x{Value2 & 0xFF:x2}, " +
+                      $"0x{(Value3 >> 24) & 0xFF:x2}, 0x{(Value3 >> 16) & 0xFF:x2}, 0x{(Value3 >> 8) & 0xFF:x2}, 0x{Value3 & 0xFF:x2}, " +
+                      $"0x{(Value4 >> 24) & 0xFF:x2}, 0x{(Value4 >> 16) & 0xFF:x2}, 0x{(Value4 >> 8) & 0xFF:x2}, 0x{Value4 & 0xFF:x2}"
+                ;
         }
     }
 

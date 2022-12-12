@@ -64,12 +64,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.FUnknown*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(FUnknown), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.FUnknown*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.FUnknown*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(FUnknown), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.FUnknown*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.FUnknown*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.FUnknown*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -82,11 +89,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.FUnknown*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(FUnknown), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.FUnknown*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.FUnknown*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(FUnknown), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.FUnknown*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.FUnknown*, uint>)Vtbl[1])((LibVst.FUnknown*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -96,11 +110,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.FUnknown*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(FUnknown), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.FUnknown*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.FUnknown*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(FUnknown), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.FUnknown*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.FUnknown*, uint>)Vtbl[2])((LibVst.FUnknown*)Unsafe.AsPointer(ref this));
+            }
         }
         
         // --------------------------------------------------------------
@@ -118,19 +139,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int queryInterface_Wrapper(FUnknown* self, Guid* _iid, void** obj)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(FUnknown), "queryInterface");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return queryInterface_ToManaged(self, _iid, obj);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(FUnknown), "queryInterface");
+                try
+                {
+                    return queryInterface_ToManaged(self, _iid, obj);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return queryInterface_ToManaged(self, _iid, obj);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -146,19 +181,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint addRef_Wrapper(FUnknown* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(FUnknown), "addRef");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return addRef_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(FUnknown), "addRef");
+                try
+                {
+                    return addRef_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return addRef_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -171,19 +220,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint release_Wrapper(FUnknown* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(FUnknown), "release");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return release_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(FUnknown), "release");
+                try
+                {
+                    return release_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return release_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -197,7 +260,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x46, 0x00, 0x00, 0x00 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x46 })
                     )));
             }
         }
@@ -241,12 +304,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IBStream*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IBStream*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IBStream*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IBStream*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -259,11 +329,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IBStream*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IBStream*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IBStream*, uint>)Vtbl[1])((LibVst.IBStream*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -273,11 +350,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IBStream*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IBStream*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IBStream*, uint>)Vtbl[2])((LibVst.IBStream*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -289,12 +373,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult read(void* buffer, int numBytes, int* numBytesRead)
         {
-            var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "read");
-            var __result__ = ((delegate*unmanaged<LibVst.IBStream*, void*, int, int*, ComResult>)Vtbl[3])(__self__, buffer, numBytes, numBytesRead);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "read");
+                var __result__ = ((delegate*unmanaged<LibVst.IBStream*, void*, int, int*, ComResult>)Vtbl[3])(__self__, buffer, numBytes, numBytesRead);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IBStream*, void*, int, int*, ComResult>)Vtbl[3])((LibVst.IBStream*)Unsafe.AsPointer(ref this), buffer, numBytes, numBytesRead);
+            }
         }
         
         /// <summary>
@@ -306,12 +397,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult write(void* buffer, int numBytes, int* numBytesWritten)
         {
-            var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "write");
-            var __result__ = ((delegate*unmanaged<LibVst.IBStream*, void*, int, int*, ComResult>)Vtbl[4])(__self__, buffer, numBytes, numBytesWritten);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "write");
+                var __result__ = ((delegate*unmanaged<LibVst.IBStream*, void*, int, int*, ComResult>)Vtbl[4])(__self__, buffer, numBytes, numBytesWritten);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IBStream*, void*, int, int*, ComResult>)Vtbl[4])((LibVst.IBStream*)Unsafe.AsPointer(ref this), buffer, numBytes, numBytesWritten);
+            }
         }
         
         /// <summary>
@@ -323,12 +421,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult seek(long pos, int mode, long* result)
         {
-            var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "seek");
-            var __result__ = ((delegate*unmanaged<LibVst.IBStream*, long, int, long*, ComResult>)Vtbl[5])(__self__, pos, mode, result);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "seek");
+                var __result__ = ((delegate*unmanaged<LibVst.IBStream*, long, int, long*, ComResult>)Vtbl[5])(__self__, pos, mode, result);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IBStream*, long, int, long*, ComResult>)Vtbl[5])((LibVst.IBStream*)Unsafe.AsPointer(ref this), pos, mode, result);
+            }
         }
         
         /// <summary>
@@ -338,12 +443,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult tell(long* pos)
         {
-            var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "tell");
-            var __result__ = ((delegate*unmanaged<LibVst.IBStream*, long*, ComResult>)Vtbl[6])(__self__, pos);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IBStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IBStream), "tell");
+                var __result__ = ((delegate*unmanaged<LibVst.IBStream*, long*, ComResult>)Vtbl[6])(__self__, pos);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IBStream*, long*, ComResult>)Vtbl[6])((LibVst.IBStream*)Unsafe.AsPointer(ref this), pos);
+            }
         }
         
         // --------------------------------------------------------------
@@ -360,19 +472,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int read_Wrapper(IBStream* self, void* buffer, int numBytes, int* numBytesRead)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "read");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return read_ToManaged(self, buffer, numBytes, numBytesRead);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "read");
+                try
+                {
+                    return read_ToManaged(self, buffer, numBytes, numBytesRead);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return read_ToManaged(self, buffer, numBytes, numBytesRead);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -387,19 +513,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int write_Wrapper(IBStream* self, void* buffer, int numBytes, int* numBytesWritten)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "write");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return write_ToManaged(self, buffer, numBytes, numBytesWritten);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "write");
+                try
+                {
+                    return write_ToManaged(self, buffer, numBytes, numBytesWritten);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return write_ToManaged(self, buffer, numBytes, numBytesWritten);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -414,19 +554,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int seek_Wrapper(IBStream* self, long pos, int mode, long* result)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "seek");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return seek_ToManaged(self, pos, mode, result);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "seek");
+                try
+                {
+                    return seek_ToManaged(self, pos, mode, result);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return seek_ToManaged(self, pos, mode, result);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -439,19 +593,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int tell_Wrapper(IBStream* self, long* pos)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "tell");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return tell_ToManaged(self, pos);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "tell");
+                try
+                {
+                    return tell_ToManaged(self, pos);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return tell_ToManaged(self, pos);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -483,7 +651,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xa2, 0x6e, 0xbf, 0xc3, 0x99, 0x30, 0x52, 0x47, 0x9b, 0x6b, 0xf9, 0x90, 0x1e, 0xe3, 0x3e, 0x9b })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xc3, 0xbf, 0x6e, 0xa2, 0x30, 0x99, 0x47, 0x52, 0x90, 0xf9, 0x6b, 0x9b, 0x9b, 0x3e, 0xe3, 0x1e })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xc3, 0xbf, 0x6e, 0xa2, 0x30, 0x99, 0x47, 0x52, 0x9b, 0x6b, 0xf9, 0x90, 0x1e, 0xe3, 0x3e, 0x9b })
                     )));
             }
         }
@@ -524,12 +692,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.ISizeableStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ISizeableStream), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.ISizeableStream*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ISizeableStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ISizeableStream), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.ISizeableStream*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ISizeableStream*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.ISizeableStream*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -542,11 +717,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.ISizeableStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ISizeableStream), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.ISizeableStream*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ISizeableStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ISizeableStream), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.ISizeableStream*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ISizeableStream*, uint>)Vtbl[1])((LibVst.ISizeableStream*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -556,11 +738,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.ISizeableStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ISizeableStream), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.ISizeableStream*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ISizeableStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ISizeableStream), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.ISizeableStream*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ISizeableStream*, uint>)Vtbl[2])((LibVst.ISizeableStream*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -569,12 +758,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getStreamSize(long* size)
         {
-            var __self__ = (LibVst.ISizeableStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ISizeableStream), "getStreamSize");
-            var __result__ = ((delegate*unmanaged<LibVst.ISizeableStream*, long*, ComResult>)Vtbl[3])(__self__, size);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ISizeableStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ISizeableStream), "getStreamSize");
+                var __result__ = ((delegate*unmanaged<LibVst.ISizeableStream*, long*, ComResult>)Vtbl[3])(__self__, size);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ISizeableStream*, long*, ComResult>)Vtbl[3])((LibVst.ISizeableStream*)Unsafe.AsPointer(ref this), size);
+            }
         }
         
         /// <summary>
@@ -583,12 +779,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setStreamSize(long size)
         {
-            var __self__ = (LibVst.ISizeableStream*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ISizeableStream), "setStreamSize");
-            var __result__ = ((delegate*unmanaged<LibVst.ISizeableStream*, long, ComResult>)Vtbl[4])(__self__, size);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ISizeableStream*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ISizeableStream), "setStreamSize");
+                var __result__ = ((delegate*unmanaged<LibVst.ISizeableStream*, long, ComResult>)Vtbl[4])(__self__, size);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ISizeableStream*, long, ComResult>)Vtbl[4])((LibVst.ISizeableStream*)Unsafe.AsPointer(ref this), size);
+            }
         }
         
         // --------------------------------------------------------------
@@ -602,19 +805,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getStreamSize_Wrapper(ISizeableStream* self, long* size)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ISizeableStream), "getStreamSize");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getStreamSize_ToManaged(self, size);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ISizeableStream), "getStreamSize");
+                try
+                {
+                    return getStreamSize_ToManaged(self, size);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getStreamSize_ToManaged(self, size);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -626,19 +843,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setStreamSize_Wrapper(ISizeableStream* self, long size)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ISizeableStream), "setStreamSize");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setStreamSize_ToManaged(self, size);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ISizeableStream), "setStreamSize");
+                try
+                {
+                    return setStreamSize_ToManaged(self, size);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setStreamSize_ToManaged(self, size);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -652,7 +883,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x9e, 0x54, 0xf9, 0x04, 0x2f, 0xe0, 0x6e, 0x4e, 0x87, 0xe8, 0x6a, 0x87, 0x47, 0xf4, 0xe1, 0x7f })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x04, 0xf9, 0x54, 0x9e, 0xe0, 0x2f, 0x4e, 0x6e, 0x87, 0x6a, 0xe8, 0x87, 0x7f, 0xe1, 0xf4, 0x47 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x04, 0xf9, 0x54, 0x9e, 0xe0, 0x2f, 0x4e, 0x6e, 0x87, 0xe8, 0x6a, 0x87, 0x47, 0xf4, 0xe1, 0x7f })
                     )));
             }
         }
@@ -693,12 +924,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.ICloneable*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ICloneable), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.ICloneable*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ICloneable*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ICloneable), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.ICloneable*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ICloneable*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.ICloneable*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -711,11 +949,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.ICloneable*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ICloneable), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.ICloneable*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ICloneable*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ICloneable), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.ICloneable*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ICloneable*, uint>)Vtbl[1])((LibVst.ICloneable*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -725,11 +970,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.ICloneable*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ICloneable), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.ICloneable*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ICloneable*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ICloneable), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.ICloneable*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ICloneable*, uint>)Vtbl[2])((LibVst.ICloneable*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -738,11 +990,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.FUnknown* clone()
         {
-            var __self__ = (LibVst.ICloneable*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ICloneable), "clone");
-            var __result__ = ((delegate*unmanaged<LibVst.ICloneable*, LibVst.FUnknown*>)Vtbl[3])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ICloneable*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ICloneable), "clone");
+                var __result__ = ((delegate*unmanaged<LibVst.ICloneable*, LibVst.FUnknown*>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ICloneable*, LibVst.FUnknown*>)Vtbl[3])((LibVst.ICloneable*)Unsafe.AsPointer(ref this));
+            }
         }
         
         // --------------------------------------------------------------
@@ -756,19 +1015,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.FUnknown* clone_Wrapper(ICloneable* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ICloneable), "clone");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return clone_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ICloneable), "clone");
+                try
+                {
+                    return clone_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return clone_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -782,7 +1055,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xb9, 0x06, 0x54, 0xd4, 0x2d, 0x3a, 0x43, 0x44, 0x9d, 0xad, 0x9b, 0xa9, 0x85, 0xa1, 0x45, 0x4b })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xd4, 0x54, 0x06, 0xb9, 0x3a, 0x2d, 0x44, 0x43, 0xa9, 0x9b, 0xad, 0x9d, 0x4b, 0x45, 0xa1, 0x85 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xd4, 0x54, 0x06, 0xb9, 0x3a, 0x2d, 0x44, 0x43, 0x9d, 0xad, 0x9b, 0xa9, 0x85, 0xa1, 0x45, 0x4b })
                     )));
             }
         }
@@ -826,12 +1099,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IString*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IString*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IString*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IString*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -844,11 +1124,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IString*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IString*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IString*, uint>)Vtbl[1])((LibVst.IString*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -858,11 +1145,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IString*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IString*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IString*, uint>)Vtbl[2])((LibVst.IString*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -871,10 +1165,17 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void setText8(byte* text)
         {
-            var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "setText8");
-            ((delegate*unmanaged<LibVst.IString*, byte*, void>)Vtbl[3])(__self__, text);
-            __evt__.Dispose();
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "setText8");
+                ((delegate*unmanaged<LibVst.IString*, byte*, void>)Vtbl[3])(__self__, text);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged<LibVst.IString*, byte*, void>)Vtbl[3])((LibVst.IString*)Unsafe.AsPointer(ref this), text);
+            }
         }
         
         /// <summary>
@@ -883,10 +1184,17 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void setText16(char* text)
         {
-            var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "setText16");
-            ((delegate*unmanaged<LibVst.IString*, char*, void>)Vtbl[4])(__self__, text);
-            __evt__.Dispose();
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "setText16");
+                ((delegate*unmanaged<LibVst.IString*, char*, void>)Vtbl[4])(__self__, text);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged<LibVst.IString*, char*, void>)Vtbl[4])((LibVst.IString*)Unsafe.AsPointer(ref this), text);
+            }
         }
         
         /// <summary>
@@ -897,11 +1205,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public byte* getText8()
         {
-            var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "getText8");
-            var __result__ = ((delegate*unmanaged<LibVst.IString*, byte*>)Vtbl[5])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "getText8");
+                var __result__ = ((delegate*unmanaged<LibVst.IString*, byte*>)Vtbl[5])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IString*, byte*>)Vtbl[5])((LibVst.IString*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -910,11 +1225,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public char* getText16()
         {
-            var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "getText16");
-            var __result__ = ((delegate*unmanaged<LibVst.IString*, char*>)Vtbl[6])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "getText16");
+                var __result__ = ((delegate*unmanaged<LibVst.IString*, char*>)Vtbl[6])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IString*, char*>)Vtbl[6])((LibVst.IString*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -925,10 +1247,17 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void take(void* s, byte isWide)
         {
-            var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "take");
-            ((delegate*unmanaged<LibVst.IString*, void*, byte, void>)Vtbl[7])(__self__, s, isWide);
-            __evt__.Dispose();
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "take");
+                ((delegate*unmanaged<LibVst.IString*, void*, byte, void>)Vtbl[7])(__self__, s, isWide);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged<LibVst.IString*, void*, byte, void>)Vtbl[7])((LibVst.IString*)Unsafe.AsPointer(ref this), s, isWide);
+            }
         }
         
         /// <summary>
@@ -937,11 +1266,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public byte isWideString()
         {
-            var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "isWideString");
-            var __result__ = ((delegate*unmanaged<LibVst.IString*, byte>)Vtbl[8])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IString*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IString), "isWideString");
+                var __result__ = ((delegate*unmanaged<LibVst.IString*, byte>)Vtbl[8])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IString*, byte>)Vtbl[8])((LibVst.IString*)Unsafe.AsPointer(ref this));
+            }
         }
         
         // --------------------------------------------------------------
@@ -955,18 +1291,31 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void setText8_Wrapper(IString* self, byte* text)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "setText8");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                setText8_ToManaged(self, text);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "setText8");
+                try
+                {
+                    setText8_ToManaged(self, text);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    setText8_ToManaged(self, text);
+                }
+                catch
+                {
+                }
             }
         }
         
@@ -978,18 +1327,31 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void setText16_Wrapper(IString* self, char* text)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "setText16");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                setText16_ToManaged(self, text);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "setText16");
+                try
+                {
+                    setText16_ToManaged(self, text);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    setText16_ToManaged(self, text);
+                }
+                catch
+                {
+                }
             }
         }
         
@@ -1003,19 +1365,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static byte* getText8_Wrapper(IString* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "getText8");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getText8_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "getText8");
+                try
+                {
+                    return getText8_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getText8_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -1027,19 +1403,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static char* getText16_Wrapper(IString* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "getText16");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getText16_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "getText16");
+                try
+                {
+                    return getText16_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getText16_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -1053,18 +1443,31 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void take_Wrapper(IString* self, void* s, byte isWide)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "take");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                take_ToManaged(self, s, isWide);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "take");
+                try
+                {
+                    take_ToManaged(self, s, isWide);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    take_ToManaged(self, s, isWide);
+                }
+                catch
+                {
+                }
             }
         }
         
@@ -1076,19 +1479,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static byte isWideString_Wrapper(IString* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "isWideString");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return isWideString_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IString), "isWideString");
+                try
+                {
+                    return isWideString_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return isWideString_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -1102,7 +1519,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xa3, 0xb7, 0x9d, 0xf9, 0xc1, 0x0f, 0x21, 0x48, 0x80, 0x0b, 0x0c, 0xf9, 0x8e, 0x34, 0x8e, 0xdf })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xf9, 0x9d, 0xb7, 0xa3, 0x0f, 0xc1, 0x48, 0x21, 0xf9, 0x0c, 0x0b, 0x80, 0xdf, 0x8e, 0x34, 0x8e })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf9, 0x9d, 0xb7, 0xa3, 0x0f, 0xc1, 0x48, 0x21, 0x80, 0x0b, 0x0c, 0xf9, 0x8e, 0x34, 0x8e, 0xdf })
                     )));
             }
         }
@@ -1139,18 +1556,31 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void disableErrorUI_Wrapper(IErrorContext* self, byte state)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IErrorContext), "disableErrorUI");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                disableErrorUI_ToManaged(self, state);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IErrorContext), "disableErrorUI");
+                try
+                {
+                    disableErrorUI_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    disableErrorUI_ToManaged(self, state);
+                }
+                catch
+                {
+                }
             }
         }
         
@@ -1162,19 +1592,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int errorMessageShown_Wrapper(IErrorContext* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IErrorContext), "errorMessageShown");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return errorMessageShown_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IErrorContext), "errorMessageShown");
+                try
+                {
+                    return errorMessageShown_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return errorMessageShown_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -1186,19 +1630,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getErrorMessage_Wrapper(IErrorContext* self, LibVst.IString* message)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IErrorContext), "getErrorMessage");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getErrorMessage_ToManaged(self, message);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IErrorContext), "getErrorMessage");
+                try
+                {
+                    return getErrorMessage_ToManaged(self, message);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getErrorMessage_ToManaged(self, message);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -1212,7 +1670,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x7b, 0xd0, 0xbc, 0x12, 0x69, 0x7c, 0x36, 0x43, 0xb7, 0xda, 0x77, 0xc3, 0x44, 0x4a, 0x0c, 0xd0 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x12, 0xbc, 0xd0, 0x7b, 0x7c, 0x69, 0x43, 0x36, 0xc3, 0x77, 0xda, 0xb7, 0xd0, 0x0c, 0x4a, 0x44 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x12, 0xbc, 0xd0, 0x7b, 0x7c, 0x69, 0x43, 0x36, 0xb7, 0xda, 0x77, 0xc3, 0x44, 0x4a, 0x0c, 0xd0 })
                     )));
             }
         }
@@ -1248,12 +1706,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -1266,11 +1731,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, uint>)Vtbl[1])((LibVst.IAttributes*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -1280,11 +1752,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, uint>)Vtbl[2])((LibVst.IAttributes*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -1303,12 +1782,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult set(LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "set");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[3])(__self__, attrID, data);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "set");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[3])(__self__, attrID, data);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[3])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
+            }
         }
         
         /// <summary>
@@ -1319,12 +1805,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queue(LibVst.IAttrID listID, LibVst.FVariant* data)
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "queue");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[4])(__self__, listID, data);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "queue");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[4])(__self__, listID, data);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[4])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
+            }
         }
         
         /// <summary>
@@ -1336,12 +1829,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "setBinaryData");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, byte, ComResult>)Vtbl[5])(__self__, attrID, data, bytes, copyBytes);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "setBinaryData");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, byte, ComResult>)Vtbl[5])(__self__, attrID, data, bytes, copyBytes);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, byte, ComResult>)Vtbl[5])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
+            }
         }
         
         /// <remarks>
@@ -1352,12 +1852,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult get(LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "get");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[6])(__self__, attrID, data);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "get");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[6])(__self__, attrID, data);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[6])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
+            }
         }
         
         /// <summary>
@@ -1369,12 +1876,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult unqueue(LibVst.IAttrID listID, LibVst.FVariant* data)
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "unqueue");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[7])(__self__, listID, data);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "unqueue");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[7])(__self__, listID, data);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[7])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
+            }
         }
         
         /// <summary>
@@ -1383,11 +1897,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getQueueItemCount(LibVst.IAttrID arg)
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getQueueItemCount");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])(__self__, arg);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getQueueItemCount");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])(__self__, arg);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), arg);
+            }
         }
         
         /// <summary>
@@ -1396,12 +1917,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult resetQueue(LibVst.IAttrID attrID)
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "resetQueue");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, ComResult>)Vtbl[9])(__self__, attrID);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "resetQueue");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, ComResult>)Vtbl[9])(__self__, attrID);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, ComResult>)Vtbl[9])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
+            }
         }
         
         /// <summary>
@@ -1410,12 +1938,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult resetAllQueues()
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "resetAllQueues");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, ComResult>)Vtbl[10])(__self__);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "resetAllQueues");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, ComResult>)Vtbl[10])(__self__);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, ComResult>)Vtbl[10])((LibVst.IAttributes*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -1425,12 +1960,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getBinaryData(LibVst.IAttrID attrID, void* data, uint bytes)
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getBinaryData");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, ComResult>)Vtbl[11])(__self__, attrID, data, bytes);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getBinaryData");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, ComResult>)Vtbl[11])(__self__, attrID, data, bytes);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, ComResult>)Vtbl[11])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes);
+            }
         }
         
         /// <summary>
@@ -1439,11 +1981,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint getBinaryDataSize(LibVst.IAttrID attrID)
         {
-            var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getBinaryDataSize");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, uint>)Vtbl[12])(__self__, attrID);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getBinaryDataSize");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, uint>)Vtbl[12])(__self__, attrID);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes*, LibVst.IAttrID, uint>)Vtbl[12])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
+            }
         }
         
         /// <summary>
@@ -1456,7 +2005,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xf9, 0x32, 0x1e, 0xfa, 0x6d, 0xca, 0xf5, 0x46, 0xa9, 0x82, 0xf9, 0x56, 0xb1, 0x19, 0x1b, 0x58 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xfa, 0x1e, 0x32, 0xf9, 0xca, 0x6d, 0x46, 0xf5, 0x56, 0xf9, 0x82, 0xa9, 0x58, 0x1b, 0x19, 0xb1 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xfa, 0x1e, 0x32, 0xf9, 0xca, 0x6d, 0x46, 0xf5, 0xa9, 0x82, 0xf9, 0x56, 0xb1, 0x19, 0x1b, 0x58 })
                     )));
             }
         }
@@ -1551,19 +2100,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getClassID_Wrapper(IPersistent* self, byte* uid)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPersistent), "getClassID");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getClassID_ToManaged(self, uid);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPersistent), "getClassID");
+                try
+                {
+                    return getClassID_ToManaged(self, uid);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getClassID_ToManaged(self, uid);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -1575,19 +2138,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int saveAttributes_Wrapper(IPersistent* self, LibVst.IAttributes* arg)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPersistent), "saveAttributes");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return saveAttributes_ToManaged(self, arg);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPersistent), "saveAttributes");
+                try
+                {
+                    return saveAttributes_ToManaged(self, arg);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return saveAttributes_ToManaged(self, arg);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -1599,19 +2176,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int loadAttributes_Wrapper(IPersistent* self, LibVst.IAttributes* arg)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPersistent), "loadAttributes");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return loadAttributes_ToManaged(self, arg);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPersistent), "loadAttributes");
+                try
+                {
+                    return loadAttributes_ToManaged(self, arg);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return loadAttributes_ToManaged(self, arg);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -1625,7 +2216,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x37, 0x46, 0x1a, 0xba, 0x9f, 0x3c, 0xd0, 0x46, 0xa6, 0x5d, 0xba, 0x0e, 0xb8, 0x5d, 0xa8, 0x29 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xba, 0x1a, 0x46, 0x37, 0x3c, 0x9f, 0x46, 0xd0, 0x0e, 0xba, 0x5d, 0xa6, 0x29, 0xa8, 0x5d, 0xb8 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xba, 0x1a, 0x46, 0x37, 0x3c, 0x9f, 0x46, 0xd0, 0xa6, 0x5d, 0xba, 0x0e, 0xb8, 0x5d, 0xa8, 0x29 })
                     )));
             }
         }
@@ -1658,12 +2249,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -1676,11 +2274,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, uint>)Vtbl[1])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -1690,11 +2295,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, uint>)Vtbl[2])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -1713,12 +2325,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult set(LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "set");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[3])(__self__, attrID, data);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "set");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[3])(__self__, attrID, data);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[3])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), attrID, data);
+            }
         }
         
         /// <summary>
@@ -1729,12 +2348,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queue(LibVst.IAttrID listID, LibVst.FVariant* data)
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "queue");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[4])(__self__, listID, data);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "queue");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[4])(__self__, listID, data);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[4])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), listID, data);
+            }
         }
         
         /// <summary>
@@ -1746,12 +2372,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "setBinaryData");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, void*, uint, byte, ComResult>)Vtbl[5])(__self__, attrID, data, bytes, copyBytes);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "setBinaryData");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, void*, uint, byte, ComResult>)Vtbl[5])(__self__, attrID, data, bytes, copyBytes);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, void*, uint, byte, ComResult>)Vtbl[5])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
+            }
         }
         
         /// <remarks>
@@ -1762,12 +2395,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult get(LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "get");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[6])(__self__, attrID, data);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "get");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[6])(__self__, attrID, data);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[6])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), attrID, data);
+            }
         }
         
         /// <summary>
@@ -1779,12 +2419,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult unqueue(LibVst.IAttrID listID, LibVst.FVariant* data)
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "unqueue");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[7])(__self__, listID, data);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "unqueue");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[7])(__self__, listID, data);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, LibVst.FVariant*, ComResult>)Vtbl[7])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), listID, data);
+            }
         }
         
         /// <summary>
@@ -1793,11 +2440,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getQueueItemCount(LibVst.IAttrID arg)
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "getQueueItemCount");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, int>)Vtbl[8])(__self__, arg);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "getQueueItemCount");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, int>)Vtbl[8])(__self__, arg);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, int>)Vtbl[8])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), arg);
+            }
         }
         
         /// <summary>
@@ -1806,12 +2460,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult resetQueue(LibVst.IAttrID attrID)
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "resetQueue");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, ComResult>)Vtbl[9])(__self__, attrID);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "resetQueue");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, ComResult>)Vtbl[9])(__self__, attrID);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, ComResult>)Vtbl[9])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), attrID);
+            }
         }
         
         /// <summary>
@@ -1820,12 +2481,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult resetAllQueues()
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "resetAllQueues");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, ComResult>)Vtbl[10])(__self__);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "resetAllQueues");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, ComResult>)Vtbl[10])(__self__);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, ComResult>)Vtbl[10])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -1835,12 +2503,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getBinaryData(LibVst.IAttrID attrID, void* data, uint bytes)
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "getBinaryData");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, void*, uint, ComResult>)Vtbl[11])(__self__, attrID, data, bytes);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "getBinaryData");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, void*, uint, ComResult>)Vtbl[11])(__self__, attrID, data, bytes);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, void*, uint, ComResult>)Vtbl[11])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), attrID, data, bytes);
+            }
         }
         
         /// <summary>
@@ -1849,11 +2524,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint getBinaryDataSize(LibVst.IAttrID attrID)
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "getBinaryDataSize");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, uint>)Vtbl[12])(__self__, attrID);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "getBinaryDataSize");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, uint>)Vtbl[12])(__self__, attrID);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, LibVst.IAttrID, uint>)Vtbl[12])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), attrID);
+            }
         }
         
         /// <summary>
@@ -1862,11 +2544,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int countAttributes()
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "countAttributes");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, int>)Vtbl[13])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "countAttributes");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, int>)Vtbl[13])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, int>)Vtbl[13])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -1875,11 +2564,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IAttrID getAttributeID(int index)
         {
-            var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "getAttributeID");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, int, LibVst.IAttrID>)Vtbl[14])(__self__, index);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "getAttributeID");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributes2*, int, LibVst.IAttrID>)Vtbl[14])(__self__, index);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributes2*, int, LibVst.IAttrID>)Vtbl[14])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), index);
+            }
         }
         
         /// <summary>
@@ -1892,7 +2588,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x6a, 0x12, 0x82, 0x13, 0xca, 0xfe, 0x71, 0x48, 0x97, 0xd5, 0x2a, 0x45, 0xb0, 0x42, 0xae, 0x99 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x13, 0x82, 0x12, 0x6a, 0xfe, 0xca, 0x48, 0x71, 0x45, 0x2a, 0xd5, 0x97, 0x99, 0xae, 0x42, 0xb0 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x13, 0x82, 0x12, 0x6a, 0xfe, 0xca, 0x48, 0x71, 0x97, 0xd5, 0x2a, 0x45, 0xb0, 0x42, 0xae, 0x99 })
                     )));
             }
         }
@@ -1940,19 +2636,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int initialize_Wrapper(IPluginBase* self, LibVst.FUnknown* context)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginBase), "initialize");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return initialize_ToManaged(self, context);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginBase), "initialize");
+                try
+                {
+                    return initialize_ToManaged(self, context);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return initialize_ToManaged(self, context);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -1965,19 +2675,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int terminate_Wrapper(IPluginBase* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginBase), "terminate");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return terminate_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginBase), "terminate");
+                try
+                {
+                    return terminate_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return terminate_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -1991,7 +2715,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xdb, 0x8d, 0x88, 0x22, 0x6e, 0x15, 0xae, 0x45, 0x83, 0x58, 0xb3, 0x48, 0x08, 0x19, 0x06, 0x25 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x22, 0x88, 0x8d, 0xdb, 0x15, 0x6e, 0x45, 0xae, 0x48, 0xb3, 0x58, 0x83, 0x25, 0x06, 0x19, 0x08 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x22, 0x88, 0x8d, 0xdb, 0x15, 0x6e, 0x45, 0xae, 0x83, 0x58, 0xb3, 0x48, 0x08, 0x19, 0x06, 0x25 })
                     )));
             }
         }
@@ -2035,19 +2759,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getFactoryInfo_Wrapper(IPluginFactory* self, LibVst.PFactoryInfo* info)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "getFactoryInfo");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getFactoryInfo_ToManaged(self, info);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "getFactoryInfo");
+                try
+                {
+                    return getFactoryInfo_ToManaged(self, info);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getFactoryInfo_ToManaged(self, info);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -2061,19 +2799,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int countClasses_Wrapper(IPluginFactory* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "countClasses");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return countClasses_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "countClasses");
+                try
+                {
+                    return countClasses_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return countClasses_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -2085,19 +2837,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getClassInfo_Wrapper(IPluginFactory* self, int index, LibVst.PClassInfo* info)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "getClassInfo");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getClassInfo_ToManaged(self, index, info);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "getClassInfo");
+                try
+                {
+                    return getClassInfo_ToManaged(self, index, info);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getClassInfo_ToManaged(self, index, info);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -2109,19 +2875,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int createInstance_Wrapper(IPluginFactory* self, LibVst.FIDString cid, LibVst.FIDString _iid, void** obj)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "createInstance");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return createInstance_ToManaged(self, cid, _iid, obj);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory), "createInstance");
+                try
+                {
+                    return createInstance_ToManaged(self, cid, _iid, obj);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return createInstance_ToManaged(self, cid, _iid, obj);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -2135,7 +2915,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x1c, 0x81, 0x4d, 0x7a, 0x11, 0x52, 0x1f, 0x4a, 0xae, 0xd9, 0xd2, 0xee, 0x0b, 0x43, 0xbf, 0x9f })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x7a, 0x4d, 0x81, 0x1c, 0x52, 0x11, 0x4a, 0x1f, 0xee, 0xd2, 0xd9, 0xae, 0x9f, 0xbf, 0x43, 0x0b })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x7a, 0x4d, 0x81, 0x1c, 0x52, 0x11, 0x4a, 0x1f, 0xae, 0xd9, 0xd2, 0xee, 0x0b, 0x43, 0xbf, 0x9f })
                     )));
             }
         }
@@ -2278,12 +3058,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory2*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -2296,11 +3083,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory2*, uint>)Vtbl[1])((LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -2310,11 +3104,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory2*, uint>)Vtbl[2])((LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -2323,12 +3124,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getFactoryInfo(LibVst.PFactoryInfo* info)
         {
-            var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "getFactoryInfo");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, LibVst.PFactoryInfo*, ComResult>)Vtbl[3])(__self__, info);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "getFactoryInfo");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, LibVst.PFactoryInfo*, ComResult>)Vtbl[3])(__self__, info);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory2*, LibVst.PFactoryInfo*, ComResult>)Vtbl[3])((LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this), info);
+            }
         }
         
         /// <summary>
@@ -2339,11 +3147,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int countClasses()
         {
-            var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "countClasses");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, int>)Vtbl[4])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "countClasses");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, int>)Vtbl[4])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory2*, int>)Vtbl[4])((LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -2352,12 +3167,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getClassInfo(int index, LibVst.PClassInfo* info)
         {
-            var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "getClassInfo");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, int, LibVst.PClassInfo*, ComResult>)Vtbl[5])(__self__, index, info);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "getClassInfo");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, int, LibVst.PClassInfo*, ComResult>)Vtbl[5])(__self__, index, info);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory2*, int, LibVst.PClassInfo*, ComResult>)Vtbl[5])((LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this), index, info);
+            }
         }
         
         /// <summary>
@@ -2366,12 +3188,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult createInstance(LibVst.FIDString cid, LibVst.FIDString _iid, void** obj)
         {
-            var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "createInstance");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, LibVst.FIDString, LibVst.FIDString, void**, ComResult>)Vtbl[6])(__self__, cid, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "createInstance");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, LibVst.FIDString, LibVst.FIDString, void**, ComResult>)Vtbl[6])(__self__, cid, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory2*, LibVst.FIDString, LibVst.FIDString, void**, ComResult>)Vtbl[6])((LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this), cid, _iid, obj);
+            }
         }
         
         /// <summary>
@@ -2380,12 +3209,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getClassInfo2(int index, LibVst.PClassInfo2* info)
         {
-            var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "getClassInfo2");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, int, LibVst.PClassInfo2*, ComResult>)Vtbl[7])(__self__, index, info);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "getClassInfo2");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory2*, int, LibVst.PClassInfo2*, ComResult>)Vtbl[7])(__self__, index, info);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory2*, int, LibVst.PClassInfo2*, ComResult>)Vtbl[7])((LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this), index, info);
+            }
         }
         
         // --------------------------------------------------------------
@@ -2399,19 +3235,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getClassInfo2_Wrapper(IPluginFactory2* self, int index, LibVst.PClassInfo2* info)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory2), "getClassInfo2");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getClassInfo2_ToManaged(self, index, info);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory2), "getClassInfo2");
+                try
+                {
+                    return getClassInfo2_ToManaged(self, index, info);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getClassInfo2_ToManaged(self, index, info);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -2425,7 +3275,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x50, 0xb6, 0x07, 0x00, 0x4b, 0xf2, 0x0b, 0x4c, 0xa4, 0x64, 0xed, 0xb9, 0xf0, 0x0b, 0x2a, 0xbb })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x00, 0x07, 0xb6, 0x50, 0xf2, 0x4b, 0x4c, 0x0b, 0xb9, 0xed, 0x64, 0xa4, 0xbb, 0x2a, 0x0b, 0xf0 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x00, 0x07, 0xb6, 0x50, 0xf2, 0x4b, 0x4c, 0x0b, 0xa4, 0x64, 0xed, 0xb9, 0xf0, 0x0b, 0x2a, 0xbb })
                     )));
             }
         }
@@ -2522,12 +3372,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory3*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -2540,11 +3397,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory3*, uint>)Vtbl[1])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -2554,11 +3418,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory3*, uint>)Vtbl[2])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -2567,12 +3438,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getFactoryInfo(LibVst.PFactoryInfo* info)
         {
-            var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "getFactoryInfo");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, LibVst.PFactoryInfo*, ComResult>)Vtbl[3])(__self__, info);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "getFactoryInfo");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, LibVst.PFactoryInfo*, ComResult>)Vtbl[3])(__self__, info);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory3*, LibVst.PFactoryInfo*, ComResult>)Vtbl[3])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this), info);
+            }
         }
         
         /// <summary>
@@ -2583,11 +3461,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int countClasses()
         {
-            var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "countClasses");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, int>)Vtbl[4])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "countClasses");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, int>)Vtbl[4])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory3*, int>)Vtbl[4])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -2596,12 +3481,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getClassInfo(int index, LibVst.PClassInfo* info)
         {
-            var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "getClassInfo");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, int, LibVst.PClassInfo*, ComResult>)Vtbl[5])(__self__, index, info);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "getClassInfo");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, int, LibVst.PClassInfo*, ComResult>)Vtbl[5])(__self__, index, info);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory3*, int, LibVst.PClassInfo*, ComResult>)Vtbl[5])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this), index, info);
+            }
         }
         
         /// <summary>
@@ -2610,12 +3502,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult createInstance(LibVst.FIDString cid, LibVst.FIDString _iid, void** obj)
         {
-            var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "createInstance");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, LibVst.FIDString, LibVst.FIDString, void**, ComResult>)Vtbl[6])(__self__, cid, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "createInstance");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, LibVst.FIDString, LibVst.FIDString, void**, ComResult>)Vtbl[6])(__self__, cid, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory3*, LibVst.FIDString, LibVst.FIDString, void**, ComResult>)Vtbl[6])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this), cid, _iid, obj);
+            }
         }
         
         /// <summary>
@@ -2624,12 +3523,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getClassInfo2(int index, LibVst.PClassInfo2* info)
         {
-            var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "getClassInfo2");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, int, LibVst.PClassInfo2*, ComResult>)Vtbl[7])(__self__, index, info);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "getClassInfo2");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, int, LibVst.PClassInfo2*, ComResult>)Vtbl[7])(__self__, index, info);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory3*, int, LibVst.PClassInfo2*, ComResult>)Vtbl[7])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this), index, info);
+            }
         }
         
         /// <summary>
@@ -2638,12 +3544,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getClassInfoUnicode(int index, LibVst.PClassInfoW* info)
         {
-            var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "getClassInfoUnicode");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, int, LibVst.PClassInfoW*, ComResult>)Vtbl[8])(__self__, index, info);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "getClassInfoUnicode");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, int, LibVst.PClassInfoW*, ComResult>)Vtbl[8])(__self__, index, info);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory3*, int, LibVst.PClassInfoW*, ComResult>)Vtbl[8])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this), index, info);
+            }
         }
         
         /// <summary>
@@ -2652,12 +3565,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setHostContext(LibVst.FUnknown* context)
         {
-            var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "setHostContext");
-            var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, LibVst.FUnknown*, ComResult>)Vtbl[9])(__self__, context);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "setHostContext");
+                var __result__ = ((delegate*unmanaged<LibVst.IPluginFactory3*, LibVst.FUnknown*, ComResult>)Vtbl[9])(__self__, context);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPluginFactory3*, LibVst.FUnknown*, ComResult>)Vtbl[9])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this), context);
+            }
         }
         
         // --------------------------------------------------------------
@@ -2671,19 +3591,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getClassInfoUnicode_Wrapper(IPluginFactory3* self, int index, LibVst.PClassInfoW* info)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory3), "getClassInfoUnicode");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getClassInfoUnicode_ToManaged(self, index, info);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory3), "getClassInfoUnicode");
+                try
+                {
+                    return getClassInfoUnicode_ToManaged(self, index, info);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getClassInfoUnicode_ToManaged(self, index, info);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -2695,19 +3629,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setHostContext_Wrapper(IPluginFactory3* self, LibVst.FUnknown* context)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory3), "setHostContext");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setHostContext_ToManaged(self, context);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginFactory3), "setHostContext");
+                try
+                {
+                    return setHostContext_ToManaged(self, context);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setHostContext_ToManaged(self, context);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -2721,7 +3669,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xab, 0xa2, 0x55, 0x45, 0x23, 0xc1, 0x57, 0x4e, 0x9b, 0x12, 0x29, 0x10, 0x36, 0x87, 0x89, 0x31 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x45, 0x55, 0xa2, 0xab, 0xc1, 0x23, 0x4e, 0x57, 0x10, 0x29, 0x12, 0x9b, 0x31, 0x89, 0x87, 0x36 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x45, 0x55, 0xa2, 0xab, 0xc1, 0x23, 0x4e, 0x57, 0x9b, 0x12, 0x29, 0x10, 0x36, 0x87, 0x89, 0x31 })
                     )));
             }
         }
@@ -2824,19 +3772,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getCompatibilityJSON_Wrapper(IPluginCompatibility* self, LibVst.IBStream* stream)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginCompatibility), "getCompatibilityJSON");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getCompatibilityJSON_ToManaged(self, stream);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPluginCompatibility), "getCompatibilityJSON");
+                try
+                {
+                    return getCompatibilityJSON_ToManaged(self, stream);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getCompatibilityJSON_ToManaged(self, stream);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -2850,7 +3812,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x6a, 0x4b, 0xfd, 0x4a, 0xd7, 0x35, 0x40, 0xc2, 0xa5, 0xc3, 0x14, 0x14, 0xfb, 0x7d, 0x15, 0xe6 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x4a, 0xfd, 0x4b, 0x6a, 0x35, 0xd7, 0xc2, 0x40, 0x14, 0x14, 0xc3, 0xa5, 0xe6, 0x15, 0x7d, 0xfb })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x4a, 0xfd, 0x4b, 0x6a, 0x35, 0xd7, 0xc2, 0x40, 0xa5, 0xc3, 0x14, 0x14, 0xfb, 0x7d, 0x15, 0xe6 })
                     )));
             }
         }
@@ -2892,12 +3854,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IStringResult*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStringResult), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IStringResult*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IStringResult*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStringResult), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IStringResult*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IStringResult*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IStringResult*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -2910,11 +3879,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IStringResult*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStringResult), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IStringResult*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IStringResult*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStringResult), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IStringResult*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IStringResult*, uint>)Vtbl[1])((LibVst.IStringResult*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -2924,11 +3900,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IStringResult*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStringResult), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IStringResult*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IStringResult*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStringResult), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IStringResult*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IStringResult*, uint>)Vtbl[2])((LibVst.IStringResult*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -2937,10 +3920,17 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void setText(byte* text)
         {
-            var __self__ = (LibVst.IStringResult*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStringResult), "setText");
-            ((delegate*unmanaged<LibVst.IStringResult*, byte*, void>)Vtbl[3])(__self__, text);
-            __evt__.Dispose();
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IStringResult*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStringResult), "setText");
+                ((delegate*unmanaged<LibVst.IStringResult*, byte*, void>)Vtbl[3])(__self__, text);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged<LibVst.IStringResult*, byte*, void>)Vtbl[3])((LibVst.IStringResult*)Unsafe.AsPointer(ref this), text);
+            }
         }
         
         // --------------------------------------------------------------
@@ -2954,18 +3944,31 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void setText_Wrapper(IStringResult* self, byte* text)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IStringResult), "setText");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                setText_ToManaged(self, text);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IStringResult), "setText");
+                try
+                {
+                    setText_ToManaged(self, text);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    setText_ToManaged(self, text);
+                }
+                catch
+                {
+                }
             }
         }
         
@@ -2979,7 +3982,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xbc, 0x98, 0x07, 0x55, 0x20, 0x87, 0xdb, 0x49, 0x84, 0x92, 0x0a, 0x15, 0x3b, 0x50, 0xb7, 0xa8 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x55, 0x07, 0x98, 0xbc, 0x87, 0x20, 0x49, 0xdb, 0x15, 0x0a, 0x92, 0x84, 0xa8, 0xb7, 0x50, 0x3b })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x55, 0x07, 0x98, 0xbc, 0x87, 0x20, 0x49, 0xdb, 0x84, 0x92, 0x0a, 0x15, 0x3b, 0x50, 0xb7, 0xa8 })
                     )));
             }
         }
@@ -3018,18 +4021,31 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void update_Wrapper(IDependent* self, LibVst.FUnknown* changedUnknown, int message)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDependent), "update");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                update_ToManaged(self, changedUnknown, message);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDependent), "update");
+                try
+                {
+                    update_ToManaged(self, changedUnknown, message);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    update_ToManaged(self, changedUnknown, message);
+                }
+                catch
+                {
+                }
             }
         }
         
@@ -3056,7 +4072,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xae, 0x7a, 0x2b, 0xf5, 0x72, 0xde, 0x6d, 0x41, 0x8a, 0xf1, 0x8a, 0xce, 0x9d, 0xd7, 0xbd, 0x5e })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xf5, 0x2b, 0x7a, 0xae, 0xde, 0x72, 0x41, 0x6d, 0xce, 0x8a, 0xf1, 0x8a, 0x5e, 0xbd, 0xd7, 0x9d })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf5, 0x2b, 0x7a, 0xae, 0xde, 0x72, 0x41, 0x6d, 0x8a, 0xf1, 0x8a, 0xce, 0x9d, 0xd7, 0xbd, 0x5e })
                     )));
             }
         }
@@ -3093,12 +4109,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUpdateHandler*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -3111,11 +4134,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUpdateHandler*, uint>)Vtbl[1])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -3125,11 +4155,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUpdateHandler*, uint>)Vtbl[2])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -3142,12 +4179,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult addDependent(LibVst.FUnknown* @object, LibVst.IDependent* dependent)
         {
-            var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "addDependent");
-            var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, LibVst.IDependent*, ComResult>)Vtbl[3])(__self__, @object, dependent);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "addDependent");
+                var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, LibVst.IDependent*, ComResult>)Vtbl[3])(__self__, @object, dependent);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, LibVst.IDependent*, ComResult>)Vtbl[3])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this), @object, dependent);
+            }
         }
         
         /// <summary>
@@ -3156,12 +4200,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult removeDependent(LibVst.FUnknown* @object, LibVst.IDependent* dependent)
         {
-            var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "removeDependent");
-            var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, LibVst.IDependent*, ComResult>)Vtbl[4])(__self__, @object, dependent);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "removeDependent");
+                var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, LibVst.IDependent*, ComResult>)Vtbl[4])(__self__, @object, dependent);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, LibVst.IDependent*, ComResult>)Vtbl[4])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this), @object, dependent);
+            }
         }
         
         /// <summary>
@@ -3173,12 +4224,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult triggerUpdates(LibVst.FUnknown* @object, int message)
         {
-            var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "triggerUpdates");
-            var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, int, ComResult>)Vtbl[5])(__self__, @object, message);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "triggerUpdates");
+                var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, int, ComResult>)Vtbl[5])(__self__, @object, message);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, int, ComResult>)Vtbl[5])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this), @object, message);
+            }
         }
         
         /// <summary>
@@ -3187,12 +4245,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult deferUpdates(LibVst.FUnknown* @object, int message)
         {
-            var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "deferUpdates");
-            var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, int, ComResult>)Vtbl[6])(__self__, @object, message);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUpdateHandler), "deferUpdates");
+                var __result__ = ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, int, ComResult>)Vtbl[6])(__self__, @object, message);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUpdateHandler*, LibVst.FUnknown*, int, ComResult>)Vtbl[6])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this), @object, message);
+            }
         }
         
         /// <summary>
@@ -3205,7 +4270,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x56, 0x6d, 0x24, 0xf5, 0x54, 0x86, 0x60, 0x4d, 0xb0, 0x26, 0xaf, 0xb5, 0x7b, 0x69, 0x7b, 0x37 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xf5, 0x24, 0x6d, 0x56, 0x86, 0x54, 0x4d, 0x60, 0xb5, 0xaf, 0x26, 0xb0, 0x37, 0x7b, 0x69, 0x7b })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf5, 0x24, 0x6d, 0x56, 0x86, 0x54, 0x4d, 0x60, 0xb0, 0x26, 0xaf, 0xb5, 0x7b, 0x69, 0x7b, 0x37 })
                     )));
             }
         }
@@ -3238,12 +4303,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IPlugFrame*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugFrame), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugFrame*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugFrame*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugFrame), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugFrame*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugFrame*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IPlugFrame*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -3256,11 +4328,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IPlugFrame*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugFrame), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugFrame*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugFrame*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugFrame), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugFrame*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugFrame*, uint>)Vtbl[1])((LibVst.IPlugFrame*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -3270,11 +4349,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IPlugFrame*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugFrame), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugFrame*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugFrame*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugFrame), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugFrame*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugFrame*, uint>)Vtbl[2])((LibVst.IPlugFrame*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -3284,12 +4370,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult resizeView(LibVst.IPlugView* view, LibVst.ViewRect* newSize)
         {
-            var __self__ = (LibVst.IPlugFrame*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugFrame), "resizeView");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugFrame*, LibVst.IPlugView*, LibVst.ViewRect*, ComResult>)Vtbl[3])(__self__, view, newSize);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugFrame*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugFrame), "resizeView");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugFrame*, LibVst.IPlugView*, LibVst.ViewRect*, ComResult>)Vtbl[3])(__self__, view, newSize);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugFrame*, LibVst.IPlugView*, LibVst.ViewRect*, ComResult>)Vtbl[3])((LibVst.IPlugFrame*)Unsafe.AsPointer(ref this), view, newSize);
+            }
         }
         
         /// <summary>
@@ -3302,7 +4395,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x01, 0xaf, 0x7f, 0x36, 0xa9, 0xaf, 0x93, 0x46, 0x8d, 0x4d, 0xa2, 0xa0, 0xed, 0x08, 0x82, 0xa3 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x36, 0x7f, 0xaf, 0x01, 0xaf, 0xa9, 0x46, 0x93, 0xa0, 0xa2, 0x4d, 0x8d, 0xa3, 0x82, 0x08, 0xed })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x36, 0x7f, 0xaf, 0x01, 0xaf, 0xa9, 0x46, 0x93, 0x8d, 0x4d, 0xa2, 0xa0, 0xed, 0x08, 0x82, 0xa3 })
                     )));
             }
         }
@@ -3374,19 +4467,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int isPlatformTypeSupported_Wrapper(IPlugView* self, LibVst.FIDString type)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "isPlatformTypeSupported");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return isPlatformTypeSupported_ToManaged(self, type);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "isPlatformTypeSupported");
+                try
+                {
+                    return isPlatformTypeSupported_ToManaged(self, type);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return isPlatformTypeSupported_ToManaged(self, type);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3404,19 +4511,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int attached_Wrapper(IPlugView* self, void* parent, LibVst.FIDString type)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "attached");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return attached_ToManaged(self, parent, type);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "attached");
+                try
+                {
+                    return attached_ToManaged(self, parent, type);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return attached_ToManaged(self, parent, type);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3429,19 +4550,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int removed_Wrapper(IPlugView* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "removed");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return removed_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "removed");
+                try
+                {
+                    return removed_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return removed_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3453,19 +4588,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onWheel_Wrapper(IPlugView* self, float distance)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onWheel");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return onWheel_ToManaged(self, distance);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onWheel");
+                try
+                {
+                    return onWheel_ToManaged(self, distance);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return onWheel_ToManaged(self, distance);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3482,19 +4631,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onKeyDown_Wrapper(IPlugView* self, ushort key, short keyCode, short modifiers)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onKeyDown");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return onKeyDown_ToManaged(self, key, keyCode, modifiers);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onKeyDown");
+                try
+                {
+                    return onKeyDown_ToManaged(self, key, keyCode, modifiers);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return onKeyDown_ToManaged(self, key, keyCode, modifiers);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3510,19 +4673,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onKeyUp_Wrapper(IPlugView* self, ushort key, short keyCode, short modifiers)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onKeyUp");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return onKeyUp_ToManaged(self, key, keyCode, modifiers);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onKeyUp");
+                try
+                {
+                    return onKeyUp_ToManaged(self, key, keyCode, modifiers);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return onKeyUp_ToManaged(self, key, keyCode, modifiers);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3534,19 +4711,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getSize_Wrapper(IPlugView* self, LibVst.ViewRect* size)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "getSize");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getSize_ToManaged(self, size);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "getSize");
+                try
+                {
+                    return getSize_ToManaged(self, size);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getSize_ToManaged(self, size);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3559,19 +4750,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onSize_Wrapper(IPlugView* self, LibVst.ViewRect* newSize)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onSize");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return onSize_ToManaged(self, newSize);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onSize");
+                try
+                {
+                    return onSize_ToManaged(self, newSize);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return onSize_ToManaged(self, newSize);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3583,19 +4788,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onFocus_Wrapper(IPlugView* self, byte state)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onFocus");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return onFocus_ToManaged(self, state);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "onFocus");
+                try
+                {
+                    return onFocus_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return onFocus_ToManaged(self, state);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3607,19 +4826,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setFrame_Wrapper(IPlugView* self, LibVst.IPlugFrame* frame)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "setFrame");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setFrame_ToManaged(self, frame);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "setFrame");
+                try
+                {
+                    return setFrame_ToManaged(self, frame);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setFrame_ToManaged(self, frame);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3631,19 +4864,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int canResize_Wrapper(IPlugView* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "canResize");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return canResize_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "canResize");
+                try
+                {
+                    return canResize_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return canResize_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3656,19 +4903,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int checkSizeConstraint_Wrapper(IPlugView* self, LibVst.ViewRect* rect)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "checkSizeConstraint");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return checkSizeConstraint_ToManaged(self, rect);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "checkSizeConstraint");
+                try
+                {
+                    return checkSizeConstraint_ToManaged(self, rect);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return checkSizeConstraint_ToManaged(self, rect);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3682,7 +4943,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x07, 0x25, 0xc3, 0x5b, 0x60, 0xd0, 0xea, 0x49, 0xa6, 0x15, 0x1b, 0x52, 0x2b, 0x75, 0x5b, 0x29 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x5b, 0xc3, 0x25, 0x07, 0xd0, 0x60, 0x49, 0xea, 0x52, 0x1b, 0x15, 0xa6, 0x29, 0x5b, 0x75, 0x2b })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x5b, 0xc3, 0x25, 0x07, 0xd0, 0x60, 0x49, 0xea, 0xa6, 0x15, 0x1b, 0x52, 0x2b, 0x75, 0x5b, 0x29 })
                     )));
             }
         }
@@ -3752,12 +5013,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugViewContentScaleSupport), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugViewContentScaleSupport), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -3770,11 +5038,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugViewContentScaleSupport), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugViewContentScaleSupport), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, uint>)Vtbl[1])((LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -3784,22 +5059,36 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugViewContentScaleSupport), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugViewContentScaleSupport), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, uint>)Vtbl[2])((LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this));
+            }
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setContentScaleFactor(LibVst.ScaleFactor factor)
         {
-            var __self__ = (LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugViewContentScaleSupport), "setContentScaleFactor");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, LibVst.ScaleFactor, ComResult>)Vtbl[3])(__self__, factor);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugViewContentScaleSupport), "setContentScaleFactor");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, LibVst.ScaleFactor, ComResult>)Vtbl[3])(__self__, factor);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugViewContentScaleSupport*, LibVst.ScaleFactor, ComResult>)Vtbl[3])((LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this), factor);
+            }
         }
         
         // --------------------------------------------------------------
@@ -3810,19 +5099,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setContentScaleFactor_Wrapper(IPlugViewContentScaleSupport* self, LibVst.ScaleFactor factor)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugViewContentScaleSupport), "setContentScaleFactor");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setContentScaleFactor_ToManaged(self, factor);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugViewContentScaleSupport), "setContentScaleFactor");
+                try
+                {
+                    return setContentScaleFactor_ToManaged(self, factor);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setContentScaleFactor_ToManaged(self, factor);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -3836,7 +5139,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x90, 0x96, 0xed, 0x65, 0xc4, 0x8a, 0x25, 0x45, 0x8a, 0xad, 0xef, 0x7a, 0x72, 0xea, 0x70, 0x3f })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x65, 0xed, 0x96, 0x90, 0x8a, 0xc4, 0x45, 0x25, 0x7a, 0xef, 0xad, 0x8a, 0x3f, 0x70, 0xea, 0x72 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x65, 0xed, 0x96, 0x90, 0x8a, 0xc4, 0x45, 0x25, 0x8a, 0xad, 0xef, 0x7a, 0x72, 0xea, 0x70, 0x3f })
                     )));
             }
         }
@@ -4224,12 +5527,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributeList*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -4242,11 +5552,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributeList*, uint>)Vtbl[1])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -4256,11 +5573,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributeList*, uint>)Vtbl[2])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -4269,12 +5593,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setInt(LibVst.AttrID id, long value)
         {
-            var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "setInt");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, long, ComResult>)Vtbl[3])(__self__, id, value);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "setInt");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, long, ComResult>)Vtbl[3])(__self__, id, value);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, long, ComResult>)Vtbl[3])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, value);
+            }
         }
         
         /// <summary>
@@ -4283,12 +5614,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getInt(LibVst.AttrID id, long* value)
         {
-            var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "getInt");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, long*, ComResult>)Vtbl[4])(__self__, id, value);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "getInt");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, long*, ComResult>)Vtbl[4])(__self__, id, value);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, long*, ComResult>)Vtbl[4])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, value);
+            }
         }
         
         /// <summary>
@@ -4297,12 +5635,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setFloat(LibVst.AttrID id, double value)
         {
-            var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "setFloat");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, double, ComResult>)Vtbl[5])(__self__, id, value);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "setFloat");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, double, ComResult>)Vtbl[5])(__self__, id, value);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, double, ComResult>)Vtbl[5])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, value);
+            }
         }
         
         /// <summary>
@@ -4311,12 +5656,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getFloat(LibVst.AttrID id, double* value)
         {
-            var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "getFloat");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, double*, ComResult>)Vtbl[6])(__self__, id, value);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "getFloat");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, double*, ComResult>)Vtbl[6])(__self__, id, value);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, double*, ComResult>)Vtbl[6])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, value);
+            }
         }
         
         /// <summary>
@@ -4325,12 +5677,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setString(LibVst.AttrID id, char* @string)
         {
-            var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "setString");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, char*, ComResult>)Vtbl[7])(__self__, id, @string);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "setString");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, char*, ComResult>)Vtbl[7])(__self__, id, @string);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, char*, ComResult>)Vtbl[7])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, @string);
+            }
         }
         
         /// <summary>
@@ -4340,12 +5699,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getString(LibVst.AttrID id, char* @string, uint sizeInBytes)
         {
-            var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "getString");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, char*, uint, ComResult>)Vtbl[8])(__self__, id, @string, sizeInBytes);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "getString");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, char*, uint, ComResult>)Vtbl[8])(__self__, id, @string, sizeInBytes);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, char*, uint, ComResult>)Vtbl[8])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, @string, sizeInBytes);
+            }
         }
         
         /// <summary>
@@ -4354,12 +5720,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setBinary(LibVst.AttrID id, void* data, uint sizeInBytes)
         {
-            var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "setBinary");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, void*, uint, ComResult>)Vtbl[9])(__self__, id, data, sizeInBytes);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "setBinary");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, void*, uint, ComResult>)Vtbl[9])(__self__, id, data, sizeInBytes);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, void*, uint, ComResult>)Vtbl[9])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, data, sizeInBytes);
+            }
         }
         
         /// <summary>
@@ -4368,12 +5741,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getBinary(LibVst.AttrID id, void** data, uint* sizeInBytes)
         {
-            var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "getBinary");
-            var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, void**, uint*, ComResult>)Vtbl[10])(__self__, id, data, sizeInBytes);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAttributeList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributeList), "getBinary");
+                var __result__ = ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, void**, uint*, ComResult>)Vtbl[10])(__self__, id, data, sizeInBytes);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IAttributeList*, LibVst.AttrID, void**, uint*, ComResult>)Vtbl[10])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, data, sizeInBytes);
+            }
         }
         
         /// <summary>
@@ -4386,7 +5766,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xeb, 0x0a, 0x5f, 0x1e, 0x7f, 0xcc, 0x33, 0x45, 0xa2, 0x54, 0x40, 0x11, 0x38, 0xad, 0x5e, 0xe4 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x1e, 0x5f, 0x0a, 0xeb, 0xcc, 0x7f, 0x45, 0x33, 0x11, 0x40, 0x54, 0xa2, 0xe4, 0x5e, 0xad, 0x38 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x1e, 0x5f, 0x0a, 0xeb, 0xcc, 0x7f, 0x45, 0x33, 0xa2, 0x54, 0x40, 0x11, 0x38, 0xad, 0x5e, 0xe4 })
                     )));
             }
         }
@@ -4465,12 +5845,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStreamAttributes), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IStreamAttributes*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStreamAttributes), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IStreamAttributes*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IStreamAttributes*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -4483,11 +5870,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStreamAttributes), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IStreamAttributes*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStreamAttributes), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IStreamAttributes*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IStreamAttributes*, uint>)Vtbl[1])((LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -4497,11 +5891,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStreamAttributes), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IStreamAttributes*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStreamAttributes), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IStreamAttributes*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IStreamAttributes*, uint>)Vtbl[2])((LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -4510,12 +5911,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getFileName(LibVst.String128* name)
         {
-            var __self__ = (LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStreamAttributes), "getFileName");
-            var __result__ = ((delegate*unmanaged<LibVst.IStreamAttributes*, LibVst.String128*, ComResult>)Vtbl[3])(__self__, name);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStreamAttributes), "getFileName");
+                var __result__ = ((delegate*unmanaged<LibVst.IStreamAttributes*, LibVst.String128*, ComResult>)Vtbl[3])(__self__, name);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IStreamAttributes*, LibVst.String128*, ComResult>)Vtbl[3])((LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this), name);
+            }
         }
         
         /// <summary>
@@ -4524,11 +5932,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IAttributeList* getAttributes()
         {
-            var __self__ = (LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStreamAttributes), "getAttributes");
-            var __result__ = ((delegate*unmanaged<LibVst.IStreamAttributes*, LibVst.IAttributeList*>)Vtbl[4])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IStreamAttributes), "getAttributes");
+                var __result__ = ((delegate*unmanaged<LibVst.IStreamAttributes*, LibVst.IAttributeList*>)Vtbl[4])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IStreamAttributes*, LibVst.IAttributeList*>)Vtbl[4])((LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -4541,7 +5956,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xfc, 0x2f, 0xce, 0xd6, 0xaf, 0xef, 0x8c, 0x4b, 0x9e, 0x74, 0xf1, 0xbb, 0x12, 0xda, 0x44, 0xb4 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xd6, 0xce, 0x2f, 0xfc, 0xef, 0xaf, 0x4b, 0x8c, 0xbb, 0xf1, 0x74, 0x9e, 0xb4, 0x44, 0xda, 0x12 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xd6, 0xce, 0x2f, 0xfc, 0xef, 0xaf, 0x4b, 0x8c, 0x9e, 0x74, 0xf1, 0xbb, 0x12, 0xda, 0x44, 0xb4 })
                     )));
             }
         }
@@ -4597,19 +6012,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getControllerClassId_Wrapper(IComponent* self, Guid* classId)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getControllerClassId");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getControllerClassId_ToManaged(self, classId);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getControllerClassId");
+                try
+                {
+                    return getControllerClassId_ToManaged(self, classId);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getControllerClassId_ToManaged(self, classId);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -4621,19 +6050,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setIoMode_Wrapper(IComponent* self, LibVst.IoMode mode)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "setIoMode");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setIoMode_ToManaged(self, mode);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "setIoMode");
+                try
+                {
+                    return setIoMode_ToManaged(self, mode);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setIoMode_ToManaged(self, mode);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -4645,19 +6088,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getBusCount_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getBusCount");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getBusCount_ToManaged(self, type, dir);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getBusCount");
+                try
+                {
+                    return getBusCount_ToManaged(self, type, dir);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getBusCount_ToManaged(self, type, dir);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -4669,19 +6126,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getBusInfo_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, LibVst.BusInfo* bus)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getBusInfo");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getBusInfo_ToManaged(self, type, dir, index, bus);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getBusInfo");
+                try
+                {
+                    return getBusInfo_ToManaged(self, type, dir, index, bus);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getBusInfo_ToManaged(self, type, dir, index, bus);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -4694,19 +6165,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getRoutingInfo_Wrapper(IComponent* self, LibVst.RoutingInfo* inInfo, LibVst.RoutingInfo* outInfo)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getRoutingInfo");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getRoutingInfo_ToManaged(self, inInfo, outInfo);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getRoutingInfo");
+                try
+                {
+                    return getRoutingInfo_ToManaged(self, inInfo, outInfo);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getRoutingInfo_ToManaged(self, inInfo, outInfo);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -4721,19 +6206,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int activateBus_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "activateBus");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return activateBus_ToManaged(self, type, dir, index, state);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "activateBus");
+                try
+                {
+                    return activateBus_ToManaged(self, type, dir, index, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return activateBus_ToManaged(self, type, dir, index, state);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -4745,19 +6244,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setActive_Wrapper(IComponent* self, byte state)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "setActive");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setActive_ToManaged(self, state);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "setActive");
+                try
+                {
+                    return setActive_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setActive_ToManaged(self, state);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -4769,19 +6282,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setState_Wrapper(IComponent* self, LibVst.IBStream* state)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "setState");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setState_ToManaged(self, state);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "setState");
+                try
+                {
+                    return setState_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setState_ToManaged(self, state);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -4793,19 +6320,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getState_Wrapper(IComponent* self, LibVst.IBStream* state)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getState");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getState_ToManaged(self, state);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponent), "getState");
+                try
+                {
+                    return getState_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getState_ToManaged(self, state);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -4819,7 +6360,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x31, 0xff, 0x31, 0xe8, 0xd5, 0xf2, 0x01, 0x43, 0x92, 0x8e, 0xbb, 0xee, 0x25, 0x69, 0x78, 0x02 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xe8, 0x31, 0xff, 0x31, 0xf2, 0xd5, 0x43, 0x01, 0xee, 0xbb, 0x8e, 0x92, 0x02, 0x78, 0x69, 0x25 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xe8, 0x31, 0xff, 0x31, 0xf2, 0xd5, 0x43, 0x01, 0x92, 0x8e, 0xbb, 0xee, 0x25, 0x69, 0x78, 0x02 })
                     )));
             }
         }
@@ -4942,12 +6483,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IEventList*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IEventList*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IEventList*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IEventList*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -4960,11 +6508,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IEventList*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IEventList*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IEventList*, uint>)Vtbl[1])((LibVst.IEventList*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -4974,11 +6529,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IEventList*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IEventList*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IEventList*, uint>)Vtbl[2])((LibVst.IEventList*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -4987,11 +6549,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getEventCount()
         {
-            var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "getEventCount");
-            var __result__ = ((delegate*unmanaged<LibVst.IEventList*, int>)Vtbl[3])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "getEventCount");
+                var __result__ = ((delegate*unmanaged<LibVst.IEventList*, int>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IEventList*, int>)Vtbl[3])((LibVst.IEventList*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -5000,12 +6569,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getEvent(int index, LibVst.Event* e)
         {
-            var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "getEvent");
-            var __result__ = ((delegate*unmanaged<LibVst.IEventList*, int, LibVst.Event*, ComResult>)Vtbl[4])(__self__, index, e);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "getEvent");
+                var __result__ = ((delegate*unmanaged<LibVst.IEventList*, int, LibVst.Event*, ComResult>)Vtbl[4])(__self__, index, e);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IEventList*, int, LibVst.Event*, ComResult>)Vtbl[4])((LibVst.IEventList*)Unsafe.AsPointer(ref this), index, e);
+            }
         }
         
         /// <summary>
@@ -5014,12 +6590,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult addEvent(LibVst.Event* e)
         {
-            var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "addEvent");
-            var __result__ = ((delegate*unmanaged<LibVst.IEventList*, LibVst.Event*, ComResult>)Vtbl[5])(__self__, e);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEventList*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventList), "addEvent");
+                var __result__ = ((delegate*unmanaged<LibVst.IEventList*, LibVst.Event*, ComResult>)Vtbl[5])(__self__, e);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IEventList*, LibVst.Event*, ComResult>)Vtbl[5])((LibVst.IEventList*)Unsafe.AsPointer(ref this), e);
+            }
         }
         
         /// <summary>
@@ -5032,7 +6615,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x14, 0x42, 0x2c, 0x3a, 0x63, 0x34, 0xfe, 0x49, 0xb2, 0xc4, 0xf3, 0x97, 0xb9, 0x69, 0x5a, 0x44 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x3a, 0x2c, 0x42, 0x14, 0x34, 0x63, 0x49, 0xfe, 0x97, 0xf3, 0xc4, 0xb2, 0x44, 0x5a, 0x69, 0xb9 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x3a, 0x2c, 0x42, 0x14, 0x34, 0x63, 0x49, 0xfe, 0xb2, 0xc4, 0xf3, 0x97, 0xb9, 0x69, 0x5a, 0x44 })
                     )));
             }
         }
@@ -5538,12 +7121,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParameterChanges*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IParameterChanges*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -5556,11 +7146,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParameterChanges*, uint>)Vtbl[1])((LibVst.IParameterChanges*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -5570,11 +7167,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParameterChanges*, uint>)Vtbl[2])((LibVst.IParameterChanges*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -5583,11 +7187,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getParameterCount()
         {
-            var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "getParameterCount");
-            var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, int>)Vtbl[3])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "getParameterCount");
+                var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, int>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParameterChanges*, int>)Vtbl[3])((LibVst.IParameterChanges*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -5596,11 +7207,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IParamValueQueue* getParameterData(int index)
         {
-            var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "getParameterData");
-            var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, int, LibVst.IParamValueQueue*>)Vtbl[4])(__self__, index);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "getParameterData");
+                var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, int, LibVst.IParamValueQueue*>)Vtbl[4])(__self__, index);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParameterChanges*, int, LibVst.IParamValueQueue*>)Vtbl[4])((LibVst.IParameterChanges*)Unsafe.AsPointer(ref this), index);
+            }
         }
         
         /// <summary>
@@ -5610,11 +7228,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IParamValueQueue* addParameterData(LibVst.ParamID* id, int* index)
         {
-            var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "addParameterData");
-            var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, LibVst.ParamID*, int*, LibVst.IParamValueQueue*>)Vtbl[5])(__self__, id, index);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParameterChanges*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterChanges), "addParameterData");
+                var __result__ = ((delegate*unmanaged<LibVst.IParameterChanges*, LibVst.ParamID*, int*, LibVst.IParamValueQueue*>)Vtbl[5])(__self__, id, index);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParameterChanges*, LibVst.ParamID*, int*, LibVst.IParamValueQueue*>)Vtbl[5])((LibVst.IParameterChanges*)Unsafe.AsPointer(ref this), id, index);
+            }
         }
         
         /// <summary>
@@ -5627,7 +7252,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x63, 0x96, 0x77, 0xa4, 0xb6, 0x0b, 0x56, 0x4a, 0xb4, 0x43, 0x84, 0xa8, 0x46, 0x6f, 0xeb, 0x9d })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xa4, 0x77, 0x96, 0x63, 0x0b, 0xb6, 0x4a, 0x56, 0xa8, 0x84, 0x43, 0xb4, 0x9d, 0xeb, 0x6f, 0x46 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xa4, 0x77, 0x96, 0x63, 0x0b, 0xb6, 0x4a, 0x56, 0xb4, 0x43, 0x84, 0xa8, 0x46, 0x6f, 0xeb, 0x9d })
                     )));
             }
         }
@@ -5693,12 +7318,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParamValueQueue*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -5711,11 +7343,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParamValueQueue*, uint>)Vtbl[1])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -5725,11 +7364,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParamValueQueue*, uint>)Vtbl[2])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -5738,11 +7384,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.ParamID getParameterId()
         {
-            var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "getParameterId");
-            var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, LibVst.ParamID>)Vtbl[3])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "getParameterId");
+                var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, LibVst.ParamID>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParamValueQueue*, LibVst.ParamID>)Vtbl[3])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -5751,11 +7404,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getPointCount()
         {
-            var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "getPointCount");
-            var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, int>)Vtbl[4])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "getPointCount");
+                var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, int>)Vtbl[4])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParamValueQueue*, int>)Vtbl[4])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -5764,12 +7424,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getPoint(int index, int* sampleOffset, LibVst.ParamValue* value)
         {
-            var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "getPoint");
-            var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, int, int*, LibVst.ParamValue*, ComResult>)Vtbl[5])(__self__, index, sampleOffset, value);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "getPoint");
+                var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, int, int*, LibVst.ParamValue*, ComResult>)Vtbl[5])(__self__, index, sampleOffset, value);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParamValueQueue*, int, int*, LibVst.ParamValue*, ComResult>)Vtbl[5])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this), index, sampleOffset, value);
+            }
         }
         
         /// <summary>
@@ -5778,12 +7445,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult addPoint(int sampleOffset, LibVst.ParamValue value, int* index)
         {
-            var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "addPoint");
-            var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, int, LibVst.ParamValue, int*, ComResult>)Vtbl[6])(__self__, sampleOffset, value, index);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "addPoint");
+                var __result__ = ((delegate*unmanaged<LibVst.IParamValueQueue*, int, LibVst.ParamValue, int*, ComResult>)Vtbl[6])(__self__, sampleOffset, value, index);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IParamValueQueue*, int, LibVst.ParamValue, int*, ComResult>)Vtbl[6])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this), sampleOffset, value, index);
+            }
         }
         
         /// <summary>
@@ -5796,7 +7470,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x18, 0x3a, 0x26, 0x01, 0x07, 0xed, 0x6f, 0x4f, 0x98, 0xc9, 0xd3, 0x56, 0x46, 0x86, 0xf9, 0xba })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x01, 0x26, 0x3a, 0x18, 0xed, 0x07, 0x4f, 0x6f, 0x56, 0xd3, 0xc9, 0x98, 0xba, 0xf9, 0x86, 0x46 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x01, 0x26, 0x3a, 0x18, 0xed, 0x07, 0x4f, 0x6f, 0x98, 0xc9, 0xd3, 0x56, 0x46, 0x86, 0xf9, 0xba })
                     )));
             }
         }
@@ -5862,19 +7536,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setBusArrangements_Wrapper(IAudioProcessor* self, LibVst.SpeakerArrangement* inputs, int numIns, LibVst.SpeakerArrangement* outputs, int numOuts)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "setBusArrangements");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setBusArrangements_ToManaged(self, inputs, numIns, outputs, numOuts);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "setBusArrangements");
+                try
+                {
+                    return setBusArrangements_ToManaged(self, inputs, numIns, outputs, numOuts);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setBusArrangements_ToManaged(self, inputs, numIns, outputs, numOuts);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -5888,19 +7576,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getBusArrangement_Wrapper(IAudioProcessor* self, LibVst.BusDirection dir, int index, LibVst.SpeakerArrangement* arr)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "getBusArrangement");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getBusArrangement_ToManaged(self, dir, index, arr);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "getBusArrangement");
+                try
+                {
+                    return getBusArrangement_ToManaged(self, dir, index, arr);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getBusArrangement_ToManaged(self, dir, index, arr);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -5912,19 +7614,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int canProcessSampleSize_Wrapper(IAudioProcessor* self, int symbolicSampleSize)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "canProcessSampleSize");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return canProcessSampleSize_ToManaged(self, symbolicSampleSize);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "canProcessSampleSize");
+                try
+                {
+                    return canProcessSampleSize_ToManaged(self, symbolicSampleSize);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return canProcessSampleSize_ToManaged(self, symbolicSampleSize);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -5942,19 +7658,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint getLatencySamples_Wrapper(IAudioProcessor* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "getLatencySamples");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getLatencySamples_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "getLatencySamples");
+                try
+                {
+                    return getLatencySamples_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getLatencySamples_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -5966,19 +7696,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setupProcessing_Wrapper(IAudioProcessor* self, LibVst.ProcessSetup* setup)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "setupProcessing");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setupProcessing_ToManaged(self, setup);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "setupProcessing");
+                try
+                {
+                    return setupProcessing_ToManaged(self, setup);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setupProcessing_ToManaged(self, setup);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -5998,19 +7742,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setProcessing_Wrapper(IAudioProcessor* self, byte state)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "setProcessing");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setProcessing_ToManaged(self, state);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "setProcessing");
+                try
+                {
+                    return setProcessing_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setProcessing_ToManaged(self, state);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -6022,19 +7780,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int process_Wrapper(IAudioProcessor* self, LibVst.ProcessData* data)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "process");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return process_ToManaged(self, data);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "process");
+                try
+                {
+                    return process_ToManaged(self, data);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return process_ToManaged(self, data);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -6054,19 +7826,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint getTailSamples_Wrapper(IAudioProcessor* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "getTailSamples");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getTailSamples_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioProcessor), "getTailSamples");
+                try
+                {
+                    return getTailSamples_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getTailSamples_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -6080,7 +7866,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x99, 0x3f, 0x04, 0x42, 0xda, 0xb7, 0x3c, 0x45, 0xa5, 0x69, 0xe7, 0x9d, 0x9a, 0xae, 0xc3, 0x3d })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x42, 0x04, 0x3f, 0x99, 0xb7, 0xda, 0x45, 0x3c, 0x9d, 0xe7, 0x69, 0xa5, 0x3d, 0xc3, 0xae, 0x9a })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x42, 0x04, 0x3f, 0x99, 0xb7, 0xda, 0x45, 0x3c, 0xa5, 0x69, 0xe7, 0x9d, 0x9a, 0xae, 0xc3, 0x3d })
                     )));
             }
         }
@@ -6839,19 +8625,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setAudioPresentationLatencySamples_Wrapper(IAudioPresentationLatency* self, LibVst.BusDirection dir, int busIndex, uint latencyInSamples)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioPresentationLatency), "setAudioPresentationLatencySamples");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setAudioPresentationLatencySamples_ToManaged(self, dir, busIndex, latencyInSamples);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAudioPresentationLatency), "setAudioPresentationLatencySamples");
+                try
+                {
+                    return setAudioPresentationLatencySamples_ToManaged(self, dir, busIndex, latencyInSamples);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setAudioPresentationLatencySamples_ToManaged(self, dir, busIndex, latencyInSamples);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -6865,7 +8665,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x78, 0xce, 0x9e, 0x30, 0x7d, 0xeb, 0xae, 0x4f, 0x8b, 0x22, 0x25, 0xd9, 0x09, 0xfd, 0x08, 0xb6 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x30, 0x9e, 0xce, 0x78, 0xeb, 0x7d, 0x4f, 0xae, 0xd9, 0x25, 0x22, 0x8b, 0xb6, 0x08, 0xfd, 0x09 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x30, 0x9e, 0xce, 0x78, 0xeb, 0x7d, 0x4f, 0xae, 0x8b, 0x22, 0x25, 0xd9, 0x09, 0xfd, 0x08, 0xb6 })
                     )));
             }
         }
@@ -6907,19 +8707,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint getProcessContextRequirements_Wrapper(IProcessContextRequirements* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProcessContextRequirements), "getProcessContextRequirements");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getProcessContextRequirements_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProcessContextRequirements), "getProcessContextRequirements");
+                try
+                {
+                    return getProcessContextRequirements_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getProcessContextRequirements_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -6991,7 +8805,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x03, 0x43, 0x65, 0x2a, 0x76, 0xef, 0x3d, 0x4e, 0x95, 0xb5, 0xfe, 0x83, 0x73, 0x0e, 0xf6, 0xd0 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x2a, 0x65, 0x43, 0x03, 0xef, 0x76, 0x4e, 0x3d, 0x83, 0xfe, 0xb5, 0x95, 0xd0, 0xf6, 0x0e, 0x73 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x2a, 0x65, 0x43, 0x03, 0xef, 0x76, 0x4e, 0x3d, 0x95, 0xb5, 0xfe, 0x83, 0x73, 0x0e, 0xf6, 0xd0 })
                     )));
             }
         }
@@ -7030,19 +8844,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setAutomationState_Wrapper(IAutomationState* self, int state)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAutomationState), "setAutomationState");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setAutomationState_ToManaged(self, state);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAutomationState), "setAutomationState");
+                try
+                {
+                    return setAutomationState_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setAutomationState_ToManaged(self, state);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -7082,7 +8910,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x7f, 0x28, 0xe8, 0xb4, 0xb3, 0x1b, 0xaa, 0x46, 0x83, 0xa4, 0x66, 0x67, 0x68, 0x93, 0x7b, 0xab })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xb4, 0xe8, 0x28, 0x7f, 0x1b, 0xb3, 0x46, 0xaa, 0x67, 0x66, 0xa4, 0x83, 0xab, 0x7b, 0x93, 0x68 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xb4, 0xe8, 0x28, 0x7f, 0x1b, 0xb3, 0x46, 0xaa, 0x83, 0xa4, 0x66, 0x67, 0x68, 0x93, 0x7b, 0xab })
                     )));
             }
         }
@@ -7119,12 +8947,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenu*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -7137,11 +8972,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenu*, uint>)Vtbl[1])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7151,11 +8993,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenu*, uint>)Vtbl[2])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7164,11 +9013,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getItemCount()
         {
-            var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "getItemCount");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, int>)Vtbl[3])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "getItemCount");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, int>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenu*, int>)Vtbl[3])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7177,12 +9033,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getItem(int index, LibVst.Item* item, LibVst.IContextMenuTarget** target)
         {
-            var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "getItem");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, int, LibVst.Item*, LibVst.IContextMenuTarget**, ComResult>)Vtbl[4])(__self__, index, item, target);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "getItem");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, int, LibVst.Item*, LibVst.IContextMenuTarget**, ComResult>)Vtbl[4])(__self__, index, item, target);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenu*, int, LibVst.Item*, LibVst.IContextMenuTarget**, ComResult>)Vtbl[4])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), index, item, target);
+            }
         }
         
         /// <summary>
@@ -7191,12 +9054,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult addItem(LibVst.Item* item, LibVst.IContextMenuTarget* target)
         {
-            var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "addItem");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, LibVst.Item*, LibVst.IContextMenuTarget*, ComResult>)Vtbl[5])(__self__, item, target);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "addItem");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, LibVst.Item*, LibVst.IContextMenuTarget*, ComResult>)Vtbl[5])(__self__, item, target);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenu*, LibVst.Item*, LibVst.IContextMenuTarget*, ComResult>)Vtbl[5])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), item, target);
+            }
         }
         
         /// <summary>
@@ -7205,12 +9075,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult removeItem(LibVst.Item* item, LibVst.IContextMenuTarget* target)
         {
-            var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "removeItem");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, LibVst.Item*, LibVst.IContextMenuTarget*, ComResult>)Vtbl[6])(__self__, item, target);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "removeItem");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, LibVst.Item*, LibVst.IContextMenuTarget*, ComResult>)Vtbl[6])(__self__, item, target);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenu*, LibVst.Item*, LibVst.IContextMenuTarget*, ComResult>)Vtbl[6])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), item, target);
+            }
         }
         
         /// <summary>
@@ -7219,12 +9096,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult popup(LibVst.UCoord x, LibVst.UCoord y)
         {
-            var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "popup");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, LibVst.UCoord, LibVst.UCoord, ComResult>)Vtbl[7])(__self__, x, y);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenu*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenu), "popup");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenu*, LibVst.UCoord, LibVst.UCoord, ComResult>)Vtbl[7])(__self__, x, y);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenu*, LibVst.UCoord, LibVst.UCoord, ComResult>)Vtbl[7])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), x, y);
+            }
         }
         
         /// <summary>
@@ -7237,7 +9121,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x63, 0xc8, 0x93, 0x2e, 0x9c, 0x0c, 0x88, 0x45, 0x97, 0xdb, 0xec, 0xf5, 0xad, 0x17, 0x81, 0x7d })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x2e, 0x93, 0xc8, 0x63, 0x0c, 0x9c, 0x45, 0x88, 0xf5, 0xec, 0xdb, 0x97, 0x7d, 0x81, 0x17, 0xad })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x2e, 0x93, 0xc8, 0x63, 0x0c, 0x9c, 0x45, 0x88, 0x97, 0xdb, 0xec, 0xf5, 0xad, 0x17, 0x81, 0x7d })
                     )));
             }
         }
@@ -7334,12 +9218,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenuTarget), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenuTarget*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenuTarget), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenuTarget*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenuTarget*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -7352,11 +9243,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenuTarget), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenuTarget*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenuTarget), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenuTarget*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenuTarget*, uint>)Vtbl[1])((LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7366,11 +9264,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenuTarget), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenuTarget*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenuTarget), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenuTarget*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenuTarget*, uint>)Vtbl[2])((LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7379,12 +9284,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult executeMenuItem(int tag)
         {
-            var __self__ = (LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenuTarget), "executeMenuItem");
-            var __result__ = ((delegate*unmanaged<LibVst.IContextMenuTarget*, int, ComResult>)Vtbl[3])(__self__, tag);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IContextMenuTarget), "executeMenuItem");
+                var __result__ = ((delegate*unmanaged<LibVst.IContextMenuTarget*, int, ComResult>)Vtbl[3])(__self__, tag);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IContextMenuTarget*, int, ComResult>)Vtbl[3])((LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this), tag);
+            }
         }
         
         // --------------------------------------------------------------
@@ -7398,19 +9310,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int executeMenuItem_Wrapper(IContextMenuTarget* self, int tag)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IContextMenuTarget), "executeMenuItem");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return executeMenuItem_ToManaged(self, tag);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IContextMenuTarget), "executeMenuItem");
+                try
+                {
+                    return executeMenuItem_ToManaged(self, tag);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return executeMenuItem_ToManaged(self, tag);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -7424,7 +9350,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x75, 0x2e, 0xdf, 0x3c, 0xd3, 0x85, 0x44, 0x41, 0xbf, 0x86, 0xd3, 0x6b, 0xd7, 0xc4, 0x89, 0x4d })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x3c, 0xdf, 0x2e, 0x75, 0x85, 0xd3, 0x41, 0x44, 0x6b, 0xd3, 0x86, 0xbf, 0x4d, 0x89, 0xc4, 0xd7 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x3c, 0xdf, 0x2e, 0x75, 0x85, 0xd3, 0x41, 0x44, 0xbf, 0x86, 0xd3, 0x6b, 0xd7, 0xc4, 0x89, 0x4d })
                     )));
             }
         }
@@ -7520,12 +9446,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler3), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler3*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler3), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler3*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler3*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -7538,11 +9471,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler3), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler3*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler3), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler3*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler3*, uint>)Vtbl[1])((LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7552,11 +9492,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler3), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler3*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler3), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler3*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler3*, uint>)Vtbl[2])((LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7568,11 +9515,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IContextMenu* createContextMenu(LibVst.IPlugView* plugView, LibVst.ParamID* paramID)
         {
-            var __self__ = (LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler3), "createContextMenu");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler3*, LibVst.IPlugView*, LibVst.ParamID*, LibVst.IContextMenu*>)Vtbl[3])(__self__, plugView, paramID);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler3), "createContextMenu");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler3*, LibVst.IPlugView*, LibVst.ParamID*, LibVst.IContextMenu*>)Vtbl[3])(__self__, plugView, paramID);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler3*, LibVst.IPlugView*, LibVst.ParamID*, LibVst.IContextMenu*>)Vtbl[3])((LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this), plugView, paramID);
+            }
         }
         
         /// <summary>
@@ -7585,7 +9539,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x17, 0x16, 0xf1, 0x69, 0x6b, 0xd2, 0x0d, 0x40, 0xa4, 0xb6, 0xb9, 0x64, 0x7b, 0x6e, 0xbb, 0xab })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x69, 0xf1, 0x16, 0x17, 0xd2, 0x6b, 0x40, 0x0d, 0x64, 0xb9, 0xb6, 0xa4, 0xab, 0xbb, 0x6e, 0x7b })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x69, 0xf1, 0x16, 0x17, 0xd2, 0x6b, 0x40, 0x0d, 0xa4, 0xb6, 0xb9, 0x64, 0x7b, 0x6e, 0xbb, 0xab })
                     )));
             }
         }
@@ -7620,12 +9574,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -7638,11 +9599,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler*, uint>)Vtbl[1])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7652,11 +9620,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler*, uint>)Vtbl[2])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7666,12 +9641,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult beginEdit(LibVst.ParamID id)
         {
-            var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "beginEdit");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, LibVst.ParamID, ComResult>)Vtbl[3])(__self__, id);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "beginEdit");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, LibVst.ParamID, ComResult>)Vtbl[3])(__self__, id);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler*, LibVst.ParamID, ComResult>)Vtbl[3])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), id);
+            }
         }
         
         /// <summary>
@@ -7681,12 +9663,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult performEdit(LibVst.ParamID id, LibVst.ParamValue valueNormalized)
         {
-            var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "performEdit");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, LibVst.ParamID, LibVst.ParamValue, ComResult>)Vtbl[4])(__self__, id, valueNormalized);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "performEdit");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, LibVst.ParamID, LibVst.ParamValue, ComResult>)Vtbl[4])(__self__, id, valueNormalized);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler*, LibVst.ParamID, LibVst.ParamValue, ComResult>)Vtbl[4])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), id, valueNormalized);
+            }
         }
         
         /// <summary>
@@ -7696,12 +9685,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult endEdit(LibVst.ParamID id)
         {
-            var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "endEdit");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, LibVst.ParamID, ComResult>)Vtbl[5])(__self__, id);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "endEdit");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, LibVst.ParamID, ComResult>)Vtbl[5])(__self__, id);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler*, LibVst.ParamID, ComResult>)Vtbl[5])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), id);
+            }
         }
         
         /// <summary>
@@ -7711,12 +9707,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult restartComponent(int flags)
         {
-            var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "restartComponent");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, int, ComResult>)Vtbl[6])(__self__, flags);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "restartComponent");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler*, int, ComResult>)Vtbl[6])(__self__, flags);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler*, int, ComResult>)Vtbl[6])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), flags);
+            }
         }
         
         /// <summary>
@@ -7729,7 +9732,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xa3, 0xbe, 0xa0, 0x93, 0xd0, 0x0b, 0xdb, 0x45, 0x8e, 0x89, 0x0b, 0x0c, 0xc1, 0xe4, 0x6a, 0xc6 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x93, 0xa0, 0xbe, 0xa3, 0x0b, 0xd0, 0x45, 0xdb, 0x0c, 0x0b, 0x89, 0x8e, 0xc6, 0x6a, 0xe4, 0xc1 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x93, 0xa0, 0xbe, 0xa3, 0x0b, 0xd0, 0x45, 0xdb, 0x8e, 0x89, 0x0b, 0x0c, 0xc1, 0xe4, 0x6a, 0xc6 })
                     )));
             }
         }
@@ -7803,12 +9806,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler2*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -7821,11 +9831,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler2*, uint>)Vtbl[1])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7835,11 +9852,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler2*, uint>)Vtbl[2])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7849,12 +9873,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setDirty(byte state)
         {
-            var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "setDirty");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, byte, ComResult>)Vtbl[3])(__self__, state);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "setDirty");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, byte, ComResult>)Vtbl[3])(__self__, state);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler2*, byte, ComResult>)Vtbl[3])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this), state);
+            }
         }
         
         /// <summary>
@@ -7864,12 +9895,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult requestOpenEditor(LibVst.FIDString name)
         {
-            var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "requestOpenEditor");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, LibVst.FIDString, ComResult>)Vtbl[4])(__self__, name);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "requestOpenEditor");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, LibVst.FIDString, ComResult>)Vtbl[4])(__self__, name);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler2*, LibVst.FIDString, ComResult>)Vtbl[4])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this), name);
+            }
         }
         
         /// <summary>
@@ -7878,12 +9916,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult startGroupEdit()
         {
-            var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "startGroupEdit");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, ComResult>)Vtbl[5])(__self__);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "startGroupEdit");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, ComResult>)Vtbl[5])(__self__);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler2*, ComResult>)Vtbl[5])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7892,12 +9937,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult finishGroupEdit()
         {
-            var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "finishGroupEdit");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, ComResult>)Vtbl[6])(__self__);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler2), "finishGroupEdit");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandler2*, ComResult>)Vtbl[6])(__self__);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandler2*, ComResult>)Vtbl[6])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7910,7 +9962,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xb3, 0xb4, 0x40, 0xf0, 0x60, 0xa3, 0xec, 0x45, 0xab, 0xcd, 0xc0, 0x45, 0xb4, 0xd5, 0xa2, 0xcc })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xf0, 0x40, 0xb4, 0xb3, 0xa3, 0x60, 0x45, 0xec, 0x45, 0xc0, 0xcd, 0xab, 0xcc, 0xa2, 0xd5, 0xb4 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf0, 0x40, 0xb4, 0xb3, 0xa3, 0x60, 0x45, 0xec, 0xab, 0xcd, 0xc0, 0x45, 0xb4, 0xd5, 0xa2, 0xcc })
                     )));
             }
         }
@@ -7955,12 +10007,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandlerBusActivation), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandlerBusActivation), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -7973,11 +10032,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandlerBusActivation), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandlerBusActivation), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, uint>)Vtbl[1])((LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -7987,11 +10053,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandlerBusActivation), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandlerBusActivation), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, uint>)Vtbl[2])((LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -8000,12 +10073,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult requestBusActivation(LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state)
         {
-            var __self__ = (LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandlerBusActivation), "requestBusActivation");
-            var __result__ = ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, LibVst.MediaType, LibVst.BusDirection, int, byte, ComResult>)Vtbl[3])(__self__, type, dir, index, state);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandlerBusActivation), "requestBusActivation");
+                var __result__ = ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, LibVst.MediaType, LibVst.BusDirection, int, byte, ComResult>)Vtbl[3])(__self__, type, dir, index, state);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IComponentHandlerBusActivation*, LibVst.MediaType, LibVst.BusDirection, int, byte, ComResult>)Vtbl[3])((LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this), type, dir, index, state);
+            }
         }
         
         /// <summary>
@@ -8018,7 +10098,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xc1, 0x02, 0x7d, 0x06, 0x4e, 0x5b, 0x4d, 0x27, 0xa9, 0x2d, 0x90, 0xfd, 0x6e, 0xaf, 0x72, 0x40 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x06, 0x7d, 0x02, 0xc1, 0x5b, 0x4e, 0x27, 0x4d, 0xfd, 0x90, 0x2d, 0xa9, 0x40, 0x72, 0xaf, 0x6e })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x06, 0x7d, 0x02, 0xc1, 0x5b, 0x4e, 0x27, 0x4d, 0xa9, 0x2d, 0x90, 0xfd, 0x6e, 0xaf, 0x72, 0x40 })
                     )));
             }
         }
@@ -8078,12 +10158,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IProgress*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IProgress*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IProgress*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IProgress*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -8096,11 +10183,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IProgress*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IProgress*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IProgress*, uint>)Vtbl[1])((LibVst.IProgress*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -8110,11 +10204,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IProgress*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IProgress*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IProgress*, uint>)Vtbl[2])((LibVst.IProgress*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -8124,12 +10225,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult start(ProgressType type, char* optionalDescription, LibVst.ID* outID)
         {
-            var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "start");
-            var __result__ = ((delegate*unmanaged<LibVst.IProgress*, ProgressType, char*, LibVst.ID*, ComResult>)Vtbl[3])(__self__, type, optionalDescription, outID);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "start");
+                var __result__ = ((delegate*unmanaged<LibVst.IProgress*, ProgressType, char*, LibVst.ID*, ComResult>)Vtbl[3])(__self__, type, optionalDescription, outID);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IProgress*, ProgressType, char*, LibVst.ID*, ComResult>)Vtbl[3])((LibVst.IProgress*)Unsafe.AsPointer(ref this), type, optionalDescription, outID);
+            }
         }
         
         /// <summary>
@@ -8138,12 +10246,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult update(LibVst.ID id, LibVst.ParamValue normValue)
         {
-            var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "update");
-            var __result__ = ((delegate*unmanaged<LibVst.IProgress*, LibVst.ID, LibVst.ParamValue, ComResult>)Vtbl[4])(__self__, id, normValue);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "update");
+                var __result__ = ((delegate*unmanaged<LibVst.IProgress*, LibVst.ID, LibVst.ParamValue, ComResult>)Vtbl[4])(__self__, id, normValue);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IProgress*, LibVst.ID, LibVst.ParamValue, ComResult>)Vtbl[4])((LibVst.IProgress*)Unsafe.AsPointer(ref this), id, normValue);
+            }
         }
         
         /// <summary>
@@ -8152,12 +10267,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult finish(LibVst.ID id)
         {
-            var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "finish");
-            var __result__ = ((delegate*unmanaged<LibVst.IProgress*, LibVst.ID, ComResult>)Vtbl[5])(__self__, id);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "finish");
+                var __result__ = ((delegate*unmanaged<LibVst.IProgress*, LibVst.ID, ComResult>)Vtbl[5])(__self__, id);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IProgress*, LibVst.ID, ComResult>)Vtbl[5])((LibVst.IProgress*)Unsafe.AsPointer(ref this), id);
+            }
         }
         
         /// <summary>
@@ -8186,7 +10308,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x5b, 0xdc, 0xc9, 0x00, 0x90, 0x9d, 0x54, 0x42, 0x91, 0xa3, 0x88, 0xc8, 0xb4, 0xe9, 0x1b, 0x69 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x00, 0xc9, 0xdc, 0x5b, 0x9d, 0x90, 0x42, 0x54, 0xc8, 0x88, 0xa3, 0x91, 0x69, 0x1b, 0xe9, 0xb4 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x00, 0xc9, 0xdc, 0x5b, 0x9d, 0x90, 0x42, 0x54, 0x91, 0xa3, 0x88, 0xc8, 0xb4, 0xe9, 0x1b, 0x69 })
                     )));
             }
         }
@@ -8239,19 +10361,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setComponentState_Wrapper(IEditController* self, LibVst.IBStream* state)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setComponentState");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setComponentState_ToManaged(self, state);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setComponentState");
+                try
+                {
+                    return setComponentState_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setComponentState_ToManaged(self, state);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8263,19 +10399,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setState_Wrapper(IEditController* self, LibVst.IBStream* state)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setState");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setState_ToManaged(self, state);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setState");
+                try
+                {
+                    return setState_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setState_ToManaged(self, state);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8287,19 +10437,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getState_Wrapper(IEditController* self, LibVst.IBStream* state)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getState");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getState_ToManaged(self, state);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getState");
+                try
+                {
+                    return getState_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getState_ToManaged(self, state);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8312,19 +10476,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getParameterCount_Wrapper(IEditController* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParameterCount");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getParameterCount_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParameterCount");
+                try
+                {
+                    return getParameterCount_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getParameterCount_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8336,19 +10514,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getParameterInfo_Wrapper(IEditController* self, int paramIndex, LibVst.ParameterInfo* info)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParameterInfo");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getParameterInfo_ToManaged(self, paramIndex, info);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParameterInfo");
+                try
+                {
+                    return getParameterInfo_ToManaged(self, paramIndex, info);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getParameterInfo_ToManaged(self, paramIndex, info);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8360,19 +10552,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getParamStringByValue_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParamStringByValue");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getParamStringByValue_ToManaged(self, id, valueNormalized, @string);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParamStringByValue");
+                try
+                {
+                    return getParamStringByValue_ToManaged(self, id, valueNormalized, @string);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getParamStringByValue_ToManaged(self, id, valueNormalized, @string);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8384,19 +10590,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getParamValueByString_Wrapper(IEditController* self, LibVst.ParamID id, char* @string, LibVst.ParamValue* valueNormalized)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParamValueByString");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getParamValueByString_ToManaged(self, id, @string, valueNormalized);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParamValueByString");
+                try
+                {
+                    return getParamValueByString_ToManaged(self, id, @string, valueNormalized);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getParamValueByString_ToManaged(self, id, @string, valueNormalized);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8409,19 +10629,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.ParamValue normalizedParamToPlain_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "normalizedParamToPlain");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return normalizedParamToPlain_ToManaged(self, id, valueNormalized);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "normalizedParamToPlain");
+                try
+                {
+                    return normalizedParamToPlain_ToManaged(self, id, valueNormalized);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return normalizedParamToPlain_ToManaged(self, id, valueNormalized);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8433,19 +10667,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.ParamValue plainParamToNormalized_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue plainValue)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "plainParamToNormalized");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return plainParamToNormalized_ToManaged(self, id, plainValue);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "plainParamToNormalized");
+                try
+                {
+                    return plainParamToNormalized_ToManaged(self, id, plainValue);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return plainParamToNormalized_ToManaged(self, id, plainValue);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8457,19 +10705,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.ParamValue getParamNormalized_Wrapper(IEditController* self, LibVst.ParamID id)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParamNormalized");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getParamNormalized_ToManaged(self, id);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "getParamNormalized");
+                try
+                {
+                    return getParamNormalized_ToManaged(self, id);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getParamNormalized_ToManaged(self, id);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8483,19 +10745,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setParamNormalized_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue value)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setParamNormalized");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setParamNormalized_ToManaged(self, id, value);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setParamNormalized");
+                try
+                {
+                    return setParamNormalized_ToManaged(self, id, value);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setParamNormalized_ToManaged(self, id, value);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8509,19 +10785,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setComponentHandler_Wrapper(IEditController* self, LibVst.IComponentHandler* handler)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setComponentHandler");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setComponentHandler_ToManaged(self, handler);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "setComponentHandler");
+                try
+                {
+                    return setComponentHandler_ToManaged(self, handler);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setComponentHandler_ToManaged(self, handler);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8534,19 +10824,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IPlugView* createView_Wrapper(IEditController* self, LibVst.FIDString name)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "createView");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return createView_ToManaged(self, name);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController), "createView");
+                try
+                {
+                    return createView_ToManaged(self, name);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return createView_ToManaged(self, name);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8560,7 +10864,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xe3, 0xbb, 0xd7, 0xdc, 0x42, 0x77, 0x8d, 0x44, 0xa8, 0x74, 0xaa, 0xcc, 0x97, 0x9c, 0x75, 0x9e })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xdc, 0xd7, 0xbb, 0xe3, 0x77, 0x42, 0x44, 0x8d, 0xcc, 0xaa, 0x74, 0xa8, 0x9e, 0x75, 0x9c, 0x97 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xdc, 0xd7, 0xbb, 0xe3, 0x77, 0x42, 0x44, 0x8d, 0xa8, 0x74, 0xaa, 0xcc, 0x97, 0x9c, 0x75, 0x9e })
                     )));
             }
         }
@@ -8702,19 +11006,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setKnobMode_Wrapper(IEditController2* self, LibVst.KnobMode mode)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController2), "setKnobMode");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setKnobMode_ToManaged(self, mode);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController2), "setKnobMode");
+                try
+                {
+                    return setKnobMode_ToManaged(self, mode);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setKnobMode_ToManaged(self, mode);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8728,19 +11046,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int openHelp_Wrapper(IEditController2* self, byte onlyCheck)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController2), "openHelp");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return openHelp_ToManaged(self, onlyCheck);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController2), "openHelp");
+                try
+                {
+                    return openHelp_ToManaged(self, onlyCheck);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return openHelp_ToManaged(self, onlyCheck);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8754,19 +11086,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int openAboutBox_Wrapper(IEditController2* self, byte onlyCheck)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController2), "openAboutBox");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return openAboutBox_ToManaged(self, onlyCheck);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditController2), "openAboutBox");
+                try
+                {
+                    return openAboutBox_ToManaged(self, onlyCheck);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return openAboutBox_ToManaged(self, onlyCheck);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8780,7 +11126,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x59, 0xfe, 0x4e, 0x7f, 0x20, 0xf3, 0x67, 0x49, 0xac, 0x27, 0xa3, 0xae, 0xaf, 0xb6, 0x30, 0x38 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x7f, 0x4e, 0xfe, 0x59, 0xf3, 0x20, 0x49, 0x67, 0xae, 0xa3, 0x27, 0xac, 0x38, 0x30, 0xb6, 0xaf })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x7f, 0x4e, 0xfe, 0x59, 0xf3, 0x20, 0x49, 0x67, 0xac, 0x27, 0xa3, 0xae, 0xaf, 0xb6, 0x30, 0x38 })
                     )));
             }
         }
@@ -8861,19 +11207,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getMidiControllerAssignment_Wrapper(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiMapping), "getMidiControllerAssignment");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getMidiControllerAssignment_ToManaged(self, busIndex, channel, midiControllerNumber, id);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiMapping), "getMidiControllerAssignment");
+                try
+                {
+                    return getMidiControllerAssignment_ToManaged(self, busIndex, channel, midiControllerNumber, id);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getMidiControllerAssignment_ToManaged(self, busIndex, channel, midiControllerNumber, id);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8887,7 +11247,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xf7, 0xf9, 0x0f, 0xdf, 0xb7, 0x49, 0x69, 0x46, 0xb6, 0x3a, 0xb7, 0x32, 0x7a, 0xdb, 0xf5, 0xe5 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xdf, 0x0f, 0xf9, 0xf7, 0x49, 0xb7, 0x46, 0x69, 0x32, 0xb7, 0x3a, 0xb6, 0xe5, 0xf5, 0xdb, 0x7a })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xdf, 0x0f, 0xf9, 0xf7, 0x49, 0xb7, 0x46, 0x69, 0xb6, 0x3a, 0xb7, 0x32, 0x7a, 0xdb, 0xf5, 0xe5 })
                     )));
             }
         }
@@ -8940,19 +11300,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int beginEditFromHost_Wrapper(IEditControllerHostEditing* self, LibVst.ParamID paramID)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditControllerHostEditing), "beginEditFromHost");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return beginEditFromHost_ToManaged(self, paramID);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditControllerHostEditing), "beginEditFromHost");
+                try
+                {
+                    return beginEditFromHost_ToManaged(self, paramID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return beginEditFromHost_ToManaged(self, paramID);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8964,19 +11338,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int endEditFromHost_Wrapper(IEditControllerHostEditing* self, LibVst.ParamID paramID)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditControllerHostEditing), "endEditFromHost");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return endEditFromHost_ToManaged(self, paramID);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEditControllerHostEditing), "endEditFromHost");
+                try
+                {
+                    return endEditFromHost_ToManaged(self, paramID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return endEditFromHost_ToManaged(self, paramID);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -8990,7 +11378,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x08, 0x12, 0x27, 0xc1, 0x59, 0x70, 0x98, 0x40, 0xb9, 0xdd, 0x34, 0xb3, 0x6b, 0xb0, 0x19, 0x5e })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xc1, 0x27, 0x12, 0x08, 0x70, 0x59, 0x40, 0x98, 0xb3, 0x34, 0xdd, 0xb9, 0x5e, 0x19, 0xb0, 0x6b })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xc1, 0x27, 0x12, 0x08, 0x70, 0x59, 0x40, 0x98, 0xb9, 0xdd, 0x34, 0xb3, 0x6b, 0xb0, 0x19, 0x5e })
                     )));
             }
         }
@@ -9035,19 +11423,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getNoteExpressionCount_Wrapper(INoteExpressionController* self, int busIndex, short channel)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionCount");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getNoteExpressionCount_ToManaged(self, busIndex, channel);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionCount");
+                try
+                {
+                    return getNoteExpressionCount_ToManaged(self, busIndex, channel);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getNoteExpressionCount_ToManaged(self, busIndex, channel);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -9059,19 +11461,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getNoteExpressionInfo_Wrapper(INoteExpressionController* self, int busIndex, short channel, int noteExpressionIndex, LibVst.NoteExpressionTypeInfo* info)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionInfo");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getNoteExpressionInfo_ToManaged(self, busIndex, channel, noteExpressionIndex, info);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionInfo");
+                try
+                {
+                    return getNoteExpressionInfo_ToManaged(self, busIndex, channel, noteExpressionIndex, info);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getNoteExpressionInfo_ToManaged(self, busIndex, channel, noteExpressionIndex, info);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -9083,19 +11499,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getNoteExpressionStringByValue_Wrapper(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionStringByValue");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getNoteExpressionStringByValue_ToManaged(self, busIndex, channel, id, valueNormalized, @string);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionStringByValue");
+                try
+                {
+                    return getNoteExpressionStringByValue_ToManaged(self, busIndex, channel, id, valueNormalized, @string);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getNoteExpressionStringByValue_ToManaged(self, busIndex, channel, id, valueNormalized, @string);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -9107,19 +11537,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getNoteExpressionValueByString_Wrapper(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, char* @string, LibVst.NoteExpressionValue* valueNormalized)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionValueByString");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getNoteExpressionValueByString_ToManaged(self, busIndex, channel, id, @string, valueNormalized);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionController), "getNoteExpressionValueByString");
+                try
+                {
+                    return getNoteExpressionValueByString_ToManaged(self, busIndex, channel, id, @string, valueNormalized);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getNoteExpressionValueByString_ToManaged(self, busIndex, channel, id, @string, valueNormalized);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -9133,7 +11577,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x59, 0xf8, 0xf8, 0xb7, 0x23, 0x41, 0x72, 0x48, 0x91, 0x16, 0x95, 0x81, 0x4f, 0x37, 0x21, 0xa3 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xb7, 0xf8, 0xf8, 0x59, 0x41, 0x23, 0x48, 0x72, 0x81, 0x95, 0x16, 0x91, 0xa3, 0x21, 0x37, 0x4f })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xb7, 0xf8, 0xf8, 0x59, 0x41, 0x23, 0x48, 0x72, 0x91, 0x16, 0x95, 0x81, 0x4f, 0x37, 0x21, 0xa3 })
                     )));
             }
         }
@@ -9278,19 +11722,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getKeyswitchCount_Wrapper(IKeyswitchController* self, int busIndex, short channel)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IKeyswitchController), "getKeyswitchCount");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getKeyswitchCount_ToManaged(self, busIndex, channel);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IKeyswitchController), "getKeyswitchCount");
+                try
+                {
+                    return getKeyswitchCount_ToManaged(self, busIndex, channel);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getKeyswitchCount_ToManaged(self, busIndex, channel);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -9302,19 +11760,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getKeyswitchInfo_Wrapper(IKeyswitchController* self, int busIndex, short channel, int keySwitchIndex, LibVst.KeyswitchInfo* info)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IKeyswitchController), "getKeyswitchInfo");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getKeyswitchInfo_ToManaged(self, busIndex, channel, keySwitchIndex, info);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IKeyswitchController), "getKeyswitchInfo");
+                try
+                {
+                    return getKeyswitchInfo_ToManaged(self, busIndex, channel, keySwitchIndex, info);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getKeyswitchInfo_ToManaged(self, busIndex, channel, keySwitchIndex, info);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -9328,7 +11800,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xd3, 0x76, 0x2f, 0x1f, 0xfb, 0xbf, 0x96, 0x4b, 0xb9, 0x95, 0x27, 0xa5, 0x5e, 0xbc, 0xce, 0xf4 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x1f, 0x2f, 0x76, 0xd3, 0xbf, 0xfb, 0x4b, 0x96, 0xa5, 0x27, 0x95, 0xb9, 0xf4, 0xce, 0xbc, 0x5e })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x1f, 0x2f, 0x76, 0xd3, 0xbf, 0xfb, 0x4b, 0x96, 0xb9, 0x95, 0x27, 0xa5, 0x5e, 0xbc, 0xce, 0xf4 })
                     )));
             }
         }
@@ -9411,12 +11883,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IMessage*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IMessage*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IMessage*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IMessage*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -9429,11 +11908,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IMessage*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IMessage*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IMessage*, uint>)Vtbl[1])((LibVst.IMessage*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -9443,11 +11929,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IMessage*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IMessage*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IMessage*, uint>)Vtbl[2])((LibVst.IMessage*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -9456,11 +11949,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.FIDString getMessageID()
         {
-            var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "getMessageID");
-            var __result__ = ((delegate*unmanaged<LibVst.IMessage*, LibVst.FIDString>)Vtbl[3])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "getMessageID");
+                var __result__ = ((delegate*unmanaged<LibVst.IMessage*, LibVst.FIDString>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IMessage*, LibVst.FIDString>)Vtbl[3])((LibVst.IMessage*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -9469,10 +11969,17 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void setMessageID(LibVst.FIDString id)
         {
-            var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "setMessageID");
-            ((delegate*unmanaged<LibVst.IMessage*, LibVst.FIDString, void>)Vtbl[4])(__self__, id);
-            __evt__.Dispose();
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "setMessageID");
+                ((delegate*unmanaged<LibVst.IMessage*, LibVst.FIDString, void>)Vtbl[4])(__self__, id);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged<LibVst.IMessage*, LibVst.FIDString, void>)Vtbl[4])((LibVst.IMessage*)Unsafe.AsPointer(ref this), id);
+            }
         }
         
         /// <summary>
@@ -9481,11 +11988,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IAttributeList* getAttributes()
         {
-            var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "getAttributes");
-            var __result__ = ((delegate*unmanaged<LibVst.IMessage*, LibVst.IAttributeList*>)Vtbl[5])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "getAttributes");
+                var __result__ = ((delegate*unmanaged<LibVst.IMessage*, LibVst.IAttributeList*>)Vtbl[5])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IMessage*, LibVst.IAttributeList*>)Vtbl[5])((LibVst.IMessage*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -9498,7 +12012,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x3b, 0x03, 0x6f, 0x93, 0xc0, 0xc6, 0xdb, 0x47, 0xbb, 0x08, 0x82, 0xf8, 0x13, 0xc1, 0xe6, 0x13 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x93, 0x6f, 0x03, 0x3b, 0xc6, 0xc0, 0x47, 0xdb, 0xf8, 0x82, 0x08, 0xbb, 0x13, 0xe6, 0xc1, 0x13 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x93, 0x6f, 0x03, 0x3b, 0xc6, 0xc0, 0x47, 0xdb, 0xbb, 0x08, 0x82, 0xf8, 0x13, 0xc1, 0xe6, 0x13 })
                     )));
             }
         }
@@ -9545,12 +12059,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IConnectionPoint*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -9563,11 +12084,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IConnectionPoint*, uint>)Vtbl[1])((LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -9577,11 +12105,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IConnectionPoint*, uint>)Vtbl[2])((LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -9590,12 +12125,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult connect(LibVst.IConnectionPoint* other)
         {
-            var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "connect");
-            var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, LibVst.IConnectionPoint*, ComResult>)Vtbl[3])(__self__, other);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "connect");
+                var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, LibVst.IConnectionPoint*, ComResult>)Vtbl[3])(__self__, other);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IConnectionPoint*, LibVst.IConnectionPoint*, ComResult>)Vtbl[3])((LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this), other);
+            }
         }
         
         /// <summary>
@@ -9604,12 +12146,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult disconnect(LibVst.IConnectionPoint* other)
         {
-            var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "disconnect");
-            var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, LibVst.IConnectionPoint*, ComResult>)Vtbl[4])(__self__, other);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "disconnect");
+                var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, LibVst.IConnectionPoint*, ComResult>)Vtbl[4])(__self__, other);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IConnectionPoint*, LibVst.IConnectionPoint*, ComResult>)Vtbl[4])((LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this), other);
+            }
         }
         
         /// <summary>
@@ -9618,12 +12167,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult notify(LibVst.IMessage* message)
         {
-            var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "notify");
-            var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, LibVst.IMessage*, ComResult>)Vtbl[5])(__self__, message);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IConnectionPoint), "notify");
+                var __result__ = ((delegate*unmanaged<LibVst.IConnectionPoint*, LibVst.IMessage*, ComResult>)Vtbl[5])(__self__, message);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IConnectionPoint*, LibVst.IMessage*, ComResult>)Vtbl[5])((LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this), message);
+            }
         }
         
         // --------------------------------------------------------------
@@ -9637,19 +12193,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int connect_Wrapper(IConnectionPoint* self, LibVst.IConnectionPoint* other)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IConnectionPoint), "connect");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return connect_ToManaged(self, other);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IConnectionPoint), "connect");
+                try
+                {
+                    return connect_ToManaged(self, other);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return connect_ToManaged(self, other);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -9661,19 +12231,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int disconnect_Wrapper(IConnectionPoint* self, LibVst.IConnectionPoint* other)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IConnectionPoint), "disconnect");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return disconnect_ToManaged(self, other);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IConnectionPoint), "disconnect");
+                try
+                {
+                    return disconnect_ToManaged(self, other);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return disconnect_ToManaged(self, other);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -9685,19 +12269,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int notify_Wrapper(IConnectionPoint* self, LibVst.IMessage* message)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IConnectionPoint), "notify");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return notify_ToManaged(self, message);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IConnectionPoint), "notify");
+                try
+                {
+                    return notify_ToManaged(self, message);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return notify_ToManaged(self, message);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -9711,7 +12309,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x6f, 0x15, 0xa4, 0x70, 0x6e, 0x6e, 0x26, 0x40, 0x98, 0x91, 0x48, 0xbf, 0xaa, 0x60, 0xd8, 0xd1 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x70, 0xa4, 0x15, 0x6f, 0x6e, 0x6e, 0x40, 0x26, 0xbf, 0x48, 0x91, 0x98, 0xd1, 0xd8, 0x60, 0xaa })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x70, 0xa4, 0x15, 0x6f, 0x6e, 0x6e, 0x40, 0x26, 0x98, 0x91, 0x48, 0xbf, 0xaa, 0x60, 0xd8, 0xd1 })
                     )));
             }
         }
@@ -9745,12 +12343,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IHostApplication*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IHostApplication), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IHostApplication*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IHostApplication*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IHostApplication), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IHostApplication*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IHostApplication*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -9763,11 +12368,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IHostApplication*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IHostApplication), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IHostApplication*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IHostApplication*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IHostApplication), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IHostApplication*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IHostApplication*, uint>)Vtbl[1])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -9777,11 +12389,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IHostApplication*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IHostApplication), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IHostApplication*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IHostApplication*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IHostApplication), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IHostApplication*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IHostApplication*, uint>)Vtbl[2])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -9790,12 +12409,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getName(LibVst.String128* name)
         {
-            var __self__ = (LibVst.IHostApplication*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IHostApplication), "getName");
-            var __result__ = ((delegate*unmanaged<LibVst.IHostApplication*, LibVst.String128*, ComResult>)Vtbl[3])(__self__, name);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IHostApplication*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IHostApplication), "getName");
+                var __result__ = ((delegate*unmanaged<LibVst.IHostApplication*, LibVst.String128*, ComResult>)Vtbl[3])(__self__, name);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IHostApplication*, LibVst.String128*, ComResult>)Vtbl[3])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), name);
+            }
         }
         
         /// <summary>
@@ -9804,12 +12430,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult createInstance(Guid* cid, Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IHostApplication*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IHostApplication), "createInstance");
-            var __result__ = ((delegate*unmanaged<LibVst.IHostApplication*, Guid*, Guid*, void**, ComResult>)Vtbl[4])(__self__, cid, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IHostApplication*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IHostApplication), "createInstance");
+                var __result__ = ((delegate*unmanaged<LibVst.IHostApplication*, Guid*, Guid*, void**, ComResult>)Vtbl[4])(__self__, cid, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IHostApplication*, Guid*, Guid*, void**, ComResult>)Vtbl[4])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), cid, _iid, obj);
+            }
         }
         
         /// <summary>
@@ -9822,7 +12455,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xcc, 0x95, 0xe5, 0x58, 0x2d, 0xdb, 0x69, 0x49, 0x8b, 0x6a, 0xaf, 0x8c, 0x36, 0xa6, 0x64, 0xe5 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x58, 0xe5, 0x95, 0xcc, 0xdb, 0x2d, 0x49, 0x69, 0x8c, 0xaf, 0x6a, 0x8b, 0xe5, 0x64, 0xa6, 0x36 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x58, 0xe5, 0x95, 0xcc, 0xdb, 0x2d, 0x49, 0x69, 0x8b, 0x6a, 0xaf, 0x8c, 0x36, 0xa6, 0x64, 0xe5 })
                     )));
             }
         }
@@ -9851,7 +12484,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xec, 0x3a, 0x63, 0x29, 0x1c, 0x1d, 0xe2, 0x47, 0xbb, 0x85, 0xb9, 0x7b, 0xd3, 0x6e, 0xac, 0x61 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x29, 0x63, 0x3a, 0xec, 0x1d, 0x1c, 0x47, 0xe2, 0x7b, 0xb9, 0x85, 0xbb, 0x61, 0xac, 0x6e, 0xd3 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x29, 0x63, 0x3a, 0xec, 0x1d, 0x1c, 0x47, 0xe2, 0xbb, 0x85, 0xb9, 0x7b, 0xd3, 0x6e, 0xac, 0x61 })
                     )));
             }
         }
@@ -9880,7 +12513,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xc5, 0xc6, 0xb8, 0xa3, 0x95, 0xc0, 0x88, 0x46, 0xb0, 0x91, 0x6f, 0x0b, 0xb6, 0x97, 0xaa, 0x44 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xa3, 0xb8, 0xc6, 0xc5, 0xc0, 0x95, 0x46, 0x88, 0x0b, 0x6f, 0x91, 0xb0, 0x44, 0xaa, 0x97, 0xb6 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xa3, 0xb8, 0xc6, 0xc5, 0xc0, 0x95, 0x46, 0x88, 0xb0, 0x91, 0x6f, 0x0b, 0xb6, 0x97, 0xaa, 0x44 })
                     )));
             }
         }
@@ -9909,7 +12542,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xc6, 0x9d, 0x31, 0x6d, 0xc5, 0x60, 0x42, 0x62, 0xb3, 0x2c, 0x95, 0x1b, 0x93, 0xbe, 0xf4, 0xc6 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x6d, 0x31, 0x9d, 0xc6, 0x60, 0xc5, 0x62, 0x42, 0x1b, 0x95, 0x2c, 0xb3, 0xc6, 0xf4, 0xbe, 0x93 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x6d, 0x31, 0x9d, 0xc6, 0x60, 0xc5, 0x62, 0x42, 0xb3, 0x2c, 0x95, 0x1b, 0x93, 0xbe, 0xf4, 0xc6 })
                     )));
             }
         }
@@ -9945,12 +12578,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IVst3WrapperMPESupport), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IVst3WrapperMPESupport), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -9963,11 +12603,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IVst3WrapperMPESupport), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IVst3WrapperMPESupport), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, uint>)Vtbl[1])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -9977,11 +12624,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IVst3WrapperMPESupport), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IVst3WrapperMPESupport), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, uint>)Vtbl[2])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -9992,12 +12646,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult enableMPEInputProcessing(byte state)
         {
-            var __self__ = (LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IVst3WrapperMPESupport), "enableMPEInputProcessing");
-            var __result__ = ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, byte, ComResult>)Vtbl[3])(__self__, state);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IVst3WrapperMPESupport), "enableMPEInputProcessing");
+                var __result__ = ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, byte, ComResult>)Vtbl[3])(__self__, state);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, byte, ComResult>)Vtbl[3])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this), state);
+            }
         }
         
         /// <summary>
@@ -10010,12 +12671,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setMPEInputDeviceSettings(int masterChannel, int memberBeginChannel, int memberEndChannel)
         {
-            var __self__ = (LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IVst3WrapperMPESupport), "setMPEInputDeviceSettings");
-            var __result__ = ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, int, int, int, ComResult>)Vtbl[4])(__self__, masterChannel, memberBeginChannel, memberEndChannel);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IVst3WrapperMPESupport), "setMPEInputDeviceSettings");
+                var __result__ = ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, int, int, int, ComResult>)Vtbl[4])(__self__, masterChannel, memberBeginChannel, memberEndChannel);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IVst3WrapperMPESupport*, int, int, int, ComResult>)Vtbl[4])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this), masterChannel, memberBeginChannel, memberEndChannel);
+            }
         }
         
         /// <summary>
@@ -10028,7 +12696,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x67, 0x90, 0x14, 0x44, 0xcf, 0x42, 0xf9, 0x4b, 0x88, 0x00, 0xb7, 0x50, 0xf7, 0x35, 0x9f, 0xe3 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x44, 0x14, 0x90, 0x67, 0x42, 0xcf, 0x4b, 0xf9, 0x50, 0xb7, 0x00, 0x88, 0xe3, 0x9f, 0x35, 0xf7 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x44, 0x14, 0x90, 0x67, 0x42, 0xcf, 0x4b, 0xf9, 0x88, 0x00, 0xb7, 0x50, 0xf7, 0x35, 0x9f, 0xe3 })
                     )));
             }
         }
@@ -10069,19 +12737,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int runLoadPresetBrowser_Wrapper(IInterAppAudioPresetManager* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "runLoadPresetBrowser");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return runLoadPresetBrowser_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "runLoadPresetBrowser");
+                try
+                {
+                    return runLoadPresetBrowser_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return runLoadPresetBrowser_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -10093,19 +12775,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int runSavePresetBrowser_Wrapper(IInterAppAudioPresetManager* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "runSavePresetBrowser");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return runSavePresetBrowser_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "runSavePresetBrowser");
+                try
+                {
+                    return runSavePresetBrowser_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return runSavePresetBrowser_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -10117,19 +12813,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int loadNextPreset_Wrapper(IInterAppAudioPresetManager* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "loadNextPreset");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return loadNextPreset_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "loadNextPreset");
+                try
+                {
+                    return loadNextPreset_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return loadNextPreset_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -10141,19 +12851,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int loadPreviousPreset_Wrapper(IInterAppAudioPresetManager* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "loadPreviousPreset");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return loadPreviousPreset_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioPresetManager), "loadPreviousPreset");
+                try
+                {
+                    return loadPreviousPreset_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return loadPreviousPreset_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -10167,7 +12891,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xc4, 0xfc, 0xe6, 0xad, 0xc9, 0x46, 0x1d, 0x4e, 0xb3, 0xb4, 0x9a, 0x80, 0xc9, 0x3f, 0xef, 0xdd })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xad, 0xe6, 0xfc, 0xc4, 0x46, 0xc9, 0x4e, 0x1d, 0x80, 0x9a, 0xb4, 0xb3, 0xdd, 0xef, 0x3f, 0xc9 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xad, 0xe6, 0xfc, 0xc4, 0x46, 0xc9, 0x4e, 0x1d, 0xb3, 0xb4, 0x9a, 0x80, 0xc9, 0x3f, 0xef, 0xdd })
                     )));
             }
         }
@@ -10201,12 +12925,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -10219,11 +12950,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, uint>)Vtbl[1])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -10233,11 +12971,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, uint>)Vtbl[2])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -10249,12 +12994,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getScreenSize(LibVst.ViewRect* size, float* scale)
         {
-            var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "getScreenSize");
-            var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, LibVst.ViewRect*, float*, ComResult>)Vtbl[3])(__self__, size, scale);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "getScreenSize");
+                var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, LibVst.ViewRect*, float*, ComResult>)Vtbl[3])(__self__, size, scale);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, LibVst.ViewRect*, float*, ComResult>)Vtbl[3])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), size, scale);
+            }
         }
         
         /// <summary>
@@ -10264,12 +13016,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult connectedToHost()
         {
-            var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "connectedToHost");
-            var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, ComResult>)Vtbl[4])(__self__);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "connectedToHost");
+                var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, ComResult>)Vtbl[4])(__self__);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, ComResult>)Vtbl[4])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -10279,12 +13038,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult switchToHost()
         {
-            var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "switchToHost");
-            var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, ComResult>)Vtbl[5])(__self__);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "switchToHost");
+                var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, ComResult>)Vtbl[5])(__self__);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, ComResult>)Vtbl[5])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -10295,12 +13061,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult sendRemoteControlEvent(uint @event)
         {
-            var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "sendRemoteControlEvent");
-            var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, uint, ComResult>)Vtbl[6])(__self__, @event);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "sendRemoteControlEvent");
+                var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, uint, ComResult>)Vtbl[6])(__self__, @event);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, uint, ComResult>)Vtbl[6])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), @event);
+            }
         }
         
         /// <summary>
@@ -10311,12 +13084,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getHostIcon(void** icon)
         {
-            var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "getHostIcon");
-            var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, void**, ComResult>)Vtbl[7])(__self__, icon);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "getHostIcon");
+                var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, void**, ComResult>)Vtbl[7])(__self__, icon);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, void**, ComResult>)Vtbl[7])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), icon);
+            }
         }
         
         /// <summary>
@@ -10327,12 +13107,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult scheduleEventFromUI(LibVst.Event* @event)
         {
-            var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "scheduleEventFromUI");
-            var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, LibVst.Event*, ComResult>)Vtbl[8])(__self__, @event);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "scheduleEventFromUI");
+                var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, LibVst.Event*, ComResult>)Vtbl[8])(__self__, @event);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, LibVst.Event*, ComResult>)Vtbl[8])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), @event);
+            }
         }
         
         /// <summary>
@@ -10343,11 +13130,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IInterAppAudioPresetManager* createPresetManager(Guid* cid)
         {
-            var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "createPresetManager");
-            var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, Guid*, LibVst.IInterAppAudioPresetManager*>)Vtbl[9])(__self__, cid);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "createPresetManager");
+                var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, Guid*, LibVst.IInterAppAudioPresetManager*>)Vtbl[9])(__self__, cid);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, Guid*, LibVst.IInterAppAudioPresetManager*>)Vtbl[9])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), cid);
+            }
         }
         
         /// <summary>
@@ -10358,12 +13152,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult showSettingsView()
         {
-            var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "showSettingsView");
-            var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, ComResult>)Vtbl[10])(__self__);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioHost), "showSettingsView");
+                var __result__ = ((delegate*unmanaged<LibVst.IInterAppAudioHost*, ComResult>)Vtbl[10])(__self__);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IInterAppAudioHost*, ComResult>)Vtbl[10])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -10376,7 +13177,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x3d, 0x74, 0xe5, 0x0c, 0xdf, 0x68, 0x5e, 0x41, 0xae, 0x28, 0x5b, 0xd4, 0xe2, 0xcd, 0xc8, 0xfd })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x0c, 0xe5, 0x74, 0x3d, 0x68, 0xdf, 0x41, 0x5e, 0xd4, 0x5b, 0x28, 0xae, 0xfd, 0xc8, 0xcd, 0xe2 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x0c, 0xe5, 0x74, 0x3d, 0x68, 0xdf, 0x41, 0x5e, 0xae, 0x28, 0x5b, 0xd4, 0xe2, 0xcd, 0xc8, 0xfd })
                     )));
             }
         }
@@ -10415,18 +13216,31 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void onInterAppAudioConnectionStateChange_Wrapper(IInterAppAudioConnectionNotification* self, byte newState)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioConnectionNotification), "onInterAppAudioConnectionStateChange");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                onInterAppAudioConnectionStateChange_ToManaged(self, newState);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioConnectionNotification), "onInterAppAudioConnectionStateChange");
+                try
+                {
+                    onInterAppAudioConnectionStateChange_ToManaged(self, newState);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    onInterAppAudioConnectionStateChange_ToManaged(self, newState);
+                }
+                catch
+                {
+                }
             }
         }
         
@@ -10440,7 +13254,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x2d, 0xc7, 0x20, 0x60, 0xc2, 0x5f, 0xa1, 0x4a, 0xb0, 0x95, 0x0d, 0xb5, 0xd7, 0xd6, 0xd5, 0xcf })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x60, 0x20, 0xc7, 0x2d, 0x5f, 0xc2, 0x4a, 0xa1, 0xb5, 0x0d, 0x95, 0xb0, 0xcf, 0xd5, 0xd6, 0xd7 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x60, 0x20, 0xc7, 0x2d, 0x5f, 0xc2, 0x4a, 0xa1, 0xb0, 0x95, 0x0d, 0xb5, 0xd7, 0xd6, 0xd5, 0xcf })
                     )));
             }
         }
@@ -10531,19 +13345,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onLiveMIDIControllerInput_Wrapper(IMidiLearn* self, int busIndex, short channel, LibVst.CtrlNumber midiCC)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiLearn), "onLiveMIDIControllerInput");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return onLiveMIDIControllerInput_ToManaged(self, busIndex, channel, midiCC);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiLearn), "onLiveMIDIControllerInput");
+                try
+                {
+                    return onLiveMIDIControllerInput_ToManaged(self, busIndex, channel, midiCC);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return onLiveMIDIControllerInput_ToManaged(self, busIndex, channel, midiCC);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -10557,7 +13385,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xcc, 0x49, 0x24, 0x6b, 0x97, 0x41, 0xb5, 0x40, 0xab, 0x3c, 0x79, 0xda, 0xc5, 0xfe, 0x5c, 0x86 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x6b, 0x24, 0x49, 0xcc, 0x41, 0x97, 0x40, 0xb5, 0xda, 0x79, 0x3c, 0xab, 0x86, 0x5c, 0xfe, 0xc5 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x6b, 0x24, 0x49, 0xcc, 0x41, 0x97, 0x40, 0xb5, 0xab, 0x3c, 0x79, 0xda, 0xc5, 0xfe, 0x5c, 0x86 })
                     )));
             }
         }
@@ -10659,19 +13487,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getParameterIDFromFunctionName_Wrapper(IParameterFunctionName* self, LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParameterFunctionName), "getParameterIDFromFunctionName");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getParameterIDFromFunctionName_ToManaged(self, unitID, functionName, paramID);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParameterFunctionName), "getParameterIDFromFunctionName");
+                try
+                {
+                    return getParameterIDFromFunctionName_ToManaged(self, unitID, functionName, paramID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getParameterIDFromFunctionName_ToManaged(self, unitID, functionName, paramID);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -10685,7 +13527,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xdc, 0xe1, 0x21, 0x6d, 0x19, 0x91, 0x4b, 0x9d, 0xa2, 0xa0, 0x2f, 0xef, 0x6c, 0x1a, 0xe5, 0x5c })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x6d, 0x21, 0xe1, 0xdc, 0x91, 0x19, 0x9d, 0x4b, 0xef, 0x2f, 0xa0, 0xa2, 0x5c, 0xe5, 0x1a, 0x6c })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x6d, 0x21, 0xe1, 0xdc, 0x91, 0x19, 0x9d, 0x4b, 0xa2, 0xa0, 0x2f, 0xef, 0x6c, 0x1a, 0xe5, 0x5c })
                     )));
             }
         }
@@ -10774,19 +13616,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getPhysicalUIMapping_Wrapper(INoteExpressionPhysicalUIMapping* self, int busIndex, short channel, LibVst.PhysicalUIMapList* list)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionPhysicalUIMapping), "getPhysicalUIMapping");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getPhysicalUIMapping_ToManaged(self, busIndex, channel, list);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(INoteExpressionPhysicalUIMapping), "getPhysicalUIMapping");
+                try
+                {
+                    return getPhysicalUIMapping_ToManaged(self, busIndex, channel, list);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getPhysicalUIMapping_ToManaged(self, busIndex, channel, list);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -10800,7 +13656,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xff, 0x78, 0x30, 0xb0, 0xd2, 0x94, 0xc8, 0x4a, 0x90, 0xcc, 0xd3, 0x03, 0xd4, 0x13, 0x33, 0x24 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xb0, 0x30, 0x78, 0xff, 0x94, 0xd2, 0x4a, 0xc8, 0x03, 0xd3, 0xcc, 0x90, 0x24, 0x33, 0x13, 0xd4 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xb0, 0x30, 0x78, 0xff, 0x94, 0xd2, 0x4a, 0xc8, 0x90, 0xcc, 0xd3, 0x03, 0xd4, 0x13, 0x33, 0x24 })
                     )));
             }
         }
@@ -10890,12 +13746,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugInterfaceSupport), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugInterfaceSupport), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -10908,11 +13771,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugInterfaceSupport), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugInterfaceSupport), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, uint>)Vtbl[1])((LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -10922,11 +13792,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugInterfaceSupport), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugInterfaceSupport), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, uint>)Vtbl[2])((LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -10935,12 +13812,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult isPlugInterfaceSupported(Guid* _iid)
         {
-            var __self__ = (LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugInterfaceSupport), "isPlugInterfaceSupported");
-            var __result__ = ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, Guid*, ComResult>)Vtbl[3])(__self__, _iid);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugInterfaceSupport), "isPlugInterfaceSupported");
+                var __result__ = ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, Guid*, ComResult>)Vtbl[3])(__self__, _iid);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IPlugInterfaceSupport*, Guid*, ComResult>)Vtbl[3])((LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this), _iid);
+            }
         }
         
         /// <summary>
@@ -10953,7 +13837,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x9e, 0x8b, 0xb5, 0x4f, 0xaa, 0x9e, 0x0f, 0x4e, 0xab, 0x36, 0x1c, 0x1c, 0xcc, 0xb5, 0x6f, 0xea })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x4f, 0xb5, 0x8b, 0x9e, 0x9e, 0xaa, 0x4e, 0x0f, 0x1c, 0x1c, 0x36, 0xab, 0xea, 0x6f, 0xb5, 0xcc })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x4f, 0xb5, 0x8b, 0x9e, 0x9e, 0xaa, 0x4e, 0x0f, 0xab, 0x36, 0x1c, 0x1c, 0xcc, 0xb5, 0x6f, 0xea })
                     )));
             }
         }
@@ -10994,19 +13878,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int findParameter_Wrapper(IParameterFinder* self, int xPos, int yPos, LibVst.ParamID* resultTag)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParameterFinder), "findParameter");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return findParameter_ToManaged(self, xPos, yPos, resultTag);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParameterFinder), "findParameter");
+                try
+                {
+                    return findParameter_ToManaged(self, xPos, yPos, resultTag);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return findParameter_ToManaged(self, xPos, yPos, resultTag);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -11020,7 +13918,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x02, 0x83, 0x61, 0x0f, 0x5d, 0x21, 0x87, 0x45, 0xa5, 0x12, 0x07, 0x3c, 0x77, 0xb9, 0xd3, 0x83 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x0f, 0x61, 0x83, 0x02, 0x21, 0x5d, 0x45, 0x87, 0x3c, 0x07, 0x12, 0xa5, 0x83, 0xd3, 0xb9, 0x77 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x0f, 0x61, 0x83, 0x02, 0x21, 0x5d, 0x45, 0x87, 0xa5, 0x12, 0x07, 0x3c, 0x77, 0xb9, 0xd3, 0x83 })
                     )));
             }
         }
@@ -11077,19 +13975,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getPrefetchableSupport_Wrapper(IPrefetchableSupport* self, LibVst.PrefetchableSupport* prefetchable)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPrefetchableSupport), "getPrefetchableSupport");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getPrefetchableSupport_ToManaged(self, prefetchable);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPrefetchableSupport), "getPrefetchableSupport");
+                try
+                {
+                    return getPrefetchableSupport_ToManaged(self, prefetchable);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getPrefetchableSupport_ToManaged(self, prefetchable);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -11103,7 +14015,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xda, 0x4f, 0xe5, 0x8a, 0x30, 0xe9, 0xb9, 0x46, 0xa2, 0x85, 0x55, 0xbc, 0xdc, 0x98, 0xe2, 0x1e })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x8a, 0xe5, 0x4f, 0xda, 0xe9, 0x30, 0x46, 0xb9, 0xbc, 0x55, 0x85, 0xa2, 0x1e, 0xe2, 0x98, 0xdc })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x8a, 0xe5, 0x4f, 0xda, 0xe9, 0x30, 0x46, 0xb9, 0xa2, 0x85, 0x55, 0xbc, 0xdc, 0x98, 0xe2, 0x1e })
                     )));
             }
         }
@@ -11226,19 +14138,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getXmlRepresentationStream_Wrapper(IXmlRepresentationController* self, LibVst.RepresentationInfo* info, LibVst.IBStream* stream)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IXmlRepresentationController), "getXmlRepresentationStream");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getXmlRepresentationStream_ToManaged(self, info, stream);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IXmlRepresentationController), "getXmlRepresentationStream");
+                try
+                {
+                    return getXmlRepresentationStream_ToManaged(self, info, stream);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getXmlRepresentationStream_ToManaged(self, info, stream);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -11252,7 +14178,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x71, 0x04, 0x1a, 0xa8, 0xc3, 0x48, 0xc4, 0x4d, 0xac, 0x30, 0xc9, 0xe1, 0x3c, 0x83, 0x93, 0xd5 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xa8, 0x1a, 0x04, 0x71, 0x48, 0xc3, 0x4d, 0xc4, 0xe1, 0xc9, 0x30, 0xac, 0xd5, 0x93, 0x83, 0x3c })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xa8, 0x1a, 0x04, 0x71, 0x48, 0xc3, 0x4d, 0xc4, 0xac, 0x30, 0xc9, 0xe1, 0x3c, 0x83, 0x93, 0xd5 })
                     )));
             }
         }
@@ -11328,12 +14254,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -11346,11 +14279,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider*, uint>)Vtbl[1])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -11360,11 +14300,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider*, uint>)Vtbl[2])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -11377,11 +14324,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IComponent* getComponent()
         {
-            var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "getComponent");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IComponent*>)Vtbl[3])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "getComponent");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IComponent*>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IComponent*>)Vtbl[3])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -11394,11 +14348,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IEditController* getController()
         {
-            var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "getController");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IEditController*>)Vtbl[4])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "getController");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IEditController*>)Vtbl[4])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IEditController*>)Vtbl[4])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -11407,12 +14368,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult releasePlugIn(LibVst.IComponent* component, LibVst.IEditController* controller)
         {
-            var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "releasePlugIn");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IComponent*, LibVst.IEditController*, ComResult>)Vtbl[5])(__self__, component, controller);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "releasePlugIn");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IComponent*, LibVst.IEditController*, ComResult>)Vtbl[5])(__self__, component, controller);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IComponent*, LibVst.IEditController*, ComResult>)Vtbl[5])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this), component, controller);
+            }
         }
         
         /// <summary>
@@ -11421,12 +14389,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getSubCategories(LibVst.IStringResult* result)
         {
-            var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "getSubCategories");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IStringResult*, ComResult>)Vtbl[6])(__self__, result);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "getSubCategories");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IStringResult*, ComResult>)Vtbl[6])(__self__, result);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.IStringResult*, ComResult>)Vtbl[6])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this), result);
+            }
         }
         
         /// <summary>
@@ -11435,12 +14410,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getComponentUID(LibVst.FUID* uid)
         {
-            var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "getComponentUID");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.FUID*, ComResult>)Vtbl[7])(__self__, uid);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider), "getComponentUID");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.FUID*, ComResult>)Vtbl[7])(__self__, uid);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider*, LibVst.FUID*, ComResult>)Vtbl[7])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this), uid);
+            }
         }
         
         // --------------------------------------------------------------
@@ -11458,19 +14440,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IComponent* getComponent_Wrapper(ITestPlugProvider* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getComponent");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getComponent_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getComponent");
+                try
+                {
+                    return getComponent_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getComponent_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -11486,19 +14482,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IEditController* getController_Wrapper(ITestPlugProvider* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getController");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getController_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getController");
+                try
+                {
+                    return getController_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getController_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -11510,19 +14520,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int releasePlugIn_Wrapper(ITestPlugProvider* self, LibVst.IComponent* component, LibVst.IEditController* controller)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "releasePlugIn");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return releasePlugIn_ToManaged(self, component, controller);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "releasePlugIn");
+                try
+                {
+                    return releasePlugIn_ToManaged(self, component, controller);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return releasePlugIn_ToManaged(self, component, controller);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -11534,19 +14558,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getSubCategories_Wrapper(ITestPlugProvider* self, LibVst.IStringResult* result)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getSubCategories");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getSubCategories_ToManaged(self, result);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getSubCategories");
+                try
+                {
+                    return getSubCategories_ToManaged(self, result);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getSubCategories_ToManaged(self, result);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -11558,19 +14596,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getComponentUID_Wrapper(ITestPlugProvider* self, LibVst.FUID* uid)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getComponentUID");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getComponentUID_ToManaged(self, uid);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider), "getComponentUID");
+                try
+                {
+                    return getComponentUID_ToManaged(self, uid);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getComponentUID_ToManaged(self, uid);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -11584,7 +14636,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xee, 0x70, 0xbe, 0x86, 0x99, 0x4e, 0x0f, 0x43, 0x97, 0x8f, 0x1e, 0x6e, 0xd6, 0x8f, 0xb5, 0xba })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x86, 0xbe, 0x70, 0xee, 0x4e, 0x99, 0x43, 0x0f, 0x6e, 0x1e, 0x8f, 0x97, 0xba, 0xb5, 0x8f, 0xd6 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x86, 0xbe, 0x70, 0xee, 0x4e, 0x99, 0x43, 0x0f, 0x97, 0x8f, 0x1e, 0x6e, 0xd6, 0x8f, 0xb5, 0xba })
                     )));
             }
         }
@@ -11663,12 +14715,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider2*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -11681,11 +14740,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider2*, uint>)Vtbl[1])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -11695,11 +14761,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider2*, uint>)Vtbl[2])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -11712,11 +14785,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IComponent* getComponent()
         {
-            var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "getComponent");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IComponent*>)Vtbl[3])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "getComponent");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IComponent*>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IComponent*>)Vtbl[3])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -11729,11 +14809,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IEditController* getController()
         {
-            var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "getController");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IEditController*>)Vtbl[4])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "getController");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IEditController*>)Vtbl[4])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IEditController*>)Vtbl[4])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -11742,12 +14829,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult releasePlugIn(LibVst.IComponent* component, LibVst.IEditController* controller)
         {
-            var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "releasePlugIn");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IComponent*, LibVst.IEditController*, ComResult>)Vtbl[5])(__self__, component, controller);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "releasePlugIn");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IComponent*, LibVst.IEditController*, ComResult>)Vtbl[5])(__self__, component, controller);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IComponent*, LibVst.IEditController*, ComResult>)Vtbl[5])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this), component, controller);
+            }
         }
         
         /// <summary>
@@ -11756,12 +14850,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getSubCategories(LibVst.IStringResult* result)
         {
-            var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "getSubCategories");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IStringResult*, ComResult>)Vtbl[6])(__self__, result);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "getSubCategories");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IStringResult*, ComResult>)Vtbl[6])(__self__, result);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IStringResult*, ComResult>)Vtbl[6])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this), result);
+            }
         }
         
         /// <summary>
@@ -11770,12 +14871,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getComponentUID(LibVst.FUID* uid)
         {
-            var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "getComponentUID");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.FUID*, ComResult>)Vtbl[7])(__self__, uid);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "getComponentUID");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.FUID*, ComResult>)Vtbl[7])(__self__, uid);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.FUID*, ComResult>)Vtbl[7])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this), uid);
+            }
         }
         
         /// <summary>
@@ -11788,11 +14896,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IPluginFactory* getPluginFactory()
         {
-            var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "getPluginFactory");
-            var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IPluginFactory*>)Vtbl[8])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITestPlugProvider2), "getPluginFactory");
+                var __result__ = ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IPluginFactory*>)Vtbl[8])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.ITestPlugProvider2*, LibVst.IPluginFactory*>)Vtbl[8])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         // --------------------------------------------------------------
@@ -11810,19 +14925,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IPluginFactory* getPluginFactory_Wrapper(ITestPlugProvider2* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider2), "getPluginFactory");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getPluginFactory_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITestPlugProvider2), "getPluginFactory");
+                try
+                {
+                    return getPluginFactory_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getPluginFactory_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -11836,7 +14965,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x64, 0x53, 0xc7, 0xc7, 0x83, 0x7b, 0xac, 0x43, 0xa4, 0x49, 0x5b, 0x0a, 0x3e, 0x5a, 0x46, 0xc7 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xc7, 0xc7, 0x53, 0x64, 0x7b, 0x83, 0x43, 0xac, 0x0a, 0x5b, 0x49, 0xa4, 0xc7, 0x46, 0x5a, 0x3e })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xc7, 0xc7, 0x53, 0x64, 0x7b, 0x83, 0x43, 0xac, 0xa4, 0x49, 0x5b, 0x0a, 0x3e, 0x5a, 0x46, 0xc7 })
                     )));
             }
         }
@@ -11872,12 +15001,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IUnitHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUnitHandler*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IUnitHandler*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -11890,11 +15026,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IUnitHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUnitHandler*, uint>)Vtbl[1])((LibVst.IUnitHandler*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -11904,11 +15047,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IUnitHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUnitHandler*, uint>)Vtbl[2])((LibVst.IUnitHandler*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -11917,12 +15067,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult notifyUnitSelection(LibVst.UnitID unitId)
         {
-            var __self__ = (LibVst.IUnitHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler), "notifyUnitSelection");
-            var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler*, LibVst.UnitID, ComResult>)Vtbl[3])(__self__, unitId);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler), "notifyUnitSelection");
+                var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler*, LibVst.UnitID, ComResult>)Vtbl[3])(__self__, unitId);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUnitHandler*, LibVst.UnitID, ComResult>)Vtbl[3])((LibVst.IUnitHandler*)Unsafe.AsPointer(ref this), unitId);
+            }
         }
         
         /// <summary>
@@ -11933,12 +15090,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult notifyProgramListChange(LibVst.ProgramListID listId, int programIndex)
         {
-            var __self__ = (LibVst.IUnitHandler*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler), "notifyProgramListChange");
-            var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler*, LibVst.ProgramListID, int, ComResult>)Vtbl[4])(__self__, listId, programIndex);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler), "notifyProgramListChange");
+                var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler*, LibVst.ProgramListID, int, ComResult>)Vtbl[4])(__self__, listId, programIndex);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUnitHandler*, LibVst.ProgramListID, int, ComResult>)Vtbl[4])((LibVst.IUnitHandler*)Unsafe.AsPointer(ref this), listId, programIndex);
+            }
         }
         
         /// <summary>
@@ -11951,7 +15115,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xf8, 0x47, 0x51, 0x4b, 0x54, 0x46, 0x6b, 0x48, 0x8d, 0xab, 0x30, 0xba, 0x16, 0x3a, 0x3c, 0x56 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x4b, 0x51, 0x47, 0xf8, 0x46, 0x54, 0x48, 0x6b, 0xba, 0x30, 0xab, 0x8d, 0x56, 0x3c, 0x3a, 0x16 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x4b, 0x51, 0x47, 0xf8, 0x46, 0x54, 0x48, 0x6b, 0x8d, 0xab, 0x30, 0xba, 0x16, 0x3a, 0x3c, 0x56 })
                     )));
             }
         }
@@ -11991,12 +15155,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
-            var __self__ = (LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler2), "queryInterface");
-            var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler2*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler2), "queryInterface");
+                var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler2*, Guid*, void**, ComResult>)Vtbl[0])(__self__, _iid, obj);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUnitHandler2*, Guid*, void**, ComResult>)Vtbl[0])((LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this), _iid, obj);
+            }
         }
         
         /// <summary>
@@ -12009,11 +15180,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
         {
-            var __self__ = (LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler2), "addRef");
-            var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler2*, uint>)Vtbl[1])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler2), "addRef");
+                var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler2*, uint>)Vtbl[1])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUnitHandler2*, uint>)Vtbl[1])((LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -12023,11 +15201,18 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint release()
         {
-            var __self__ = (LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler2), "release");
-            var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler2*, uint>)Vtbl[2])(__self__);
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler2), "release");
+                var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler2*, uint>)Vtbl[2])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUnitHandler2*, uint>)Vtbl[2])((LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -12036,12 +15221,19 @@ internal static partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult notifyUnitByBusChange()
         {
-            var __self__ = (LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this);
-            var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler2), "notifyUnitByBusChange");
-            var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler2*, ComResult>)Vtbl[3])(__self__);
-            __evt__.Result = __result__.Value;
-            __evt__.Dispose();
-            return __result__;
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitHandler2), "notifyUnitByBusChange");
+                var __result__ = ((delegate*unmanaged<LibVst.IUnitHandler2*, ComResult>)Vtbl[3])(__self__);
+                __evt__.Result = __result__.Value;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged<LibVst.IUnitHandler2*, ComResult>)Vtbl[3])((LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this));
+            }
         }
         
         /// <summary>
@@ -12054,7 +15246,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xdf, 0x8c, 0x9f, 0xf8, 0x9e, 0x69, 0xa5, 0x4b, 0x96, 0xaa, 0xc9, 0xa4, 0x81, 0x45, 0x2b, 0x01 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0xf8, 0x9f, 0x8c, 0xdf, 0x69, 0x9e, 0x4b, 0xa5, 0xa4, 0xc9, 0xaa, 0x96, 0x01, 0x2b, 0x45, 0x81 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf8, 0x9f, 0x8c, 0xdf, 0x69, 0x9e, 0x4b, 0xa5, 0x96, 0xaa, 0xc9, 0xa4, 0x81, 0x45, 0x2b, 0x01 })
                     )));
             }
         }
@@ -12109,19 +15301,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getUnitCount_Wrapper(IUnitInfo* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getUnitCount");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getUnitCount_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getUnitCount");
+                try
+                {
+                    return getUnitCount_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getUnitCount_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12133,19 +15339,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getUnitInfo_Wrapper(IUnitInfo* self, int unitIndex, LibVst.UnitInfo* info)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getUnitInfo");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getUnitInfo_ToManaged(self, unitIndex, info);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getUnitInfo");
+                try
+                {
+                    return getUnitInfo_ToManaged(self, unitIndex, info);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getUnitInfo_ToManaged(self, unitIndex, info);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12160,19 +15380,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramListCount_Wrapper(IUnitInfo* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramListCount");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getProgramListCount_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramListCount");
+                try
+                {
+                    return getProgramListCount_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getProgramListCount_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12184,19 +15418,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramListInfo_Wrapper(IUnitInfo* self, int listIndex, LibVst.ProgramListInfo* info)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramListInfo");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getProgramListInfo_ToManaged(self, listIndex, info);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramListInfo");
+                try
+                {
+                    return getProgramListInfo_ToManaged(self, listIndex, info);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getProgramListInfo_ToManaged(self, listIndex, info);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12208,19 +15456,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramName_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.String128* name)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramName");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getProgramName_ToManaged(self, listId, programIndex, name);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramName");
+                try
+                {
+                    return getProgramName_ToManaged(self, listId, programIndex, name);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getProgramName_ToManaged(self, listId, programIndex, name);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12232,19 +15494,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramInfo_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramInfo");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getProgramInfo_ToManaged(self, listId, programIndex, attributeId, attributeValue);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramInfo");
+                try
+                {
+                    return getProgramInfo_ToManaged(self, listId, programIndex, attributeId, attributeValue);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getProgramInfo_ToManaged(self, listId, programIndex, attributeId, attributeValue);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12256,19 +15532,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int hasProgramPitchNames_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "hasProgramPitchNames");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return hasProgramPitchNames_ToManaged(self, listId, programIndex);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "hasProgramPitchNames");
+                try
+                {
+                    return hasProgramPitchNames_ToManaged(self, listId, programIndex);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return hasProgramPitchNames_ToManaged(self, listId, programIndex);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12281,19 +15571,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramPitchName_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramPitchName");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getProgramPitchName_ToManaged(self, listId, programIndex, midiPitch, name);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getProgramPitchName");
+                try
+                {
+                    return getProgramPitchName_ToManaged(self, listId, programIndex, midiPitch, name);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getProgramPitchName_ToManaged(self, listId, programIndex, midiPitch, name);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12306,19 +15610,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.UnitID getSelectedUnit_Wrapper(IUnitInfo* self)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getSelectedUnit");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getSelectedUnit_ToManaged(self);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getSelectedUnit");
+                try
+                {
+                    return getSelectedUnit_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getSelectedUnit_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12330,19 +15648,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int selectUnit_Wrapper(IUnitInfo* self, LibVst.UnitID unitId)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "selectUnit");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return selectUnit_ToManaged(self, unitId);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "selectUnit");
+                try
+                {
+                    return selectUnit_ToManaged(self, unitId);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return selectUnit_ToManaged(self, unitId);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12355,19 +15687,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getUnitByBus_Wrapper(IUnitInfo* self, LibVst.MediaType type, LibVst.BusDirection dir, int busIndex, int channel, LibVst.UnitID* unitId)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getUnitByBus");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getUnitByBus_ToManaged(self, type, dir, busIndex, channel, unitId);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "getUnitByBus");
+                try
+                {
+                    return getUnitByBus_ToManaged(self, type, dir, busIndex, channel, unitId);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getUnitByBus_ToManaged(self, type, dir, busIndex, channel, unitId);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12385,19 +15731,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setUnitProgramData_Wrapper(IUnitInfo* self, int listOrUnitId, int programIndex, LibVst.IBStream* data)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "setUnitProgramData");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setUnitProgramData_ToManaged(self, listOrUnitId, programIndex, data);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitInfo), "setUnitProgramData");
+                try
+                {
+                    return setUnitProgramData_ToManaged(self, listOrUnitId, programIndex, data);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setUnitProgramData_ToManaged(self, listOrUnitId, programIndex, data);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12411,7 +15771,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0xb5, 0xd6, 0x4b, 0x3d, 0x3a, 0x91, 0xd2, 0x4f, 0xa8, 0x86, 0xe7, 0x68, 0xa5, 0xeb, 0x92, 0xc1 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x3d, 0x4b, 0xd6, 0xb5, 0x91, 0x3a, 0x4f, 0xd2, 0x68, 0xe7, 0x86, 0xa8, 0xc1, 0x92, 0xeb, 0xa5 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x3d, 0x4b, 0xd6, 0xb5, 0x91, 0x3a, 0x4f, 0xd2, 0xa8, 0x86, 0xe7, 0x68, 0xa5, 0xeb, 0x92, 0xc1 })
                     )));
             }
         }
@@ -12510,19 +15870,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int programDataSupported_Wrapper(IProgramListData* self, LibVst.ProgramListID listId)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgramListData), "programDataSupported");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return programDataSupported_ToManaged(self, listId);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgramListData), "programDataSupported");
+                try
+                {
+                    return programDataSupported_ToManaged(self, listId);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return programDataSupported_ToManaged(self, listId);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12534,19 +15908,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramData_Wrapper(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgramListData), "getProgramData");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getProgramData_ToManaged(self, listId, programIndex, data);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgramListData), "getProgramData");
+                try
+                {
+                    return getProgramData_ToManaged(self, listId, programIndex, data);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getProgramData_ToManaged(self, listId, programIndex, data);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12558,19 +15946,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setProgramData_Wrapper(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgramListData), "setProgramData");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setProgramData_ToManaged(self, listId, programIndex, data);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgramListData), "setProgramData");
+                try
+                {
+                    return setProgramData_ToManaged(self, listId, programIndex, data);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setProgramData_ToManaged(self, listId, programIndex, data);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12584,7 +15986,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x1f, 0xb0, 0x83, 0x86, 0x35, 0x7b, 0x70, 0x4f, 0xa2, 0x65, 0x1d, 0xec, 0x35, 0x3a, 0xf4, 0xff })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x86, 0x83, 0xb0, 0x1f, 0x7b, 0x35, 0x4f, 0x70, 0xec, 0x1d, 0x65, 0xa2, 0xff, 0xf4, 0x3a, 0x35 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x86, 0x83, 0xb0, 0x1f, 0x7b, 0x35, 0x4f, 0x70, 0xa2, 0x65, 0x1d, 0xec, 0x35, 0x3a, 0xf4, 0xff })
                     )));
             }
         }
@@ -12627,19 +16029,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int unitDataSupported_Wrapper(IUnitData* self, LibVst.UnitID unitID)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitData), "unitDataSupported");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return unitDataSupported_ToManaged(self, unitID);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitData), "unitDataSupported");
+                try
+                {
+                    return unitDataSupported_ToManaged(self, unitID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return unitDataSupported_ToManaged(self, unitID);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12651,19 +16067,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getUnitData_Wrapper(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitData), "getUnitData");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return getUnitData_ToManaged(self, unitId, data);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitData), "getUnitData");
+                try
+                {
+                    return getUnitData_ToManaged(self, unitId, data);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return getUnitData_ToManaged(self, unitId, data);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12675,19 +16105,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setUnitData_Wrapper(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitData), "setUnitData");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setUnitData_ToManaged(self, unitId, data);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitData), "setUnitData");
+                try
+                {
+                    return setUnitData_ToManaged(self, unitId, data);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setUnitData_ToManaged(self, unitId, data);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -12701,7 +16145,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x11, 0x96, 0x38, 0x6c, 0x91, 0xd3, 0x5d, 0x45, 0xb8, 0x70, 0xb8, 0x33, 0x94, 0xa0, 0xef, 0xdd })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x6c, 0x38, 0x96, 0x11, 0xd3, 0x91, 0x45, 0x5d, 0x33, 0xb8, 0x70, 0xb8, 0xdd, 0xef, 0xa0, 0x94 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x6c, 0x38, 0x96, 0x11, 0xd3, 0x91, 0x45, 0x5d, 0xb8, 0x70, 0xb8, 0x33, 0x94, 0xa0, 0xef, 0xdd })
                     )));
             }
         }
@@ -13582,19 +17026,33 @@ internal static partial class LibVst
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setChannelContextInfos_Wrapper(IInfoListener* self, LibVst.IAttributeList* list)
         {
-            var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInfoListener), "setChannelContextInfos");
-            try
+            if (InteropHelper.IsTracerEnabled)
             {
-                return setChannelContextInfos_ToManaged(self, list);
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInfoListener), "setChannelContextInfos");
+                try
+                {
+                    return setChannelContextInfos_ToManaged(self, list);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
             }
-            catch (Exception ex)
+            else
             {
-                __evt__.Exception = ex;
-                return default;
-            }
-            finally
-            {
-                __evt__.Dispose();
+                try
+                {
+                    return setChannelContextInfos_ToManaged(self, list);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -13608,7 +17066,7 @@ internal static partial class LibVst
             {
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x81, 0x47, 0x19, 0x0f, 0x98, 0x8d, 0xda, 0x4a, 0xbb, 0xa0, 0xc1, 0xef, 0xc0, 0x11, 0xd8, 0xd0 })
-                        : new ReadOnlySpan<byte>(new byte[] { 0x0f, 0x19, 0x47, 0x81, 0x8d, 0x98, 0x4a, 0xda, 0xef, 0xc1, 0xa0, 0xbb, 0xd0, 0xd8, 0x11, 0xc0 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x0f, 0x19, 0x47, 0x81, 0x8d, 0x98, 0x4a, 0xda, 0xbb, 0xa0, 0xc1, 0xef, 0xc0, 0x11, 0xd8, 0xd0 })
                     )));
             }
         }

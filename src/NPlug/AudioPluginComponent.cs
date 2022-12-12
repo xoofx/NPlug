@@ -6,10 +6,10 @@ namespace NPlug;
 
 public abstract class AudioPluginComponent : IAudioPluginComponent, IAudioConnectionPoint
 {
-    private IAudioConnectionPoint? _connectionPoint;
-
     public AudioHostApplication? Host { get; private set; }
-    
+
+    protected IAudioConnectionPoint? ConnectionPoint { get; private set; }
+
     protected virtual void Terminate()
     {
     }
@@ -18,9 +18,18 @@ public abstract class AudioPluginComponent : IAudioPluginComponent, IAudioConnec
     {
     }
 
+    protected virtual void OnConnect(IAudioConnectionPoint connectionPoint)
+    {
+    }
+
+    protected virtual void OnDisconnect(IAudioConnectionPoint connectionPoint)
+    {
+    }
+
     bool IAudioPluginComponent.Initialize(AudioHostApplication hostApplication)
     {
-        if (InitializeInternal(hostApplication))
+        // Don't try to initialize if we have been initialized already (The host is active)
+        if (Host == null && InitializeInternal(hostApplication))
         {
             Host = hostApplication;
             return true;
@@ -35,7 +44,7 @@ public abstract class AudioPluginComponent : IAudioPluginComponent, IAudioConnec
         Host?.Dispose();
         Host = null;
     }
-    
+
     void IAudioPluginComponent.Terminate()
     {
         try
@@ -50,12 +59,14 @@ public abstract class AudioPluginComponent : IAudioPluginComponent, IAudioConnec
 
     void IAudioConnectionPoint.Connect(IAudioConnectionPoint connectionPoint)
     {
-        _connectionPoint = connectionPoint;
+        ConnectionPoint = connectionPoint;
+        OnConnect(connectionPoint);
     }
 
     void IAudioConnectionPoint.Disconnect(IAudioConnectionPoint connectionPoint)
     {
-        _connectionPoint = null;
+        OnDisconnect(connectionPoint);
+        ConnectionPoint = null;
     }
 
     void IAudioConnectionPoint.Notify(AudioMessage message)

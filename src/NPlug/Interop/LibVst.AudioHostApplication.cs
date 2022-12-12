@@ -124,7 +124,7 @@ internal static unsafe partial class LibVst
 
         string IAudioMessageBackend.GetId(in AudioMessage message)
         {
-            return GetOrCreateString(((IMessage*)message.NativeContext)->getMessageID().Value);
+            return GetOrCreateString(((IMessage*)message.NativeContext)->getMessageID());
         }
 
         void IAudioMessageBackend.SetId(in AudioMessage message, string id)

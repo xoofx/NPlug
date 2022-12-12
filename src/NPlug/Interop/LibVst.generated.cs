@@ -8,6 +8,7 @@
 //------------------------------------------------------------------------------
 
 using System;
+
 #pragma warning disable CS0649
 
 namespace NPlug.Interop;
@@ -22,11 +23,11 @@ using System.Runtime.InteropServices;
 internal static partial class LibVst
 {
     public const string SdkVersion = "VST 3.7.6";
-
+    
     public const string AudioEffectCategory = "Audio Module Class";
-
+    
     public const string ComponentControllerCategory = "Component Controller Class";
-
+    
     /// <summary>
     /// FUnknown
     /// The basic interface of all interfaces.
@@ -41,11 +42,11 @@ internal static partial class LibVst
     public unsafe partial struct FUnknown : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         public static int VtblCount => 3;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -53,7 +54,7 @@ internal static partial class LibVst
             vtbl[1] = (delegate*unmanaged[MemberFunction]<FUnknown*, uint>)&addRef_Wrapper;
             vtbl[2] = (delegate*unmanaged[MemberFunction]<FUnknown*, uint>)&release_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -81,7 +82,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.FUnknown*, Guid*, void**, int>)Vtbl[0])((LibVst.FUnknown*)Unsafe.AsPointer(ref this), _iid, obj);
             }
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -105,7 +106,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.FUnknown*, uint>)Vtbl[1])((LibVst.FUnknown*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -126,7 +127,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.FUnknown*, uint>)Vtbl[2])((LibVst.FUnknown*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -138,7 +139,7 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         private static partial ComResult queryInterface_ToManaged(FUnknown* self, Guid* _iid, void** obj);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int queryInterface_Wrapper(FUnknown* self, Guid* _iid, void** obj)
         {
@@ -152,7 +153,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -165,13 +166,13 @@ internal static partial class LibVst
                 {
                     return queryInterface_ToManaged(self, _iid, obj);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -180,7 +181,7 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         private static partial uint addRef_ToManaged(FUnknown* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint addRef_Wrapper(FUnknown* self)
         {
@@ -213,13 +214,13 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         private static partial uint release_ToManaged(FUnknown* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint release_Wrapper(FUnknown* self)
         {
@@ -252,7 +253,7 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (FUnknown, 0x00000000, 0x00000000, 0xC0000000, 0x00000046)
         /// </summary>
@@ -268,7 +269,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Base class for streams.
     /// </summary>
@@ -279,11 +280,11 @@ internal static partial class LibVst
     public unsafe partial struct IBStream : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         public static int VtblCount => 7;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -293,7 +294,7 @@ internal static partial class LibVst
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IBStream*, long, int, long*, int>)&seek_Wrapper;
             vtbl[6] = (delegate*unmanaged[MemberFunction]<IBStream*, long*, int>)&tell_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -310,7 +311,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IBStream, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -324,7 +325,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IBStream, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -335,7 +336,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IBStream, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Reads binary data from stream.
         /// </summary>
@@ -359,7 +360,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IBStream*, void*, int, int*, int>)Vtbl[3])((LibVst.IBStream*)Unsafe.AsPointer(ref this), buffer, numBytes, numBytesRead);
             }
         }
-
+        
         /// <summary>
         /// Writes binary data to stream.
         /// </summary>
@@ -383,7 +384,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IBStream*, void*, int, int*, int>)Vtbl[4])((LibVst.IBStream*)Unsafe.AsPointer(ref this), buffer, numBytes, numBytesWritten);
             }
         }
-
+        
         /// <summary>
         /// Sets stream read-write position.
         /// </summary>
@@ -407,7 +408,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IBStream*, long, int, long*, int>)Vtbl[5])((LibVst.IBStream*)Unsafe.AsPointer(ref this), pos, mode, result);
             }
         }
-
+        
         /// <summary>
         /// Gets current stream read-write position.
         /// </summary>
@@ -429,7 +430,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IBStream*, long*, int>)Vtbl[6])((LibVst.IBStream*)Unsafe.AsPointer(ref this), pos);
             }
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -440,7 +441,7 @@ internal static partial class LibVst
         /// <param name="numBytes">: amount of bytes to be read</param>
         /// <param name="numBytesRead">: result - how many bytes have been read from stream (set to 0 if this is of no interest)</param>
         private static partial ComResult read_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesRead);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int read_Wrapper(IBStream* self, void* buffer, int numBytes, int* numBytesRead)
         {
@@ -454,7 +455,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -467,13 +468,13 @@ internal static partial class LibVst
                 {
                     return read_ToManaged(self, buffer, numBytes, numBytesRead);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Writes binary data to stream.
         /// </summary>
@@ -481,7 +482,7 @@ internal static partial class LibVst
         /// <param name="numBytes">: amount of bytes to write</param>
         /// <param name="numBytesWritten">: result - how many bytes have been written to stream (set to 0 if this is of no interest)</param>
         private static partial ComResult write_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesWritten);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int write_Wrapper(IBStream* self, void* buffer, int numBytes, int* numBytesWritten)
         {
@@ -495,7 +496,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -508,13 +509,13 @@ internal static partial class LibVst
                 {
                     return write_ToManaged(self, buffer, numBytes, numBytesWritten);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Sets stream read-write position.
         /// </summary>
@@ -522,7 +523,7 @@ internal static partial class LibVst
         /// <param name="mode">: value of enum IStreamSeekMode</param>
         /// <param name="result">: new seek position (set to 0 if this is of no interest)</param>
         private static partial ComResult seek_ToManaged(IBStream* self, long pos, int mode, long* result);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int seek_Wrapper(IBStream* self, long pos, int mode, long* result)
         {
@@ -536,7 +537,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -549,19 +550,19 @@ internal static partial class LibVst
                 {
                     return seek_ToManaged(self, pos, mode, result);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets current stream read-write position.
         /// </summary>
         /// <param name="pos">: is assigned the current position if function succeeds</param>
         private static partial ComResult tell_ToManaged(IBStream* self, long* pos);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int tell_Wrapper(IBStream* self, long* pos)
         {
@@ -575,7 +576,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -588,31 +589,31 @@ internal static partial class LibVst
                 {
                     return tell_ToManaged(self, pos);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         public enum IStreamSeekMode
         {
             /// <summary>
             /// set absolute seek position
             /// </summary>
             kIBSeekSet = 0,
-
+            
             /// <summary>
             /// set seek position relative to current position
             /// </summary>
             kIBSeekCur,
-
+            
             /// <summary>
             /// set seek position relative to stream end
             /// </summary>
             kIBSeekEnd,
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IBStream, 0xC3BF6EA2, 0x30994752, 0x9B6BF990, 0x1EE33E9B)
         /// </summary>
@@ -628,7 +629,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Stream with a size.
     /// </summary>
@@ -638,11 +639,11 @@ internal static partial class LibVst
     public unsafe partial struct ISizeableStream : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         public static int VtblCount => 5;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -650,7 +651,7 @@ internal static partial class LibVst
             vtbl[3] = (delegate*unmanaged[MemberFunction]<ISizeableStream*, long*, int>)&getStreamSize_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<ISizeableStream*, long, int>)&setStreamSize_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -667,7 +668,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ISizeableStream, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -681,7 +682,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ISizeableStream, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -692,7 +693,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ISizeableStream, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Return the stream size
         /// </summary>
@@ -713,7 +714,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.ISizeableStream*, long*, int>)Vtbl[3])((LibVst.ISizeableStream*)Unsafe.AsPointer(ref this), size);
             }
         }
-
+        
         /// <summary>
         /// Set the steam size. File streams can only be resized if they are write enabled.
         /// </summary>
@@ -734,7 +735,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.ISizeableStream*, long, int>)Vtbl[4])((LibVst.ISizeableStream*)Unsafe.AsPointer(ref this), size);
             }
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -742,7 +743,7 @@ internal static partial class LibVst
         /// Return the stream size
         /// </summary>
         private static partial ComResult getStreamSize_ToManaged(ISizeableStream* self, long* size);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getStreamSize_Wrapper(ISizeableStream* self, long* size)
         {
@@ -756,7 +757,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -769,18 +770,18 @@ internal static partial class LibVst
                 {
                     return getStreamSize_ToManaged(self, size);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Set the steam size. File streams can only be resized if they are write enabled.
         /// </summary>
         private static partial ComResult setStreamSize_ToManaged(ISizeableStream* self, long size);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setStreamSize_Wrapper(ISizeableStream* self, long size)
         {
@@ -794,7 +795,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -807,13 +808,13 @@ internal static partial class LibVst
                 {
                     return setStreamSize_ToManaged(self, size);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (ISizeableStream, 0x04F9549E, 0xE02F4E6E, 0x87E86A87, 0x47F4E17F)
         /// </summary>
@@ -829,29 +830,29 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Interface allowing an object to be copied.
-    /// - [plug
+    /// - [plug 
     /// &amp;
-    /// host imp]
+    /// host imp] 
     /// - [released: N4.12]
     /// </summary>
     public unsafe partial struct ICloneable : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<ICloneable*, LibVst.FUnknown*>)&clone_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -868,7 +869,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ICloneable, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -882,7 +883,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ICloneable, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -893,7 +894,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ICloneable, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Create exact copy of the object
         /// </summary>
@@ -913,7 +914,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.ICloneable*, LibVst.FUnknown*>)Vtbl[3])((LibVst.ICloneable*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -921,7 +922,7 @@ internal static partial class LibVst
         /// Create exact copy of the object
         /// </summary>
         private static partial LibVst.FUnknown* clone_ToManaged(ICloneable* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.FUnknown* clone_Wrapper(ICloneable* self)
         {
@@ -954,7 +955,7 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (ICloneable, 0xD45406B9, 0x3A2D4443, 0x9DAD9BA9, 0x85A1454B)
         /// </summary>
@@ -970,20 +971,20 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
-    /// Interface to a string of variable size and encoding.
+    /// Interface to a string of variable size and encoding. 
     /// - [host imp] or [plug imp]
     /// - [released: ]
     /// </summary>
     public unsafe partial struct IString : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         public static int VtblCount => 9;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -995,7 +996,7 @@ internal static partial class LibVst
             vtbl[7] = (delegate*unmanaged[MemberFunction]<IString*, void*, byte, void>)&take_Wrapper;
             vtbl[8] = (delegate*unmanaged[MemberFunction]<IString*, byte>)&isWideString_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -1012,7 +1013,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IString, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -1026,7 +1027,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IString, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -1037,7 +1038,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IString, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Assign ASCII string
         /// </summary>
@@ -1056,7 +1057,7 @@ internal static partial class LibVst
                 ((delegate*unmanaged[MemberFunction]<LibVst.IString*, byte*, void>)Vtbl[3])((LibVst.IString*)Unsafe.AsPointer(ref this), text);
             }
         }
-
+        
         /// <summary>
         /// Assign unicode string
         /// </summary>
@@ -1075,10 +1076,10 @@ internal static partial class LibVst
                 ((delegate*unmanaged[MemberFunction]<LibVst.IString*, char*, void>)Vtbl[4])((LibVst.IString*)Unsafe.AsPointer(ref this), text);
             }
         }
-
+        
         /// <summary>
         /// Return ASCII string. If the string is unicode so far, it will be converted.
-        /// So you need to be careful, because the conversion can result in data loss.
+        /// So you need to be careful, because the conversion can result in data loss. 
         /// It is save though to call getText8 if isWideString() returns false
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1097,7 +1098,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IString*, byte*>)Vtbl[5])((LibVst.IString*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// Return unicode string. If the string is ASCII so far, it will be converted.
         /// </summary>
@@ -1117,9 +1118,9 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IString*, char*>)Vtbl[6])((LibVst.IString*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
-        /// !Do not use this method! Early implementations take the given pointer as
+        /// !Do not use this method! Early implementations take the given pointer as 
         /// internal string and this will cause problems because 'free' will be used to delete the passed memory.
         /// Later implementations will redirect 'take' to setText8 and setText16
         /// </summary>
@@ -1138,7 +1139,7 @@ internal static partial class LibVst
                 ((delegate*unmanaged[MemberFunction]<LibVst.IString*, void*, byte, void>)Vtbl[7])((LibVst.IString*)Unsafe.AsPointer(ref this), s, isWide);
             }
         }
-
+        
         /// <summary>
         /// Returns true if the string is in unicode format, returns false if the string is ASCII
         /// </summary>
@@ -1158,7 +1159,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IString*, byte>)Vtbl[8])((LibVst.IString*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -1166,7 +1167,7 @@ internal static partial class LibVst
         /// Assign ASCII string
         /// </summary>
         private static partial void setText8_ToManaged(IString* self, byte* text);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void setText8_Wrapper(IString* self, byte* text)
         {
@@ -1197,12 +1198,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Assign unicode string
         /// </summary>
         private static partial void setText16_ToManaged(IString* self, char* text);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void setText16_Wrapper(IString* self, char* text)
         {
@@ -1233,14 +1234,14 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Return ASCII string. If the string is unicode so far, it will be converted.
-        /// So you need to be careful, because the conversion can result in data loss.
+        /// So you need to be careful, because the conversion can result in data loss. 
         /// It is save though to call getText8 if isWideString() returns false
         /// </summary>
         private static partial byte* getText8_ToManaged(IString* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static byte* getText8_Wrapper(IString* self)
         {
@@ -1273,12 +1274,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Return unicode string. If the string is ASCII so far, it will be converted.
         /// </summary>
         private static partial char* getText16_ToManaged(IString* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static char* getText16_Wrapper(IString* self)
         {
@@ -1311,14 +1312,14 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
-        /// !Do not use this method! Early implementations take the given pointer as
+        /// !Do not use this method! Early implementations take the given pointer as 
         /// internal string and this will cause problems because 'free' will be used to delete the passed memory.
         /// Later implementations will redirect 'take' to setText8 and setText16
         /// </summary>
         private static partial void take_ToManaged(IString* self, void* s, byte isWide);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void take_Wrapper(IString* self, void* s, byte isWide)
         {
@@ -1349,12 +1350,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Returns true if the string is in unicode format, returns false if the string is ASCII
         /// </summary>
         private static partial byte isWideString_ToManaged(IString* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static byte isWideString_Wrapper(IString* self)
         {
@@ -1387,7 +1388,7 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IString, 0xF99DB7A3, 0x0FC14821, 0x800B0CF9, 0x8E348EDF)
         /// </summary>
@@ -1403,18 +1404,18 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
-    /// Interface for error handling.
+    /// Interface for error handling. 
     /// - [plug imp]
     /// - [released: Sequel 2]
     /// </summary>
     public unsafe partial struct IErrorContext : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 6;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -1423,7 +1424,7 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IErrorContext*, int>)&errorMessageShown_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IErrorContext*, LibVst.IString*, int>)&getErrorMessage_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -1431,7 +1432,7 @@ internal static partial class LibVst
         /// Tells the plug-in to not show any UI elements on errors.
         /// </summary>
         private static partial void disableErrorUI_ToManaged(IErrorContext* self, byte state);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void disableErrorUI_Wrapper(IErrorContext* self, byte state)
         {
@@ -1462,12 +1463,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// If an error happens and disableErrorUI was not set this should return kResultTrue if the plug-in already showed a message to the user what happened.
         /// </summary>
         private static partial ComResult errorMessageShown_ToManaged(IErrorContext* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int errorMessageShown_Wrapper(IErrorContext* self)
         {
@@ -1481,7 +1482,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -1494,18 +1495,18 @@ internal static partial class LibVst
                 {
                     return errorMessageShown_ToManaged(self);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Fill message with error string. The host may show this to the user.
         /// </summary>
         private static partial ComResult getErrorMessage_ToManaged(IErrorContext* self, LibVst.IString* message);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getErrorMessage_Wrapper(IErrorContext* self, LibVst.IString* message)
         {
@@ -1519,7 +1520,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -1532,13 +1533,13 @@ internal static partial class LibVst
                 {
                     return getErrorMessage_ToManaged(self, message);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IErrorContext, 0x12BCD07B, 0x7C694336, 0xB7DA77C3, 0x444A0CD0)
         /// </summary>
@@ -1554,9 +1555,9 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
-    /// Object Data Archive Interface.
+    /// Object Data Archive Interface. 
     /// - [host imp]
     /// </summary>
     /// <remarks>
@@ -1569,9 +1570,9 @@ internal static partial class LibVst
     public unsafe partial struct IAttributes : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -1588,7 +1589,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -1602,7 +1603,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -1613,9 +1614,9 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <remarks>
         ///  Methods to write attributes*******************************************************************************************************@
@@ -1644,7 +1645,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[3])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
             }
         }
-
+        
         /// <summary>
         /// Store a list of data in the archive. Please note that the type of data is not mixable! So
         /// you can only store a list of integers or a list of doubles/strings/etc. You can also store a list
@@ -1667,7 +1668,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[4])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
             }
         }
-
+        
         /// <summary>
         /// Store binary data in the archive. Parameter 'copyBytes' specifies if the passed data should be copied.
         /// The archive cannot take the ownership of binary data. Either it just references a buffer in order
@@ -1691,7 +1692,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, byte, int>)Vtbl[5])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
             }
         }
-
+        
         /// <remarks>
         ///  Methods to read attributes*******************************************************************************************************@
         /// {
@@ -1714,7 +1715,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[6])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
             }
         }
-
+        
         /// <summary>
         /// Get list of data previously stored to the archive. As long as there are queue members the method
         /// will return kResultTrue. When the queue is empty, the methods returns kResultFalse. All lists except from
@@ -1738,7 +1739,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[7])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
             }
         }
-
+        
         /// <summary>
         /// Get the amount of items in a queue.
         /// </summary>
@@ -1758,7 +1759,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), arg);
             }
         }
-
+        
         /// <summary>
         /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
         /// </summary>
@@ -1779,7 +1780,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[9])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
             }
         }
-
+        
         /// <summary>
         /// Reset all queues in the archive.
         /// </summary>
@@ -1800,7 +1801,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, int>)Vtbl[10])((LibVst.IAttributes*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// Read binary data from the archive. The data is copied into the passed buffer. The size of that buffer
         /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
@@ -1822,7 +1823,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, int>)Vtbl[11])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes);
             }
         }
-
+        
         /// <summary>
         /// Get the size in bytes of binary data in the archive.
         /// </summary>
@@ -1842,7 +1843,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, uint>)Vtbl[12])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IAttributes, 0xFA1E32F9, 0xCA6D46F5, 0xA982F956, 0xB1191B58)
         /// </summary>
@@ -1858,14 +1859,14 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public unsafe partial struct FIDString
     {
         public byte* Value;
     }
-
+    
     public partial record struct IAttrID(LibVst.FIDString Value);
-
+    
     /// <summary>
     /// FVariant struct declaration
     /// A Value of variable type.
@@ -1877,34 +1878,34 @@ internal static partial class LibVst
     public unsafe partial struct FVariant
     {
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public ushort type;
-
+        
         [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
         public unsafe partial struct Union
         {
             [FieldOffset(0)]
             public long intValue;
-
+            
             [FieldOffset(0)]
             public double floatValue;
-
+            
             [FieldOffset(0)]
             public byte* string8;
-
+            
             [FieldOffset(0)]
             public char* string16;
-
+            
             [FieldOffset(0)]
             public LibVst.FUnknown* @object;
         }
-
+        
         public LibVst.FVariant.Union union;
     }
-
+    
     /// <summary>
-    /// Persistent Object Interface.
+    /// Persistent Object Interface. 
     /// [plug imp] @n This interface is used to store/restore attributes of an object.
     /// An IPlugController can implement this interface to handle presets.
     /// The gui-xml for a preset control looks like this:
@@ -1918,15 +1919,15 @@ internal static partial class LibVst
     /// 	&lt;switch name="store preset" size="125,0,80,20" style="push|immediate" title="Store"  /&gt;
     /// 	&lt;switch name="remove preset" size="220,0,80,20" style="push|immediate" title="Delete"  /&gt;
     /// &lt;/template&gt;
-    /// @endcodeThe tag data="Preset" tells the host to create a preset controller that handles the
+    /// @endcodeThe tag data="Preset" tells the host to create a preset controller that handles the 
     /// 3 values named "preset control",  "store preset", and "remove preset".
     /// </remarks>
     public unsafe partial struct IPersistent : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 6;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -1935,16 +1936,16 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IPersistent*, LibVst.IAttributes*, int>)&saveAttributes_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IPersistent*, LibVst.IAttributes*, int>)&loadAttributes_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
         /// <summary>
-        /// The class ID must be a 16 bytes unique id that is used to create the object.
+        /// The class ID must be a 16 bytes unique id that is used to create the object. 
         /// This ID is also used to identify the preset list when used with presets.
         /// </summary>
         private static partial ComResult getClassID_ToManaged(IPersistent* self, byte* uid);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getClassID_Wrapper(IPersistent* self, byte* uid)
         {
@@ -1958,7 +1959,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -1971,18 +1972,18 @@ internal static partial class LibVst
                 {
                     return getClassID_ToManaged(self, uid);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Store all members/data in the passed IAttributes.
         /// </summary>
         private static partial ComResult saveAttributes_ToManaged(IPersistent* self, LibVst.IAttributes* arg);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int saveAttributes_Wrapper(IPersistent* self, LibVst.IAttributes* arg)
         {
@@ -1996,7 +1997,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -2009,18 +2010,18 @@ internal static partial class LibVst
                 {
                     return saveAttributes_ToManaged(self, arg);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Restore all members/data from the passed IAttributes.
         /// </summary>
         private static partial ComResult loadAttributes_ToManaged(IPersistent* self, LibVst.IAttributes* arg);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int loadAttributes_Wrapper(IPersistent* self, LibVst.IAttributes* arg)
         {
@@ -2034,7 +2035,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -2047,13 +2048,13 @@ internal static partial class LibVst
                 {
                     return loadAttributes_ToManaged(self, arg);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPersistent, 0xBA1A4637, 0x3C9F46D0, 0xA65DBA0E, 0xB85DA829)
         /// </summary>
@@ -2069,9 +2070,9 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
-    /// Extended access to Attributes; supports Attribute retrieval via iteration.
+    /// Extended access to Attributes; supports Attribute retrieval via iteration. 
     /// - [host imp]
     /// - [released] C7/N6
     /// </summary>
@@ -2081,9 +2082,9 @@ internal static partial class LibVst
     public unsafe partial struct IAttributes2 : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -2100,7 +2101,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -2114,7 +2115,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -2125,9 +2126,9 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
-        ///
+        /// 
         /// </summary>
         /// <remarks>
         ///  Methods to write attributes*******************************************************************************************************@
@@ -2145,7 +2146,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).set(attrID, data);
         }
-
+        
         /// <summary>
         /// Store a list of data in the archive. Please note that the type of data is not mixable! So
         /// you can only store a list of integers or a list of doubles/strings/etc. You can also store a list
@@ -2157,7 +2158,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).queue(listID, data);
         }
-
+        
         /// <summary>
         /// Store binary data in the archive. Parameter 'copyBytes' specifies if the passed data should be copied.
         /// The archive cannot take the ownership of binary data. Either it just references a buffer in order
@@ -2170,7 +2171,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).setBinaryData(attrID, data, bytes, copyBytes);
         }
-
+        
         /// <remarks>
         ///  Methods to read attributes*******************************************************************************************************@
         /// {
@@ -2182,7 +2183,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).get(attrID, data);
         }
-
+        
         /// <summary>
         /// Get list of data previously stored to the archive. As long as there are queue members the method
         /// will return kResultTrue. When the queue is empty, the methods returns kResultFalse. All lists except from
@@ -2195,7 +2196,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).unqueue(listID, data);
         }
-
+        
         /// <summary>
         /// Get the amount of items in a queue.
         /// </summary>
@@ -2205,7 +2206,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getQueueItemCount(arg);
         }
-
+        
         /// <summary>
         /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
         /// </summary>
@@ -2215,7 +2216,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).resetQueue(attrID);
         }
-
+        
         /// <summary>
         /// Reset all queues in the archive.
         /// </summary>
@@ -2225,7 +2226,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).resetAllQueues();
         }
-
+        
         /// <summary>
         /// Read binary data from the archive. The data is copied into the passed buffer. The size of that buffer
         /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
@@ -2236,7 +2237,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getBinaryData(attrID, data, bytes);
         }
-
+        
         /// <summary>
         /// Get the size in bytes of binary data in the archive.
         /// </summary>
@@ -2246,7 +2247,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getBinaryDataSize(attrID);
         }
-
+        
         /// <summary>
         /// Returns the number of existing attributes.
         /// </summary>
@@ -2266,7 +2267,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes2*, int>)Vtbl[13])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// Returns the attribute's ID for the given index.
         /// </summary>
@@ -2286,7 +2287,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes2*, int, LibVst.IAttrID>)Vtbl[14])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), index);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IAttributes2, 0x1382126A, 0xFECA4871, 0x97D52A45, 0xB042AE99)
         /// </summary>
@@ -2302,7 +2303,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Basic interface to a plug-in component: IPluginBase
     /// </summary>
@@ -2317,9 +2318,9 @@ internal static partial class LibVst
     public unsafe partial struct IPluginBase : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 5;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -2327,7 +2328,7 @@ internal static partial class LibVst
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IPluginBase*, LibVst.FUnknown*, int>)&initialize_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IPluginBase*, int>)&terminate_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -2341,7 +2342,7 @@ internal static partial class LibVst
         /// immediately. In this case terminate is not called!
         /// </note>
         private static partial ComResult initialize_ToManaged(IPluginBase* self, LibVst.FUnknown* context);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int initialize_Wrapper(IPluginBase* self, LibVst.FUnknown* context)
         {
@@ -2355,7 +2356,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -2368,19 +2369,19 @@ internal static partial class LibVst
                 {
                     return initialize_ToManaged(self, context);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// This function is called before the plug-in is unloaded and can be used for
         /// cleanups. You have to release all references to any host application interfaces.
         /// </summary>
         private static partial ComResult terminate_ToManaged(IPluginBase* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int terminate_Wrapper(IPluginBase* self)
         {
@@ -2394,7 +2395,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -2407,13 +2408,13 @@ internal static partial class LibVst
                 {
                     return terminate_ToManaged(self);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPluginBase, 0x22888DDB, 0x156E45AE, 0x8358B348, 0x08190625)
         /// </summary>
@@ -2429,7 +2430,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// IPluginFactory interface declaration
     /// Class factory that any plug-in defines for creating class instances: IPluginFactory
@@ -2444,9 +2445,9 @@ internal static partial class LibVst
     public unsafe partial struct IPluginFactory : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 7;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -2456,7 +2457,7 @@ internal static partial class LibVst
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, int, LibVst.PClassInfo*, int>)&getClassInfo_Wrapper;
             vtbl[6] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, LibVst.FIDString, LibVst.FIDString, void**, int>)&createInstance_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -2464,7 +2465,7 @@ internal static partial class LibVst
         /// Fill a PFactoryInfo structure with information about the plug-in vendor.
         /// </summary>
         private static partial ComResult getFactoryInfo_ToManaged(IPluginFactory* self, LibVst.PFactoryInfo* info);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getFactoryInfo_Wrapper(IPluginFactory* self, LibVst.PFactoryInfo* info)
         {
@@ -2478,7 +2479,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -2491,20 +2492,20 @@ internal static partial class LibVst
                 {
                     return getFactoryInfo_ToManaged(self, info);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Returns the number of exported classes by this factory. If you are using the CPluginFactory
         /// implementation provided by the SDK, it returns the number of classes you registered with
         /// CPluginFactory::registerClass.
         /// </summary>
         private static partial int countClasses_ToManaged(IPluginFactory* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int countClasses_Wrapper(IPluginFactory* self)
         {
@@ -2537,12 +2538,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Fill a PClassInfo structure with information about the class at the specified index.
         /// </summary>
         private static partial ComResult getClassInfo_ToManaged(IPluginFactory* self, int index, LibVst.PClassInfo* info);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getClassInfo_Wrapper(IPluginFactory* self, int index, LibVst.PClassInfo* info)
         {
@@ -2556,7 +2557,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -2569,18 +2570,18 @@ internal static partial class LibVst
                 {
                     return getClassInfo_ToManaged(self, index, info);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Create a new class instance.
         /// </summary>
         private static partial ComResult createInstance_ToManaged(IPluginFactory* self, LibVst.FIDString cid, LibVst.FIDString _iid, void** obj);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int createInstance_Wrapper(IPluginFactory* self, LibVst.FIDString cid, LibVst.FIDString _iid, void** obj)
         {
@@ -2594,7 +2595,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -2607,13 +2608,13 @@ internal static partial class LibVst
                 {
                     return createInstance_ToManaged(self, cid, _iid, obj);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPluginFactory, 0x7A4D811C, 0x52114A1F, 0xAED9D2EE, 0x0B43BF9F)
         /// </summary>
@@ -2629,7 +2630,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Basic Information about the class factory of the plug-in.
     /// </summary>
@@ -2643,24 +2644,24 @@ internal static partial class LibVst
         /// e.g. "Steinberg Media Technologies"
         /// </summary>
         public fixed byte vendor[64];
-
+        
         /// <summary>
         /// e.g. "http://www.steinberg.de"
         /// </summary>
         public fixed byte url[256];
-
+        
         /// <summary>
         /// e.g. "info@steinberg.de"
         /// </summary>
         public fixed byte email[128];
-
+        
         /// <summary>
         /// (see FactoryFlags above)
         /// </summary>
         public int flags;
-
+        
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public enum FactoryFlags
         {
@@ -2668,32 +2669,32 @@ internal static partial class LibVst
             /// Nothing
             /// </summary>
             kNoFlags = 0,
-
+            
             /// <summary>
             /// The number of exported classes can change each time the Module is loaded. If this flag
             /// is set, the host does not cache class information. This leads to a longer startup time
             /// because the host always has to load the Module to get the current class information.
             /// </summary>
             kClassesDiscardable = 1 << 0,
-
+            
             /// <summary>
             /// This flag is deprecated, do not use anymore, resp. it will get ignored from
             /// Cubase/Nuendo 12 and later.
             /// </summary>
             kLicenseCheck = 1 << 1,
-
+            
             /// <summary>
             /// Component will not be unloaded until process exit
             /// </summary>
             kComponentNonDiscardable = 1 << 3,
-
+            
             /// <summary>
             /// Components have entirely unicode encoded strings (True for VST 3 plug-ins so far).
             /// </summary>
             kUnicode = 1 << 4,
         }
     }
-
+    
     /// <summary>
     /// Basic Information about a class provided by the plug-in.
     /// </summary>
@@ -2707,31 +2708,31 @@ internal static partial class LibVst
         /// Class ID 16 Byte class GUID
         /// </summary>
         public Guid cid;
-
+        
         /// <summary>
         /// Cardinality of the class, set to kManyInstances (see @ref PClassInfo::ClassCardinality)
         /// </summary>
         public int cardinality;
-
+        
         /// <summary>
         /// Class category, host uses this to categorize interfaces
         /// </summary>
         public fixed byte category[32];
-
+        
         /// <summary>
         /// Class name, visible to the user
         /// </summary>
         public fixed byte name[64];
-
+        
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public enum ClassCardinality
         {
             kManyInstances = 0x7FFFFFFF,
         }
     }
-
+    
     /// <summary>
     /// IPluginFactory2 interface declaration
     /// Version 2 of class factory supporting PClassInfo2: IPluginFactory2
@@ -2742,16 +2743,16 @@ internal static partial class LibVst
     public unsafe partial struct IPluginFactory2 : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 8;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             IPluginFactory.InitializeVtbl(vtbl);
             vtbl[7] = (delegate*unmanaged[MemberFunction]<IPluginFactory2*, int, LibVst.PClassInfo2*, int>)&getClassInfo2_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -2759,7 +2760,7 @@ internal static partial class LibVst
         /// Returns the class info (version 2) for a given index.
         /// </summary>
         private static partial ComResult getClassInfo2_ToManaged(IPluginFactory2* self, int index, LibVst.PClassInfo2* info);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getClassInfo2_Wrapper(IPluginFactory2* self, int index, LibVst.PClassInfo2* info)
         {
@@ -2773,7 +2774,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -2786,13 +2787,13 @@ internal static partial class LibVst
                 {
                     return getClassInfo2_ToManaged(self, index, info);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPluginFactory2, 0x0007B650, 0xF24B4C0B, 0xA464EDB9, 0xF00B2ABB)
         /// </summary>
@@ -2808,7 +2809,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Version 2 of Basic Information about a class provided by the plug-in.
     /// </summary>
@@ -2822,48 +2823,48 @@ internal static partial class LibVst
         /// Class ID 16 Byte class GUID
         /// </summary>
         public Guid cid;
-
+        
         /// <summary>
         /// Cardinality of the class, set to kManyInstances (see @ref PClassInfo::ClassCardinality)
         /// </summary>
         public int cardinality;
-
+        
         /// <summary>
         /// Class category, host uses this to categorize interfaces
         /// </summary>
         public fixed byte category[32];
-
+        
         /// <summary>
         /// Class name, visible to the user
         /// </summary>
         public fixed byte name[64];
-
+        
         /// <summary>
         /// flags used for a specific category, must be defined where category is defined
         /// </summary>
         public uint classFlags;
-
+        
         /// <summary>
         /// module specific subcategories, can be more than one, logically added by the OR operator
         /// </summary>
         public fixed byte subCategories[128];
-
+        
         /// <summary>
         /// overwrite vendor information from factory info
         /// </summary>
         public fixed byte vendor[64];
-
+        
         /// <summary>
         /// Version string (e.g. "1.0.0.512" with Major.Minor.Subversion.Build)
         /// </summary>
         public fixed byte version[64];
-
+        
         /// <summary>
         /// SDK version used to build this class (e.g. "VST 3.0")
         /// </summary>
         public fixed byte sdkVersion[64];
     }
-
+    
     /// <summary>
     /// IPluginFactory3 interface declaration
     /// Version 3 of class factory supporting PClassInfoW: IPluginFactory3
@@ -2874,9 +2875,9 @@ internal static partial class LibVst
     public unsafe partial struct IPluginFactory3 : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 10;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -2884,7 +2885,7 @@ internal static partial class LibVst
             vtbl[8] = (delegate*unmanaged[MemberFunction]<IPluginFactory3*, int, LibVst.PClassInfoW*, int>)&getClassInfoUnicode_Wrapper;
             vtbl[9] = (delegate*unmanaged[MemberFunction]<IPluginFactory3*, LibVst.FUnknown*, int>)&setHostContext_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -2892,7 +2893,7 @@ internal static partial class LibVst
         /// Returns the unicode class info for a given index.
         /// </summary>
         private static partial ComResult getClassInfoUnicode_ToManaged(IPluginFactory3* self, int index, LibVst.PClassInfoW* info);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getClassInfoUnicode_Wrapper(IPluginFactory3* self, int index, LibVst.PClassInfoW* info)
         {
@@ -2906,7 +2907,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -2919,18 +2920,18 @@ internal static partial class LibVst
                 {
                     return getClassInfoUnicode_ToManaged(self, index, info);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Receives information about host
         /// </summary>
         private static partial ComResult setHostContext_ToManaged(IPluginFactory3* self, LibVst.FUnknown* context);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setHostContext_Wrapper(IPluginFactory3* self, LibVst.FUnknown* context)
         {
@@ -2944,7 +2945,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -2957,13 +2958,13 @@ internal static partial class LibVst
                 {
                     return setHostContext_ToManaged(self, context);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPluginFactory3, 0x4555A2AB, 0xC1234E57, 0x9B122910, 0x36878931)
         /// </summary>
@@ -2979,7 +2980,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Unicode Version of Basic Information about a class provided by the plug-in
     /// </summary>
@@ -2990,48 +2991,48 @@ internal static partial class LibVst
         /// see @ref PClassInfo
         /// </summary>
         public Guid cid;
-
+        
         /// <summary>
         /// see @ref PClassInfo
         /// </summary>
         public int cardinality;
-
+        
         /// <summary>
         /// see @ref PClassInfo
         /// </summary>
         public fixed byte category[32];
-
+        
         /// <summary>
         /// see @ref PClassInfo
         /// </summary>
         public fixed char name[64];
-
+        
         /// <summary>
         /// flags used for a specific category, must be defined where category is defined
         /// </summary>
         public uint classFlags;
-
+        
         /// <summary>
         /// module specific subcategories, can be more than one, logically added by the OR operator
         /// </summary>
         public fixed byte subCategories[128];
-
+        
         /// <summary>
         /// overwrite vendor information from factory info
         /// </summary>
         public fixed char vendor[64];
-
+        
         /// <summary>
         /// Version string (e.g. "1.0.0.512" with Major.Minor.Subversion.Build)
         /// </summary>
         public fixed char version[64];
-
+        
         /// <summary>
         /// SDK version used to build this class (e.g. "VST 3.0")
         /// </summary>
         public fixed char sdkVersion[64];
     }
-
+    
     /// <summary>
     /// optional interface to query the compatibility of the plug-ins classes
     /// - [plug imp]
@@ -3053,16 +3054,16 @@ internal static partial class LibVst
     public unsafe partial struct IPluginCompatibility : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IPluginCompatibility*, LibVst.IBStream*, int>)&getCompatibilityJSON_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -3073,7 +3074,7 @@ internal static partial class LibVst
         /// string.</param>
         /// <returns>kResultTrue on success</returns>
         private static partial ComResult getCompatibilityJSON_ToManaged(IPluginCompatibility* self, LibVst.IBStream* stream);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getCompatibilityJSON_Wrapper(IPluginCompatibility* self, LibVst.IBStream* stream)
         {
@@ -3087,7 +3088,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -3100,13 +3101,13 @@ internal static partial class LibVst
                 {
                     return getCompatibilityJSON_ToManaged(self, stream);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPluginCompatibility, 0x4AFD4B6A, 0x35D7C240, 0xA5C31414, 0xFB7D15E6)
         /// </summary>
@@ -3122,30 +3123,30 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
-    /// Interface to return an ascii string of variable size.
-    /// In order to manage memory allocation and deallocation properly,
+    /// Interface to return an ascii string of variable size. 
+    /// In order to manage memory allocation and deallocation properly, 
     /// this interface is used to transfer a string as result parameter of
-    /// a method requires a string of unknown size.
+    /// a method requires a string of unknown size. 
     /// - [host imp] or [plug imp]
     /// - [released: SX 4]
     /// </summary>
     public unsafe partial struct IStringResult : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IStringResult*, byte*, void>)&setText_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -3162,7 +3163,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IStringResult, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -3176,7 +3177,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IStringResult, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -3187,9 +3188,9 @@ internal static partial class LibVst
         {
             return Unsafe.As<IStringResult, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
-        ///
+        /// 
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void setText(byte* text)
@@ -3206,15 +3207,15 @@ internal static partial class LibVst
                 ((delegate*unmanaged[MemberFunction]<LibVst.IStringResult*, byte*, void>)Vtbl[3])((LibVst.IStringResult*)Unsafe.AsPointer(ref this), text);
             }
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
         /// <summary>
-        ///
+        /// 
         /// </summary>
         private static partial void setText_ToManaged(IStringResult* self, byte* text);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void setText_Wrapper(IStringResult* self, byte* text)
         {
@@ -3245,7 +3246,7 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IStringResult, 0x550798BC, 0x872049DB, 0x84920A15, 0x3B50B7A8)
         /// </summary>
@@ -3261,7 +3262,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// A dependent will get notified about changes of a model.
     /// [plug imp]
@@ -3274,16 +3275,16 @@ internal static partial class LibVst
     public unsafe partial struct IDependent : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IDependent*, LibVst.FUnknown*, int, void>)&update_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -3291,7 +3292,7 @@ internal static partial class LibVst
         /// Inform the dependent, that the passed FUnknown has changed.
         /// </summary>
         private static partial void update_ToManaged(IDependent* self, LibVst.FUnknown* changedUnknown, int message);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void update_Wrapper(IDependent* self, LibVst.FUnknown* changedUnknown, int message)
         {
@@ -3322,20 +3323,20 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         public enum ChangeMessage
         {
             kWillChange,
-
+            
             kChanged,
-
+            
             kDestroyed,
-
+            
             kWillDestroy,
-
+            
             kStdChangeMessageLast = kWillDestroy,
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IDependent, 0xF52B7AAE, 0xDE72416d, 0x8AF18ACE, 0x9DD7BD5E)
         /// </summary>
@@ -3351,7 +3352,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Host implements dependency handling for plugins.
     /// - [host imp]
@@ -3360,16 +3361,16 @@ internal static partial class LibVst
     /// </summary>
     /// <remarks>
     /// - Install/Remove change notifications
-    /// - Trigger updates when an object has changedCan be used between host-objects and the Plug-In or
+    /// - Trigger updates when an object has changedCan be used between host-objects and the Plug-In or 
     /// inside the Plug-In to handle internal updates! frameworkHostClasses
     /// </remarks>
     /// <seealso cref="IDependent"/>
     public unsafe partial struct IUpdateHandler : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -3386,7 +3387,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IUpdateHandler, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -3400,7 +3401,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IUpdateHandler, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -3411,7 +3412,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IUpdateHandler, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Install update notification for given object. It is essential to
         /// remove all dependencies again using 'removeDependent'! Dependencies
@@ -3436,7 +3437,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IUpdateHandler*, LibVst.FUnknown*, LibVst.IDependent*, int>)Vtbl[3])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this), @object, dependent);
             }
         }
-
+        
         /// <summary>
         /// Remove a previously installed dependency.
         /// </summary>
@@ -3457,7 +3458,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IUpdateHandler*, LibVst.FUnknown*, LibVst.IDependent*, int>)Vtbl[4])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this), @object, dependent);
             }
         }
-
+        
         /// <summary>
         /// Inform all dependents, that object has changed.
         /// </summary>
@@ -3481,7 +3482,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IUpdateHandler*, LibVst.FUnknown*, int, int>)Vtbl[5])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this), @object, message);
             }
         }
-
+        
         /// <summary>
         /// Same as triggerUpdates, but delivered in idle (usefull to collect updates).
         /// </summary>
@@ -3502,7 +3503,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IUpdateHandler*, LibVst.FUnknown*, int, int>)Vtbl[6])((LibVst.IUpdateHandler*)Unsafe.AsPointer(ref this), @object, message);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IUpdateHandler, 0xF5246D56, 0x86544d60, 0xB026AFB5, 0x7B697B37)
         /// </summary>
@@ -3518,7 +3519,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Callback interface passed to IPlugView.
     /// </summary>
@@ -3530,9 +3531,9 @@ internal static partial class LibVst
     public unsafe partial struct IPlugFrame : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -3549,7 +3550,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IPlugFrame, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -3563,7 +3564,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IPlugFrame, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -3574,7 +3575,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IPlugFrame, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Called to inform the host about the resize of a given view.
         /// Afterwards the host has to call IPlugView::onSize ().
@@ -3596,7 +3597,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugFrame*, LibVst.IPlugView*, LibVst.ViewRect*, int>)Vtbl[3])((LibVst.IPlugFrame*)Unsafe.AsPointer(ref this), view, newSize);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPlugFrame, 0x367FAF01, 0xAFA94693, 0x8D4DA2A0, 0xED0882A3)
         /// </summary>
@@ -3612,7 +3613,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Plug-in definition of a view.
     /// </summary>
@@ -3646,9 +3647,9 @@ internal static partial class LibVst
     public unsafe partial struct IPlugView : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 15;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -3666,7 +3667,7 @@ internal static partial class LibVst
             vtbl[13] = (delegate*unmanaged[MemberFunction]<IPlugView*, int>)&canResize_Wrapper;
             vtbl[14] = (delegate*unmanaged[MemberFunction]<IPlugView*, LibVst.ViewRect*, int>)&checkSizeConstraint_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -3675,7 +3676,7 @@ internal static partial class LibVst
         /// </summary>
         /// <param name="type">: IDString of @ref platformUIType</param>
         private static partial ComResult isPlatformTypeSupported_ToManaged(IPlugView* self, LibVst.FIDString type);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int isPlatformTypeSupported_Wrapper(IPlugView* self, LibVst.FIDString type)
         {
@@ -3689,7 +3690,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -3702,13 +3703,13 @@ internal static partial class LibVst
                 {
                     return isPlatformTypeSupported_ToManaged(self, type);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// The parent window of the view has been created, the (platform) representation of the view
         /// should now be created as well.
@@ -3719,7 +3720,7 @@ internal static partial class LibVst
         /// <param name="type">: @ref platformUIType which should be created</param>
         /// <param name="parent">: platform handle of the parent window or view</param>
         private static partial ComResult attached_ToManaged(IPlugView* self, void* parent, LibVst.FIDString type);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int attached_Wrapper(IPlugView* self, void* parent, LibVst.FIDString type)
         {
@@ -3733,7 +3734,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -3746,19 +3747,19 @@ internal static partial class LibVst
                 {
                     return attached_ToManaged(self, parent, type);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// The parent window of the view is about to be destroyed.
         /// You have to remove all your own views from the parent window or view.
         /// </summary>
         private static partial ComResult removed_ToManaged(IPlugView* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int removed_Wrapper(IPlugView* self)
         {
@@ -3772,7 +3773,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -3785,18 +3786,18 @@ internal static partial class LibVst
                 {
                     return removed_ToManaged(self);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Handling of mouse wheel.
         /// </summary>
         private static partial ComResult onWheel_ToManaged(IPlugView* self, float distance);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onWheel_Wrapper(IPlugView* self, float distance)
         {
@@ -3810,7 +3811,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -3823,13 +3824,13 @@ internal static partial class LibVst
                 {
                     return onWheel_ToManaged(self, distance);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Handling of keyboard events : Key Down.
         /// </summary>
@@ -3839,7 +3840,7 @@ internal static partial class LibVst
         /// <returns>kResultTrue if the key is handled, otherwise kResultFalse. @n &lt;b&gt;Please note that kResultTrue must only be returned if the key has really been
         /// handled. &lt;/b&gt;Otherwise key command handling of the host might be blocked!</returns>
         private static partial ComResult onKeyDown_ToManaged(IPlugView* self, ushort key, short keyCode, short modifiers);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onKeyDown_Wrapper(IPlugView* self, ushort key, short keyCode, short modifiers)
         {
@@ -3853,7 +3854,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -3866,13 +3867,13 @@ internal static partial class LibVst
                 {
                     return onKeyDown_ToManaged(self, key, keyCode, modifiers);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Handling of keyboard events : Key Up.
         /// </summary>
@@ -3881,7 +3882,7 @@ internal static partial class LibVst
         /// <param name="modifiers">: any combination of KeyModifier - see @ref KeyModifier in keycodes.h</param>
         /// <returns>kResultTrue if the key is handled, otherwise return kResultFalse.</returns>
         private static partial ComResult onKeyUp_ToManaged(IPlugView* self, ushort key, short keyCode, short modifiers);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onKeyUp_Wrapper(IPlugView* self, ushort key, short keyCode, short modifiers)
         {
@@ -3895,7 +3896,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -3908,18 +3909,18 @@ internal static partial class LibVst
                 {
                     return onKeyUp_ToManaged(self, key, keyCode, modifiers);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Returns the size of the platform representation of the view.
         /// </summary>
         private static partial ComResult getSize_ToManaged(IPlugView* self, LibVst.ViewRect* size);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getSize_Wrapper(IPlugView* self, LibVst.ViewRect* size)
         {
@@ -3933,7 +3934,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -3946,19 +3947,19 @@ internal static partial class LibVst
                 {
                     return getSize_ToManaged(self, size);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Resizes the platform representation of the view to the given rect. Note that if the plug-in
         /// requests a resize (IPlugFrame::resizeView ()) onSize has to be called afterward.
         /// </summary>
         private static partial ComResult onSize_ToManaged(IPlugView* self, LibVst.ViewRect* newSize);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onSize_Wrapper(IPlugView* self, LibVst.ViewRect* newSize)
         {
@@ -3972,7 +3973,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -3985,18 +3986,18 @@ internal static partial class LibVst
                 {
                     return onSize_ToManaged(self, newSize);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Focus changed message.
         /// </summary>
         private static partial ComResult onFocus_ToManaged(IPlugView* self, byte state);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onFocus_Wrapper(IPlugView* self, byte state)
         {
@@ -4010,7 +4011,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -4023,18 +4024,18 @@ internal static partial class LibVst
                 {
                     return onFocus_ToManaged(self, state);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Sets IPlugFrame object to allow the plug-in to inform the host about resizing.
         /// </summary>
         private static partial ComResult setFrame_ToManaged(IPlugView* self, LibVst.IPlugFrame* frame);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setFrame_Wrapper(IPlugView* self, LibVst.IPlugFrame* frame)
         {
@@ -4048,7 +4049,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -4061,18 +4062,18 @@ internal static partial class LibVst
                 {
                     return setFrame_ToManaged(self, frame);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Is view sizable by user.
         /// </summary>
         private static partial ComResult canResize_ToManaged(IPlugView* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int canResize_Wrapper(IPlugView* self)
         {
@@ -4086,7 +4087,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -4099,19 +4100,19 @@ internal static partial class LibVst
                 {
                     return canResize_ToManaged(self);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// On live resize this is called to check if the view can be resized to the given rect, if not
         /// adjust the rect to the allowed size.
         /// </summary>
         private static partial ComResult checkSizeConstraint_ToManaged(IPlugView* self, LibVst.ViewRect* rect);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int checkSizeConstraint_Wrapper(IPlugView* self, LibVst.ViewRect* rect)
         {
@@ -4125,7 +4126,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -4138,13 +4139,13 @@ internal static partial class LibVst
                 {
                     return checkSizeConstraint_ToManaged(self, rect);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPlugView, 0x5BC32507, 0xD06049EA, 0xA6151B52, 0x2B755B29)
         /// </summary>
@@ -4160,7 +4161,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Graphical rectangle structure. Used with IPlugView.
     /// </summary>
@@ -4171,14 +4172,14 @@ internal static partial class LibVst
     public unsafe partial struct ViewRect
     {
         public int left;
-
+        
         public int top;
-
+        
         public int right;
-
+        
         public int bottom;
     }
-
+    
     /// <summary>
     /// Plug-in view content scale support
     /// </summary>
@@ -4200,18 +4201,18 @@ internal static partial class LibVst
     public unsafe partial struct IPlugViewContentScaleSupport : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IPlugViewContentScaleSupport*, LibVst.ScaleFactor, int>)&setContentScaleFactor_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -4228,7 +4229,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IPlugViewContentScaleSupport, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -4242,7 +4243,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IPlugViewContentScaleSupport, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -4253,7 +4254,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IPlugViewContentScaleSupport, FUnknown>(ref this).release();
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setContentScaleFactor(LibVst.ScaleFactor factor)
         {
@@ -4271,12 +4272,12 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugViewContentScaleSupport*, LibVst.ScaleFactor, int>)Vtbl[3])((LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this), factor);
             }
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
         private static partial ComResult setContentScaleFactor_ToManaged(IPlugViewContentScaleSupport* self, LibVst.ScaleFactor factor);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setContentScaleFactor_Wrapper(IPlugViewContentScaleSupport* self, LibVst.ScaleFactor factor)
         {
@@ -4290,7 +4291,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -4303,13 +4304,13 @@ internal static partial class LibVst
                 {
                     return setContentScaleFactor_ToManaged(self, factor);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPlugViewContentScaleSupport, 0x65ED9690, 0x8AC44525, 0x8AADEF7A, 0x72EA703F)
         /// </summary>
@@ -4325,50 +4326,50 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public partial record struct ScaleFactor(float Value);
-
+    
     /// <summary>
-    ///
+    /// 
     /// </summary>
     public enum Direction
     {
         kNorth,
-
+        
         kNorthEast,
-
+        
         kEast,
-
+        
         kSouthEast,
-
+        
         kSouth,
-
+        
         kSouthWest,
-
+        
         kWest,
-
+        
         kNorthWest,
-
+        
         /// <summary>
         /// same position or center point of a geometry
         /// </summary>
         kNoDirection,
-
+        
         kNumberOfDirections,
     }
-
+    
     /// <summary>
-    ///
+    /// 
     /// </summary>
     public enum Orientation
     {
         kHorizontal,
-
+        
         kVertical,
-
+        
         kNumberOfOrientations,
     }
-
+    
     /// <summary>
     /// Virtual Key Codes.
     /// OS-independent enumeration of virtual keycodes.
@@ -4376,208 +4377,208 @@ internal static partial class LibVst
     public enum VirtualKeyCodes
     {
         KEY_BACK = 1,
-
+        
         KEY_TAB,
-
+        
         KEY_CLEAR,
-
+        
         KEY_RETURN,
-
+        
         KEY_PAUSE,
-
+        
         KEY_ESCAPE,
-
+        
         KEY_SPACE,
-
+        
         KEY_NEXT,
-
+        
         KEY_END,
-
+        
         KEY_HOME,
-
+        
         KEY_LEFT,
-
+        
         KEY_UP,
-
+        
         KEY_RIGHT,
-
+        
         KEY_DOWN,
-
+        
         KEY_PAGEUP,
-
+        
         KEY_PAGEDOWN,
-
+        
         KEY_SELECT,
-
+        
         KEY_PRINT,
-
+        
         KEY_ENTER,
-
+        
         KEY_SNAPSHOT,
-
+        
         KEY_INSERT,
-
+        
         KEY_DELETE,
-
+        
         KEY_HELP,
-
+        
         KEY_NUMPAD0,
-
+        
         KEY_NUMPAD1,
-
+        
         KEY_NUMPAD2,
-
+        
         KEY_NUMPAD3,
-
+        
         KEY_NUMPAD4,
-
+        
         KEY_NUMPAD5,
-
+        
         KEY_NUMPAD6,
-
+        
         KEY_NUMPAD7,
-
+        
         KEY_NUMPAD8,
-
+        
         KEY_NUMPAD9,
-
+        
         KEY_MULTIPLY,
-
+        
         KEY_ADD,
-
+        
         KEY_SEPARATOR,
-
+        
         KEY_SUBTRACT,
-
+        
         KEY_DECIMAL,
-
+        
         KEY_DIVIDE,
-
+        
         KEY_F1,
-
+        
         KEY_F2,
-
+        
         KEY_F3,
-
+        
         KEY_F4,
-
+        
         KEY_F5,
-
+        
         KEY_F6,
-
+        
         KEY_F7,
-
+        
         KEY_F8,
-
+        
         KEY_F9,
-
+        
         KEY_F10,
-
+        
         KEY_F11,
-
+        
         KEY_F12,
-
+        
         KEY_NUMLOCK,
-
+        
         KEY_SCROLL,
-
+        
         KEY_SHIFT,
-
+        
         KEY_CONTROL,
-
+        
         KEY_ALT,
-
+        
         /// <summary>
         /// only occurs on a Mac
         /// </summary>
         KEY_EQUALS,
-
+        
         /// <summary>
         /// Windows only
         /// </summary>
         KEY_CONTEXTMENU,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_MEDIA_PLAY,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_MEDIA_STOP,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_MEDIA_PREV,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_MEDIA_NEXT,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_VOLUME_UP,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_VOLUME_DOWN,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_F13,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_F14,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_F15,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_F16,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_F17,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_F18,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         KEY_F19,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         VKEY_FIRST_CODE = KEY_BACK,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         VKEY_LAST_CODE = KEY_F19,
-
+        
         /// <summary>
         /// multimedia keys
         /// </summary>
         VKEY_FIRST_ASCII = 128,
     }
-
+    
     /// <summary>
     /// OS-independent enumeration of virtual modifier-codes.
     /// </summary>
@@ -4587,100 +4588,100 @@ internal static partial class LibVst
         /// same on both PC and Mac
         /// </summary>
         kShiftKey = 1 << 0,
-
+        
         /// <summary>
         /// same on both PC and Mac
         /// </summary>
         kAlternateKey = 1 << 1,
-
+        
         /// <summary>
         /// windows ctrl key; mac cmd key (apple button)
         /// </summary>
         kCommandKey = 1 << 2,
-
+        
         /// <summary>
         /// windows: not assigned, mac: ctrl key
         /// </summary>
         kControlKey = 1 << 3,
     }
-
+    
     public enum StandardColor
     {
         kBlack = 0,
-
+        
         kWhite,
-
+        
         kGray5,
-
+        
         kGray10,
-
+        
         kGray20,
-
+        
         kGray30,
-
+        
         kGray40,
-
+        
         kGray50,
-
+        
         kGray60,
-
+        
         kGray70,
-
+        
         kGray80,
-
+        
         kGray90,
-
+        
         kRed,
-
+        
         kLtRed,
-
+        
         kDkRed,
-
+        
         kGreen,
-
+        
         kLtGreen,
-
+        
         kDkGreen,
-
+        
         kBlue,
-
+        
         kLtBlue,
-
+        
         kDkBlue,
-
+        
         kMagenta,
-
+        
         kLtMagenta,
-
+        
         kDkMagenta,
-
+        
         kYellow,
-
+        
         kLtYellow,
-
+        
         kDkYellow,
-
+        
         kOrange,
-
+        
         kLtOrange,
-
+        
         kDkOrange,
-
+        
         kGold,
-
+        
         kBlack50,
-
+        
         kBlack70,
-
+        
         kNumStandardColors,
-
+        
         kLtGray = kGray20,
-
+        
         kGray = kGray50,
-
+        
         kDkGray = kGray70,
     }
-
+    
     /// <summary>
     /// Attribute list used in IMessage and IStreamAttributes: Vst::IAttributeList
     /// </summary>
@@ -4692,9 +4693,9 @@ internal static partial class LibVst
     public unsafe partial struct IAttributeList : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -4711,7 +4712,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributeList, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -4725,7 +4726,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributeList, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -4736,7 +4737,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IAttributeList, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Sets integer value.
         /// </summary>
@@ -4757,7 +4758,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributeList*, LibVst.AttrID, long, int>)Vtbl[3])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, value);
             }
         }
-
+        
         /// <summary>
         /// Gets integer value.
         /// </summary>
@@ -4778,7 +4779,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributeList*, LibVst.AttrID, long*, int>)Vtbl[4])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, value);
             }
         }
-
+        
         /// <summary>
         /// Sets float value.
         /// </summary>
@@ -4799,7 +4800,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributeList*, LibVst.AttrID, double, int>)Vtbl[5])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, value);
             }
         }
-
+        
         /// <summary>
         /// Gets float value.
         /// </summary>
@@ -4820,7 +4821,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributeList*, LibVst.AttrID, double*, int>)Vtbl[6])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, value);
             }
         }
-
+        
         /// <summary>
         /// Sets string value (UTF16) (must be null-terminated!).
         /// </summary>
@@ -4841,7 +4842,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributeList*, LibVst.AttrID, char*, int>)Vtbl[7])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, @string);
             }
         }
-
+        
         /// <summary>
         /// Gets string value (UTF16). Note that Size is in Byte, not the string Length!
         /// Do not forget to multiply the length by sizeof (TChar)!
@@ -4863,7 +4864,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributeList*, LibVst.AttrID, char*, uint, int>)Vtbl[8])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, @string, sizeInBytes);
             }
         }
-
+        
         /// <summary>
         /// Sets binary data.
         /// </summary>
@@ -4884,7 +4885,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributeList*, LibVst.AttrID, void*, uint, int>)Vtbl[9])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, data, sizeInBytes);
             }
         }
-
+        
         /// <summary>
         /// Gets binary data.
         /// </summary>
@@ -4905,7 +4906,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributeList*, LibVst.AttrID, void**, uint*, int>)Vtbl[10])((LibVst.IAttributeList*)Unsafe.AsPointer(ref this), id, data, sizeInBytes);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IAttributeList, 0x1E5F0AEB, 0xCC7F4533, 0xA2544011, 0x38AD5EE4)
         /// </summary>
@@ -4921,12 +4922,12 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public unsafe partial struct AttrID
     {
         public byte* Value;
     }
-
+    
     /// <summary>
     /// Meta attributes of a stream: Vst::IStreamAttributes
     /// </summary>
@@ -4940,7 +4941,7 @@ internal static partial class LibVst
     /// #include "pluginterfaces/base/ustring.h"
     /// #include "pluginterfaces/vst/vstpresetkeys.h"
     /// ...
-    ///
+    /// 
     /// tresult PLUGIN_API MyPlugin::setState (IBStream* state)
     /// {
     /// 	FUnknownPtr&lt;IStreamAttributes&gt; stream (state);
@@ -4961,7 +4962,7 @@ internal static partial class LibVst
     /// 					// we are in project loading context...
     /// 				}
     /// 			}
-    ///
+    /// 
     /// 			// get the full file path of this state
     /// 			TChar fullPath[1024];
     /// 			if (list-&gt;getString (PresetAttributes::kFilePathStringType, fullPath, 1024 * sizeof (TChar)) == kResultTrue)
@@ -4970,7 +4971,7 @@ internal static partial class LibVst
     /// 			}
     /// 		}
     /// 	}
-    ///
+    /// 
     /// 	//...read the state here.....
     /// 	return kResultTrue;
     /// }
@@ -4979,9 +4980,9 @@ internal static partial class LibVst
     public unsafe partial struct IStreamAttributes : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -4998,7 +4999,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IStreamAttributes, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -5012,7 +5013,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IStreamAttributes, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -5023,7 +5024,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IStreamAttributes, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Gets filename (without file extension) of the stream.
         /// </summary>
@@ -5044,7 +5045,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IStreamAttributes*, LibVst.String128*, int>)Vtbl[3])((LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this), name);
             }
         }
-
+        
         /// <summary>
         /// Gets meta information list.
         /// </summary>
@@ -5064,7 +5065,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IStreamAttributes*, LibVst.IAttributeList*>)Vtbl[4])((LibVst.IStreamAttributes*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IStreamAttributes, 0xD6CE2FFC, 0xEFAF4B8C, 0x9E74F1BB, 0x12DA44B4)
         /// </summary>
@@ -5080,12 +5081,12 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public unsafe partial struct String128
     {
         public fixed char Value[128];
     }
-
+    
     /// <summary>
     /// IComponent Interface
     /// Component base interface: Vst::IComponent
@@ -5102,9 +5103,9 @@ internal static partial class LibVst
     public unsafe partial struct IComponent : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 14;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -5119,7 +5120,7 @@ internal static partial class LibVst
             vtbl[12] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.IBStream*, int>)&setState_Wrapper;
             vtbl[13] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.IBStream*, int>)&getState_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -5127,7 +5128,7 @@ internal static partial class LibVst
         /// Called before initializing the component to get information about the controller class.
         /// </summary>
         private static partial ComResult getControllerClassId_ToManaged(IComponent* self, Guid* classId);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getControllerClassId_Wrapper(IComponent* self, Guid* classId)
         {
@@ -5141,7 +5142,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -5154,18 +5155,18 @@ internal static partial class LibVst
                 {
                     return getControllerClassId_ToManaged(self, classId);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Called before 'initialize' to set the component usage (optional). See @ref IoModes
         /// </summary>
         private static partial ComResult setIoMode_ToManaged(IComponent* self, LibVst.IoMode mode);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setIoMode_Wrapper(IComponent* self, LibVst.IoMode mode)
         {
@@ -5179,7 +5180,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -5192,18 +5193,18 @@ internal static partial class LibVst
                 {
                     return setIoMode_ToManaged(self, mode);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections
         /// </summary>
         private static partial int getBusCount_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getBusCount_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir)
         {
@@ -5236,12 +5237,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections
         /// </summary>
         private static partial ComResult getBusInfo_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, LibVst.BusInfo* bus);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getBusInfo_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, LibVst.BusInfo* bus)
         {
@@ -5255,7 +5256,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -5268,19 +5269,19 @@ internal static partial class LibVst
                 {
                     return getBusInfo_ToManaged(self, type, dir, index, bus);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Retrieves routing information (to be implemented when more than one regular input or output bus exists).
         /// The inInfo always refers to an input bus while the returned outInfo must refer to an output bus!
         /// </summary>
         private static partial ComResult getRoutingInfo_ToManaged(IComponent* self, LibVst.RoutingInfo* inInfo, LibVst.RoutingInfo* outInfo);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getRoutingInfo_Wrapper(IComponent* self, LibVst.RoutingInfo* inInfo, LibVst.RoutingInfo* outInfo)
         {
@@ -5294,7 +5295,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -5307,21 +5308,21 @@ internal static partial class LibVst
                 {
                     return getRoutingInfo_ToManaged(self, inInfo, outInfo);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Called upon (de-)activating a bus in the host application. The plug-in should only processed
         /// an activated bus, the host could provide less see @ref AudioBusBuffers in the process call
-        /// (see @ref IAudioProcessor::process) if last busses are not activated. An already activated bus
+        /// (see @ref IAudioProcessor::process) if last busses are not activated. An already activated bus 
         /// does not need to be reactivated after a IAudioProcessor::setBusArrangements call.
         /// </summary>
         private static partial ComResult activateBus_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int activateBus_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state)
         {
@@ -5335,7 +5336,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -5348,18 +5349,18 @@ internal static partial class LibVst
                 {
                     return activateBus_ToManaged(self, type, dir, index, state);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Activates / deactivates the component.
         /// </summary>
         private static partial ComResult setActive_ToManaged(IComponent* self, byte state);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setActive_Wrapper(IComponent* self, byte state)
         {
@@ -5373,7 +5374,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -5386,18 +5387,18 @@ internal static partial class LibVst
                 {
                     return setActive_ToManaged(self, state);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Sets complete state of component.
         /// </summary>
         private static partial ComResult setState_ToManaged(IComponent* self, LibVst.IBStream* state);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setState_Wrapper(IComponent* self, LibVst.IBStream* state)
         {
@@ -5411,7 +5412,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -5424,18 +5425,18 @@ internal static partial class LibVst
                 {
                     return setState_ToManaged(self, state);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Retrieves complete state of component.
         /// </summary>
         private static partial ComResult getState_ToManaged(IComponent* self, LibVst.IBStream* state);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getState_Wrapper(IComponent* self, LibVst.IBStream* state)
         {
@@ -5449,7 +5450,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -5462,13 +5463,13 @@ internal static partial class LibVst
                 {
                     return getState_ToManaged(self, state);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IComponent, 0xE831FF31, 0xF2D54301, 0x928EBBEE, 0x25697802)
         /// </summary>
@@ -5484,13 +5485,13 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public partial record struct IoMode(int Value);
-
+    
     public partial record struct MediaType(int Value);
-
+    
     public partial record struct BusDirection(int Value);
-
+    
     /// <summary>
     /// BusInfo:
     /// This is the structure used with getBusInfo, informing the host about what is a specific given bus.@n See also: Steinberg::Vst::IComponent::getBusInfo
@@ -5502,32 +5503,32 @@ internal static partial class LibVst
         /// Media type - has to be a value of @ref MediaTypes
         /// </summary>
         public LibVst.MediaType mediaType;
-
+        
         /// <summary>
         /// input or output @ref BusDirections
         /// </summary>
         public LibVst.BusDirection direction;
-
+        
         /// <summary>
         /// number of channels (if used then need to be recheck after @ref
         /// </summary>
         public int channelCount;
-
+        
         /// <summary>
         /// name of the bus
         /// </summary>
         public LibVst.String128 name;
-
+        
         /// <summary>
         /// main or aux - has to be a value of @ref BusTypes
         /// </summary>
         public LibVst.BusType busType;
-
+        
         /// <summary>
         /// flags - a combination of @ref BusFlags
         /// </summary>
         public uint flags;
-
+        
         public enum BusFlags
         {
             /// <summary>
@@ -5535,7 +5536,7 @@ internal static partial class LibVst
             /// By default a bus is inactive.
             /// </summary>
             kDefaultActive = 1 << 0,
-
+            
             /// <summary>
             /// The bus does not contain ordinary audio data, but data used for control changes at sample rate.
             /// The data is in the same format as the audio data [-1..1].
@@ -5546,9 +5547,9 @@ internal static partial class LibVst
             kIsControlVoltage = 1 << 1,
         }
     }
-
+    
     public partial record struct BusType(int Value);
-
+    
     /// <summary>
     /// Routing Information:
     /// When the plug-in supports multiple I/O busses, a host may want to know how the busses are related. The
@@ -5562,18 +5563,18 @@ internal static partial class LibVst
         /// media type see @ref MediaTypes
         /// </summary>
         public LibVst.MediaType mediaType;
-
+        
         /// <summary>
         /// bus index
         /// </summary>
         public int busIndex;
-
+        
         /// <summary>
         /// channel (-1 for all channels)
         /// </summary>
         public int channel;
     }
-
+    
     /// <summary>
     /// List of events to process: Vst::IEventList
     /// </summary>
@@ -5586,9 +5587,9 @@ internal static partial class LibVst
     public unsafe partial struct IEventList : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -5605,7 +5606,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IEventList, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -5619,7 +5620,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IEventList, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -5630,7 +5631,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IEventList, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Returns the count of events.
         /// </summary>
@@ -5650,7 +5651,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IEventList*, int>)Vtbl[3])((LibVst.IEventList*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// Gets parameter by index.
         /// </summary>
@@ -5671,7 +5672,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IEventList*, int, LibVst.Event*, int>)Vtbl[4])((LibVst.IEventList*)Unsafe.AsPointer(ref this), index, e);
             }
         }
-
+        
         /// <summary>
         /// Adds a new event.
         /// </summary>
@@ -5692,7 +5693,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IEventList*, LibVst.Event*, int>)Vtbl[5])((LibVst.IEventList*)Unsafe.AsPointer(ref this), e);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IEventList, 0x3A2C4214, 0x346349FE, 0xB2C4F397, 0xB9695A44)
         /// </summary>
@@ -5708,7 +5709,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Event
     /// </summary>
@@ -5722,27 +5723,27 @@ internal static partial class LibVst
         /// event bus index
         /// </summary>
         public int busIndex;
-
+        
         /// <summary>
         /// sample frames related to the current block start sample position
         /// </summary>
         public int sampleOffset;
-
+        
         /// <summary>
         /// position in project
         /// </summary>
         public LibVst.TQuarterNotes ppqPosition;
-
+        
         /// <summary>
         /// combination of @ref EventFlags
         /// </summary>
         public ushort flags;
-
+        
         /// <summary>
         /// a value from @ref EventTypes
         /// </summary>
         public ushort type;
-
+        
         [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
         public unsafe partial struct Union
         {
@@ -5751,58 +5752,58 @@ internal static partial class LibVst
             /// </summary>
             [FieldOffset(0)]
             public LibVst.NoteOnEvent noteOn;
-
+            
             /// <summary>
             /// type == kNoteOffEvent
             /// </summary>
             [FieldOffset(0)]
             public LibVst.NoteOffEvent noteOff;
-
+            
             /// <summary>
             /// type == kDataEvent
             /// </summary>
             [FieldOffset(0)]
             public LibVst.DataEvent data;
-
+            
             /// <summary>
             /// type == kPolyPressureEvent
             /// </summary>
             [FieldOffset(0)]
             public LibVst.PolyPressureEvent polyPressure;
-
+            
             /// <summary>
             /// type == kNoteExpressionValueEvent
             /// </summary>
             [FieldOffset(0)]
             public LibVst.NoteExpressionValueEvent noteExpressionValue;
-
+            
             /// <summary>
             /// type == kNoteExpressionTextEvent
             /// </summary>
             [FieldOffset(0)]
             public LibVst.NoteExpressionTextEvent noteExpressionText;
-
+            
             /// <summary>
             /// type == kChordEvent
             /// </summary>
             [FieldOffset(0)]
             public LibVst.ChordEvent chord;
-
+            
             /// <summary>
             /// type == kScaleEvent
             /// </summary>
             [FieldOffset(0)]
             public LibVst.ScaleEvent scale;
-
+            
             /// <summary>
             /// type == kLegacyMIDICCOutEvent
             /// </summary>
             [FieldOffset(0)]
             public LibVst.LegacyMIDICCOutEvent midiCCOut;
         }
-
+        
         public LibVst.Event.Union union;
-
+        
         /// <summary>
         /// Event Flags - used for Event::flags
         /// </summary>
@@ -5812,18 +5813,18 @@ internal static partial class LibVst
             /// indicates that the event is played live (directly from keyboard)
             /// </summary>
             kIsLive = 1 << 0,
-
+            
             /// <summary>
             /// reserved for user (for internal use)
             /// </summary>
             kUserReserved1 = 1 << 14,
-
+            
             /// <summary>
             /// reserved for user (for internal use)
             /// </summary>
             kUserReserved2 = 1 << 15,
         }
-
+        
         /// <summary>
         /// Event Types - used for Event::type
         /// </summary>
@@ -5833,51 +5834,51 @@ internal static partial class LibVst
             /// is @ref NoteOnEvent
             /// </summary>
             kNoteOnEvent = 0,
-
+            
             /// <summary>
             /// is @ref NoteOffEvent
             /// </summary>
             kNoteOffEvent = 1,
-
+            
             /// <summary>
             /// is @ref DataEvent
             /// </summary>
             kDataEvent = 2,
-
+            
             /// <summary>
             /// is @ref PolyPressureEvent
             /// </summary>
             kPolyPressureEvent = 3,
-
+            
             /// <summary>
             /// is @ref NoteExpressionValueEvent
             /// </summary>
             kNoteExpressionValueEvent = 4,
-
+            
             /// <summary>
             /// is @ref NoteExpressionTextEvent
             /// </summary>
             kNoteExpressionTextEvent = 5,
-
+            
             /// <summary>
             /// is @ref ChordEvent
             /// </summary>
             kChordEvent = 6,
-
+            
             /// <summary>
             /// is @ref ScaleEvent
             /// </summary>
             kScaleEvent = 7,
-
+            
             /// <summary>
             /// is @ref LegacyMIDICCOutEvent
             /// </summary>
             kLegacyMIDICCOutEvent = 65535,
         }
     }
-
+    
     public partial record struct TQuarterNotes(double Value);
-
+    
     /// <summary>
     /// Note-on event specific data. Used in @ref Event (union)
     /// </summary>
@@ -5891,33 +5892,33 @@ internal static partial class LibVst
         /// channel index in event bus
         /// </summary>
         public short channel;
-
+        
         /// <summary>
         /// range [0, 127] = [C-2, G8] with A3=440Hz (12-TET: twelve-tone equal temperament)
         /// </summary>
         public short pitch;
-
+        
         /// <summary>
         /// 1.f = +1 cent, -1.f = -1 cent
         /// </summary>
         public float tuning;
-
+        
         /// <summary>
         /// range [0.0, 1.0]
         /// </summary>
         public float velocity;
-
+        
         /// <summary>
         /// in sample frames (optional, Note Off has to follow in any case!)
         /// </summary>
         public int length;
-
+        
         /// <summary>
         /// note identifier (if not available then -1)
         /// </summary>
         public int noteId;
     }
-
+    
     /// <summary>
     /// Note-off event specific data. Used in @ref Event (union)
     /// </summary>
@@ -5931,28 +5932,28 @@ internal static partial class LibVst
         /// channel index in event bus
         /// </summary>
         public short channel;
-
+        
         /// <summary>
         /// range [0, 127] = [C-2, G8] with A3=440Hz (12-TET)
         /// </summary>
         public short pitch;
-
+        
         /// <summary>
         /// range [0.0, 1.0]
         /// </summary>
         public float velocity;
-
+        
         /// <summary>
         /// associated noteOn identifier (if not available then -1)
         /// </summary>
         public int noteId;
-
+        
         /// <summary>
         /// 1.f = +1 cent, -1.f = -1 cent
         /// </summary>
         public float tuning;
     }
-
+    
     /// <summary>
     /// Data event specific data. Used in @ref Event (union)
     /// </summary>
@@ -5966,17 +5967,17 @@ internal static partial class LibVst
         /// size in bytes of the data block bytes
         /// </summary>
         public uint size;
-
+        
         /// <summary>
         /// type of this data block (see @ref DataTypes)
         /// </summary>
         public uint type;
-
+        
         /// <summary>
         /// pointer to the data block
         /// </summary>
         public byte* bytes;
-
+        
         /// <summary>
         /// Value for DataEvent::type
         /// </summary>
@@ -5988,7 +5989,7 @@ internal static partial class LibVst
             kMidiSysEx = 0,
         }
     }
-
+    
     /// <summary>
     /// PolyPressure event specific data. Used in @ref Event (union)
     /// </summary>
@@ -6002,23 +6003,23 @@ internal static partial class LibVst
         /// channel index in event bus
         /// </summary>
         public short channel;
-
+        
         /// <summary>
         /// range [0, 127] = [C-2, G8] with A3=440Hz
         /// </summary>
         public short pitch;
-
+        
         /// <summary>
         /// range [0.0, 1.0]
         /// </summary>
         public float pressure;
-
+        
         /// <summary>
         /// event should be applied to the noteId (if not -1)
         /// </summary>
         public int noteId;
     }
-
+    
     /// <summary>
     /// Note Expression Value event. Used in @ref Event (union)
     /// A note expression event affects one single playing note (referring its noteId).
@@ -6035,22 +6036,22 @@ internal static partial class LibVst
         /// see @ref NoteExpressionTypeID
         /// </summary>
         public LibVst.NoteExpressionTypeID typeId;
-
+        
         /// <summary>
         /// associated note identifier to apply the change
         /// </summary>
         public int noteId;
-
+        
         /// <summary>
         /// normalized value [0.0, 1.0].
         /// </summary>
         public LibVst.NoteExpressionValue value;
     }
-
+    
     public partial record struct NoteExpressionTypeID(uint Value);
-
+    
     public partial record struct NoteExpressionValue(double Value);
-
+    
     /// <summary>
     /// Note Expression Text event. Used in Event (union)
     /// A Expression event affects one single playing note.
@@ -6064,24 +6065,24 @@ internal static partial class LibVst
         /// see @ref NoteExpressionTypeID (kTextTypeID or kPhoneticTypeID)
         /// </summary>
         public LibVst.NoteExpressionTypeID typeId;
-
+        
         /// <summary>
         /// associated note identifier to apply the change
         /// </summary>
         public int noteId;
-
+        
         /// <summary>
         /// the number of characters (TChar) between the beginning of text and the terminating
         /// null character (without including the terminating null character itself)
         /// </summary>
         public uint textLen;
-
+        
         /// <summary>
         /// UTF-16, null terminated
         /// </summary>
         public char* text;
     }
-
+    
     /// <summary>
     /// Chord event specific data. Used in @ref Event (union)
     /// </summary>
@@ -6095,29 +6096,29 @@ internal static partial class LibVst
         /// range [0, 127] = [C-2, G8] with A3=440Hz
         /// </summary>
         public short root;
-
+        
         /// <summary>
         /// range [0, 127] = [C-2, G8] with A3=440Hz
         /// </summary>
         public short bassNote;
-
+        
         /// <summary>
         /// root is bit 0
         /// </summary>
         public short mask;
-
+        
         /// <summary>
         /// the number of characters (TChar) between the beginning of text and the terminating
         /// null character (without including the terminating null character itself)
         /// </summary>
         public ushort textLen;
-
+        
         /// <summary>
         /// UTF-16, null terminated Hosts Chord Name
         /// </summary>
         public char* text;
     }
-
+    
     /// <summary>
     /// Scale event specific data. Used in @ref Event (union)
     /// </summary>
@@ -6131,24 +6132,24 @@ internal static partial class LibVst
         /// range [0, 127] = root Note/Transpose Factor
         /// </summary>
         public short root;
-
+        
         /// <summary>
         /// Bit 0 =  C,  Bit 1 = C#, ... (0x5ab5 = Major Scale)
         /// </summary>
         public short mask;
-
+        
         /// <summary>
         /// the number of characters (TChar) between the beginning of text and the terminating
         /// null character (without including the terminating null character itself)
         /// </summary>
         public ushort textLen;
-
+        
         /// <summary>
         /// UTF-16, null terminated, Hosts Scale Name
         /// </summary>
         public char* text;
     }
-
+    
     /// <summary>
     /// Legacy MIDI CC Out event specific data. Used in @ref Event (union)
     /// </summary>
@@ -6162,23 +6163,23 @@ internal static partial class LibVst
         /// see enum ControllerNumbers [0, 255]
         /// </summary>
         public byte controlNumber;
-
+        
         /// <summary>
         /// channel index in event bus [0, 15]
         /// </summary>
         public sbyte channel;
-
+        
         /// <summary>
         /// value of Controller [0, 127]
         /// </summary>
         public sbyte value;
-
+        
         /// <summary>
         /// [0, 127] used for pitch bend (kPitchBend) and polyPressure (kCtrlPolyPressure)
         /// </summary>
         public sbyte value2;
     }
-
+    
     /// <summary>
     /// All parameter changes of a processing block: Vst::IParameterChanges
     /// </summary>
@@ -6193,9 +6194,9 @@ internal static partial class LibVst
     public unsafe partial struct IParameterChanges : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -6212,7 +6213,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IParameterChanges, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -6226,7 +6227,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IParameterChanges, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -6237,7 +6238,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IParameterChanges, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Returns count of Parameter changes in the list.
         /// </summary>
@@ -6257,7 +6258,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IParameterChanges*, int>)Vtbl[3])((LibVst.IParameterChanges*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// Returns the queue at a given index.
         /// </summary>
@@ -6277,7 +6278,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IParameterChanges*, int, LibVst.IParamValueQueue*>)Vtbl[4])((LibVst.IParameterChanges*)Unsafe.AsPointer(ref this), index);
             }
         }
-
+        
         /// <summary>
         /// Adds a new parameter queue with a given ID at the end of the list,
         /// returns it and its index in the parameter changes list.
@@ -6298,7 +6299,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IParameterChanges*, LibVst.ParamID*, int*, LibVst.IParamValueQueue*>)Vtbl[5])((LibVst.IParameterChanges*)Unsafe.AsPointer(ref this), id, index);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IParameterChanges, 0xA4779663, 0x0BB64A56, 0xB44384A8, 0x466FEB9D)
         /// </summary>
@@ -6314,7 +6315,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Queue of changes for a specific parameter: Vst::IParamValueQueue
     /// </summary>
@@ -6341,17 +6342,17 @@ internal static partial class LibVst
     /// //------------------------------------------------------------------------
     /// double x1 = -1; // position of last point related to current buffer
     /// double y1 = currentParameterValue; // last transmitted value
-    ///
+    /// 
     /// int32 pointTime = 0;
     /// ParamValue pointValue = 0;
     /// IParamValueQueue::getPoint (0, pointTime, pointValue);
-    ///
+    /// 
     /// double x2 = pointTime;
     /// double y2 = pointValue;
-    ///
+    /// 
     /// double slope = (y2 - y1) / (x2 - x1);
     /// double offset = y1 - (slope * x1);
-    ///
+    /// 
     /// double curveValue = (slope * bufferTime) + offset; // bufferTime is any position in buffer
     /// @endcode@b Jumps: @n A jump in the automation curve has to be transmitted as two points: one with the
     /// old value and one with the new value at the next sample position. html "automation.jpg"See @ref IParameterChanges, @ref ProcessData
@@ -6359,9 +6360,9 @@ internal static partial class LibVst
     public unsafe partial struct IParamValueQueue : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -6378,7 +6379,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IParamValueQueue, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -6392,7 +6393,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IParamValueQueue, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -6403,7 +6404,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IParamValueQueue, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Returns its associated ID.
         /// </summary>
@@ -6423,7 +6424,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, LibVst.ParamID>)Vtbl[3])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// Returns count of points in the queue.
         /// </summary>
@@ -6443,7 +6444,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, int>)Vtbl[4])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// Gets the value and offset at a given index.
         /// </summary>
@@ -6464,7 +6465,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, int, int*, LibVst.ParamValue*, int>)Vtbl[5])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this), index, sampleOffset, value);
             }
         }
-
+        
         /// <summary>
         /// Adds a new value at the end of the queue, its index is returned.
         /// </summary>
@@ -6485,7 +6486,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, int, LibVst.ParamValue, int*, int>)Vtbl[6])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this), sampleOffset, value, index);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IParamValueQueue, 0x01263A18, 0xED074F6F, 0x98C9D356, 0x4686F9BA)
         /// </summary>
@@ -6501,11 +6502,11 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public partial record struct ParamID(uint Value);
-
+    
     public partial record struct ParamValue(double Value);
-
+    
     /// <summary>
     /// Audio processing interface: Vst::IAudioProcessor
     /// </summary>
@@ -6518,9 +6519,9 @@ internal static partial class LibVst
     public unsafe partial struct IAudioProcessor : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 11;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -6534,7 +6535,7 @@ internal static partial class LibVst
             vtbl[9] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, LibVst.ProcessData*, int>)&process_Wrapper;
             vtbl[10] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, uint>)&getTailSamples_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -6542,23 +6543,23 @@ internal static partial class LibVst
         /// Try to set (host =&gt; plug-in) a wanted arrangement for inputs and outputs.
         /// The host should always deliver the same number of input and output busses than the plug-in
         /// needs (see @ref IComponent::getBusCount). The plug-in has 3 possibilities to react on this
-        /// setBusArrangements call:@n 1. The plug-in accepts these arrangements, then it should modify, if needed, its busses to match
+        /// setBusArrangements call:@n 1. The plug-in accepts these arrangements, then it should modify, if needed, its busses to match 
         /// these new arrangements (later on asked by the host with IComponent::getBusInfo () or
         /// IAudioProcessor::getBusArrangement ()) and then should return kResultTrue.@n 2. The plug-in does not accept or support these requested arrangements for all
         /// inputs/outputs or just for some or only one bus, but the plug-in can try to adapt its current
         /// arrangements according to the requested ones (requested arrangements for kMain busses should be
         /// handled with more priority than the ones for kAux busses), then it should modify its busses arrangements
-        /// and should return kResultFalse.@n 3. Same than the point 2 above the plug-in does not support these requested arrangements
+        /// and should return kResultFalse.@n 3. Same than the point 2 above the plug-in does not support these requested arrangements 
         /// but the plug-in cannot find corresponding arrangements, the plug-in could keep its current arrangement
         /// or fall back to a default arrangement by modifying its busses arrangements and should return kResultFalse.@n
         /// </summary>
         /// <param name="inputs">pointer to an array of /ref SpeakerArrangement</param>
         /// <param name="numIns">number of /ref SpeakerArrangement in inputs array</param>
         /// <param name="outputs">pointer to an array of /ref SpeakerArrangement</param>
-        /// <param name="numOuts">number of /ref SpeakerArrangement in outputs array
+        /// <param name="numOuts">number of /ref SpeakerArrangement in outputs array 
         /// Returns kResultTrue when Arrangements is supported and is the current one, else returns kResultFalse.</param>
         private static partial ComResult setBusArrangements_ToManaged(IAudioProcessor* self, LibVst.SpeakerArrangement* inputs, int numIns, LibVst.SpeakerArrangement* outputs, int numOuts);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setBusArrangements_Wrapper(IAudioProcessor* self, LibVst.SpeakerArrangement* inputs, int numIns, LibVst.SpeakerArrangement* outputs, int numOuts)
         {
@@ -6572,7 +6573,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -6585,20 +6586,20 @@ internal static partial class LibVst
                 {
                     return setBusArrangements_ToManaged(self, inputs, numIns, outputs, numOuts);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets the bus arrangement for a given direction (input/output) and index.
-        /// Note: IComponent::getBusInfo () and IAudioProcessor::getBusArrangement () should be always return the same
+        /// Note: IComponent::getBusInfo () and IAudioProcessor::getBusArrangement () should be always return the same 
         /// information about the busses arrangements.
         /// </summary>
         private static partial ComResult getBusArrangement_ToManaged(IAudioProcessor* self, LibVst.BusDirection dir, int index, LibVst.SpeakerArrangement* arr);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getBusArrangement_Wrapper(IAudioProcessor* self, LibVst.BusDirection dir, int index, LibVst.SpeakerArrangement* arr)
         {
@@ -6612,7 +6613,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -6625,18 +6626,18 @@ internal static partial class LibVst
                 {
                     return getBusArrangement_ToManaged(self, dir, index, arr);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Asks if a given sample size is supported see @ref SymbolicSampleSizes.
         /// </summary>
         private static partial ComResult canProcessSampleSize_ToManaged(IAudioProcessor* self, int symbolicSampleSize);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int canProcessSampleSize_Wrapper(IAudioProcessor* self, int symbolicSampleSize)
         {
@@ -6650,7 +6651,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -6663,13 +6664,13 @@ internal static partial class LibVst
                 {
                     return canProcessSampleSize_ToManaged(self, symbolicSampleSize);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets the current Latency in samples.
         /// The returned value defines the group delay or the latency of the plug-in. For example, if the plug-in internally needs
@@ -6680,7 +6681,7 @@ internal static partial class LibVst
         /// Note that for player live recording this latency should be zero or small.
         /// </summary>
         private static partial uint getLatencySamples_ToManaged(IAudioProcessor* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint getLatencySamples_Wrapper(IAudioProcessor* self)
         {
@@ -6713,12 +6714,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Called in disable state (setActive not called with true) before setProcessing is called and processing will begin.
         /// </summary>
         private static partial ComResult setupProcessing_ToManaged(IAudioProcessor* self, LibVst.ProcessSetup* setup);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setupProcessing_Wrapper(IAudioProcessor* self, LibVst.ProcessSetup* setup)
         {
@@ -6732,7 +6733,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -6745,26 +6746,26 @@ internal static partial class LibVst
                 {
                     return setupProcessing_ToManaged(self, setup);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Informs the plug-in about the processing state. This will be called before any process calls
         /// start with true and after with false.
         /// Note that setProcessing (false) may be called after setProcessing (true) without any process
         /// calls.
         /// Note this function could be called in the UI or in Processing Thread, thats why the plug-in
-        /// should only light operation (no memory allocation or big setup reconfiguration),
+        /// should only light operation (no memory allocation or big setup reconfiguration), 
         /// this could be used to reset some buffers (like Delay line or Reverb).
         /// The host has to be sure that it is called only when the plug-in is enable (setActive (true)
         /// was called).
         /// </summary>
         private static partial ComResult setProcessing_ToManaged(IAudioProcessor* self, byte state);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setProcessing_Wrapper(IAudioProcessor* self, byte state)
         {
@@ -6778,7 +6779,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -6791,18 +6792,18 @@ internal static partial class LibVst
                 {
                     return setProcessing_ToManaged(self, state);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// The Process call, where all information (parameter changes, event, audio buffer) are passed.
         /// </summary>
         private static partial ComResult process_ToManaged(IAudioProcessor* self, LibVst.ProcessData* data);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int process_Wrapper(IAudioProcessor* self, LibVst.ProcessData* data)
         {
@@ -6816,7 +6817,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -6829,18 +6830,18 @@ internal static partial class LibVst
                 {
                     return process_ToManaged(self, data);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets tail size in samples. For example, if the plug-in is a Reverb plug-in and it knows that
-        /// the maximum length of the Reverb is 2sec, then it has to return in getTailSamples()
+        /// the maximum length of the Reverb is 2sec, then it has to return in getTailSamples() 
         /// (in VST2 it was getGetTailSize ()): 2*sampleRate.
-        /// This information could be used by host for offline processing, process optimization and
+        /// This information could be used by host for offline processing, process optimization and 
         /// downmix (avoiding signal cut (clicks)).
         /// It should return:
         /// - kNoTail when no tail
@@ -6848,7 +6849,7 @@ internal static partial class LibVst
         /// - kInfiniteTail when infinite tail.
         /// </summary>
         private static partial uint getTailSamples_ToManaged(IAudioProcessor* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint getTailSamples_Wrapper(IAudioProcessor* self)
         {
@@ -6881,7 +6882,7 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IAudioProcessor, 0x42043F99, 0xB7DA453C, 0xA569E79D, 0x9AAEC33D)
         /// </summary>
@@ -6897,318 +6898,318 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Speaker Arrangements Types
-    ///
+    /// 
     /// </summary>
     public enum SpeakerArrangement : ulong
     {
         kSpeakerL = 1<<0,
-
+        
         kSpeakerR = 1<<1,
-
+        
         kSpeakerC = 1<<2,
-
+        
         kSpeakerLfe = 1<<3,
-
+        
         kSpeakerLs = 1<<4,
-
+        
         kSpeakerRs = 1<<5,
-
+        
         kSpeakerLc = 1<<6,
-
+        
         kSpeakerRc = 1<<7,
-
+        
         kSpeakerS = 1<<8,
-
+        
         kSpeakerCs = kSpeakerS,
-
+        
         kSpeakerSl = 1<<9,
-
+        
         kSpeakerSr = 1<<10,
-
+        
         kSpeakerTc = 1<<11,
-
+        
         kSpeakerTfl = 1<<12,
-
+        
         kSpeakerTfc = 1<<13,
-
+        
         kSpeakerTfr = 1<<14,
-
+        
         kSpeakerTrl = 1<<15,
-
+        
         kSpeakerTrc = 1<<16,
-
+        
         kSpeakerTrr = 1<<17,
-
+        
         kSpeakerLfe2 = 1<<18,
-
+        
         kSpeakerM = 1<<19,
-
+        
         kSpeakerACN0 = 1UL << 20,
-
+        
         kSpeakerACN1 = 1UL << 21,
-
+        
         kSpeakerACN2 = 1UL << 22,
-
+        
         kSpeakerACN3 = 1UL << 23,
-
+        
         kSpeakerACN4 = 1UL << 38,
-
+        
         kSpeakerACN5 = 1UL << 39,
-
+        
         kSpeakerACN6 = 1UL << 40,
-
+        
         kSpeakerACN7 = 1UL << 41,
-
+        
         kSpeakerACN8 = 1UL << 42,
-
+        
         kSpeakerACN9 = 1UL << 43,
-
+        
         kSpeakerACN10 = 1UL << 44,
-
+        
         kSpeakerACN11 = 1UL << 45,
-
+        
         kSpeakerACN12 = 1UL << 46,
-
+        
         kSpeakerACN13 = 1UL << 47,
-
+        
         kSpeakerACN14 = 1UL << 48,
-
+        
         kSpeakerACN15 = 1UL << 49,
-
+        
         kSpeakerTsl = 1UL << 24,
-
+        
         kSpeakerTsr = 1UL << 25,
-
+        
         kSpeakerLcs = 1UL << 26,
-
+        
         kSpeakerRcs = 1UL << 27,
-
+        
         kSpeakerBfl = 1UL << 28,
-
+        
         kSpeakerBfc = 1UL << 29,
-
+        
         kSpeakerBfr = 1UL << 30,
-
+        
         kSpeakerPl = 1UL << 31,
-
+        
         kSpeakerPr = 1UL << 32,
-
+        
         kSpeakerBsl = 1UL << 33,
-
+        
         kSpeakerBsr = 1UL << 34,
-
+        
         kSpeakerBrl = 1UL << 35,
-
+        
         kSpeakerBrc = 1UL << 36,
-
+        
         kSpeakerBrr = 1UL << 37,
-
+        
         kEmpty = 0,
-
+        
         kMono = kSpeakerM,
-
+        
         kStereo = kSpeakerL | kSpeakerR,
-
+        
         kStereoSurround = kSpeakerLs | kSpeakerRs,
-
+        
         kStereoCenter = kSpeakerLc | kSpeakerRc,
-
+        
         kStereoSide = kSpeakerSl | kSpeakerSr,
-
+        
         kStereoCLfe = kSpeakerC | kSpeakerLfe,
-
+        
         kStereoTF = kSpeakerTfl | kSpeakerTfr,
-
+        
         kStereoTS = kSpeakerTsl | kSpeakerTsr,
-
+        
         kStereoTR = kSpeakerTrl | kSpeakerTrr,
-
+        
         kStereoBF = kSpeakerBfl | kSpeakerBfr,
-
+        
         kCineFront = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLc | kSpeakerRc,
-
+        
         k30Cine = kSpeakerL | kSpeakerR | kSpeakerC,
-
+        
         k31Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe,
-
+        
         k30Music = kSpeakerL | kSpeakerR | kSpeakerCs,
-
+        
         k31Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerCs,
-
+        
         k40Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerCs,
-
+        
         k41Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerCs,
-
+        
         k40Music = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs,
-
+        
         k41Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs,
-
+        
         k50 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs,
-
+        
         k51 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs,
-
+        
         k60Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerCs,
-
+        
         k61Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs,
-
+        
         k60Music = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
-
+        
         k61Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
-
+        
         k70Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc,
-
+        
         k71Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc,
-
+        
         k71CineFullFront = k71Cine,
-
+        
         k70Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
-
+        
         k71Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
-
+        
         k71CineFullRear = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLcs | kSpeakerRcs,
-
+        
         k71CineSideFill = k71Music,
-
+        
         k71Proximity = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerPl | kSpeakerPr,
-
+        
         k80Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs,
-
+        
         k81Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs,
-
+        
         k80Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerSl | kSpeakerSr,
-
+        
         k81Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerSl | kSpeakerSr,
-
+        
         k90Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr,
-
+        
         k91Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr,
-
+        
         k100Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr,
-
+        
         k101Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr,
-
+        
         kAmbi1stOrderACN = kSpeakerACN0 | kSpeakerACN1 | kSpeakerACN2 | kSpeakerACN3,
-
+        
         kAmbi2cdOrderACN = kAmbi1stOrderACN | kSpeakerACN4 | kSpeakerACN5 | kSpeakerACN6 | kSpeakerACN7 | kSpeakerACN8,
-
+        
         kAmbi3rdOrderACN = kAmbi2cdOrderACN | kSpeakerACN9 | kSpeakerACN10 | kSpeakerACN11 | kSpeakerACN12 | kSpeakerACN13 | kSpeakerACN14 | kSpeakerACN15,
-
+        
         k80Cube = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k40_4 = k80Cube,
-
+        
         k71CineTopCenter = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerTc,
-
+        
         k71CineCenterHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerTfc,
-
+        
         k70CineFrontHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr,
-
+        
         k70MPEG3D = k70CineFrontHigh,
-
+        
         k50_2 = k70CineFrontHigh,
-
+        
         k71CineFrontHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr,
-
+        
         k71MPEG3D = k71CineFrontHigh,
-
+        
         k51_2 = k71CineFrontHigh,
-
+        
         k71CineSideHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTsl | kSpeakerTsr,
-
+        
         k81MPEG3D = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerBfc,
-
+        
         k41_4_1 = k81MPEG3D,
-
+        
         k90 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k50_4 = k90,
-
+        
         k91 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k51_4 = k91,
-
+        
         k50_4_1 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfc,
-
+        
         k51_4_1 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfc,
-
+        
         k70_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTsl | kSpeakerTsr,
-
+        
         k71_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTsl | kSpeakerTsr,
-
+        
         k91Atmos = k71_2,
-
+        
         k70_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrc,
-
+        
         k72_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrc | kSpeakerLfe2,
-
+        
         k70_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k71_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k111MPEG3D = k71_4,
-
+        
         k70_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
-
+        
         k71_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
-
+        
         k90_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k91_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k90_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
-
+        
         k91_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
-
+        
         k100 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k50_5 = k100,
-
+        
         k101 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k101MPEG3D = k101,
-
+        
         k51_5 = k101,
-
+        
         k102 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerLfe2,
-
+        
         k52_5 = k102,
-
+        
         k110 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k50_6 = k110,
-
+        
         k111 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k51_6 = k111,
-
+        
         k122 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerLfe2,
-
+        
         k72_5 = k122,
-
+        
         k130 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k131 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
-
+        
         k140 = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr | kSpeakerBrl | kSpeakerBrr,
-
+        
         k60_4_4 = k140,
-
+        
         k220 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrc | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
-
+        
         k100_9_3 = k220,
-
+        
         k222 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrc | kSpeakerTrr | kSpeakerLfe2 | kSpeakerTsl | kSpeakerTsr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
-
+        
         k102_9_3 = k222,
-
+        
         k50_5_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
-
+        
         k51_5_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
     }
-
+    
     /// <summary>
     /// Audio processing setup.
     /// </summary>
@@ -7220,25 +7221,25 @@ internal static partial class LibVst
         /// @ref ProcessModes
         /// </summary>
         public int processMode;
-
+        
         /// <summary>
         /// @ref SymbolicSampleSizes
         /// </summary>
         public int symbolicSampleSize;
-
+        
         /// <summary>
         /// maximum number of samples per audio block
         /// </summary>
         public int maxSamplesPerBlock;
-
+        
         /// <summary>
         /// sample rate
         /// </summary>
         public LibVst.SampleRate sampleRate;
     }
-
+    
     public partial record struct SampleRate(double Value);
-
+    
     /// <summary>
     /// Any data needed in audio processing.
     /// The host prepares AudioBusBuffers for each input/output bus,
@@ -7253,63 +7254,63 @@ internal static partial class LibVst
         /// processing mode - value of @ref ProcessModes
         /// </summary>
         public int processMode;
-
+        
         /// <summary>
         /// sample size - value of @ref SymbolicSampleSizes
         /// </summary>
         public int symbolicSampleSize;
-
+        
         /// <summary>
         /// number of samples to process
         /// </summary>
         public int numSamples;
-
+        
         /// <summary>
         /// number of audio input busses
         /// </summary>
         public int numInputs;
-
+        
         /// <summary>
         /// number of audio output busses
         /// </summary>
         public int numOutputs;
-
+        
         /// <summary>
         /// buffers of input busses
         /// </summary>
         public LibVst.AudioBusBuffers* inputs;
-
+        
         /// <summary>
         /// buffers of output busses
         /// </summary>
         public LibVst.AudioBusBuffers* outputs;
-
+        
         /// <summary>
         /// incoming parameter changes for this block
         /// </summary>
         public LibVst.IParameterChanges* inputParameterChanges;
-
+        
         /// <summary>
         /// outgoing parameter changes for this block (optional)
         /// </summary>
         public LibVst.IParameterChanges* outputParameterChanges;
-
+        
         /// <summary>
         /// incoming events for this block (optional)
         /// </summary>
         public LibVst.IEventList* inputEvents;
-
+        
         /// <summary>
         /// outgoing events for this block (optional)
         /// </summary>
         public LibVst.IEventList* outputEvents;
-
+        
         /// <summary>
         /// processing context (optional, but most welcome)
         /// </summary>
         public LibVst.ProcessContext* processContext;
     }
-
+    
     /// <summary>
     /// Processing buffers of an audio bus.
     /// This structure contains the processing buffer for each channel of an audio bus.
@@ -7333,12 +7334,12 @@ internal static partial class LibVst
         /// number of audio channels in bus
         /// </summary>
         public int numChannels;
-
+        
         /// <summary>
         /// Bitset of silence state per channel
         /// </summary>
         public ulong silenceFlags;
-
+        
         [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
         public unsafe partial struct Union
         {
@@ -7347,21 +7348,21 @@ internal static partial class LibVst
             /// </summary>
             [FieldOffset(0)]
             public LibVst.Sample32** channelBuffers32;
-
+            
             /// <summary>
             /// sample buffers to process with 64-bit precision
             /// </summary>
             [FieldOffset(0)]
             public LibVst.Sample64** channelBuffers64;
         }
-
+        
         public LibVst.AudioBusBuffers.Union union;
     }
-
+    
     public partial record struct Sample32(float Value);
-
+    
     public partial record struct Sample64(double Value);
-
+    
     /// <summary>
     /// Audio processing context.
     /// For each processing block the host provides timing information and musical parameters that can
@@ -7379,84 +7380,84 @@ internal static partial class LibVst
         /// a combination of the values from @ref StatesAndFlags
         /// </summary>
         public uint state;
-
+        
         /// <summary>
         /// current sample rate					(always valid)
         /// </summary>
         public double sampleRate;
-
+        
         /// <summary>
         /// project time in samples				(always valid)
         /// </summary>
         public LibVst.TSamples projectTimeSamples;
-
+        
         /// <summary>
         /// system time in nanoseconds					(optional)
         /// </summary>
         public long systemTime;
-
+        
         /// <summary>
         /// project time, without loop					(optional)
         /// </summary>
         public LibVst.TSamples continousTimeSamples;
-
+        
         /// <summary>
         /// musical position in quarter notes (1.0 equals 1 quarter note) (optional)
         /// </summary>
         public LibVst.TQuarterNotes projectTimeMusic;
-
+        
         /// <summary>
         /// last bar start position, in quarter notes	(optional)
         /// </summary>
         public LibVst.TQuarterNotes barPositionMusic;
-
+        
         /// <summary>
         /// cycle start in quarter notes				(optional)
         /// </summary>
         public LibVst.TQuarterNotes cycleStartMusic;
-
+        
         /// <summary>
         /// cycle end in quarter notes					(optional)
         /// </summary>
         public LibVst.TQuarterNotes cycleEndMusic;
-
+        
         /// <summary>
         /// tempo in BPM (Beats Per Minute)			(optional)
         /// </summary>
         public double tempo;
-
+        
         /// <summary>
         /// time signature numerator (e.g. 3 for 3/4)	(optional)
         /// </summary>
         public int timeSigNumerator;
-
+        
         /// <summary>
         /// time signature denominator (e.g. 4 for 3/4) (optional)
         /// </summary>
         public int timeSigDenominator;
-
+        
         /// <summary>
         /// musical info								(optional)
         /// </summary>
         public LibVst.Chord chord;
-
+        
         /// <summary>
         /// SMPTE (sync) offset in subframes (1/80 of frame) (optional)
         /// </summary>
         public int smpteOffsetSubframes;
-
+        
         /// <summary>
         /// frame rate									(optional)
         /// </summary>
         public LibVst.FrameRate frameRate;
-
+        
         /// <summary>
         /// MIDI Clock Resolution (24 Per Quarter Note), can be negative (nearest) (optional)
         /// </summary>
         public int samplesToNextClock;
-
+        
         /// <summary>
-        /// Transport state
+        /// Transport state 
         /// &amp;
         /// other flags
         /// </summary>
@@ -7466,71 +7467,71 @@ internal static partial class LibVst
             /// currently playing
             /// </summary>
             kPlaying = 1 << 1,
-
+            
             /// <summary>
             /// cycle is active
             /// </summary>
             kCycleActive = 1 << 2,
-
+            
             /// <summary>
             /// currently recording
             /// </summary>
             kRecording = 1 << 3,
-
+            
             /// <summary>
             /// systemTime contains valid information
             /// </summary>
             kSystemTimeValid = 1 << 8,
-
+            
             /// <summary>
             /// continousTimeSamples contains valid information
             /// </summary>
             kContTimeValid = 1 << 17,
-
+            
             /// <summary>
             /// projectTimeMusic contains valid information
             /// </summary>
             kProjectTimeMusicValid = 1 << 9,
-
+            
             /// <summary>
             /// barPositionMusic contains valid information
             /// </summary>
             kBarPositionValid = 1 << 11,
-
+            
             /// <summary>
             /// cycleStartMusic and barPositionMusic contain valid information
             /// </summary>
             kCycleValid = 1 << 12,
-
+            
             /// <summary>
             /// tempo contains valid information
             /// </summary>
             kTempoValid = 1 << 10,
-
+            
             /// <summary>
             /// timeSigNumerator and timeSigDenominator contain valid information
             /// </summary>
             kTimeSigValid = 1 << 13,
-
+            
             /// <summary>
             /// chord contains valid information
             /// </summary>
             kChordValid = 1 << 18,
-
+            
             /// <summary>
             /// smpteOffset and frameRate contain valid information
             /// </summary>
             kSmpteValid = 1 << 14,
-
+            
             /// <summary>
             /// samplesToNextClock valid
             /// </summary>
             kClockValid = 1 << 15,
         }
     }
-
+    
     public partial record struct TSamples(long Value);
-
+    
     /// <summary>
     /// Description of a chord.
     /// A chord is described with a key note, a root note and the@copydoc chordMask
@@ -7543,12 +7544,12 @@ internal static partial class LibVst
         /// key note in chord
         /// </summary>
         public byte keyNote;
-
+        
         /// <summary>
         /// lowest note in chord
         /// </summary>
         public byte rootNote;
-
+        
         /// <summary>
         /// Bitmask of a chord. @n 1st bit set: minor second; 2nd bit set: major second, and so on. @n There is @b no bit for the keynote (root of the chord) because it is inherently always present. @n Examples:
         /// - XXXX 0000 0100 1000 (= 0x0048) -&gt; major chord
@@ -7556,23 +7557,23 @@ internal static partial class LibVst
         /// - XXXX 0010 0100 0100 (= 0x0244) -&gt; minor chord with minor seventh
         /// </summary>
         public short chordMask;
-
+        
         public enum Masks
         {
             /// <summary>
             /// mask for chordMask
             /// </summary>
             kChordMask = 0x0FFF,
-
+            
             /// <summary>
             /// reserved for future use
             /// </summary>
             kReservedMask = 0xF000,
         }
     }
-
+    
     /// <summary>
-    /// Frame Rate
+    /// Frame Rate 
     /// A frame rate describes the number of image (frame) displayed per second.
     /// Some examples:
     /// - 23.976 fps     is framesPerSecond: 24 and flags: kPullDownRate
@@ -7593,23 +7594,23 @@ internal static partial class LibVst
         /// frame rate
         /// </summary>
         public uint framesPerSecond;
-
+        
         /// <summary>
         /// flags #FrameRateFlags
         /// </summary>
         public uint flags;
-
+        
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public enum FrameRateFlags
         {
             kPullDownRate = 1 << 0,
-
+            
             kDropRate = 1 << 1,
         }
     }
-
+    
     /// <summary>
     /// Extended IAudioProcessor interface for a component: Vst::IAudioPresentationLatency
     /// </summary>
@@ -7621,8 +7622,8 @@ internal static partial class LibVst
     /// it will take for its input to arrive, and how long it will take for its output to be presented (to output or to speaker).Note for Input Presentation Latency: when reading from file, the first plug-in will have an input presentation latency set to zero.
     /// When monitoring audio input from an audio device, the initial input latency is the input latency of the audio device itself.Note for Output Presentation Latency: when writing to a file, the last plug-in will have an output presentation latency set to zero.
     /// When the output of this plug-in is connected to an audio device, the initial output latency is the output
-    /// latency of the audio device itself.A value of zero either means no latency or an unknown latency.Each plug-in adding a latency (returning a none zero value for IAudioProcessor::getLatencySamples) will modify the input
-    /// presentation latency of the next plug-ins in the mixer routing graph and will modify the output presentation latency
+    /// latency of the audio device itself.A value of zero either means no latency or an unknown latency.Each plug-in adding a latency (returning a none zero value for IAudioProcessor::getLatencySamples) will modify the input 
+    /// presentation latency of the next plug-ins in the mixer routing graph and will modify the output presentation latency 
     /// of the previous plug-ins.@n html "iaudiopresentationlatency_usage.png"@n
     /// </remarks>
     /// <seealso cref="IAudioProcessor"/>
@@ -7630,16 +7631,16 @@ internal static partial class LibVst
     public unsafe partial struct IAudioPresentationLatency : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IAudioPresentationLatency*, LibVst.BusDirection, int, uint, int>)&setAudioPresentationLatencySamples_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -7647,7 +7648,7 @@ internal static partial class LibVst
         /// Informs the plug-in about the Audio Presentation Latency in samples for a given direction (kInput/kOutput) and bus index.
         /// </summary>
         private static partial ComResult setAudioPresentationLatencySamples_ToManaged(IAudioPresentationLatency* self, LibVst.BusDirection dir, int busIndex, uint latencyInSamples);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setAudioPresentationLatencySamples_Wrapper(IAudioPresentationLatency* self, LibVst.BusDirection dir, int busIndex, uint latencyInSamples)
         {
@@ -7661,7 +7662,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -7674,13 +7675,13 @@ internal static partial class LibVst
                 {
                     return setAudioPresentationLatencySamples_ToManaged(self, dir, busIndex, latencyInSamples);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IAudioPresentationLatency, 0x309ECE78, 0xEB7D4fae, 0x8B2225D9, 0x09FD08B6)
         /// </summary>
@@ -7696,7 +7697,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Extended IAudioProcessor interface for a component: Vst::IProcessContextRequirements
     /// </summary>
@@ -7715,21 +7716,21 @@ internal static partial class LibVst
     public unsafe partial struct IProcessContextRequirements : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IProcessContextRequirements*, uint>)&getProcessContextRequirements_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
         private static partial uint getProcessContextRequirements_ToManaged(IProcessContextRequirements* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static uint getProcessContextRequirements_Wrapper(IProcessContextRequirements* self)
         {
@@ -7762,65 +7763,65 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         public enum Flags
         {
             /// <summary>
             /// kSystemTimeValid
             /// </summary>
             kNeedSystemTime = 1 << 0,
-
+            
             /// <summary>
             /// kContTimeValid
             /// </summary>
             kNeedContinousTimeSamples = 1 << 1,
-
+            
             /// <summary>
             /// kProjectTimeMusicValid
             /// </summary>
             kNeedProjectTimeMusic = 1 << 2,
-
+            
             /// <summary>
             /// kBarPositionValid
             /// </summary>
             kNeedBarPositionMusic = 1 << 3,
-
+            
             /// <summary>
             /// kCycleValid
             /// </summary>
             kNeedCycleMusic = 1 << 4,
-
+            
             /// <summary>
             /// kClockValid
             /// </summary>
             kNeedSamplesToNextClock = 1 << 5,
-
+            
             /// <summary>
             /// kTempoValid
             /// </summary>
             kNeedTempo = 1 << 6,
-
+            
             /// <summary>
             /// kTimeSigValid
             /// </summary>
             kNeedTimeSignature = 1 << 7,
-
+            
             /// <summary>
             /// kChordValid
             /// </summary>
             kNeedChord = 1 << 8,
-
+            
             /// <summary>
             /// kSmpteValid
             /// </summary>
             kNeedFrameRate = 1 << 9,
-
+            
             /// <summary>
             /// kPlaying, kCycleActive, kRecording
             /// </summary>
             kNeedTransportState = 1 << 10,
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IProcessContextRequirements, 0x2A654303, 0xEF764E3D, 0x95B5FE83, 0x730EF6D0)
         /// </summary>
@@ -7836,7 +7837,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Extended plug-in interface IEditController: Vst::IAutomationState
     /// </summary>
@@ -7849,16 +7850,16 @@ internal static partial class LibVst
     public unsafe partial struct IAutomationState : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IAutomationState*, int, int>)&setAutomationState_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -7866,7 +7867,7 @@ internal static partial class LibVst
         /// Sets the current Automation state.
         /// </summary>
         private static partial ComResult setAutomationState_ToManaged(IAutomationState* self, int state);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setAutomationState_Wrapper(IAutomationState* self, int state)
         {
@@ -7880,7 +7881,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -7893,15 +7894,15 @@ internal static partial class LibVst
                 {
                     return setAutomationState_ToManaged(self, state);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public enum AutomationStates
         {
@@ -7909,23 +7910,23 @@ internal static partial class LibVst
             /// Not Read and not Write
             /// </summary>
             kNoAutomation = 0,
-
+            
             /// <summary>
             /// Read state
             /// </summary>
             kReadState = 1 << 0,
-
+            
             /// <summary>
             /// Write state
             /// </summary>
             kWriteState = 1 << 1,
-
+            
             /// <summary>
             /// Read and Write enable
             /// </summary>
             kReadWriteState = kReadState | kWriteState,
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IAutomationState, 0xB4E8287F, 0x1BB346AA, 0x83A46667, 0x68937BAB)
         /// </summary>
@@ -7941,7 +7942,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Context Menu interface: Vst::IContextMenu
     /// </summary>
@@ -7950,16 +7951,16 @@ internal static partial class LibVst
     /// - [create with IComponentHandler3::createContextMenu(..)]
     /// - [released: 3.5.0]
     /// - [optional]A context menu is composed of Item (entry). A Item is defined by a name, a tag, a flag
-    /// and a associated target (called when this item will be selected/executed).
+    /// and a associated target (called when this item will be selected/executed). 
     /// With IContextMenu the plug-in can retrieve a Item, add a Item, remove a Item and pop-up the menu.
     /// </remarks>
     /// <seealso cref="IComponentHandler3 for more information."/>
     public unsafe partial struct IContextMenu : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -7976,7 +7977,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IContextMenu, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -7990,7 +7991,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IContextMenu, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -8001,7 +8002,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IContextMenu, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Gets the number of menu items.
         /// </summary>
@@ -8021,7 +8022,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IContextMenu*, int>)Vtbl[3])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// Gets a menu item and its target (target could be not assigned).
         /// </summary>
@@ -8042,7 +8043,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IContextMenu*, int, LibVst.Item*, LibVst.IContextMenuTarget**, int>)Vtbl[4])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), index, item, target);
             }
         }
-
+        
         /// <summary>
         /// Adds a menu item and its target.
         /// </summary>
@@ -8063,7 +8064,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IContextMenu*, LibVst.Item*, LibVst.IContextMenuTarget*, int>)Vtbl[5])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), item, target);
             }
         }
-
+        
         /// <summary>
         /// Removes a menu item.
         /// </summary>
@@ -8084,7 +8085,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IContextMenu*, LibVst.Item*, LibVst.IContextMenuTarget*, int>)Vtbl[6])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), item, target);
             }
         }
-
+        
         /// <summary>
         /// Pop-ups the menu. Coordinates are relative to the top-left position of the plug-ins view.
         /// </summary>
@@ -8105,7 +8106,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IContextMenu*, LibVst.UCoord, LibVst.UCoord, int>)Vtbl[7])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), x, y);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IContextMenu, 0x2E93C863, 0x0C9C4588, 0x97DBECF5, 0xAD17817D)
         /// </summary>
@@ -8121,7 +8122,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// IContextMenuItem is an entry element of the context menu.
     /// </summary>
@@ -8132,48 +8133,48 @@ internal static partial class LibVst
         /// Name of the item
         /// </summary>
         public LibVst.String128 name;
-
+        
         /// <summary>
         /// Identifier tag of the item
         /// </summary>
         public int tag;
-
+        
         /// <summary>
         /// Flags of the item
         /// </summary>
         public int flags;
-
+        
         public enum Flags
         {
             /// <summary>
             /// Item is a separator
             /// </summary>
             kIsSeparator = 1 << 0,
-
+            
             /// <summary>
             /// Item is disabled
             /// </summary>
             kIsDisabled = 1 << 1,
-
+            
             /// <summary>
             /// Item is checked
             /// </summary>
             kIsChecked = 1 << 2,
-
+            
             /// <summary>
             /// Item is a group start (like sub folder)
             /// </summary>
             kIsGroupStart = 1 << 3 | kIsDisabled,
-
+            
             /// <summary>
             /// Item is a group end
             /// </summary>
             kIsGroupEnd = 1 << 4 | kIsSeparator,
         }
     }
-
+    
     public partial record struct Item(LibVst.IContextMenuItem Value);
-
+    
     /// <summary>
     /// Context Menu Item Target interface: Vst::IContextMenuTarget
     /// </summary>
@@ -8188,18 +8189,18 @@ internal static partial class LibVst
     public unsafe partial struct IContextMenuTarget : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IContextMenuTarget*, int, int>)&executeMenuItem_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -8216,7 +8217,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IContextMenuTarget, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -8230,7 +8231,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IContextMenuTarget, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -8241,7 +8242,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IContextMenuTarget, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Called when an menu item was executed.
         /// </summary>
@@ -8262,7 +8263,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IContextMenuTarget*, int, int>)Vtbl[3])((LibVst.IContextMenuTarget*)Unsafe.AsPointer(ref this), tag);
             }
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -8270,7 +8271,7 @@ internal static partial class LibVst
         /// Called when an menu item was executed.
         /// </summary>
         private static partial ComResult executeMenuItem_ToManaged(IContextMenuTarget* self, int tag);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int executeMenuItem_Wrapper(IContextMenuTarget* self, int tag)
         {
@@ -8284,7 +8285,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -8297,13 +8298,13 @@ internal static partial class LibVst
                 {
                     return executeMenuItem_ToManaged(self, tag);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IContextMenuTarget, 0x3CDF2E75, 0x85D34144, 0xBF86D36B, 0xD7C4894D)
         /// </summary>
@@ -8319,9 +8320,9 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public partial record struct UCoord(int Value);
-
+    
     /// <summary>
     /// Extended host callback interface Vst::IComponentHandler3 for an edit controller.
     /// </summary>
@@ -8337,7 +8338,7 @@ internal static partial class LibVst
     /// {
     /// public:
     /// 	PluginContextMenuTarget () {}
-    ///
+    /// 
     /// 	virtual tresult PLUGIN_API executeMenuItem (int32 tag)
     /// 	{
     /// 		// this will be called if the user has executed one of the menu items of the plug-in.
@@ -8349,14 +8350,14 @@ internal static partial class LibVst
     /// 		}
     /// 		return kResultTrue;
     /// 	}
-    ///
+    /// 
     /// 	OBJ_METHODS(PluginContextMenuTarget, FObject)
     /// 	DEFINE_INTERFACES
     /// 		DEF_INTERFACE (IContextMenuTarget)
     /// 	END_DEFINE_INTERFACES (FObject)
     /// 	REFCOUNT_METHODS(FObject)
     /// };
-    ///
+    /// 
     /// // The following is the code to create the context menu
     /// void popupContextMenu (IComponentHandler* componentHandler, IPlugView* view, const ParamID* paramID, UCoord x, UCoord y)
     /// {
@@ -8370,18 +8371,18 @@ internal static partial class LibVst
     /// 	{
     /// 		// here you can add your entries (optional)
     /// 		PluginContextMenuTarget* target = new PluginContextMenuTarget ();
-    ///
+    /// 		
     /// 		IContextMenu::Item item = {0};
     /// 		UString128 ("My Item 1").copyTo (item.name, 128);
     /// 		item.tag = 1;
     /// 		menu-&gt;addItem (item, target);
-    ///
+    /// 
     /// 		UString128 ("My Item 2").copyTo (item.name, 128);
     /// 		item.tag = 2;
     /// 		menu-&gt;addItem (item, target);
     /// 		target-&gt;release ();
     /// 		//--end of adding new entries
-    ///
+    /// 		
     /// 		// here the the context menu will be pop-up (and it waits a user interaction)
     /// 		menu-&gt;popup (x, y);
     /// 		menu-&gt;release ();
@@ -8394,9 +8395,9 @@ internal static partial class LibVst
     public unsafe partial struct IComponentHandler3 : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -8413,7 +8414,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandler3, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -8427,7 +8428,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandler3, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -8438,7 +8439,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandler3, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Creates a host context menu for a plug-in:
         /// - If paramID is zero, the host may create a generic context menu.
@@ -8461,7 +8462,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler3*, LibVst.IPlugView*, LibVst.ParamID*, LibVst.IContextMenu*>)Vtbl[3])((LibVst.IComponentHandler3*)Unsafe.AsPointer(ref this), plugView, paramID);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IComponentHandler3, 0x69F11617, 0xD26B400D, 0xA4B6B964, 0x7B6EBBAB)
         /// </summary>
@@ -8477,7 +8478,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Host callback interface for an edit controller: Vst::IComponentHandler
     /// </summary>
@@ -8491,9 +8492,9 @@ internal static partial class LibVst
     public unsafe partial struct IComponentHandler : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -8510,7 +8511,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandler, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -8524,7 +8525,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandler, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -8535,7 +8536,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandler, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// To be called before calling a performEdit (e.g. on mouse-click-down event).
         /// This must be called in the UI-Thread context!
@@ -8557,7 +8558,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler*, LibVst.ParamID, int>)Vtbl[3])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), id);
             }
         }
-
+        
         /// <summary>
         /// Called between beginEdit and endEdit to inform the handler that a given parameter has a new
         /// value. This must be called in the UI-Thread context!
@@ -8579,7 +8580,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler*, LibVst.ParamID, LibVst.ParamValue, int>)Vtbl[4])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), id, valueNormalized);
             }
         }
-
+        
         /// <summary>
         /// To be called after calling a performEdit (e.g. on mouse-click-up event).
         /// This must be called in the UI-Thread context!
@@ -8601,7 +8602,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler*, LibVst.ParamID, int>)Vtbl[5])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), id);
             }
         }
-
+        
         /// <summary>
         /// Instructs host to restart the component. This must be called in the UI-Thread context!
         /// </summary>
@@ -8623,7 +8624,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler*, int, int>)Vtbl[6])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), flags);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IComponentHandler, 0x93A0BEA3, 0x0BD045DB, 0x8E890B0C, 0xC1E46AC6)
         /// </summary>
@@ -8639,7 +8640,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Extended host callback interface for an edit controller: Vst::IComponentHandler2
     /// </summary>
@@ -8692,9 +8693,9 @@ internal static partial class LibVst
     public unsafe partial struct IComponentHandler2 : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -8711,7 +8712,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandler2, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -8725,7 +8726,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandler2, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -8736,7 +8737,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandler2, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Tells host that the plug-in is dirty (something besides parameters has changed since last save),
         /// if true the host should apply a save before quitting.
@@ -8758,7 +8759,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler2*, byte, int>)Vtbl[3])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this), state);
             }
         }
-
+        
         /// <summary>
         /// Tells host that it should open the plug-in editor the next time it's possible.
         /// You should use this instead of showing an alert and blocking the program flow (especially on loading projects).
@@ -8780,7 +8781,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler2*, LibVst.FIDString, int>)Vtbl[4])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this), name);
             }
         }
-
+        
         /// <summary>
         /// Starts the group editing (call before a @ref IComponentHandler::beginEdit), the host will keep the current timestamp at this call and will use it for all @ref IComponentHandler::beginEdit / @ref IComponentHandler::performEdit / @ref IComponentHandler::endEdit calls until a @ref finishGroupEdit ().
         /// </summary>
@@ -8801,7 +8802,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler2*, int>)Vtbl[5])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// Finishes the group editing started by a @ref startGroupEdit (call after a @ref IComponentHandler::endEdit).
         /// </summary>
@@ -8822,7 +8823,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler2*, int>)Vtbl[6])((LibVst.IComponentHandler2*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IComponentHandler2, 0xF040B4B3, 0xA36045EC, 0xABCDC045, 0xB4D5A2CC)
         /// </summary>
@@ -8838,7 +8839,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Extended host callback interface for an edit controller: Vst::IComponentHandlerBusActivation
     /// </summary>
@@ -8846,7 +8847,7 @@ internal static partial class LibVst
     ///  vstIHost vst368- [host imp]
     /// - [extends IComponentHandler]
     /// - [released: 3.6.8]
-    /// - [optional]Allows the plug-in to request the host to activate or deactivate a specific bus.
+    /// - [optional]Allows the plug-in to request the host to activate or deactivate a specific bus. 
     /// If the host accepts this request, it will call later on @ref IComponent::activateBus. This is particularly useful for instruments with more than 1 outputs, where the user could request
     /// from the plug-in UI a given output bus activation.@code {.cpp}
     /// 	// somewhere in your code when you need to inform the host to enable a specific Bus.
@@ -8862,9 +8863,9 @@ internal static partial class LibVst
     public unsafe partial struct IComponentHandlerBusActivation : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -8881,7 +8882,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandlerBusActivation, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -8895,7 +8896,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandlerBusActivation, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -8906,7 +8907,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IComponentHandlerBusActivation, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// request the host to activate or deactivate a specific bus.
         /// </summary>
@@ -8927,7 +8928,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandlerBusActivation*, LibVst.MediaType, LibVst.BusDirection, int, byte, int>)Vtbl[3])((LibVst.IComponentHandlerBusActivation*)Unsafe.AsPointer(ref this), type, dir, index, state);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IComponentHandlerBusActivation, 0x067D02C1, 0x5B4E274D, 0xA92D90FD, 0x6EAF7240)
         /// </summary>
@@ -8943,7 +8944,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Extended host callback interface for an edit controller: Vst::IProgress
     /// </summary>
@@ -8956,22 +8957,22 @@ internal static partial class LibVst
     /// after loading a project where a plug-in needs to load extra
     /// data (e.g. samples) in a background thread, this enables the host to get and visualize the current status of the loading
     /// progress and to inform the user when the loading is finished.
-    /// Note: During the progress, the host can unload the plug-in at any time. Make sure that the plug-in
+    /// Note: During the progress, the host can unload the plug-in at any time. Make sure that the plug-in 
     /// supports this use case. IProgressExample Example@code {.cpp}
     /// //--------------------------------------
     /// // we are in the editcontroller:
     /// // as member: IProgress::ID mProgressID;
-    ///
+    /// 
     /// FUnknownPtr&lt;IProgress&gt; progress (componentHandler);
     /// if (progress)
     /// 	progress-&gt;start (IProgress::ProgressType::UIBackgroundTask, STR ("Load Samples..."), mProgressID);
-    ///
+    /// 
     /// // ...
     /// myProgressValue += incProgressStep;
     /// FUnknownPtr&lt;IProgress&gt; progress (componentHandler);
     /// if (progress)
     /// 	progress-&gt;update (mProgressID, myProgressValue);
-    ///
+    /// 
     /// // ...
     /// FUnknownPtr&lt;IProgress&gt; progress (componentHandler);
     /// if (progress)
@@ -8982,9 +8983,9 @@ internal static partial class LibVst
     public unsafe partial struct IProgress : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -9001,7 +9002,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IProgress, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -9015,7 +9016,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IProgress, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -9026,7 +9027,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IProgress, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Start a new progress of a given type and optional Description. outID is as ID created by the
         /// host to identify this newly created progress (for update and finish method)
@@ -9048,7 +9049,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IProgress*, ProgressType, char*, LibVst.ID*, int>)Vtbl[3])((LibVst.IProgress*)Unsafe.AsPointer(ref this), type, optionalDescription, outID);
             }
         }
-
+        
         /// <summary>
         /// Update the progress value (normValue between [0, 1]) associated to the given id
         /// </summary>
@@ -9069,7 +9070,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IProgress*, LibVst.ID, LibVst.ParamValue, int>)Vtbl[4])((LibVst.IProgress*)Unsafe.AsPointer(ref this), id, normValue);
             }
         }
-
+        
         /// <summary>
         /// Finish the progress associated to the given id
         /// </summary>
@@ -9090,9 +9091,9 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IProgress*, LibVst.ID, int>)Vtbl[5])((LibVst.IProgress*)Unsafe.AsPointer(ref this), id);
             }
         }
-
+        
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public enum ProgressType : uint
         {
@@ -9100,13 +9101,13 @@ internal static partial class LibVst
             /// plug-in state is restored async (in a background Thread)
             /// </summary>
             AsyncStateRestoration = 0,
-
+            
             /// <summary>
             /// a plug-in task triggered by a UI action
             /// </summary>
             UIBackgroundTask,
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IProgress, 0x00C9DC5B, 0x9D904254, 0x91A388C8, 0xB4E91B69)
         /// </summary>
@@ -9122,9 +9123,9 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public partial record struct ID(ulong Value);
-
+    
     /// <summary>
     /// Edit controller component interface: Vst::IEditController
     /// </summary>
@@ -9137,9 +9138,9 @@ internal static partial class LibVst
     public unsafe partial struct IEditController : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 18;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -9151,14 +9152,14 @@ internal static partial class LibVst
             vtbl[9] = (delegate*unmanaged[MemberFunction]<IEditController*, int, LibVst.ParameterInfo*, int>)&getParameterInfo_Wrapper;
             vtbl[10] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128*, int>)&getParamStringByValue_Wrapper;
             vtbl[11] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, char*, LibVst.ParamValue*, int>)&getParamValueByString_Wrapper;
-            vtbl[12] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&normalizedParamToPlain_Wrapper;
-            vtbl[13] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.ParamValue>)&plainParamToNormalized_Wrapper;
-            vtbl[14] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue>)&getParamNormalized_Wrapper;
+            vtbl[12] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)&normalizedParamToPlain_Wrapper;
+            vtbl[13] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)&plainParamToNormalized_Wrapper;
+            vtbl[14] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, double>)&getParamNormalized_Wrapper;
             vtbl[15] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, int>)&setParamNormalized_Wrapper;
             vtbl[16] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.IComponentHandler*, int>)&setComponentHandler_Wrapper;
             vtbl[17] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.FIDString, LibVst.IPlugView*>)&createView_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -9166,7 +9167,7 @@ internal static partial class LibVst
         /// Receives the component state.
         /// </summary>
         private static partial ComResult setComponentState_ToManaged(IEditController* self, LibVst.IBStream* state);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setComponentState_Wrapper(IEditController* self, LibVst.IBStream* state)
         {
@@ -9180,7 +9181,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -9193,18 +9194,18 @@ internal static partial class LibVst
                 {
                     return setComponentState_ToManaged(self, state);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Sets the controller state.
         /// </summary>
         private static partial ComResult setState_ToManaged(IEditController* self, LibVst.IBStream* state);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setState_Wrapper(IEditController* self, LibVst.IBStream* state)
         {
@@ -9218,7 +9219,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -9231,18 +9232,18 @@ internal static partial class LibVst
                 {
                     return setState_ToManaged(self, state);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets the controller state.
         /// </summary>
         private static partial ComResult getState_ToManaged(IEditController* self, LibVst.IBStream* state);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getState_Wrapper(IEditController* self, LibVst.IBStream* state)
         {
@@ -9256,7 +9257,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -9269,19 +9270,19 @@ internal static partial class LibVst
                 {
                     return getState_ToManaged(self, state);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// parameters -------------------------
         /// Returns the number of parameters exported.
         /// </summary>
         private static partial int getParameterCount_ToManaged(IEditController* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getParameterCount_Wrapper(IEditController* self)
         {
@@ -9314,12 +9315,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets for a given index the parameter information.
         /// </summary>
         private static partial ComResult getParameterInfo_ToManaged(IEditController* self, int paramIndex, LibVst.ParameterInfo* info);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getParameterInfo_Wrapper(IEditController* self, int paramIndex, LibVst.ParameterInfo* info)
         {
@@ -9333,7 +9334,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -9346,18 +9347,18 @@ internal static partial class LibVst
                 {
                     return getParameterInfo_ToManaged(self, paramIndex, info);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets for a given paramID and normalized value its associated string representation.
         /// </summary>
         private static partial ComResult getParamStringByValue_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getParamStringByValue_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string)
         {
@@ -9371,7 +9372,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -9384,18 +9385,18 @@ internal static partial class LibVst
                 {
                     return getParamStringByValue_ToManaged(self, id, valueNormalized, @string);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets for a given paramID and string its normalized value.
         /// </summary>
         private static partial ComResult getParamValueByString_ToManaged(IEditController* self, LibVst.ParamID id, char* @string, LibVst.ParamValue* valueNormalized);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getParamValueByString_Wrapper(IEditController* self, LibVst.ParamID id, char* @string, LibVst.ParamValue* valueNormalized)
         {
@@ -9409,7 +9410,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -9422,21 +9423,21 @@ internal static partial class LibVst
                 {
                     return getParamValueByString_ToManaged(self, id, @string, valueNormalized);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Returns for a given paramID and a normalized value its plain representation
         /// (for example -6 for -6dB - see @ref vst3AutomationIntro).
         /// </summary>
         private static partial LibVst.ParamValue normalizedParamToPlain_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static LibVst.ParamValue normalizedParamToPlain_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized)
+        private static double normalizedParamToPlain_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -9467,14 +9468,14 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Returns for a given paramID and a plain value its normalized value. (see @ref vst3AutomationIntro)
         /// </summary>
         private static partial LibVst.ParamValue plainParamToNormalized_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue plainValue);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static LibVst.ParamValue plainParamToNormalized_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue plainValue)
+        private static double plainParamToNormalized_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue plainValue)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -9505,14 +9506,14 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Returns the normalized value of the parameter associated to the paramID.
         /// </summary>
         private static partial LibVst.ParamValue getParamNormalized_ToManaged(IEditController* self, LibVst.ParamID id);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static LibVst.ParamValue getParamNormalized_Wrapper(IEditController* self, LibVst.ParamID id)
+        private static double getParamNormalized_Wrapper(IEditController* self, LibVst.ParamID id)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -9543,14 +9544,14 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Sets the normalized value to the parameter associated to the paramID. The controller must never
         /// pass this value-change back to the host via the IComponentHandler. It should update the according
         /// GUI element(s) only!
         /// </summary>
         private static partial ComResult setParamNormalized_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue value);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setParamNormalized_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue value)
         {
@@ -9564,7 +9565,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -9577,20 +9578,20 @@ internal static partial class LibVst
                 {
                     return setParamNormalized_ToManaged(self, id, value);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// handler ----------------------------
         /// Gets from host a handler which allows the Plugin-in to communicate with the host.
         /// Note: This is mandatory if the host is using the IEditController!
         /// </summary>
         private static partial ComResult setComponentHandler_ToManaged(IEditController* self, LibVst.IComponentHandler* handler);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setComponentHandler_Wrapper(IEditController* self, LibVst.IComponentHandler* handler)
         {
@@ -9604,7 +9605,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -9617,19 +9618,19 @@ internal static partial class LibVst
                 {
                     return setComponentHandler_ToManaged(self, handler);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// view -------------------------------
         /// Creates the editor view of the plug-in, currently only "editor" is supported, see @ref ViewType. The life time of the editor view will never exceed the life time of this controller instance.
         /// </summary>
         private static partial LibVst.IPlugView* createView_ToManaged(IEditController* self, LibVst.FIDString name);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IPlugView* createView_Wrapper(IEditController* self, LibVst.FIDString name)
         {
@@ -9662,7 +9663,7 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IEditController, 0xDCD7BBE3, 0x7742448D, 0xA874AACC, 0x979C759E)
         /// </summary>
@@ -9678,7 +9679,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Controller Parameter Info.
     /// A parameter info describes a parameter of the controller.
@@ -9691,82 +9692,82 @@ internal static partial class LibVst
         /// unique identifier of this parameter (named tag too)
         /// </summary>
         public LibVst.ParamID id;
-
+        
         /// <summary>
         /// parameter title (e.g. "Volume")
         /// </summary>
         public LibVst.String128 title;
-
+        
         /// <summary>
         /// parameter shortTitle (e.g. "Vol")
         /// </summary>
         public LibVst.String128 shortTitle;
-
+        
         /// <summary>
         /// parameter unit (e.g. "dB")
         /// </summary>
         public LibVst.String128 units;
-
+        
         /// <summary>
-        /// number of discrete steps (0: continuous, 1: toggle, discrete value otherwise
+        /// number of discrete steps (0: continuous, 1: toggle, discrete value otherwise 
         /// (corresponding to max - min, for example: 127 for a min = 0 and a max = 127) - see @ref vst3ParameterIntro)
         /// </summary>
         public int stepCount;
-
+        
         /// <summary>
         /// default normalized value [0,1] (in case of discrete value: defaultNormalizedValue = defDiscreteValue / stepCount)
         /// </summary>
         public LibVst.ParamValue defaultNormalizedValue;
-
+        
         /// <summary>
         /// id of unit this parameter belongs to (see @ref vst3Units)
         /// </summary>
         public LibVst.UnitID unitId;
-
+        
         /// <summary>
         /// ParameterFlags (see below)
         /// </summary>
         public int flags;
-
+        
         public enum ParameterFlags
         {
             /// <summary>
             /// no flags wanted
             /// </summary>
             kNoFlags = 0,
-
+            
             /// <summary>
             /// parameter can be automated
             /// </summary>
             kCanAutomate = 1 << 0,
-
+            
             /// <summary>
             /// parameter cannot be changed from outside the plug-in (implies that kCanAutomate is NOT set)
             /// </summary>
             kIsReadOnly = 1 << 1,
-
+            
             /// <summary>
             /// attempts to set the parameter value out of the limits will result in a wrap around [SDK 3.0.2]
             /// </summary>
             kIsWrapAround = 1 << 2,
-
+            
             /// <summary>
             /// parameter should be displayed as list in generic editor or automation editing [SDK 3.1.0]
             /// </summary>
             kIsList = 1 << 3,
-
+            
             /// <summary>
-            /// parameter should be NOT displayed and cannot be changed from outside the plug-in
+            /// parameter should be NOT displayed and cannot be changed from outside the plug-in 
             /// (implies that kCanAutomate is NOT set and kIsReadOnly is set) [SDK 3.7.0]
             /// </summary>
             kIsHidden = 1 << 4,
-
+            
             /// <summary>
-            /// parameter is a program change (unitId gives info about associated unit
+            /// parameter is a program change (unitId gives info about associated unit 
             /// - see @ref vst3ProgramLists)
             /// </summary>
             kIsProgramChange = 1 << 15,
-
+            
             /// <summary>
             /// special bypass parameter (only one allowed): plug-in can handle bypass
             /// (highly recommended to export a bypass parameter for effect plug-in)
@@ -9774,9 +9775,9 @@ internal static partial class LibVst
             kIsBypass = 1 << 16,
         }
     }
-
+    
     public partial record struct UnitID(int Value);
-
+    
     /// <summary>
     /// Edit controller component interface extension: Vst::IEditController2
     /// </summary>
@@ -9791,9 +9792,9 @@ internal static partial class LibVst
     public unsafe partial struct IEditController2 : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 6;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -9802,7 +9803,7 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IEditController2*, byte, int>)&openHelp_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IEditController2*, byte, int>)&openAboutBox_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -9811,7 +9812,7 @@ internal static partial class LibVst
         /// </summary>
         /// <seealso cref="KnobModes. "/>
         private static partial ComResult setKnobMode_ToManaged(IEditController2* self, LibVst.KnobMode mode);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setKnobMode_Wrapper(IEditController2* self, LibVst.KnobMode mode)
         {
@@ -9825,7 +9826,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -9838,20 +9839,20 @@ internal static partial class LibVst
                 {
                     return setKnobMode_ToManaged(self, mode);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Host could ask to open the plug-in help (could be: opening a PDF document or link to a web page).
-        /// The host could call it with onlyCheck set to true for testing support of open Help.
+        /// The host could call it with onlyCheck set to true for testing support of open Help. 
         /// Return kResultFalse means not supported function.
         /// </summary>
         private static partial ComResult openHelp_ToManaged(IEditController2* self, byte onlyCheck);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int openHelp_Wrapper(IEditController2* self, byte onlyCheck)
         {
@@ -9865,7 +9866,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -9878,20 +9879,20 @@ internal static partial class LibVst
                 {
                     return openHelp_ToManaged(self, onlyCheck);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Host could ask to open the plug-in about box.
-        /// The host could call it with onlyCheck set to true for testing support of open AboutBox.
+        /// The host could call it with onlyCheck set to true for testing support of open AboutBox. 
         /// Return kResultFalse means not supported function.
         /// </summary>
         private static partial ComResult openAboutBox_ToManaged(IEditController2* self, byte onlyCheck);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int openAboutBox_Wrapper(IEditController2* self, byte onlyCheck)
         {
@@ -9905,7 +9906,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -9918,13 +9919,13 @@ internal static partial class LibVst
                 {
                     return openAboutBox_ToManaged(self, onlyCheck);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IEditController2, 0x7F4EFE59, 0xF3204967, 0xAC27A3AE, 0xAFB63038)
         /// </summary>
@@ -9940,9 +9941,9 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public partial record struct KnobMode(int Value);
-
+    
     /// <summary>
     /// MIDI Mapping interface: Vst::IMidiMapping
     /// </summary>
@@ -9973,7 +9974,7 @@ internal static partial class LibVst
     /// 	END_DEFINE_INTERFACES (MyEditController)
     /// 	REFCOUNT_METHODS (MyEditController)
     /// };
-    ///
+    /// 
     /// //--------------------------------------
     /// // in myeditcontroller.cpp
     /// tresult PLUGIN_API MyEditController::getMidiControllerAssignment (int32 busIndex, int16 midiChannel, CtrlNumber midiControllerNumber, ParamID&amp; tag)
@@ -9991,16 +9992,16 @@ internal static partial class LibVst
     public unsafe partial struct IMidiMapping : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiMapping*, int, short, LibVst.CtrlNumber, LibVst.ParamID*, int>)&getMidiControllerAssignment_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -10012,7 +10013,7 @@ internal static partial class LibVst
         /// <param name="midiControllerNumber">- see @ref ControllerNumbers for expected values (could be bigger than 127)</param>
         /// <param name="id">- return the associated ParamID to the given midiControllerNumber</param>
         private static partial ComResult getMidiControllerAssignment_ToManaged(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getMidiControllerAssignment_Wrapper(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id)
         {
@@ -10026,7 +10027,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -10039,13 +10040,13 @@ internal static partial class LibVst
                 {
                     return getMidiControllerAssignment_ToManaged(self, busIndex, channel, midiControllerNumber, id);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IMidiMapping, 0xDF0FF9F7, 0x49B74669, 0xB63AB732, 0x7ADBF5E5)
         /// </summary>
@@ -10061,9 +10062,9 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public partial record struct CtrlNumber(short Value);
-
+    
     /// <summary>
     /// Parameter Editing from host: Vst::IEditControllerHostEditing
     /// </summary>
@@ -10087,9 +10088,9 @@ internal static partial class LibVst
     public unsafe partial struct IEditControllerHostEditing : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 5;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -10097,7 +10098,7 @@ internal static partial class LibVst
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IEditControllerHostEditing*, LibVst.ParamID, int>)&beginEditFromHost_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IEditControllerHostEditing*, LibVst.ParamID, int>)&endEditFromHost_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -10105,7 +10106,7 @@ internal static partial class LibVst
         /// Called before a setParamNormalized sequence, a endEditFromHost will be call at the end of the editing action.
         /// </summary>
         private static partial ComResult beginEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int beginEditFromHost_Wrapper(IEditControllerHostEditing* self, LibVst.ParamID paramID)
         {
@@ -10119,7 +10120,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -10132,18 +10133,18 @@ internal static partial class LibVst
                 {
                     return beginEditFromHost_ToManaged(self, paramID);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Called after a beginEditFromHost and a sequence of setParamNormalized.
         /// </summary>
         private static partial ComResult endEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int endEditFromHost_Wrapper(IEditControllerHostEditing* self, LibVst.ParamID paramID)
         {
@@ -10157,7 +10158,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -10170,13 +10171,13 @@ internal static partial class LibVst
                 {
                     return endEditFromHost_ToManaged(self, paramID);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IEditControllerHostEditing, 0xC1271208, 0x70594098, 0xB9DD34B3, 0x6BB0195E)
         /// </summary>
@@ -10192,7 +10193,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Extended plug-in interface IEditController for note expression event support: Vst::INoteExpressionController
     /// </summary>
@@ -10208,9 +10209,9 @@ internal static partial class LibVst
     public unsafe partial struct INoteExpressionController : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 7;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -10220,7 +10221,7 @@ internal static partial class LibVst
             vtbl[5] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128*, int>)&getNoteExpressionStringByValue_Wrapper;
             vtbl[6] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, char*, LibVst.NoteExpressionValue*, int>)&getNoteExpressionValueByString_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -10228,7 +10229,7 @@ internal static partial class LibVst
         /// Returns number of supported note change types for event bus index and channel.
         /// </summary>
         private static partial int getNoteExpressionCount_ToManaged(INoteExpressionController* self, int busIndex, short channel);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getNoteExpressionCount_Wrapper(INoteExpressionController* self, int busIndex, short channel)
         {
@@ -10261,12 +10262,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Returns note change type info.
         /// </summary>
         private static partial ComResult getNoteExpressionInfo_ToManaged(INoteExpressionController* self, int busIndex, short channel, int noteExpressionIndex, LibVst.NoteExpressionTypeInfo* info);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getNoteExpressionInfo_Wrapper(INoteExpressionController* self, int busIndex, short channel, int noteExpressionIndex, LibVst.NoteExpressionTypeInfo* info)
         {
@@ -10280,7 +10281,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -10293,18 +10294,18 @@ internal static partial class LibVst
                 {
                     return getNoteExpressionInfo_ToManaged(self, busIndex, channel, noteExpressionIndex, info);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets a user readable representation of the normalized note change value.
         /// </summary>
         private static partial ComResult getNoteExpressionStringByValue_ToManaged(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getNoteExpressionStringByValue_Wrapper(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string)
         {
@@ -10318,7 +10319,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -10331,18 +10332,18 @@ internal static partial class LibVst
                 {
                     return getNoteExpressionStringByValue_ToManaged(self, busIndex, channel, id, valueNormalized, @string);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Converts the user readable representation to the normalized note change value.
         /// </summary>
         private static partial ComResult getNoteExpressionValueByString_ToManaged(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, char* @string, LibVst.NoteExpressionValue* valueNormalized);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getNoteExpressionValueByString_Wrapper(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, char* @string, LibVst.NoteExpressionValue* valueNormalized)
         {
@@ -10356,7 +10357,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -10369,13 +10370,13 @@ internal static partial class LibVst
                 {
                     return getNoteExpressionValueByString_ToManaged(self, busIndex, channel, id, @string, valueNormalized);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (INoteExpressionController, 0xB7F8F859, 0x41234872, 0x91169581, 0x4F3721A3)
         /// </summary>
@@ -10391,7 +10392,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// NoteExpressionTypeInfo is the structure describing a note expression supported by the plug-in.
     /// This structure is used by the method @ref INoteExpressionController::getNoteExpressionInfo.
@@ -10404,66 +10405,66 @@ internal static partial class LibVst
         /// unique identifier of this note Expression type
         /// </summary>
         public LibVst.NoteExpressionTypeID typeId;
-
+        
         /// <summary>
         /// note Expression type title (e.g. "Volume")
         /// </summary>
         public LibVst.String128 title;
-
+        
         /// <summary>
         /// note Expression type short title (e.g. "Vol")
         /// </summary>
         public LibVst.String128 shortTitle;
-
+        
         /// <summary>
         /// note Expression type unit (e.g. "dB")
         /// </summary>
         public LibVst.String128 units;
-
+        
         /// <summary>
         /// id of unit this NoteExpression belongs to (see @ref vst3Units), in order to sort the note expression, it is possible to use unitId like for parameters. -1 means no unit used.
         /// </summary>
         public int unitId;
-
+        
         /// <summary>
         /// value description see @ref NoteExpressionValueDescription
         /// </summary>
         public LibVst.NoteExpressionValueDescription valueDesc;
-
+        
         /// <summary>
         /// optional associated parameter ID (for mapping from note expression to global (using the parameter automation for example) and back). Only used when kAssociatedParameterIDValid is set in flags.
         /// </summary>
         public LibVst.ParamID associatedParameterId;
-
+        
         /// <summary>
         /// NoteExpressionTypeFlags (see below)
         /// </summary>
         public int flags;
-
+        
         public enum NoteExpressionTypeFlags
         {
             /// <summary>
             /// event is bipolar (centered), otherwise unipolar
             /// </summary>
             kIsBipolar = 1 << 0,
-
+            
             /// <summary>
             /// event occurs only one time for its associated note (at begin of the noteOn)
             /// </summary>
             kIsOneShot = 1 << 1,
-
+            
             /// <summary>
             /// This note expression will apply an absolute change to the sound (not relative (offset))
             /// </summary>
             kIsAbsolute = 1 << 2,
-
+            
             /// <summary>
             /// indicates that the associatedParameterID is valid and could be used
             /// </summary>
             kAssociatedParameterIDValid = 1 << 3,
         }
     }
-
+    
     /// <summary>
     /// Description of a Note Expression Type
     /// This structure is part of the NoteExpressionTypeInfo structure, it describes for given NoteExpressionTypeID its default value
@@ -10478,23 +10479,23 @@ internal static partial class LibVst
         /// default normalized value [0,1]
         /// </summary>
         public LibVst.NoteExpressionValue defaultValue;
-
+        
         /// <summary>
         /// minimum normalized value [0,1]
         /// </summary>
         public LibVst.NoteExpressionValue minimum;
-
+        
         /// <summary>
         /// maximum normalized value [0,1]
         /// </summary>
         public LibVst.NoteExpressionValue maximum;
-
+        
         /// <summary>
         /// number of discrete steps (0: continuous, 1: toggle, discrete value otherwise - see @ref vst3ParameterIntro)
         /// </summary>
         public int stepCount;
     }
-
+    
     /// <summary>
     /// Extended plug-in interface IEditController for key switches support: Vst::IKeyswitchController
     /// </summary>
@@ -10509,9 +10510,9 @@ internal static partial class LibVst
     public unsafe partial struct IKeyswitchController : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 5;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -10519,7 +10520,7 @@ internal static partial class LibVst
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IKeyswitchController*, int, short, int>)&getKeyswitchCount_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IKeyswitchController*, int, short, int, LibVst.KeyswitchInfo*, int>)&getKeyswitchInfo_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -10527,7 +10528,7 @@ internal static partial class LibVst
         /// Returns number of supported key switches for event bus index and channel.
         /// </summary>
         private static partial int getKeyswitchCount_ToManaged(IKeyswitchController* self, int busIndex, short channel);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getKeyswitchCount_Wrapper(IKeyswitchController* self, int busIndex, short channel)
         {
@@ -10560,12 +10561,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Returns key switch info.
         /// </summary>
         private static partial ComResult getKeyswitchInfo_ToManaged(IKeyswitchController* self, int busIndex, short channel, int keySwitchIndex, LibVst.KeyswitchInfo* info);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getKeyswitchInfo_Wrapper(IKeyswitchController* self, int busIndex, short channel, int keySwitchIndex, LibVst.KeyswitchInfo* info)
         {
@@ -10579,7 +10580,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -10592,13 +10593,13 @@ internal static partial class LibVst
                 {
                     return getKeyswitchInfo_ToManaged(self, busIndex, channel, keySwitchIndex, info);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IKeyswitchController, 0x1F2F76D3, 0xBFFB4B96, 0xB99527A5, 0x5EBCCEF4)
         /// </summary>
@@ -10614,7 +10615,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// KeyswitchInfo is the structure describing a key switch
     /// This structure is used by the method @ref IKeyswitchController::getKeyswitchInfo.
@@ -10627,42 +10628,42 @@ internal static partial class LibVst
         /// see KeyswitchTypeID
         /// </summary>
         public LibVst.KeyswitchTypeID typeId;
-
+        
         /// <summary>
         /// name of key switch (e.g. "Accentuation")
         /// </summary>
         public LibVst.String128 title;
-
+        
         /// <summary>
         /// short title (e.g. "Acc")
         /// </summary>
         public LibVst.String128 shortTitle;
-
+        
         /// <summary>
         /// associated main key switch min (value between [0, 127])
         /// </summary>
         public int keyswitchMin;
-
+        
         /// <summary>
         /// associated main key switch max (value between [0, 127])
         /// </summary>
         public int keyswitchMax;
-
+        
         public int keyRemapped;
-
+        
         /// <summary>
         /// id of unit this key switch belongs to (see @ref vst3Units), -1 means no unit used.
         /// </summary>
         public int unitId;
-
+        
         /// <summary>
         /// not yet used (set to 0)
         /// </summary>
         public int flags;
     }
-
+    
     public partial record struct KeyswitchTypeID(uint Value);
-
+    
     /// <summary>
     /// Private plug-in message: Vst::IMessage
     /// </summary>
@@ -10676,9 +10677,9 @@ internal static partial class LibVst
     public unsafe partial struct IMessage : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -10695,7 +10696,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IMessage, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -10709,7 +10710,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IMessage, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -10720,27 +10721,27 @@ internal static partial class LibVst
         {
             return Unsafe.As<IMessage, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Returns the message ID (for example "TextMessage").
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LibVst.FIDString getMessageID()
+        public byte* getMessageID()
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IMessage*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMessage), "getMessageID");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IMessage*, LibVst.FIDString>)Vtbl[3])(__self__);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IMessage*, byte*>)Vtbl[3])(__self__);
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IMessage*, LibVst.FIDString>)Vtbl[3])((LibVst.IMessage*)Unsafe.AsPointer(ref this));
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IMessage*, byte*>)Vtbl[3])((LibVst.IMessage*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// Sets a message ID (for example "TextMessage").
         /// </summary>
@@ -10759,7 +10760,7 @@ internal static partial class LibVst
                 ((delegate*unmanaged[MemberFunction]<LibVst.IMessage*, LibVst.FIDString, void>)Vtbl[4])((LibVst.IMessage*)Unsafe.AsPointer(ref this), id);
             }
         }
-
+        
         /// <summary>
         /// Returns the attribute list associated to the message.
         /// </summary>
@@ -10779,7 +10780,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IMessage*, LibVst.IAttributeList*>)Vtbl[5])((LibVst.IMessage*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IMessage, 0x936F033B, 0xC6C047DB, 0xBB0882F8, 0x13C1E613)
         /// </summary>
@@ -10795,7 +10796,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Connect a component with another one: Vst::IConnectionPoint
     /// </summary>
@@ -10810,11 +10811,11 @@ internal static partial class LibVst
     public unsafe partial struct IConnectionPoint : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         public static int VtblCount => 6;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -10823,7 +10824,7 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IConnectionPoint*, LibVst.IConnectionPoint*, int>)&disconnect_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IConnectionPoint*, LibVst.IMessage*, int>)&notify_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -10840,7 +10841,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IConnectionPoint, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -10854,7 +10855,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IConnectionPoint, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -10865,7 +10866,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IConnectionPoint, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Connects this instance with another connection point.
         /// </summary>
@@ -10886,7 +10887,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IConnectionPoint*, LibVst.IConnectionPoint*, int>)Vtbl[3])((LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this), other);
             }
         }
-
+        
         /// <summary>
         /// Disconnects a given connection point from this.
         /// </summary>
@@ -10907,7 +10908,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IConnectionPoint*, LibVst.IConnectionPoint*, int>)Vtbl[4])((LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this), other);
             }
         }
-
+        
         /// <summary>
         /// Called when a message has been sent from the connection point to this.
         /// </summary>
@@ -10928,7 +10929,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IConnectionPoint*, LibVst.IMessage*, int>)Vtbl[5])((LibVst.IConnectionPoint*)Unsafe.AsPointer(ref this), message);
             }
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -10936,7 +10937,7 @@ internal static partial class LibVst
         /// Connects this instance with another connection point.
         /// </summary>
         private static partial ComResult connect_ToManaged(IConnectionPoint* self, LibVst.IConnectionPoint* other);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int connect_Wrapper(IConnectionPoint* self, LibVst.IConnectionPoint* other)
         {
@@ -10950,7 +10951,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -10963,18 +10964,18 @@ internal static partial class LibVst
                 {
                     return connect_ToManaged(self, other);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Disconnects a given connection point from this.
         /// </summary>
         private static partial ComResult disconnect_ToManaged(IConnectionPoint* self, LibVst.IConnectionPoint* other);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int disconnect_Wrapper(IConnectionPoint* self, LibVst.IConnectionPoint* other)
         {
@@ -10988,7 +10989,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -11001,18 +11002,18 @@ internal static partial class LibVst
                 {
                     return disconnect_ToManaged(self, other);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Called when a message has been sent from the connection point to this.
         /// </summary>
         private static partial ComResult notify_ToManaged(IConnectionPoint* self, LibVst.IMessage* message);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int notify_Wrapper(IConnectionPoint* self, LibVst.IMessage* message)
         {
@@ -11026,7 +11027,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -11039,13 +11040,13 @@ internal static partial class LibVst
                 {
                     return notify_ToManaged(self, message);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IConnectionPoint, 0x70A4156F, 0x6E6E4026, 0x989148BF, 0xAA60D8D1)
         /// </summary>
@@ -11061,7 +11062,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Basic host callback interface: Vst::IHostApplication
     /// </summary>
@@ -11074,9 +11075,9 @@ internal static partial class LibVst
     public unsafe partial struct IHostApplication : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -11093,7 +11094,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IHostApplication, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -11107,7 +11108,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IHostApplication, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -11118,7 +11119,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IHostApplication, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Gets host application name.
         /// </summary>
@@ -11139,7 +11140,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IHostApplication*, LibVst.String128*, int>)Vtbl[3])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), name);
             }
         }
-
+        
         /// <summary>
         /// Creates host object (e.g. Vst::IMessage).
         /// </summary>
@@ -11160,7 +11161,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IHostApplication*, Guid*, Guid*, void**, int>)Vtbl[4])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), cid, _iid, obj);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IHostApplication, 0x58E595CC, 0xDB2D4969, 0x8B6AAF8C, 0x36A664E5)
         /// </summary>
@@ -11176,7 +11177,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// VST 3 to VST 2 Wrapper interface: Vst::IVst3ToVst2Wrapper
     /// </summary>
@@ -11205,7 +11206,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// VST 3 to AU Wrapper interface: Vst::IVst3ToAUWrapper
     /// </summary>
@@ -11234,7 +11235,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// VST 3 to AAX Wrapper interface: Vst::IVst3ToAAXWrapper
     /// </summary>
@@ -11263,7 +11264,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Wrapper MPE Support interface: Vst::IVst3WrapperMPESupport
     /// </summary>
@@ -11278,9 +11279,9 @@ internal static partial class LibVst
     public unsafe partial struct IVst3WrapperMPESupport : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -11297,7 +11298,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IVst3WrapperMPESupport, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -11311,7 +11312,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IVst3WrapperMPESupport, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -11322,7 +11323,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IVst3WrapperMPESupport, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// enable or disable MPE processing
         /// </summary>
@@ -11345,7 +11346,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IVst3WrapperMPESupport*, byte, int>)Vtbl[3])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this), state);
             }
         }
-
+        
         /// <summary>
         /// setup the MPE processing
         /// </summary>
@@ -11370,7 +11371,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IVst3WrapperMPESupport*, int, int, int, int>)Vtbl[4])((LibVst.IVst3WrapperMPESupport*)Unsafe.AsPointer(ref this), masterChannel, memberBeginChannel, memberEndChannel);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IVst3WrapperMPESupport, 0x44149067, 0x42CF4BF9, 0x8800B750, 0xF7359FE3)
         /// </summary>
@@ -11386,7 +11387,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Extended plug-in interface IEditController for Inter-App Audio Preset Management
     /// </summary>
@@ -11398,9 +11399,9 @@ internal static partial class LibVst
     public unsafe partial struct IInterAppAudioPresetManager : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 7;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -11410,7 +11411,7 @@ internal static partial class LibVst
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IInterAppAudioPresetManager*, int>)&loadNextPreset_Wrapper;
             vtbl[6] = (delegate*unmanaged[MemberFunction]<IInterAppAudioPresetManager*, int>)&loadPreviousPreset_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -11418,7 +11419,7 @@ internal static partial class LibVst
         /// Open the Preset Browser in order to load a preset
         /// </summary>
         private static partial ComResult runLoadPresetBrowser_ToManaged(IInterAppAudioPresetManager* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int runLoadPresetBrowser_Wrapper(IInterAppAudioPresetManager* self)
         {
@@ -11432,7 +11433,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -11445,18 +11446,18 @@ internal static partial class LibVst
                 {
                     return runLoadPresetBrowser_ToManaged(self);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Open the Preset Browser in order to save a preset
         /// </summary>
         private static partial ComResult runSavePresetBrowser_ToManaged(IInterAppAudioPresetManager* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int runSavePresetBrowser_Wrapper(IInterAppAudioPresetManager* self)
         {
@@ -11470,7 +11471,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -11483,18 +11484,18 @@ internal static partial class LibVst
                 {
                     return runSavePresetBrowser_ToManaged(self);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Load the next available preset
         /// </summary>
         private static partial ComResult loadNextPreset_ToManaged(IInterAppAudioPresetManager* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int loadNextPreset_Wrapper(IInterAppAudioPresetManager* self)
         {
@@ -11508,7 +11509,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -11521,18 +11522,18 @@ internal static partial class LibVst
                 {
                     return loadNextPreset_ToManaged(self);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Load the previous available preset
         /// </summary>
         private static partial ComResult loadPreviousPreset_ToManaged(IInterAppAudioPresetManager* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int loadPreviousPreset_Wrapper(IInterAppAudioPresetManager* self)
         {
@@ -11546,7 +11547,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -11559,13 +11560,13 @@ internal static partial class LibVst
                 {
                     return loadPreviousPreset_ToManaged(self);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IInterAppAudioPresetManager, 0xADE6FCC4, 0x46C94E1D, 0xB3B49A80, 0xC93FEFDD)
         /// </summary>
@@ -11581,7 +11582,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Inter-App Audio host Interface.
     /// </summary>
@@ -11594,9 +11595,9 @@ internal static partial class LibVst
     public unsafe partial struct IInterAppAudioHost : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -11613,7 +11614,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IInterAppAudioHost, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -11627,7 +11628,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IInterAppAudioHost, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -11638,7 +11639,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IInterAppAudioHost, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// get the size of the screen
         /// </summary>
@@ -11662,7 +11663,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioHost*, LibVst.ViewRect*, float*, int>)Vtbl[3])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), size, scale);
             }
         }
-
+        
         /// <summary>
         /// get status of connection
         /// </summary>
@@ -11684,7 +11685,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioHost*, int>)Vtbl[4])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// switch to the host.
         /// </summary>
@@ -11706,7 +11707,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioHost*, int>)Vtbl[5])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// send a remote control event to the host
         /// </summary>
@@ -11729,7 +11730,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioHost*, uint, int>)Vtbl[6])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), @event);
             }
         }
-
+        
         /// <summary>
         /// ask for the host icon.
         /// </summary>
@@ -11752,7 +11753,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioHost*, void**, int>)Vtbl[7])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), icon);
             }
         }
-
+        
         /// <summary>
         /// schedule an event from the user interface thread
         /// </summary>
@@ -11775,7 +11776,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioHost*, LibVst.Event*, int>)Vtbl[8])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), @event);
             }
         }
-
+        
         /// <summary>
         /// get the preset manager
         /// </summary>
@@ -11797,7 +11798,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioHost*, Guid*, LibVst.IInterAppAudioPresetManager*>)Vtbl[9])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this), cid);
             }
         }
-
+        
         /// <summary>
         /// show the settings view
         /// currently includes MIDI settings and Tempo setting
@@ -11820,7 +11821,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioHost*, int>)Vtbl[10])((LibVst.IInterAppAudioHost*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IInterAppAudioHost, 0x0CE5743D, 0x68DF415E, 0xAE285BD4, 0xE2CDC8FD)
         /// </summary>
@@ -11836,7 +11837,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Extended plug-in interface IEditController for Inter-App Audio connection state change notifications
     /// </summary>
@@ -11848,16 +11849,16 @@ internal static partial class LibVst
     public unsafe partial struct IInterAppAudioConnectionNotification : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IInterAppAudioConnectionNotification*, byte, void>)&onInterAppAudioConnectionStateChange_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -11866,7 +11867,7 @@ internal static partial class LibVst
         /// </summary>
         /// <param name="newState">true if an Inter-App Audio connection is established, otherwise false</param>
         private static partial void onInterAppAudioConnectionStateChange_ToManaged(IInterAppAudioConnectionNotification* self, byte newState);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static void onInterAppAudioConnectionStateChange_Wrapper(IInterAppAudioConnectionNotification* self, byte newState)
         {
@@ -11897,7 +11898,7 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IInterAppAudioConnectionNotification, 0x6020C72D, 0x5FC24AA1, 0xB0950DB5, 0xD7D6D5CF)
         /// </summary>
@@ -11913,7 +11914,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// MIDI Learn interface: Vst::IMidiLearn
     /// </summary>
@@ -11935,7 +11936,7 @@ internal static partial class LibVst
     /// 	tresult PLUGIN_API onLiveMIDIControllerInput (int32 busIndex, int16 channel,
     /// 												  CtrlNumber midiCC) SMTG_OVERRIDE;
     /// 	// ...
-    ///
+    /// 
     /// 	OBJ_METHODS (MyController, Vst::EditController)
     /// 	DEFINE_INTERFACES
     /// 		// ...
@@ -11943,29 +11944,29 @@ internal static partial class LibVst
     /// 	END_DEFINE_INTERFACES (Vst::EditController)
     /// 	//...
     /// }
-    ///
+    /// 
     /// //------------------------------------------------
     /// // in mycontroller.cpp
     /// #include "pluginterfaces/vst/ivstmidilearn.h
-    ///
+    /// 
     /// namespace Steinberg {
     /// 	namespace Vst {
     /// 		DEF_CLASS_IID (IMidiLearn)
     /// 	}
     /// }
-    ///
+    /// 
     /// //------------------------------------------------------------------------
-    /// tresult PLUGIN_API MyController::onLiveMIDIControllerInput (int32 busIndex,
+    /// tresult PLUGIN_API MyController::onLiveMIDIControllerInput (int32 busIndex, 
     /// 							int16 channel, CtrlNumber midiCC)
     /// {
-    /// 	// if we are not in doMIDILearn (triggered by a UI button for example)
+    /// 	// if we are not in doMIDILearn (triggered by a UI button for example) 
     /// 	// or wrong channel then return
     /// 	if (!doMIDILearn || busIndex != 0 || channel != 0 || midiLearnParamID == InvalidParamID)
     /// 		return kResultFalse;
-    ///
+    /// 
     /// 	// adapt our internal MIDICC -&gt; parameterID mapping
     /// 	midiCCMapping[midiCC] = midiLearnParamID;
-    ///
+    /// 
     /// 	// new mapping then inform the host that our MIDI assignment has changed
     /// 	if (auto componentHandler = getComponentHandler ())
     /// 	{
@@ -11978,16 +11979,16 @@ internal static partial class LibVst
     public unsafe partial struct IMidiLearn : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiLearn*, int, short, LibVst.CtrlNumber, int>)&onLiveMIDIControllerInput_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -11995,7 +11996,7 @@ internal static partial class LibVst
         /// Called on live input MIDI-CC change associated to a given bus index and MIDI channel
         /// </summary>
         private static partial ComResult onLiveMIDIControllerInput_ToManaged(IMidiLearn* self, int busIndex, short channel, LibVst.CtrlNumber midiCC);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int onLiveMIDIControllerInput_Wrapper(IMidiLearn* self, int busIndex, short channel, LibVst.CtrlNumber midiCC)
         {
@@ -12009,7 +12010,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -12022,13 +12023,13 @@ internal static partial class LibVst
                 {
                     return onLiveMIDIControllerInput_ToManaged(self, busIndex, channel, midiCC);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IMidiLearn, 0x6B2449CC, 0x419740B5, 0xAB3C79DA, 0xC5FE5C86)
         /// </summary>
@@ -12044,7 +12045,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Edit controller component interface extension: Vst::IParameterFunctionName
     /// </summary>
@@ -12060,7 +12061,7 @@ internal static partial class LibVst
     /// //------------------------------------------------------------------------
     /// // here an example of how a VST3 plug-in could support this IParameterFunctionName interface.
     /// // we need to define somewhere the iids:
-    ///
+    /// 
     /// in MyController class declaration
     /// class MyController : public Vst::EditController, public Vst::IParameterFunctionName
     /// {
@@ -12068,7 +12069,7 @@ internal static partial class LibVst
     ///     tresult PLUGIN_API getParameterIDFromFunctionName (UnitID unitID, FIDString functionName,
     ///                                                     Vst::ParamID&amp; paramID) override;
     ///     ...
-    ///
+    /// 
     ///     OBJ_METHODS (MyController, Vst::EditController)
     ///     DEFINE_INTERFACES
     ///         ...
@@ -12077,28 +12078,28 @@ internal static partial class LibVst
     ///     DELEGATE_REFCOUNT (Vst::EditController)
     ///     ...
     /// }
-    ///
+    /// 
     /// #include "ivstparameterfunctionname.h"
     /// namespace Steinberg {
     ///     namespace Vst {
     ///         DEF_CLASS_IID (IParameterFunctionName)
     ///     }
     /// }
-    ///
+    /// 
     /// //------------------------------------------------------------------------
     /// tresult PLUGIN_API MyController::getParameterIDFromFunctionName (UnitID unitID, FIDString
     /// functionName, Vst::ParamID&amp; paramID)
     /// {
     ///     using namespace Vst;
-    ///
+    /// 
     ///     paramID = kNoParamId;
-    ///
+    /// 
     ///     if (unitID == kRootUnitId &amp;&amp; FIDStringsEqual (functionName, kCompGainReduction))
     ///         paramID = kMyGainReductionId;
-    ///
+    /// 
     ///     return (paramID != kNoParamId) ? kResultOk : kResultFalse;
     /// }
-    ///
+    /// 
     /// //--- a host implementation example: --------------------
     /// ...
     /// FUnknownPtr&lt;Vst::IParameterFunctionName&gt; functionName (mEditController-&gt;getIEditController ());
@@ -12119,16 +12120,16 @@ internal static partial class LibVst
     public unsafe partial struct IParameterFunctionName : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IParameterFunctionName*, LibVst.UnitID, LibVst.FIDString, LibVst.ParamID*, int>)&getParameterIDFromFunctionName_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -12137,7 +12138,7 @@ internal static partial class LibVst
         /// Returns kResultFalse when no found parameter (paramID is set to kNoParamId in this case).
         /// </summary>
         private static partial ComResult getParameterIDFromFunctionName_ToManaged(IParameterFunctionName* self, LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getParameterIDFromFunctionName_Wrapper(IParameterFunctionName* self, LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID)
         {
@@ -12151,7 +12152,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -12164,13 +12165,13 @@ internal static partial class LibVst
                 {
                     return getParameterIDFromFunctionName_ToManaged(self, unitID, functionName, paramID);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IParameterFunctionName, 0x6D21E1DC, 0x91199D4B, 0xA2A02FEF, 0x6C1AE55C)
         /// </summary>
@@ -12186,7 +12187,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Extended plug-in interface IEditController for note expression event support: Vst::INoteExpressionPhysicalUIMapping
     /// </summary>
@@ -12201,7 +12202,7 @@ internal static partial class LibVst
     /// //------------------------------------------------------------------------
     /// // here an example of how a VST3 plug-in could support this INoteExpressionPhysicalUIMapping interface.
     /// // we need to define somewhere the iids:
-    ///
+    /// 
     /// //in MyController class declaration
     /// class MyController : public Vst::EditController, public Vst::INoteExpressionPhysicalUIMapping
     /// {
@@ -12209,7 +12210,7 @@ internal static partial class LibVst
     /// 	//--- INoteExpressionPhysicalUIMapping ---------------------------------
     /// 	tresult PLUGIN_API getPhysicalUIMapping (int32 busIndex, int16 channel, PhysicalUIMapList&amp; list) SMTG_OVERRIDE;
     /// 	// ...
-    ///
+    /// 
     /// 	OBJ_METHODS (MyController, Vst::EditController)
     /// 	DEFINE_INTERFACES
     /// 		// ...
@@ -12217,10 +12218,10 @@ internal static partial class LibVst
     /// 	END_DEFINE_INTERFACES (Vst::EditController)
     /// 	//...
     /// }
-    ///
+    /// 
     /// // In mycontroller.cpp
     /// #include "pluginterfaces/vst/ivstnoteexpression.h"
-    ///
+    /// 
     /// namespace Steinberg {
     /// 	namespace Vst {
     /// 		DEF_CLASS_IID (INoteExpressionPhysicalUIMapping)
@@ -12248,16 +12249,16 @@ internal static partial class LibVst
     public unsafe partial struct INoteExpressionPhysicalUIMapping : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<INoteExpressionPhysicalUIMapping*, int, short, LibVst.PhysicalUIMapList*, int>)&getPhysicalUIMapping_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -12266,7 +12267,7 @@ internal static partial class LibVst
         /// and channel.
         /// </summary>
         private static partial ComResult getPhysicalUIMapping_ToManaged(INoteExpressionPhysicalUIMapping* self, int busIndex, short channel, LibVst.PhysicalUIMapList* list);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getPhysicalUIMapping_Wrapper(INoteExpressionPhysicalUIMapping* self, int busIndex, short channel, LibVst.PhysicalUIMapList* list)
         {
@@ -12280,7 +12281,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -12293,13 +12294,13 @@ internal static partial class LibVst
                 {
                     return getPhysicalUIMapping_ToManaged(self, busIndex, channel, list);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (INoteExpressionPhysicalUIMapping, 0xB03078FF, 0x94D24AC8, 0x90CCD303, 0xD4133324)
         /// </summary>
@@ -12315,7 +12316,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// PhysicalUIMapList describes a list of PhysicalUIMap
     /// </summary>
@@ -12327,13 +12328,13 @@ internal static partial class LibVst
         /// Count of entries in the map array, set by the caller of getPhysicalUIMapping.
         /// </summary>
         public uint count;
-
+        
         /// <summary>
         /// Pointer to a list of PhysicalUIMap containing count entries.
         /// </summary>
         public LibVst.PhysicalUIMap* map;
     }
-
+    
     /// <summary>
     /// PhysicalUIMap describes a mapping of a noteExpression Type to a Physical UI Type.
     /// It is used in PhysicalUIMapList.
@@ -12347,7 +12348,7 @@ internal static partial class LibVst
         /// getPhysicalUIMapping
         /// </summary>
         public LibVst.PhysicalUITypeID physicalUITypeID;
-
+        
         /// <summary>
         /// This represents the associated noteExpression TypeID to the given physicalUITypeID. This
         /// will be filled by the plug-in in the call getPhysicalUIMapping, set it to kInvalidTypeID if
@@ -12355,9 +12356,9 @@ internal static partial class LibVst
         /// </summary>
         public LibVst.NoteExpressionTypeID noteExpressionTypeID;
     }
-
+    
     public partial record struct PhysicalUITypeID(uint Value);
-
+    
     /// <summary>
     /// Host callback interface for an edit controller: Vst::IPlugInterfaceSupport
     /// </summary>
@@ -12384,9 +12385,9 @@ internal static partial class LibVst
     public unsafe partial struct IPlugInterfaceSupport : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -12403,7 +12404,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IPlugInterfaceSupport, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -12417,7 +12418,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IPlugInterfaceSupport, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -12428,7 +12429,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IPlugInterfaceSupport, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Returns kResultTrue if the associated interface to the given _iid is supported/used by the host.
         /// </summary>
@@ -12449,7 +12450,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugInterfaceSupport*, Guid*, int>)Vtbl[3])((LibVst.IPlugInterfaceSupport*)Unsafe.AsPointer(ref this), _iid);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPlugInterfaceSupport, 0x4FB58B9E, 0x9EAA4E0F, 0xAB361C1C, 0xCCB56FEA)
         /// </summary>
@@ -12465,7 +12466,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// IParameterFinder Interface
     /// Extension for IPlugView to find view parameters (lookup value under mouse support): Vst::IParameterFinder
@@ -12480,16 +12481,16 @@ internal static partial class LibVst
     public unsafe partial struct IParameterFinder : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IParameterFinder*, int, int, LibVst.ParamID*, int>)&findParameter_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -12497,7 +12498,7 @@ internal static partial class LibVst
         /// Find out which parameter in plug-in view is at given position (relative to plug-in view).
         /// </summary>
         private static partial ComResult findParameter_ToManaged(IParameterFinder* self, int xPos, int yPos, LibVst.ParamID* resultTag);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int findParameter_Wrapper(IParameterFinder* self, int xPos, int yPos, LibVst.ParamID* resultTag)
         {
@@ -12511,7 +12512,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -12524,13 +12525,13 @@ internal static partial class LibVst
                 {
                     return findParameter_ToManaged(self, xPos, yPos, resultTag);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IParameterFinder, 0x0F618302, 0x215D4587, 0xA512073C, 0x77B9D383)
         /// </summary>
@@ -12546,7 +12547,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// IPrefetchableSupport Interface
     /// Indicates that the plug-in could or not support Prefetch (dynamically): Vst::IPrefetchableSupport
@@ -12562,7 +12563,7 @@ internal static partial class LibVst
     /// tresult PLUGIN_API myPlug::getPrefetchableSupport (PrefetchableSupport&amp; prefetchable)
     /// {
     /// 	prefetchable = kIsNeverPrefetchable;
-    ///
+    /// 
     /// 	switch (myPrefetchableMode)
     /// 	{
     /// 		case 0: prefetchable = kIsNeverPrefetchable; break;
@@ -12576,16 +12577,16 @@ internal static partial class LibVst
     public unsafe partial struct IPrefetchableSupport : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IPrefetchableSupport*, LibVst.PrefetchableSupport*, int>)&getPrefetchableSupport_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -12594,7 +12595,7 @@ internal static partial class LibVst
         /// (kPrefetchableSupportChanged) to inform the host that this support has changed.
         /// </summary>
         private static partial ComResult getPrefetchableSupport_ToManaged(IPrefetchableSupport* self, LibVst.PrefetchableSupport* prefetchable);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getPrefetchableSupport_Wrapper(IPrefetchableSupport* self, LibVst.PrefetchableSupport* prefetchable)
         {
@@ -12608,7 +12609,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -12621,13 +12622,13 @@ internal static partial class LibVst
                 {
                     return getPrefetchableSupport_ToManaged(self, prefetchable);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPrefetchableSupport, 0x8AE54FDA, 0xE93046B9, 0xA28555BC, 0xDC98E21E)
         /// </summary>
@@ -12643,9 +12644,9 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public partial record struct PrefetchableSupport(uint Value);
-
+    
     /// <summary>
     /// Extended plug-in interface IEditController for a component: Vst::IXmlRepresentationController
     /// </summary>
@@ -12659,7 +12660,7 @@ internal static partial class LibVst
     /// - A layer is associated to a plug-in parameter using the ParameterID as identifier:
     /// - it could be a knob with a display for title and/or value, this display uses the same parameterId, but it could an another one.
     /// - switch
-    /// - link which allows to jump directly to a subpage (another page)
+    /// - link which allows to jump directly to a subpage (another page) 
     /// - more... See Vst::LayerType
     /// .@n This representation is implemented as XML text following the Document Type Definition (DTD): http://dtd.steinberg.net/VST-Remote-1.1.dtd ExampleHere an example of what should be passed in the stream of getXmlRepresentationStream:@code &lt;?xml version="1.0" encoding="utf-8"?&gt;
     /// &lt;!DOCTYPE vstXML PUBLIC "-//Steinberg//DTD VST Remote 1.1//EN" "http://dtd.steinberg.net/VST-Remote-1.1.dtd"&gt;
@@ -12667,9 +12668,9 @@ internal static partial class LibVst
     /// 	&lt;plugin classID="341FC5898AAA46A7A506BC0799E882AE" name="Chorus" vendor="Steinberg Media Technologies" /&gt;
     /// 	&lt;originator&gt;My name&lt;/originator&gt;
     /// 	&lt;date&gt;2010-12-31&lt;/date&gt;
-    /// 	&lt;comment&gt;This is an example for 4 Cells per Page for the Remote named ProductRemote
+    /// 	&lt;comment&gt;This is an example for 4 Cells per Page for the Remote named ProductRemote 
     /// 	         from company HardwareCompany.&lt;/comment&gt;
-    ///
+    /// 
     /// 	&lt;!-- ===================================== --&gt;
     /// 	&lt;representation name="ProductRemote" vendor="HardwareCompany" version="1.0"&gt;
     /// 		&lt;page name="Root"&gt;
@@ -12740,16 +12741,16 @@ internal static partial class LibVst
     public unsafe partial struct IXmlRepresentationController : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IXmlRepresentationController*, LibVst.RepresentationInfo*, LibVst.IBStream*, int>)&getXmlRepresentationStream_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -12757,7 +12758,7 @@ internal static partial class LibVst
         /// Retrieves a stream containing a XmlRepresentation for a wanted representation info
         /// </summary>
         private static partial ComResult getXmlRepresentationStream_ToManaged(IXmlRepresentationController* self, LibVst.RepresentationInfo* info, LibVst.IBStream* stream);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getXmlRepresentationStream_Wrapper(IXmlRepresentationController* self, LibVst.RepresentationInfo* info, LibVst.IBStream* stream)
         {
@@ -12771,7 +12772,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -12784,13 +12785,13 @@ internal static partial class LibVst
                 {
                     return getXmlRepresentationStream_ToManaged(self, info, stream);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IXmlRepresentationController, 0xA81A0471, 0x48C34DC4, 0xAC30C9E1, 0x3C8393D5)
         /// </summary>
@@ -12806,7 +12807,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// RepresentationInfo is the structure describing a representation
     /// This structure is used in the function
@@ -12820,23 +12821,23 @@ internal static partial class LibVst
         /// Vendor name of the associated representation (remote) (eg. "Yamaha").
         /// </summary>
         public fixed byte vendor[64];
-
+        
         /// <summary>
         /// Representation (remote) Name (eg. "O2").
         /// </summary>
         public fixed byte name[64];
-
+        
         /// <summary>
         /// Version of this "Remote" (eg. "1.0").
         /// </summary>
         public fixed byte version[64];
-
+        
         /// <summary>
         /// Optional: used if the representation is for a given host only (eg. "Nuendo").
         /// </summary>
         public fixed byte host[64];
     }
-
+    
     /// <summary>
     /// Test Helper.
     /// </summary>
@@ -12848,11 +12849,11 @@ internal static partial class LibVst
     public unsafe partial struct ITestPlugProvider : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         public static int VtblCount => 8;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -12863,7 +12864,7 @@ internal static partial class LibVst
             vtbl[6] = (delegate*unmanaged[MemberFunction]<ITestPlugProvider*, LibVst.IStringResult*, int>)&getSubCategories_Wrapper;
             vtbl[7] = (delegate*unmanaged[MemberFunction]<ITestPlugProvider*, LibVst.FUID*, int>)&getComponentUID_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -12880,7 +12881,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ITestPlugProvider, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -12894,7 +12895,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ITestPlugProvider, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -12905,7 +12906,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ITestPlugProvider, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// get the component of the plug-in.
         /// </summary>
@@ -12929,7 +12930,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.ITestPlugProvider*, LibVst.IComponent*>)Vtbl[3])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// get the controller of the plug-in.
         /// </summary>
@@ -12953,7 +12954,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.ITestPlugProvider*, LibVst.IEditController*>)Vtbl[4])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// release the component and/or controller
         /// </summary>
@@ -12974,7 +12975,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.ITestPlugProvider*, LibVst.IComponent*, LibVst.IEditController*, int>)Vtbl[5])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this), component, controller);
             }
         }
-
+        
         /// <summary>
         /// get the sub categories of the plug-in
         /// </summary>
@@ -12995,7 +12996,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.ITestPlugProvider*, LibVst.IStringResult*, int>)Vtbl[6])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this), result);
             }
         }
-
+        
         /// <summary>
         /// get the component UID of the plug-in
         /// </summary>
@@ -13016,7 +13017,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.ITestPlugProvider*, LibVst.FUID*, int>)Vtbl[7])((LibVst.ITestPlugProvider*)Unsafe.AsPointer(ref this), uid);
             }
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -13028,7 +13029,7 @@ internal static partial class LibVst
         /// releasePlugIn when done with the component.
         /// </remarks>
         private static partial LibVst.IComponent* getComponent_ToManaged(ITestPlugProvider* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IComponent* getComponent_Wrapper(ITestPlugProvider* self)
         {
@@ -13061,7 +13062,7 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// get the controller of the plug-in.
         /// </summary>
@@ -13070,7 +13071,7 @@ internal static partial class LibVst
         /// releasePlugIn when done with the controller.
         /// </remarks>
         private static partial LibVst.IEditController* getController_ToManaged(ITestPlugProvider* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IEditController* getController_Wrapper(ITestPlugProvider* self)
         {
@@ -13103,12 +13104,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// release the component and/or controller
         /// </summary>
         private static partial ComResult releasePlugIn_ToManaged(ITestPlugProvider* self, LibVst.IComponent* component, LibVst.IEditController* controller);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int releasePlugIn_Wrapper(ITestPlugProvider* self, LibVst.IComponent* component, LibVst.IEditController* controller)
         {
@@ -13122,7 +13123,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -13135,18 +13136,18 @@ internal static partial class LibVst
                 {
                     return releasePlugIn_ToManaged(self, component, controller);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// get the sub categories of the plug-in
         /// </summary>
         private static partial ComResult getSubCategories_ToManaged(ITestPlugProvider* self, LibVst.IStringResult* result);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getSubCategories_Wrapper(ITestPlugProvider* self, LibVst.IStringResult* result)
         {
@@ -13160,7 +13161,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -13173,18 +13174,18 @@ internal static partial class LibVst
                 {
                     return getSubCategories_ToManaged(self, result);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// get the component UID of the plug-in
         /// </summary>
         private static partial ComResult getComponentUID_ToManaged(ITestPlugProvider* self, LibVst.FUID* uid);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getComponentUID_Wrapper(ITestPlugProvider* self, LibVst.FUID* uid)
         {
@@ -13198,7 +13199,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -13211,13 +13212,13 @@ internal static partial class LibVst
                 {
                     return getComponentUID_ToManaged(self, uid);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (ITestPlugProvider, 0x86BE70EE, 0x4E99430F, 0x978F1E6E, 0xD68FB5BA)
         /// </summary>
@@ -13233,7 +13234,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Handling 16 Byte Globally Unique Identifiers.
     /// </summary>
@@ -13245,34 +13246,34 @@ internal static partial class LibVst
     public unsafe partial struct FUID
     {
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public Guid data;
-
+        
         public enum UIDPrintStyle
         {
             /// <summary>
             /// "INLINE_UID (0x00000000, 0x00000000, 0x00000000, 0x00000000)"
             /// </summary>
             kINLINE_UID,
-
+            
             /// <summary>
             /// "DECLARE_UID (0x00000000, 0x00000000, 0x00000000, 0x00000000)"
             /// </summary>
             kDECLARE_UID,
-
+            
             /// <summary>
             /// "FUID (0x00000000, 0x00000000, 0x00000000, 0x00000000)"
             /// </summary>
             kFUID,
-
+            
             /// <summary>
             /// "DECLARE_CLASS_IID (Interface, 0x00000000, 0x00000000, 0x00000000, 0x00000000)"
             /// </summary>
             kCLASS_UID,
         }
     }
-
+    
     /// <summary>
     /// Test Helper extension.
     /// </summary>
@@ -13282,18 +13283,18 @@ internal static partial class LibVst
     public unsafe partial struct ITestPlugProvider2 : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         public static int VtblCount => 9;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             ITestPlugProvider.InitializeVtbl(vtbl);
             vtbl[8] = (delegate*unmanaged[MemberFunction]<ITestPlugProvider2*, LibVst.IPluginFactory*>)&getPluginFactory_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -13310,7 +13311,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ITestPlugProvider2, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -13324,7 +13325,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ITestPlugProvider2, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -13335,7 +13336,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ITestPlugProvider2, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// get the component of the plug-in.
         /// </summary>
@@ -13349,7 +13350,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ITestPlugProvider2, ITestPlugProvider>(ref this).getComponent();
         }
-
+        
         /// <summary>
         /// get the controller of the plug-in.
         /// </summary>
@@ -13363,7 +13364,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ITestPlugProvider2, ITestPlugProvider>(ref this).getController();
         }
-
+        
         /// <summary>
         /// release the component and/or controller
         /// </summary>
@@ -13373,7 +13374,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ITestPlugProvider2, ITestPlugProvider>(ref this).releasePlugIn(component, controller);
         }
-
+        
         /// <summary>
         /// get the sub categories of the plug-in
         /// </summary>
@@ -13383,7 +13384,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ITestPlugProvider2, ITestPlugProvider>(ref this).getSubCategories(result);
         }
-
+        
         /// <summary>
         /// get the component UID of the plug-in
         /// </summary>
@@ -13393,7 +13394,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<ITestPlugProvider2, ITestPlugProvider>(ref this).getComponentUID(uid);
         }
-
+        
         /// <summary>
         /// get the plugin factory.
         /// </summary>
@@ -13417,7 +13418,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.ITestPlugProvider2*, LibVst.IPluginFactory*>)Vtbl[8])((LibVst.ITestPlugProvider2*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -13429,7 +13430,7 @@ internal static partial class LibVst
         /// function.
         /// </remarks>
         private static partial LibVst.IPluginFactory* getPluginFactory_ToManaged(ITestPlugProvider2* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.IPluginFactory* getPluginFactory_Wrapper(ITestPlugProvider2* self)
         {
@@ -13462,7 +13463,7 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (ITestPlugProvider2, 0xC7C75364, 0x7B8343AC, 0xA4495B0A, 0x3E5A46C7)
         /// </summary>
@@ -13478,13 +13479,12 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Host callback for unit support: Vst::IUnitHandler
     /// </summary>
     /// <remarks>
-    ///  vstIHost vst300
-    /// - [host imp]
+    ///  vstIHost vst300- [host imp]
     /// - [extends IComponentHandler]
     /// - [released: 3.0.0]
     /// - [optional]Host callback interface, used with IUnitInfo.
@@ -13494,9 +13494,9 @@ internal static partial class LibVst
     public unsafe partial struct IUnitHandler : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -13513,7 +13513,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IUnitHandler, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -13527,7 +13527,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IUnitHandler, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -13538,7 +13538,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IUnitHandler, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Notify host when a module is selected in plug-in GUI.
         /// </summary>
@@ -13559,7 +13559,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitHandler*, LibVst.UnitID, int>)Vtbl[3])((LibVst.IUnitHandler*)Unsafe.AsPointer(ref this), unitId);
             }
         }
-
+        
         /// <summary>
         /// Tell host that the plug-in controller changed a program list (rename, load, PitchName changes).
         /// </summary>
@@ -13582,7 +13582,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitHandler*, LibVst.ProgramListID, int, int>)Vtbl[4])((LibVst.IUnitHandler*)Unsafe.AsPointer(ref this), listId, programIndex);
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IUnitHandler, 0x4B5147F8, 0x4654486B, 0x8DAB30BA, 0x163A3C56)
         /// </summary>
@@ -13598,9 +13598,9 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     public partial record struct ProgramListID(int Value);
-
+    
     /// <summary>
     /// Host callback for extended unit support: Vst::IUnitHandler2
     /// </summary>
@@ -13617,9 +13617,9 @@ internal static partial class LibVst
     public unsafe partial struct IUnitHandler2 : INativeGuid
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public void** Vtbl;
-
+        
         // --------------------------------------------------------------
         // RCW methods
         // --------------------------------------------------------------
@@ -13636,7 +13636,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IUnitHandler2, FUnknown>(ref this).queryInterface(_iid, obj);
         }
-
+        
         /// <summary>
         /// Adds a reference and returns the new reference count.
         /// </summary>
@@ -13650,7 +13650,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IUnitHandler2, FUnknown>(ref this).addRef();
         }
-
+        
         /// <summary>
         /// Releases a reference and returns the new reference count.
         /// If the reference count reaches zero, the object will be destroyed in memory.
@@ -13661,7 +13661,7 @@ internal static partial class LibVst
         {
             return Unsafe.As<IUnitHandler2, FUnknown>(ref this).release();
         }
-
+        
         /// <summary>
         /// Tell host that assignment Unit-Bus defined by IUnitInfo::getUnitByBus has changed.
         /// </summary>
@@ -13682,7 +13682,7 @@ internal static partial class LibVst
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitHandler2*, int>)Vtbl[3])((LibVst.IUnitHandler2*)Unsafe.AsPointer(ref this));
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IUnitHandler2, 0xF89F8CDF, 0x699E4BA5, 0x96AAC9A4, 0x81452B01)
         /// </summary>
@@ -13698,7 +13698,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Edit controller extension to describe the plug-in structure: Vst::IUnitInfo
     /// </summary>
@@ -13716,9 +13716,9 @@ internal static partial class LibVst
     public unsafe partial struct IUnitInfo : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 15;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -13736,7 +13736,7 @@ internal static partial class LibVst
             vtbl[13] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.MediaType, LibVst.BusDirection, int, int, LibVst.UnitID*, int>)&getUnitByBus_Wrapper;
             vtbl[14] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int, LibVst.IBStream*, int>)&setUnitProgramData_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -13744,7 +13744,7 @@ internal static partial class LibVst
         /// Returns the flat count of units.
         /// </summary>
         private static partial int getUnitCount_ToManaged(IUnitInfo* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getUnitCount_Wrapper(IUnitInfo* self)
         {
@@ -13777,12 +13777,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets UnitInfo for a given index in the flat list of unit.
         /// </summary>
         private static partial ComResult getUnitInfo_ToManaged(IUnitInfo* self, int unitIndex, LibVst.UnitInfo* info);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getUnitInfo_Wrapper(IUnitInfo* self, int unitIndex, LibVst.UnitInfo* info)
         {
@@ -13796,7 +13796,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -13809,13 +13809,13 @@ internal static partial class LibVst
                 {
                     return getUnitInfo_ToManaged(self, unitIndex, info);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Component intern program structure.
         /// </summary>
@@ -13823,7 +13823,7 @@ internal static partial class LibVst
         /// Gets the count of Program List.
         /// </remarks>
         private static partial int getProgramListCount_ToManaged(IUnitInfo* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramListCount_Wrapper(IUnitInfo* self)
         {
@@ -13856,12 +13856,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets for a given index the Program List Info.
         /// </summary>
         private static partial ComResult getProgramListInfo_ToManaged(IUnitInfo* self, int listIndex, LibVst.ProgramListInfo* info);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramListInfo_Wrapper(IUnitInfo* self, int listIndex, LibVst.ProgramListInfo* info)
         {
@@ -13875,7 +13875,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -13888,18 +13888,18 @@ internal static partial class LibVst
                 {
                     return getProgramListInfo_ToManaged(self, listIndex, info);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets for a given program list ID and program index its program name.
         /// </summary>
         private static partial ComResult getProgramName_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.String128* name);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramName_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.String128* name)
         {
@@ -13913,7 +13913,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -13926,18 +13926,18 @@ internal static partial class LibVst
                 {
                     return getProgramName_ToManaged(self, listId, programIndex, name);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets for a given program list ID, program index and attributeId the associated attribute value.
         /// </summary>
         private static partial ComResult getProgramInfo_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramInfo_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue)
         {
@@ -13951,7 +13951,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -13964,18 +13964,18 @@ internal static partial class LibVst
                 {
                     return getProgramInfo_ToManaged(self, listId, programIndex, attributeId, attributeValue);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Returns kResultTrue if the given program index of a given program list ID supports PitchNames.
         /// </summary>
         private static partial ComResult hasProgramPitchNames_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int hasProgramPitchNames_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex)
         {
@@ -13989,7 +13989,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -14002,19 +14002,19 @@ internal static partial class LibVst
                 {
                     return hasProgramPitchNames_ToManaged(self, listId, programIndex);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets the PitchName for a given program list ID, program index and pitch.
         /// If PitchNames are changed the plug-in should inform the host with IUnitHandler::notifyProgramListChange.
         /// </summary>
         private static partial ComResult getProgramPitchName_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramPitchName_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name)
         {
@@ -14028,7 +14028,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -14041,19 +14041,19 @@ internal static partial class LibVst
                 {
                     return getProgramPitchName_ToManaged(self, listId, programIndex, midiPitch, name);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// units selection --------------------
         /// Gets the current selected unit.
         /// </summary>
         private static partial LibVst.UnitID getSelectedUnit_ToManaged(IUnitInfo* self);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static LibVst.UnitID getSelectedUnit_Wrapper(IUnitInfo* self)
         {
@@ -14086,12 +14086,12 @@ internal static partial class LibVst
                 }
             }
         }
-
+        
         /// <summary>
         /// Sets a new selected unit.
         /// </summary>
         private static partial ComResult selectUnit_ToManaged(IUnitInfo* self, LibVst.UnitID unitId);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int selectUnit_Wrapper(IUnitInfo* self, LibVst.UnitID unitId)
         {
@@ -14105,7 +14105,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -14118,19 +14118,19 @@ internal static partial class LibVst
                 {
                     return selectUnit_ToManaged(self, unitId);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets the according unit if there is an unambiguous relation between a channel or a bus and a unit.
         /// This method mainly is intended to find out which unit is related to a given MIDI input channel.
         /// </summary>
         private static partial ComResult getUnitByBus_ToManaged(IUnitInfo* self, LibVst.MediaType type, LibVst.BusDirection dir, int busIndex, int channel, LibVst.UnitID* unitId);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getUnitByBus_Wrapper(IUnitInfo* self, LibVst.MediaType type, LibVst.BusDirection dir, int busIndex, int channel, LibVst.UnitID* unitId)
         {
@@ -14144,7 +14144,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -14157,24 +14157,24 @@ internal static partial class LibVst
                 {
                     return getUnitByBus_ToManaged(self, type, dir, busIndex, channel, unitId);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Receives a preset data stream.
         /// - If the component supports program list data (IProgramListData), the destination of the data
         /// stream is the program specified by list-Id and program index (first and second parameter)
         /// - If the component supports unit data (IUnitData), the destination is the unit specified by the first
-        /// parameter - in this case parameter programIndex is
+        /// parameter - in this case parameter programIndex is 
         /// &lt;
         /// 0).
         /// </summary>
         private static partial ComResult setUnitProgramData_ToManaged(IUnitInfo* self, int listOrUnitId, int programIndex, LibVst.IBStream* data);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setUnitProgramData_Wrapper(IUnitInfo* self, int listOrUnitId, int programIndex, LibVst.IBStream* data)
         {
@@ -14188,7 +14188,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -14201,13 +14201,13 @@ internal static partial class LibVst
                 {
                     return setUnitProgramData_ToManaged(self, listOrUnitId, programIndex, data);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IUnitInfo, 0x3D4BD6B5, 0x913A4FD2, 0xA886E768, 0xA5EB92C1)
         /// </summary>
@@ -14223,7 +14223,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Basic Unit Description.
     /// </summary>
@@ -14235,23 +14235,23 @@ internal static partial class LibVst
         /// unit identifier
         /// </summary>
         public LibVst.UnitID id;
-
+        
         /// <summary>
         /// identifier of parent unit (kNoParentUnitId: does not apply, this unit is the root)
         /// </summary>
         public LibVst.UnitID parentUnitId;
-
+        
         /// <summary>
         /// name, optional for the root component, required otherwise
         /// </summary>
         public LibVst.String128 name;
-
+        
         /// <summary>
         /// id of program list used in unit (kNoProgramListId = no programs used in this unit)
         /// </summary>
         public LibVst.ProgramListID programListId;
     }
-
+    
     /// <summary>
     /// Basic Program List Description.
     /// </summary>
@@ -14263,23 +14263,23 @@ internal static partial class LibVst
         /// program list identifier
         /// </summary>
         public LibVst.ProgramListID id;
-
+        
         /// <summary>
         /// name of program list
         /// </summary>
         public LibVst.String128 name;
-
+        
         /// <summary>
         /// number of programs in this list
         /// </summary>
         public int programCount;
     }
-
+    
     public unsafe partial struct CString
     {
         public byte* Value;
     }
-
+    
     /// <summary>
     /// Component extension to access program list data: Vst::IProgramListData
     /// </summary>
@@ -14294,9 +14294,9 @@ internal static partial class LibVst
     public unsafe partial struct IProgramListData : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 6;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -14305,7 +14305,7 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, int>)&getProgramData_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, int>)&setProgramData_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -14313,7 +14313,7 @@ internal static partial class LibVst
         /// Returns kResultTrue if the given Program List ID supports Program Data.
         /// </summary>
         private static partial ComResult programDataSupported_ToManaged(IProgramListData* self, LibVst.ProgramListID listId);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int programDataSupported_Wrapper(IProgramListData* self, LibVst.ProgramListID listId)
         {
@@ -14327,7 +14327,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -14340,18 +14340,18 @@ internal static partial class LibVst
                 {
                     return programDataSupported_ToManaged(self, listId);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets for a given program list ID and program index the program Data.
         /// </summary>
         private static partial ComResult getProgramData_ToManaged(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getProgramData_Wrapper(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
         {
@@ -14365,7 +14365,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -14378,18 +14378,18 @@ internal static partial class LibVst
                 {
                     return getProgramData_ToManaged(self, listId, programIndex, data);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Sets for a given program list ID and program index a program Data.
         /// </summary>
         private static partial ComResult setProgramData_ToManaged(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setProgramData_Wrapper(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
         {
@@ -14403,7 +14403,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -14416,13 +14416,13 @@ internal static partial class LibVst
                 {
                     return setProgramData_ToManaged(self, listId, programIndex, data);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IProgramListData, 0x8683B01F, 0x7B354F70, 0xA2651DEC, 0x353AF4FF)
         /// </summary>
@@ -14438,7 +14438,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Component extension to access unit data: Vst::IUnitData
     /// </summary>
@@ -14453,9 +14453,9 @@ internal static partial class LibVst
     public unsafe partial struct IUnitData : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 6;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
@@ -14464,7 +14464,7 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IUnitData*, LibVst.UnitID, LibVst.IBStream*, int>)&getUnitData_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IUnitData*, LibVst.UnitID, LibVst.IBStream*, int>)&setUnitData_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -14472,7 +14472,7 @@ internal static partial class LibVst
         /// Returns kResultTrue if the specified unit supports export and import of preset data.
         /// </summary>
         private static partial ComResult unitDataSupported_ToManaged(IUnitData* self, LibVst.UnitID unitID);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int unitDataSupported_Wrapper(IUnitData* self, LibVst.UnitID unitID)
         {
@@ -14486,7 +14486,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -14499,18 +14499,18 @@ internal static partial class LibVst
                 {
                     return unitDataSupported_ToManaged(self, unitID);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Gets the preset data for the specified unit.
         /// </summary>
         private static partial ComResult getUnitData_ToManaged(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int getUnitData_Wrapper(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data)
         {
@@ -14524,7 +14524,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -14537,18 +14537,18 @@ internal static partial class LibVst
                 {
                     return getUnitData_ToManaged(self, unitId, data);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// Sets the preset data for the specified unit.
         /// </summary>
         private static partial ComResult setUnitData_ToManaged(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setUnitData_Wrapper(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data)
         {
@@ -14562,7 +14562,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -14575,13 +14575,13 @@ internal static partial class LibVst
                 {
                     return setUnitData_ToManaged(self, unitId, data);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IUnitData, 0x6C389611, 0xD391455D, 0xB870B833, 0x94A0EFDD)
         /// </summary>
@@ -14597,7 +14597,7 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Bus media types
     /// </summary>
@@ -14607,15 +14607,15 @@ internal static partial class LibVst
         /// audio
         /// </summary>
         kAudio = 0,
-
+        
         /// <summary>
         /// events
         /// </summary>
         kEvent,
-
+        
         kNumMediaTypes,
     }
-
+    
     /// <summary>
     /// Bus directions
     /// </summary>
@@ -14625,13 +14625,13 @@ internal static partial class LibVst
         /// input bus
         /// </summary>
         kInput = 0,
-
+        
         /// <summary>
         /// output bus
         /// </summary>
         kOutput,
     }
-
+    
     /// <summary>
     /// Bus types
     /// </summary>
@@ -14641,13 +14641,13 @@ internal static partial class LibVst
         /// main bus
         /// </summary>
         kMain = 0,
-
+        
         /// <summary>
         /// auxiliary bus (sidechain)
         /// </summary>
         kAux,
     }
-
+    
     /// <summary>
     /// I/O modes
     /// </summary>
@@ -14657,18 +14657,18 @@ internal static partial class LibVst
         /// 1:1 Input / Output. Only used for Instruments. See @ref vst3IoMode
         /// </summary>
         kSimple = 0,
-
+        
         /// <summary>
         /// n:m Input / Output. Only used for Instruments.
         /// </summary>
         kAdvanced,
-
+        
         /// <summary>
         /// plug-in used in an offline processing context
         /// </summary>
         kOfflineProcessing,
     }
-
+    
     /// <summary>
     /// Component Flags used as classFlags in PClassInfo2
     /// </summary>
@@ -14678,13 +14678,13 @@ internal static partial class LibVst
         /// Component can be run on remote computer
         /// </summary>
         kDistributable = 1 << 0,
-
+        
         /// <summary>
         /// Component supports simple IO mode (or works in simple mode anyway) see @ref vst3IoMode
         /// </summary>
         kSimpleModeSupported = 1 << 1,
     }
-
+    
     /// <summary>
     /// Symbolic sample size.
     /// </summary>
@@ -14695,13 +14695,13 @@ internal static partial class LibVst
         /// 32-bit precision
         /// </summary>
         kSample32,
-
+        
         /// <summary>
         /// 64-bit precision
         /// </summary>
         kSample64,
     }
-
+    
     /// <summary>
     /// Processing mode informs the plug-in about the context and at which frequency the process call is called.
     /// VST3 defines 3 modes:
@@ -14730,18 +14730,18 @@ internal static partial class LibVst
         /// realtime processing
         /// </summary>
         kRealtime,
-
+        
         /// <summary>
         /// prefetch processing
         /// </summary>
         kPrefetch,
-
+        
         /// <summary>
         /// offline processing
         /// </summary>
         kOffline,
     }
-
+    
     /// <summary>
     /// Flags used for IComponentHandler::restartComponent
     /// </summary>
@@ -14749,11 +14749,11 @@ internal static partial class LibVst
     {
         /// <summary>
         /// The Component should be reloaded
-        /// The host has to unload completely the plug-in (controller/processor) and reload it.
+        /// The host has to unload completely the plug-in (controller/processor) and reload it. 
         /// [SDK 3.0.0]
         /// </summary>
         kReloadComponent = 1 << 0,
-
+        
         /// <summary>
         /// Input / Output Bus configuration has changed
         /// The plug-in informs the host that either the bus configuration or the bus count has changed.
@@ -14762,14 +14762,14 @@ internal static partial class LibVst
         /// [SDK 3.0.0]
         /// </summary>
         kIoChanged = 1 << 1,
-
+        
         /// <summary>
         /// Multiple parameter values have changed  (as result of a program change for example)
         /// The host invalidates all caches of parameter values and asks the edit controller for the current values.
         /// [SDK 3.0.0]
         /// </summary>
         kParamValuesChanged = 1 << 2,
-
+        
         /// <summary>
         /// Latency has changed
         /// The plug informs the host that its latency has changed, getLatencySamples should return the new latency after setActive (true) was called
@@ -14778,24 +14778,24 @@ internal static partial class LibVst
         /// [SDK 3.0.0]
         /// </summary>
         kLatencyChanged = 1 << 3,
-
+        
         /// <summary>
         /// Parameter titles, default values or flags (ParameterFlags) have changed
         /// The host invalidates all caches of parameter infos and asks the edit controller for the current infos.
         /// [SDK 3.0.0]
         /// </summary>
         kParamTitlesChanged = 1 << 4,
-
+        
         /// <summary>
         /// MIDI Controllers and/or Program Changes Assignments have changed
-        /// The plug-in informs the host that its MIDI-CC mapping has changed (for example after a MIDI learn or new loaded preset)
+        /// The plug-in informs the host that its MIDI-CC mapping has changed (for example after a MIDI learn or new loaded preset) 
         /// or if the stepCount or UnitID of a ProgramChange parameter has changed.
         /// The host has to rebuild the MIDI-CC =&gt; parameter mapping (getMidiControllerAssignment)
         /// and reread program changes parameters (stepCount and associated unitID)
         /// [SDK 3.0.1]
         /// </summary>
         kMidiCCAssignmentChanged = 1 << 5,
-
+        
         /// <summary>
         /// Note Expression has changed (info, count, PhysicalUIMapping, ...)
         /// Either the note expression type info, the count of note expressions or the physical UI mapping has changed.
@@ -14804,14 +14804,14 @@ internal static partial class LibVst
         /// [SDK 3.5.0]
         /// </summary>
         kNoteExpressionChanged = 1 << 6,
-
+        
         /// <summary>
         /// Input / Output bus titles have changed
         /// The host invalidates all caches of bus titles and asks the edit controller for the current titles.
         /// [SDK 3.5.0]
         /// </summary>
         kIoTitlesChanged = 1 << 7,
-
+        
         /// <summary>
         /// Prefetch support has changed
         /// The plug-in informs the host that its PrefetchSupport has changed
@@ -14820,7 +14820,7 @@ internal static partial class LibVst
         /// [SDK 3.6.1]
         /// </summary>
         kPrefetchableSupportChanged = 1 << 8,
-
+        
         /// <summary>
         /// RoutingInfo has changed
         /// The plug-in informs the host that its internal routing (relation of an event-input-channel to an audio-output-bus) has changed
@@ -14828,7 +14828,7 @@ internal static partial class LibVst
         /// [SDK 3.6.6]
         /// </summary>
         kRoutingInfoChanged = 1 << 9,
-
+        
         /// <summary>
         /// Key switches has changed (info, count)
         /// Either the Key switches info, the count of Key switches has changed.
@@ -14838,7 +14838,7 @@ internal static partial class LibVst
         /// </summary>
         kKeyswitchChanged = 1 << 10,
     }
-
+    
     /// <summary>
     /// Knob Mode
     /// </summary>
@@ -14848,18 +14848,18 @@ internal static partial class LibVst
         /// Circular with jump to clicked position
         /// </summary>
         kCircularMode = 0,
-
+        
         /// <summary>
         /// Circular without jump to clicked position
         /// </summary>
         kRelativCircularMode,
-
+        
         /// <summary>
         /// Linear: depending on vertical movement
         /// </summary>
         kLinearMode,
     }
-
+    
     /// <summary>
     /// NoteExpressionTypeIDs describes the type of the note expression.
     /// VST predefines some types like volume, pan, tuning by defining their ranges and curves.
@@ -14872,60 +14872,60 @@ internal static partial class LibVst
         /// Volume, plain range [0 = -oo , 0.25 = 0dB, 0.5 = +6dB, 1 = +12dB]: plain = 20 * log (4 * norm)
         /// </summary>
         kVolumeTypeID = 0,
-
+        
         /// <summary>
         /// Panning (L-R), plain range [0 = left, 0.5 = center, 1 = right]
         /// </summary>
         kPanTypeID,
-
+        
         /// <summary>
         /// Tuning, plain range [0 = -120.0 (ten octaves down), 0.5 none, 1 = +120.0 (ten octaves up)]
         /// plain = 240 * (norm - 0.5) and norm = plain / 240 + 0.5
         /// oneOctave is 12.0 / 240.0; oneHalfTune = 1.0 / 240.0;
         /// </summary>
         kTuningTypeID,
-
+        
         /// <summary>
         /// Vibrato
         /// </summary>
         kVibratoTypeID,
-
+        
         /// <summary>
         /// Expression
         /// </summary>
         kExpressionTypeID,
-
+        
         /// <summary>
         /// Brightness
         /// </summary>
         kBrightnessTypeID,
-
+        
         /// <summary>
         /// See NoteExpressionTextEvent
         /// </summary>
         kTextTypeID,
-
+        
         /// <summary>
         /// TODO:
         /// </summary>
         kPhonemeTypeID,
-
+        
         /// <summary>
         /// start of custom note expression type ids
         /// </summary>
         kCustomStart = 100000,
-
+        
         /// <summary>
         /// end of custom note expression type ids
         /// </summary>
         kCustomEnd = 200000,
-
+        
         /// <summary>
         /// indicates an invalid note expression type
         /// </summary>
         kInvalidTypeID = 0xFFFFFFFF,
     }
-
+    
     /// <summary>
     /// KeyswitchTypeIDs describes the type of a key switch
     /// </summary>
@@ -14936,33 +14936,33 @@ internal static partial class LibVst
         /// press before noteOn is played
         /// </summary>
         kNoteOnKeyswitchTypeID = 0,
-
+        
         /// <summary>
         /// press while noteOn is played
         /// </summary>
         kOnTheFlyKeyswitchTypeID,
-
+        
         /// <summary>
         /// press before entering release
         /// </summary>
         kOnReleaseKeyswitchTypeID,
-
+        
         /// <summary>
         /// key should be maintained pressed for playing
         /// </summary>
         kKeyRangeTypeID,
     }
-
+    
     /// <summary>
     /// Reserved note identifier (noteId) range for a plug-in. Guaranteed not used by the host.
     /// </summary>
     public enum NoteIDUserRange
     {
         kNoteIDUserRangeLowerBound = -10000,
-
+        
         kNoteIDUserRangeUpperBound = -1000,
     }
-
+    
     /// <summary>
     /// Controller Numbers (MIDI)
     /// </summary>
@@ -14972,323 +14972,323 @@ internal static partial class LibVst
         /// Bank Select MSB
         /// </summary>
         kCtrlBankSelectMSB = 0,
-
+        
         /// <summary>
         /// Modulation Wheel
         /// </summary>
         kCtrlModWheel = 1,
-
+        
         /// <summary>
         /// Breath controller
         /// </summary>
         kCtrlBreath = 2,
-
+        
         /// <summary>
         /// Foot Controller
         /// </summary>
         kCtrlFoot = 4,
-
+        
         /// <summary>
         /// Portamento Time
         /// </summary>
         kCtrlPortaTime = 5,
-
+        
         /// <summary>
         /// Data Entry MSB
         /// </summary>
         kCtrlDataEntryMSB = 6,
-
+        
         /// <summary>
         /// Channel Volume (formerly Main Volume)
         /// </summary>
         kCtrlVolume = 7,
-
+        
         /// <summary>
         /// Balance
         /// </summary>
         kCtrlBalance = 8,
-
+        
         /// <summary>
         /// Pan
         /// </summary>
         kCtrlPan = 10,
-
+        
         /// <summary>
         /// Expression
         /// </summary>
         kCtrlExpression = 11,
-
+        
         /// <summary>
         /// Effect Control 1
         /// </summary>
         kCtrlEffect1 = 12,
-
+        
         /// <summary>
         /// Effect Control 2
         /// </summary>
         kCtrlEffect2 = 13,
-
+        
         /// <summary>
         /// General Purpose Controller #1
         /// </summary>
         kCtrlGPC1 = 16,
-
+        
         /// <summary>
         /// General Purpose Controller #2
         /// </summary>
         kCtrlGPC2 = 17,
-
+        
         /// <summary>
         /// General Purpose Controller #3
         /// </summary>
         kCtrlGPC3 = 18,
-
+        
         /// <summary>
         /// General Purpose Controller #4
         /// </summary>
         kCtrlGPC4 = 19,
-
+        
         /// <summary>
         /// Bank Select LSB
         /// </summary>
         kCtrlBankSelectLSB = 32,
-
+        
         /// <summary>
         /// Data Entry LSB
         /// </summary>
         kCtrlDataEntryLSB = 38,
-
+        
         /// <summary>
         /// Damper Pedal On/Off (Sustain)
         /// </summary>
         kCtrlSustainOnOff = 64,
-
+        
         /// <summary>
         /// Portamento On/Off
         /// </summary>
         kCtrlPortaOnOff = 65,
-
+        
         /// <summary>
         /// Sustenuto On/Off
         /// </summary>
         kCtrlSustenutoOnOff = 66,
-
+        
         /// <summary>
         /// Soft Pedal On/Off
         /// </summary>
         kCtrlSoftPedalOnOff = 67,
-
+        
         /// <summary>
         /// Legato Footswitch On/Off
         /// </summary>
         kCtrlLegatoFootSwOnOff = 68,
-
+        
         /// <summary>
         /// Hold 2 On/Off
         /// </summary>
         kCtrlHold2OnOff = 69,
-
+        
         /// <summary>
         /// Sound Variation
         /// </summary>
         kCtrlSoundVariation = 70,
-
+        
         /// <summary>
         /// Filter Cutoff (Timbre/Harmonic Intensity)
         /// </summary>
         kCtrlFilterCutoff = 71,
-
+        
         /// <summary>
         /// Release Time
         /// </summary>
         kCtrlReleaseTime = 72,
-
+        
         /// <summary>
         /// Attack Time
         /// </summary>
         kCtrlAttackTime = 73,
-
+        
         /// <summary>
         /// Filter Resonance (Brightness)
         /// </summary>
         kCtrlFilterResonance = 74,
-
+        
         /// <summary>
         /// Decay Time
         /// </summary>
         kCtrlDecayTime = 75,
-
+        
         /// <summary>
         /// Vibrato Rate
         /// </summary>
         kCtrlVibratoRate = 76,
-
+        
         /// <summary>
         /// Vibrato Depth
         /// </summary>
         kCtrlVibratoDepth = 77,
-
+        
         /// <summary>
         /// Vibrato Delay
         /// </summary>
         kCtrlVibratoDelay = 78,
-
+        
         /// <summary>
         /// undefined
         /// </summary>
         kCtrlSoundCtrler10 = 79,
-
+        
         /// <summary>
         /// General Purpose Controller #5
         /// </summary>
         kCtrlGPC5 = 80,
-
+        
         /// <summary>
         /// General Purpose Controller #6
         /// </summary>
         kCtrlGPC6 = 81,
-
+        
         /// <summary>
         /// General Purpose Controller #7
         /// </summary>
         kCtrlGPC7 = 82,
-
+        
         /// <summary>
         /// General Purpose Controller #8
         /// </summary>
         kCtrlGPC8 = 83,
-
+        
         /// <summary>
         /// Portamento Control
         /// </summary>
         kCtrlPortaControl = 84,
-
+        
         /// <summary>
         /// Effect 1 Depth (Reverb Send Level)
         /// </summary>
         kCtrlEff1Depth = 91,
-
+        
         /// <summary>
         /// Effect 2 Depth (Tremolo Level)
         /// </summary>
         kCtrlEff2Depth = 92,
-
+        
         /// <summary>
         /// Effect 3 Depth (Chorus Send Level)
         /// </summary>
         kCtrlEff3Depth = 93,
-
+        
         /// <summary>
         /// Effect 4 Depth (Delay/Variation/Detune Level)
         /// </summary>
         kCtrlEff4Depth = 94,
-
+        
         /// <summary>
         /// Effect 5 Depth (Phaser Level)
         /// </summary>
         kCtrlEff5Depth = 95,
-
+        
         /// <summary>
         /// Data Increment (+1)
         /// </summary>
         kCtrlDataIncrement = 96,
-
+        
         /// <summary>
         /// Data Decrement (-1)
         /// </summary>
         kCtrlDataDecrement = 97,
-
+        
         /// <summary>
         /// NRPN Select LSB
         /// </summary>
         kCtrlNRPNSelectLSB = 98,
-
+        
         /// <summary>
         /// NRPN Select MSB
         /// </summary>
         kCtrlNRPNSelectMSB = 99,
-
+        
         /// <summary>
         /// RPN Select LSB
         /// </summary>
         kCtrlRPNSelectLSB = 100,
-
+        
         /// <summary>
         /// RPN Select MSB
         /// </summary>
         kCtrlRPNSelectMSB = 101,
-
+        
         /// <summary>
         /// All Sounds Off
         /// </summary>
         kCtrlAllSoundsOff = 120,
-
+        
         /// <summary>
         /// Reset All Controllers
         /// </summary>
         kCtrlResetAllCtrlers = 121,
-
+        
         /// <summary>
         /// Local Control On/Off
         /// </summary>
         kCtrlLocalCtrlOnOff = 122,
-
+        
         /// <summary>
         /// All Notes Off
         /// </summary>
         kCtrlAllNotesOff = 123,
-
+        
         /// <summary>
         /// Omni Mode Off + All Notes Off
         /// </summary>
         kCtrlOmniModeOff = 124,
-
+        
         /// <summary>
         /// Omni Mode On  + All Notes Off
         /// </summary>
         kCtrlOmniModeOn = 125,
-
+        
         /// <summary>
         /// Poly Mode On/Off + All Sounds Off
         /// </summary>
         kCtrlPolyModeOnOff = 126,
-
+        
         /// <summary>
         /// Poly Mode On
         /// </summary>
         kCtrlPolyModeOn = 127,
-
+        
         /// <summary>
         /// After Touch (associated to Channel Pressure)
         /// </summary>
         kAfterTouch = 128,
-
+        
         /// <summary>
         /// Pitch Bend Change
         /// </summary>
         kPitchBend = 129,
-
+        
         /// <summary>
         /// Count of Controller Number
         /// </summary>
         kCountCtrlNumber,
-
+        
         /// <summary>
         /// Program Change (use LegacyMIDICCOutEvent.value only)
         /// </summary>
         kCtrlProgramChange = 130,
-
+        
         /// <summary>
         /// Polyphonic Key Pressure (use LegacyMIDICCOutEvent.value for pitch and
         /// </summary>
         kCtrlPolyPressure = 131,
-
+        
         /// <summary>
         /// Quarter Frame ((use LegacyMIDICCOutEvent.value only)
         /// </summary>
         kCtrlQuarterFrame = 132,
     }
-
+    
     /// <summary>
     /// PhysicalUITypeIDs describes the type of Physical UI (PUI) which could be associated to a note
     /// expression.
@@ -15300,28 +15300,28 @@ internal static partial class LibVst
         /// absolute X position when touching keys of PUIs. Range [0=left, 0.5=middle, 1=right]
         /// </summary>
         kPUIXMovement = 0,
-
+        
         /// <summary>
         /// absolute Y position when touching keys of PUIs. Range [0=bottom/near, 0.5=center, 1=top/far]
         /// </summary>
         kPUIYMovement,
-
+        
         /// <summary>
         /// pressing a key down on keys of PUIs. Range [0=No Pressure, 1=Full Pressure]
         /// </summary>
         kPUIPressure,
-
+        
         /// <summary>
         /// count of current defined PUIs
         /// </summary>
         kPUITypeCount,
-
+        
         /// <summary>
         /// indicates an invalid or not initialized PUI type
         /// </summary>
         kInvalidPUITypeID = -1,
     }
-
+    
     /// <summary>
     /// Prefetchable Support Enum
     /// </summary>
@@ -15331,20 +15331,20 @@ internal static partial class LibVst
         /// every instance of the plug does not support prefetch processing
         /// </summary>
         kIsNeverPrefetchable = 0,
-
+        
         /// <summary>
         /// in the current state the plug support prefetch processing
         /// </summary>
         kIsYetPrefetchable,
-
+        
         /// <summary>
         /// in the current state the plug does not support prefetch processing
         /// </summary>
         kIsNotYetPrefetchable,
-
+        
         kNumPrefetchableSupport,
     }
-
+    
     /// <summary>
     /// Channel context interface: Vst::IInfoListener
     /// </summary>
@@ -15353,9 +15353,9 @@ internal static partial class LibVst
     /// - [extends IEditController]
     /// - [released: 3.6.5]
     /// - [optional]Allows the host to inform the plug-in about the context in which the plug-in is instantiated,
-    /// mainly channel based info (color, name, index,...). Index can be defined inside a namespace
-    /// (for example, index start from 1 to N for Type Input/Output Channel (Index namespace) and index
-    /// start from 1 to M for Type Audio Channel).@n As soon as the plug-in provides this IInfoListener interface, the host will call setChannelContextInfos
+    /// mainly channel based info (color, name, index,...). Index can be defined inside a namespace 
+    /// (for example, index start from 1 to N for Type Input/Output Channel (Index namespace) and index 
+    /// start from 1 to M for Type Audio Channel).@n As soon as the plug-in provides this IInfoListener interface, the host will call setChannelContextInfos 
     /// for each change occurring to this channel (new name, new color, new indexation,...) IChannelContextExample Example@code {.cpp}
     /// //------------------------------------------------------------------------
     /// tresult PLUGIN_API MyPlugin::setChannelContextInfos (IAttributeList* list)
@@ -15368,27 +15368,27 @@ internal static partial class LibVst
     /// 		{
     /// 			...
     /// 		}
-    ///
+    /// 		
     /// 		// get the Channel Name where we, as plug-in, are instantiated
     /// 		String128 name;
     /// 		if (list-&gt;getString (ChannelContext::kChannelNameKey, name, sizeof (name)) == kResultTrue)
     /// 		{
     /// 			...
     /// 		}
-    ///
+    /// 
     /// 		// get the Channel UID
     /// 		if (list-&gt;getString (ChannelContext::kChannelUIDKey, name, sizeof (name)) == kResultTrue)
     /// 		{
     /// 			...
     /// 		}
-    ///
+    /// 		
     /// 		// get Channel Index
     /// 		int64 index;
     /// 		if (list-&gt;getInt (ChannelContext::kChannelIndexKey, index) == kResultTrue)
     /// 		{
     /// 			...
     /// 		}
-    ///
+    /// 		
     /// 		// get the Channel Color
     /// 		int64 color;
     /// 		if (list-&gt;getInt (ChannelContext::kChannelColorKey, color) == kResultTrue)
@@ -15403,26 +15403,26 @@ internal static partial class LibVst
     /// 			Steinberg::UString (string128, 128).fromAscii (str);
     /// 			...
     /// 		}
-    ///
+    /// 
     /// 		// get Channel Index Namespace Order of the current used index namespace
     /// 		if (list-&gt;getInt (ChannelContext::kChannelIndexNamespaceOrderKey, index) == kResultTrue)
     /// 		{
     /// 			...
     /// 		}
-    ///
+    /// 	
     /// 		// get the channel Index Namespace Length
     /// 		if (list-&gt;getInt (ChannelContext::kChannelIndexNamespaceLengthKey, length) == kResultTrue)
     /// 		{
     /// 			...
     /// 		}
-    ///
+    /// 		
     /// 		// get the channel Index Namespace
     /// 		String128 namespaceName;
     /// 		if (list-&gt;getString (ChannelContext::kChannelIndexNamespaceKey, namespaceName, sizeof (namespaceName)) == kResultTrue)
     /// 		{
     /// 			...
     /// 		}
-    ///
+    /// 
     /// 		// get plug-in Channel Location
     /// 		int64 location;
     /// 		if (list-&gt;getInt (ChannelContext::kChannelPluginLocationKey, location) == kResultTrue)
@@ -15443,7 +15443,7 @@ internal static partial class LibVst
     /// 				break;
     /// 			}
     /// 		}
-    ///
+    /// 		
     /// 		// do not forget to call addRef () if you want to keep this list
     /// 	}
     /// }
@@ -15452,16 +15452,16 @@ internal static partial class LibVst
     public unsafe partial struct IInfoListener : INativeGuid, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
-
+        
         public static int VtblCount => 4;
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IInfoListener*, LibVst.IAttributeList*, int>)&setChannelContextInfos_Wrapper;
         }
-
+        
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
@@ -15469,7 +15469,7 @@ internal static partial class LibVst
         /// Receive the channel context infos from host.
         /// </summary>
         private static partial ComResult setChannelContextInfos_ToManaged(IInfoListener* self, LibVst.IAttributeList* list);
-
+        
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int setChannelContextInfos_Wrapper(IInfoListener* self, LibVst.IAttributeList* list)
         {
@@ -15483,7 +15483,7 @@ internal static partial class LibVst
                 catch (Exception ex)
                 {
                     __evt__.Exception = ex;
-                    return default;
+                    return (ComResult)ex;
                 }
                 finally
                 {
@@ -15496,13 +15496,13 @@ internal static partial class LibVst
                 {
                     return setChannelContextInfos_ToManaged(self, list);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return default;
+                    return (ComResult)ex;
                 }
             }
         }
-
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IInfoListener, 0x0F194781, 0x8D984ADA, 0xBBA0C1EF, 0xC011D8D0)
         /// </summary>
@@ -15518,85 +15518,85 @@ internal static partial class LibVst
             }
         }
     }
-
+    
     /// <summary>
     /// Values used for kChannelPluginLocationKey
     /// </summary>
     public enum ChannelPluginLocation
     {
         kPreVolumeFader = 0,
-
+        
         kPostVolumeFader,
-
+        
         kUsedAsPanner,
     }
-
+    
     public const string kPlatformStringWin = "WIN";
-
+    
     public static ReadOnlySpan<byte> kPlatformStringWin_u8 => "WIN\0"u8;
-
+    
     public const string kPlatformStringMac = "MAC";
-
+    
     public static ReadOnlySpan<byte> kPlatformStringMac_u8 => "MAC\0"u8;
-
+    
     public const string kPlatformStringIOS = "IOS";
-
+    
     public static ReadOnlySpan<byte> kPlatformStringIOS_u8 => "IOS\0"u8;
-
+    
     public const string kPlatformStringLinux = "Linux";
-
+    
     public static ReadOnlySpan<byte> kPlatformStringLinux_u8 => "Linux\0"u8;
-
+    
     /// <summary>
     /// HWND handle. (Microsoft Windows)
     /// </summary>
     public const string kPlatformTypeHWND = "HWND";
-
+    
     /// <summary>
     /// HWND handle. (Microsoft Windows)
     /// </summary>
     public static ReadOnlySpan<byte> kPlatformTypeHWND_u8 => "HWND\0"u8;
-
+    
     /// <summary>
     /// HIViewRef. (Mac OS X)
     /// </summary>
     public const string kPlatformTypeHIView = "HIView";
-
+    
     /// <summary>
     /// HIViewRef. (Mac OS X)
     /// </summary>
     public static ReadOnlySpan<byte> kPlatformTypeHIView_u8 => "HIView\0"u8;
-
+    
     /// <summary>
     /// NSView pointer. (Mac OS X)
     /// </summary>
     public const string kPlatformTypeNSView = "NSView";
-
+    
     /// <summary>
     /// NSView pointer. (Mac OS X)
     /// </summary>
     public static ReadOnlySpan<byte> kPlatformTypeNSView_u8 => "NSView\0"u8;
-
+    
     /// <summary>
     /// UIView pointer. (iOS)
     /// </summary>
     public const string kPlatformTypeUIView = "UIView";
-
+    
     /// <summary>
     /// UIView pointer. (iOS)
     /// </summary>
     public static ReadOnlySpan<byte> kPlatformTypeUIView_u8 => "UIView\0"u8;
-
+    
     /// <summary>
     /// X11 Window ID. (X11)
     /// </summary>
     public const string kPlatformTypeX11EmbedWindowID = "X11EmbedWindowID";
-
+    
     /// <summary>
     /// X11 Window ID. (X11)
     /// </summary>
     public static ReadOnlySpan<byte> kPlatformTypeX11EmbedWindowID_u8 => "X11EmbedWindowID\0"u8;
-
+    
     public static partial class SpeakerArr
     {
         /// <summary>
@@ -15607,7 +15607,7 @@ internal static partial class LibVst
         /// {
         /// </remarks>
         public const string kStringEmpty = "";
-
+        
         /// <summary>
         /// Speaker Arrangement String Representation.
         /// </summary>
@@ -15617,581 +15617,581 @@ internal static partial class LibVst
         /// </remarks>
         public static ReadOnlySpan<byte> kStringEmpty_u8 => "\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringMono = "Mono";
-
+        
         public static ReadOnlySpan<byte> kStringMono_u8 => "Mono\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereo = "Stereo";
-
+        
         public static ReadOnlySpan<byte> kStringStereo_u8 => "Stereo\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoR = "Stereo (Ls Rs)";
-
+        
         public static ReadOnlySpan<byte> kStringStereoR_u8 => "Stereo (Ls Rs)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoC = "Stereo (Lc Rc)";
-
+        
         public static ReadOnlySpan<byte> kStringStereoC_u8 => "Stereo (Lc Rc)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoSide = "Stereo (Sl Sr)";
-
+        
         public static ReadOnlySpan<byte> kStringStereoSide_u8 => "Stereo (Sl Sr)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoCLfe = "Stereo (C LFE)";
-
+        
         public static ReadOnlySpan<byte> kStringStereoCLfe_u8 => "Stereo (C LFE)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoTF = "Stereo (Tfl Tfr)";
-
+        
         public static ReadOnlySpan<byte> kStringStereoTF_u8 => "Stereo (Tfl Tfr)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoTS = "Stereo (Tsl Tsr)";
-
+        
         public static ReadOnlySpan<byte> kStringStereoTS_u8 => "Stereo (Tsl Tsr)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoTR = "Stereo (Trl Trr)";
-
+        
         public static ReadOnlySpan<byte> kStringStereoTR_u8 => "Stereo (Trl Trr)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoBF = "Stereo (Bfl Bfr)";
-
+        
         public static ReadOnlySpan<byte> kStringStereoBF_u8 => "Stereo (Bfl Bfr)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringCineFront = "Cine Front";
-
+        
         public static ReadOnlySpan<byte> kStringCineFront_u8 => "Cine Front\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString30Cine = "LRC";
-
+        
         public static ReadOnlySpan<byte> kString30Cine_u8 => "LRC\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString30Music = "LRS";
-
+        
         public static ReadOnlySpan<byte> kString30Music_u8 => "LRS\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString31Cine = "LRC+LFE";
-
+        
         public static ReadOnlySpan<byte> kString31Cine_u8 => "LRC+LFE\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString31Music = "LRS+LFE";
-
+        
         public static ReadOnlySpan<byte> kString31Music_u8 => "LRS+LFE\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString40Cine = "LRCS";
-
+        
         public static ReadOnlySpan<byte> kString40Cine_u8 => "LRCS\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString40Music = "Quadro";
-
+        
         public static ReadOnlySpan<byte> kString40Music_u8 => "Quadro\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString41Cine = "LRCS+LFE";
-
+        
         public static ReadOnlySpan<byte> kString41Cine_u8 => "LRCS+LFE\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString41Music = "Quadro+LFE";
-
+        
         public static ReadOnlySpan<byte> kString41Music_u8 => "Quadro+LFE\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString50 = "5.0";
-
+        
         public static ReadOnlySpan<byte> kString50_u8 => "5.0\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString51 = "5.1";
-
+        
         public static ReadOnlySpan<byte> kString51_u8 => "5.1\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString60Cine = "6.0 Cine";
-
+        
         public static ReadOnlySpan<byte> kString60Cine_u8 => "6.0 Cine\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString60Music = "6.0 Music";
-
+        
         public static ReadOnlySpan<byte> kString60Music_u8 => "6.0 Music\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString61Cine = "6.1 Cine";
-
+        
         public static ReadOnlySpan<byte> kString61Cine_u8 => "6.1 Cine\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString61Music = "6.1 Music";
-
+        
         public static ReadOnlySpan<byte> kString61Music_u8 => "6.1 Music\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70Cine = "7.0 SDDS";
-
+        
         public static ReadOnlySpan<byte> kString70Cine_u8 => "7.0 SDDS\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70CineOld = "7.0 Cine (SDDS)";
-
+        
         public static ReadOnlySpan<byte> kString70CineOld_u8 => "7.0 Cine (SDDS)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70Music = "7.0";
-
+        
         public static ReadOnlySpan<byte> kString70Music_u8 => "7.0\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70MusicOld = "7.0 Music (Dolby)";
-
+        
         public static ReadOnlySpan<byte> kString70MusicOld_u8 => "7.0 Music (Dolby)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71Cine = "7.1 SDDS";
-
+        
         public static ReadOnlySpan<byte> kString71Cine_u8 => "7.1 SDDS\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineOld = "7.1 Cine (SDDS)";
-
+        
         public static ReadOnlySpan<byte> kString71CineOld_u8 => "7.1 Cine (SDDS)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71Music = "7.1";
-
+        
         public static ReadOnlySpan<byte> kString71Music_u8 => "7.1\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71MusicOld = "7.1 Music (Dolby)";
-
+        
         public static ReadOnlySpan<byte> kString71MusicOld_u8 => "7.1 Music (Dolby)\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineTopCenter = "7.1 Cine Top Center";
-
+        
         public static ReadOnlySpan<byte> kString71CineTopCenter_u8 => "7.1 Cine Top Center\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineCenterHigh = "7.1 Cine Center High";
-
+        
         public static ReadOnlySpan<byte> kString71CineCenterHigh_u8 => "7.1 Cine Center High\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineFrontHigh = "7.1 Cine Front High";
-
+        
         public static ReadOnlySpan<byte> kString71CineFrontHigh_u8 => "7.1 Cine Front High\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70CineFrontHigh = "7.0 Cine Front High";
-
+        
         public static ReadOnlySpan<byte> kString70CineFrontHigh_u8 => "7.0 Cine Front High\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineSideHigh = "7.1 Cine Side High";
-
+        
         public static ReadOnlySpan<byte> kString71CineSideHigh_u8 => "7.1 Cine Side High\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineFullRear = "7.1 Cine Full Rear";
-
+        
         public static ReadOnlySpan<byte> kString71CineFullRear_u8 => "7.1 Cine Full Rear\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71Proximity = "7.1 Proximity";
-
+        
         public static ReadOnlySpan<byte> kString71Proximity_u8 => "7.1 Proximity\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString80Cine = "8.0 Cine";
-
+        
         public static ReadOnlySpan<byte> kString80Cine_u8 => "8.0 Cine\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString80Music = "8.0 Music";
-
+        
         public static ReadOnlySpan<byte> kString80Music_u8 => "8.0 Music\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString80Cube = "8.0 Cube";
-
+        
         public static ReadOnlySpan<byte> kString80Cube_u8 => "8.0 Cube\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString81Cine = "8.1 Cine";
-
+        
         public static ReadOnlySpan<byte> kString81Cine_u8 => "8.1 Cine\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString81Music = "8.1 Music";
-
+        
         public static ReadOnlySpan<byte> kString81Music_u8 => "8.1 Music\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString90Cine = "9.0 Cine";
-
+        
         public static ReadOnlySpan<byte> kString90Cine_u8 => "9.0 Cine\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString91Cine = "9.1 Cine";
-
+        
         public static ReadOnlySpan<byte> kString91Cine_u8 => "9.1 Cine\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString100Cine = "10.0 Cine";
-
+        
         public static ReadOnlySpan<byte> kString100Cine_u8 => "10.0 Cine\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString101Cine = "10.1 Cine";
-
+        
         public static ReadOnlySpan<byte> kString101Cine_u8 => "10.1 Cine\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString102 = "10.2 Experimental";
-
+        
         public static ReadOnlySpan<byte> kString102_u8 => "10.2 Experimental\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString122 = "12.2";
-
+        
         public static ReadOnlySpan<byte> kString122_u8 => "12.2\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString50_4 = "5.0.4";
-
+        
         public static ReadOnlySpan<byte> kString50_4_u8 => "5.0.4\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString51_4 = "5.1.4";
-
+        
         public static ReadOnlySpan<byte> kString51_4_u8 => "5.1.4\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString50_4_1 = "5.0.4.1";
-
+        
         public static ReadOnlySpan<byte> kString50_4_1_u8 => "5.0.4.1\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString51_4_1 = "5.1.4.1";
-
+        
         public static ReadOnlySpan<byte> kString51_4_1_u8 => "5.1.4.1\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70_2 = "7.0.2";
-
+        
         public static ReadOnlySpan<byte> kString70_2_u8 => "7.0.2\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71_2 = "7.1.2";
-
+        
         public static ReadOnlySpan<byte> kString71_2_u8 => "7.1.2\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70_3 = "7.0.3";
-
+        
         public static ReadOnlySpan<byte> kString70_3_u8 => "7.0.3\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString72_3 = "7.2.3";
-
+        
         public static ReadOnlySpan<byte> kString72_3_u8 => "7.2.3\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70_4 = "7.0.4";
-
+        
         public static ReadOnlySpan<byte> kString70_4_u8 => "7.0.4\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71_4 = "7.1.4";
-
+        
         public static ReadOnlySpan<byte> kString71_4_u8 => "7.1.4\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70_6 = "7.0.6";
-
+        
         public static ReadOnlySpan<byte> kString70_6_u8 => "7.0.6\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71_6 = "7.1.6";
-
+        
         public static ReadOnlySpan<byte> kString71_6_u8 => "7.1.6\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString90_4 = "9.0.4";
-
+        
         public static ReadOnlySpan<byte> kString90_4_u8 => "9.0.4\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString91_4 = "9.1.4";
-
+        
         public static ReadOnlySpan<byte> kString91_4_u8 => "9.1.4\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString90_6 = "9.0.6";
-
+        
         public static ReadOnlySpan<byte> kString90_6_u8 => "9.0.6\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString91_6 = "9.1.6";
-
+        
         public static ReadOnlySpan<byte> kString91_6_u8 => "9.1.6\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString100 = "10.0 Auro-3D";
-
+        
         public static ReadOnlySpan<byte> kString100_u8 => "10.0 Auro-3D\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString101 = "10.1 Auro-3D";
-
+        
         public static ReadOnlySpan<byte> kString101_u8 => "10.1 Auro-3D\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString110 = "11.0 Auro-3D";
-
+        
         public static ReadOnlySpan<byte> kString110_u8 => "11.0 Auro-3D\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString111 = "11.1 Auro-3D";
-
+        
         public static ReadOnlySpan<byte> kString111_u8 => "11.1 Auro-3D\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString130 = "13.0 Auro-3D";
-
+        
         public static ReadOnlySpan<byte> kString130_u8 => "13.0 Auro-3D\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString131 = "13.1 Auro-3D";
-
+        
         public static ReadOnlySpan<byte> kString131_u8 => "13.1 Auro-3D\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString81MPEG = "8.1 MPEG";
-
+        
         public static ReadOnlySpan<byte> kString81MPEG_u8 => "8.1 MPEG\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString140 = "14.0";
-
+        
         public static ReadOnlySpan<byte> kString140_u8 => "14.0\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString222 = "22.2";
-
+        
         public static ReadOnlySpan<byte> kString222_u8 => "22.2\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString220 = "22.0";
-
+        
         public static ReadOnlySpan<byte> kString220_u8 => "22.0\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString50_5_3 = "5.0.5.3";
-
+        
         public static ReadOnlySpan<byte> kString50_5_3_u8 => "5.0.5.3\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString51_5_3 = "5.1.5.3";
-
+        
         public static ReadOnlySpan<byte> kString51_5_3_u8 => "5.1.5.3\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringAmbi1stOrder = "1st Order Ambisonics";
-
+        
         public static ReadOnlySpan<byte> kStringAmbi1stOrder_u8 => "1st Order Ambisonics\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringAmbi2cdOrder = "2nd Order Ambisonics";
-
+        
         public static ReadOnlySpan<byte> kStringAmbi2cdOrder_u8 => "2nd Order Ambisonics\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringAmbi3rdOrder = "3rd Order Ambisonics";
-
+        
         public static ReadOnlySpan<byte> kStringAmbi3rdOrder_u8 => "3rd Order Ambisonics\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         /// <summary>
@@ -16202,7 +16202,7 @@ internal static partial class LibVst
         /// {
         /// </remarks>
         public const string kStringMonoS = "M";
-
+        
         /// <summary>
         /// Speaker Arrangement String Representation with Speakers Name.
         /// </summary>
@@ -16212,1040 +16212,1040 @@ internal static partial class LibVst
         /// </remarks>
         public static ReadOnlySpan<byte> kStringMonoS_u8 => "M\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoS = "L R";
-
+        
         public static ReadOnlySpan<byte> kStringStereoS_u8 => "L R\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoRS = "Ls Rs";
-
+        
         public static ReadOnlySpan<byte> kStringStereoRS_u8 => "Ls Rs\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoCS = "Lc Rc";
-
+        
         public static ReadOnlySpan<byte> kStringStereoCS_u8 => "Lc Rc\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoSS = "Sl Sr";
-
+        
         public static ReadOnlySpan<byte> kStringStereoSS_u8 => "Sl Sr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoCLfeS = "C LFE";
-
+        
         public static ReadOnlySpan<byte> kStringStereoCLfeS_u8 => "C LFE\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoTFS = "Tfl Tfr";
-
+        
         public static ReadOnlySpan<byte> kStringStereoTFS_u8 => "Tfl Tfr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoTSS = "Tsl Tsr";
-
+        
         public static ReadOnlySpan<byte> kStringStereoTSS_u8 => "Tsl Tsr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoTRS = "Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kStringStereoTRS_u8 => "Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringStereoBFS = "Bfl Bfr";
-
+        
         public static ReadOnlySpan<byte> kStringStereoBFS_u8 => "Bfl Bfr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringCineFrontS = "L R C Lc Rc";
-
+        
         public static ReadOnlySpan<byte> kStringCineFrontS_u8 => "L R C Lc Rc\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString30CineS = "L R C";
-
+        
         public static ReadOnlySpan<byte> kString30CineS_u8 => "L R C\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString30MusicS = "L R S";
-
+        
         public static ReadOnlySpan<byte> kString30MusicS_u8 => "L R S\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString31CineS = "L R C LFE";
-
+        
         public static ReadOnlySpan<byte> kString31CineS_u8 => "L R C LFE\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString31MusicS = "L R LFE S";
-
+        
         public static ReadOnlySpan<byte> kString31MusicS_u8 => "L R LFE S\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString40CineS = "L R C S";
-
+        
         public static ReadOnlySpan<byte> kString40CineS_u8 => "L R C S\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString40MusicS = "L R Ls Rs";
-
+        
         public static ReadOnlySpan<byte> kString40MusicS_u8 => "L R Ls Rs\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString41CineS = "L R C LFE S";
-
+        
         public static ReadOnlySpan<byte> kString41CineS_u8 => "L R C LFE S\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString41MusicS = "L R LFE Ls Rs";
-
+        
         public static ReadOnlySpan<byte> kString41MusicS_u8 => "L R LFE Ls Rs\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString50S = "L R C Ls Rs";
-
+        
         public static ReadOnlySpan<byte> kString50S_u8 => "L R C Ls Rs\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString51S = "L R C LFE Ls Rs";
-
+        
         public static ReadOnlySpan<byte> kString51S_u8 => "L R C LFE Ls Rs\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString60CineS = "L R C Ls Rs Cs";
-
+        
         public static ReadOnlySpan<byte> kString60CineS_u8 => "L R C Ls Rs Cs\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString60MusicS = "L R Ls Rs Sl Sr";
-
+        
         public static ReadOnlySpan<byte> kString60MusicS_u8 => "L R Ls Rs Sl Sr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString61CineS = "L R C LFE Ls Rs Cs";
-
+        
         public static ReadOnlySpan<byte> kString61CineS_u8 => "L R C LFE Ls Rs Cs\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString61MusicS = "L R LFE Ls Rs Sl Sr";
-
+        
         public static ReadOnlySpan<byte> kString61MusicS_u8 => "L R LFE Ls Rs Sl Sr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70CineS = "L R C Ls Rs Lc Rc";
-
+        
         public static ReadOnlySpan<byte> kString70CineS_u8 => "L R C Ls Rs Lc Rc\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70MusicS = "L R C Ls Rs Sl Sr";
-
+        
         public static ReadOnlySpan<byte> kString70MusicS_u8 => "L R C Ls Rs Sl Sr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineS = "L R C LFE Ls Rs Lc Rc";
-
+        
         public static ReadOnlySpan<byte> kString71CineS_u8 => "L R C LFE Ls Rs Lc Rc\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71MusicS = "L R C LFE Ls Rs Sl Sr";
-
+        
         public static ReadOnlySpan<byte> kString71MusicS_u8 => "L R C LFE Ls Rs Sl Sr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString80CineS = "L R C Ls Rs Lc Rc Cs";
-
+        
         public static ReadOnlySpan<byte> kString80CineS_u8 => "L R C Ls Rs Lc Rc Cs\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString80MusicS = "L R C Ls Rs Cs Sl Sr";
-
+        
         public static ReadOnlySpan<byte> kString80MusicS_u8 => "L R C Ls Rs Cs Sl Sr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString81CineS = "L R C LFE Ls Rs Lc Rc Cs";
-
+        
         public static ReadOnlySpan<byte> kString81CineS_u8 => "L R C LFE Ls Rs Lc Rc Cs\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString81MusicS = "L R C LFE Ls Rs Cs Sl Sr";
-
+        
         public static ReadOnlySpan<byte> kString81MusicS_u8 => "L R C LFE Ls Rs Cs Sl Sr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString80CubeS = "L R Ls Rs Tfl Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString80CubeS_u8 => "L R Ls Rs Tfl Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineTopCenterS = "L R C LFE Ls Rs Cs Tc";
-
+        
         public static ReadOnlySpan<byte> kString71CineTopCenterS_u8 => "L R C LFE Ls Rs Cs Tc\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineCenterHighS = "L R C LFE Ls Rs Cs Tfc";
-
+        
         public static ReadOnlySpan<byte> kString71CineCenterHighS_u8 => "L R C LFE Ls Rs Cs Tfc\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineFrontHighS = "L R C LFE Ls Rs Tfl Tfr";
-
+        
         public static ReadOnlySpan<byte> kString71CineFrontHighS_u8 => "L R C LFE Ls Rs Tfl Tfr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70CineFrontHighS = "L R C Ls Rs Tfl Tfr";
-
+        
         public static ReadOnlySpan<byte> kString70CineFrontHighS_u8 => "L R C Ls Rs Tfl Tfr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineSideHighS = "L R C LFE Ls Rs Tsl Tsr";
-
+        
         public static ReadOnlySpan<byte> kString71CineSideHighS_u8 => "L R C LFE Ls Rs Tsl Tsr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71CineFullRearS = "L R C LFE Ls Rs Lcs Rcs";
-
+        
         public static ReadOnlySpan<byte> kString71CineFullRearS_u8 => "L R C LFE Ls Rs Lcs Rcs\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71ProximityS = "L R C LFE Ls Rs Pl Pr";
-
+        
         public static ReadOnlySpan<byte> kString71ProximityS_u8 => "L R C LFE Ls Rs Pl Pr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString90CineS = "L R C Ls Rs Lc Rc Sl Sr";
-
+        
         public static ReadOnlySpan<byte> kString90CineS_u8 => "L R C Ls Rs Lc Rc Sl Sr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString91CineS = "L R C LFE Ls Rs Lc Rc Sl Sr";
-
+        
         public static ReadOnlySpan<byte> kString91CineS_u8 => "L R C LFE Ls Rs Lc Rc Sl Sr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString100CineS = "L R C Ls Rs Lc Rc Cs Sl Sr";
-
+        
         public static ReadOnlySpan<byte> kString100CineS_u8 => "L R C Ls Rs Lc Rc Cs Sl Sr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString101CineS = "L R C LFE Ls Rs Lc Rc Cs Sl Sr";
-
+        
         public static ReadOnlySpan<byte> kString101CineS_u8 => "L R C LFE Ls Rs Lc Rc Cs Sl Sr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString50_4S = "L R C Ls Rs Tfl Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString50_4S_u8 => "L R C Ls Rs Tfl Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString51_4S = "L R C LFE Ls Rs Tfl Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString51_4S_u8 => "L R C LFE Ls Rs Tfl Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString50_4_1S = "L R C Ls Rs Tfl Tfr Trl Trr Bfc";
-
+        
         public static ReadOnlySpan<byte> kString50_4_1S_u8 => "L R C Ls Rs Tfl Tfr Trl Trr Bfc\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString51_4_1S = "L R C LFE Ls Rs Tfl Tfr Trl Trr Bfc";
-
+        
         public static ReadOnlySpan<byte> kString51_4_1S_u8 => "L R C LFE Ls Rs Tfl Tfr Trl Trr Bfc\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70_2S = "L R C Ls Rs Sl Sr Tsl Tsr";
-
+        
         public static ReadOnlySpan<byte> kString70_2S_u8 => "L R C Ls Rs Sl Sr Tsl Tsr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71_2S = "L R C LFE Ls Rs Sl Sr Tsl Tsr";
-
+        
         public static ReadOnlySpan<byte> kString71_2S_u8 => "L R C LFE Ls Rs Sl Sr Tsl Tsr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70_3S = "L R C Ls Rs Sl Sr Tfl Tfr Trc";
-
+        
         public static ReadOnlySpan<byte> kString70_3S_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trc\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString72_3S = "L R C LFE Ls Rs Sl Sr Tfl Tfr Trc LFE2";
-
+        
         public static ReadOnlySpan<byte> kString72_3S_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr Trc LFE2\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70_4S = "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString70_4S_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71_4S = "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString71_4S_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString70_6S = "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr";
-
+        
         public static ReadOnlySpan<byte> kString70_6S_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString71_6S = "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr";
-
+        
         public static ReadOnlySpan<byte> kString71_6S_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString90_4S = "L R C Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString90_4S_u8 => "L R C Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString91_4S = "L R C LFE Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString91_4S_u8 => "L R C LFE Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString90_6S = "L R C Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr Tsl Tsr";
-
+        
         public static ReadOnlySpan<byte> kString90_6S_u8 => "L R C Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr Tsl Tsr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString91_6S = "L R C LFE Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr Tsl Tsr";
-
+        
         public static ReadOnlySpan<byte> kString91_6S_u8 => "L R C LFE Ls Rs Lc Rc Sl Sr Tfl Tfr Trl Trr Tsl Tsr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString100S = "L R C Ls Rs Tc Tfl Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString100S_u8 => "L R C Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString101S = "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString101S_u8 => "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString110S = "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString110S_u8 => "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString111S = "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString111S_u8 => "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString130S = "L R C Ls Rs Sl Sr Tc Tfl Tfc Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString130S_u8 => "L R C Ls Rs Sl Sr Tc Tfl Tfc Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString131S = "L R C LFE Ls Rs Sl Sr Tc Tfl Tfc Tfr Trl Trr";
-
+        
         public static ReadOnlySpan<byte> kString131S_u8 => "L R C LFE Ls Rs Sl Sr Tc Tfl Tfc Tfr Trl Trr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString102S = "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2";
-
+        
         public static ReadOnlySpan<byte> kString102S_u8 => "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString122S = "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2";
-
+        
         public static ReadOnlySpan<byte> kString122S_u8 => "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString81MPEGS = "L R LFE Ls Rs Tfl Tfc Tfr Bfc";
-
+        
         public static ReadOnlySpan<byte> kString81MPEGS_u8 => "L R LFE Ls Rs Tfl Tfc Tfr Bfc\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString140S = "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr";
-
+        
         public static ReadOnlySpan<byte> kString140S_u8 => "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString222S = "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr";
-
+        
         public static ReadOnlySpan<byte> kString222S_u8 => "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString220S = "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr";
-
+        
         public static ReadOnlySpan<byte> kString220S_u8 => "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString50_5_3S = "L R C Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr";
-
+        
         public static ReadOnlySpan<byte> kString50_5_3S_u8 => "L R C Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kString51_5_3S = "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr";
-
+        
         public static ReadOnlySpan<byte> kString51_5_3S_u8 => "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringAmbi1stOrderS = "0 1 2 3";
-
+        
         public static ReadOnlySpan<byte> kStringAmbi1stOrderS_u8 => "0 1 2 3\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringAmbi2cdOrderS = "0 1 2 3 4 5 6 7 8";
-
+        
         public static ReadOnlySpan<byte> kStringAmbi2cdOrderS_u8 => "0 1 2 3 4 5 6 7 8\0"u8;
     }
-
+    
     public static partial class SpeakerArr
     {
         public const string kStringAmbi3rdOrderS = "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15";
-
+        
         public static ReadOnlySpan<byte> kStringAmbi3rdOrderS_u8 => "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Scope, FFT-Display, Loudness Processing...
         /// </summary>
         public const string kFxAnalyzer = "Fx|Analyzer";
-
+        
         /// <summary>
         /// Scope, FFT-Display, Loudness Processing...
         /// </summary>
         public static ReadOnlySpan<byte> kFxAnalyzer_u8 => "Fx|Analyzer\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Delay, Multi-tap Delay, Ping-Pong Delay...
         /// </summary>
         public const string kFxDelay = "Fx|Delay";
-
+        
         /// <summary>
         /// Delay, Multi-tap Delay, Ping-Pong Delay...
         /// </summary>
         public static ReadOnlySpan<byte> kFxDelay_u8 => "Fx|Delay\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Amp Simulator, Sub-Harmonic, SoftClipper...
         /// </summary>
         public const string kFxDistortion = "Fx|Distortion";
-
+        
         /// <summary>
         /// Amp Simulator, Sub-Harmonic, SoftClipper...
         /// </summary>
         public static ReadOnlySpan<byte> kFxDistortion_u8 => "Fx|Distortion\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Compressor, Expander, Gate, Limiter, Maximizer, Tape Simulator, EnvelopeShaper...
         /// </summary>
         public const string kFxDynamics = "Fx|Dynamics";
-
+        
         /// <summary>
         /// Compressor, Expander, Gate, Limiter, Maximizer, Tape Simulator, EnvelopeShaper...
         /// </summary>
         public static ReadOnlySpan<byte> kFxDynamics_u8 => "Fx|Dynamics\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Equalization, Graphical EQ...
         /// </summary>
         public const string kFxEQ = "Fx|EQ";
-
+        
         /// <summary>
         /// Equalization, Graphical EQ...
         /// </summary>
         public static ReadOnlySpan<byte> kFxEQ_u8 => "Fx|EQ\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// WahWah, ToneBooster, Specific Filter,...
         /// </summary>
         public const string kFxFilter = "Fx|Filter";
-
+        
         /// <summary>
         /// WahWah, ToneBooster, Specific Filter,...
         /// </summary>
         public static ReadOnlySpan<byte> kFxFilter_u8 => "Fx|Filter\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// others type (not categorized)
         /// </summary>
         public const string kFx = "Fx";
-
+        
         /// <summary>
         /// others type (not categorized)
         /// </summary>
         public static ReadOnlySpan<byte> kFx_u8 => "Fx\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Fx which could be loaded as Instrument too
         /// </summary>
         public const string kFxInstrument = "Fx|Instrument";
-
+        
         /// <summary>
         /// Fx which could be loaded as Instrument too
         /// </summary>
         public static ReadOnlySpan<byte> kFxInstrument_u8 => "Fx|Instrument\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Fx which could be loaded as Instrument too and is external (wrapped Hardware)
         /// </summary>
         public const string kFxInstrumentExternal = "Fx|Instrument|External";
-
+        
         /// <summary>
         /// Fx which could be loaded as Instrument too and is external (wrapped Hardware)
         /// </summary>
         public static ReadOnlySpan<byte> kFxInstrumentExternal_u8 => "Fx|Instrument|External\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// MonoToStereo, StereoEnhancer,...
         /// </summary>
         public const string kFxSpatial = "Fx|Spatial";
-
+        
         /// <summary>
         /// MonoToStereo, StereoEnhancer,...
         /// </summary>
         public static ReadOnlySpan<byte> kFxSpatial_u8 => "Fx|Spatial\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Tone Generator, Noise Generator...
         /// </summary>
         public const string kFxGenerator = "Fx|Generator";
-
+        
         /// <summary>
         /// Tone Generator, Noise Generator...
         /// </summary>
         public static ReadOnlySpan<byte> kFxGenerator_u8 => "Fx|Generator\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Dither, Noise Shaping,...
         /// </summary>
         public const string kFxMastering = "Fx|Mastering";
-
+        
         /// <summary>
         /// Dither, Noise Shaping,...
         /// </summary>
         public static ReadOnlySpan<byte> kFxMastering_u8 => "Fx|Mastering\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Phaser, Flanger, Chorus, Tremolo, Vibrato, AutoPan, Rotary, Cloner...
         /// </summary>
         public const string kFxModulation = "Fx|Modulation";
-
+        
         /// <summary>
         /// Phaser, Flanger, Chorus, Tremolo, Vibrato, AutoPan, Rotary, Cloner...
         /// </summary>
         public static ReadOnlySpan<byte> kFxModulation_u8 => "Fx|Modulation\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Pitch Processing, Pitch Correction, Vocal Tuning...
         /// </summary>
         public const string kFxPitchShift = "Fx|Pitch Shift";
-
+        
         /// <summary>
         /// Pitch Processing, Pitch Correction, Vocal Tuning...
         /// </summary>
         public static ReadOnlySpan<byte> kFxPitchShift_u8 => "Fx|Pitch Shift\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Denoiser, Declicker,...
         /// </summary>
         public const string kFxRestoration = "Fx|Restoration";
-
+        
         /// <summary>
         /// Denoiser, Declicker,...
         /// </summary>
         public static ReadOnlySpan<byte> kFxRestoration_u8 => "Fx|Restoration\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Reverberation, Room Simulation, Convolution Reverb...
         /// </summary>
         public const string kFxReverb = "Fx|Reverb";
-
+        
         /// <summary>
         /// Reverberation, Room Simulation, Convolution Reverb...
         /// </summary>
         public static ReadOnlySpan<byte> kFxReverb_u8 => "Fx|Reverb\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// dedicated to surround processing: LFE Splitter, Bass Manager...
         /// </summary>
         public const string kFxSurround = "Fx|Surround";
-
+        
         /// <summary>
         /// dedicated to surround processing: LFE Splitter, Bass Manager...
         /// </summary>
         public static ReadOnlySpan<byte> kFxSurround_u8 => "Fx|Surround\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Volume, Mixer, Tuner...
         /// </summary>
         public const string kFxTools = "Fx|Tools";
-
+        
         /// <summary>
         /// Volume, Mixer, Tuner...
         /// </summary>
         public static ReadOnlySpan<byte> kFxTools_u8 => "Fx|Tools\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// using Network
         /// </summary>
         public const string kFxNetwork = "Fx|Network";
-
+        
         /// <summary>
         /// using Network
         /// </summary>
         public static ReadOnlySpan<byte> kFxNetwork_u8 => "Fx|Network\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Effect used as instrument (sound generator), not as insert
         /// </summary>
         public const string kInstrument = "Instrument";
-
+        
         /// <summary>
         /// Effect used as instrument (sound generator), not as insert
         /// </summary>
         public static ReadOnlySpan<byte> kInstrument_u8 => "Instrument\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Instrument for Drum sounds
         /// </summary>
         public const string kInstrumentDrum = "Instrument|Drum";
-
+        
         /// <summary>
         /// Instrument for Drum sounds
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentDrum_u8 => "Instrument|Drum\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// External Instrument (wrapped Hardware)
         /// </summary>
         public const string kInstrumentExternal = "Instrument|External";
-
+        
         /// <summary>
         /// External Instrument (wrapped Hardware)
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentExternal_u8 => "Instrument|External\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Instrument for Piano sounds
         /// </summary>
         public const string kInstrumentPiano = "Instrument|Piano";
-
+        
         /// <summary>
         /// Instrument for Piano sounds
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentPiano_u8 => "Instrument|Piano\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Instrument based on Samples
         /// </summary>
         public const string kInstrumentSampler = "Instrument|Sampler";
-
+        
         /// <summary>
         /// Instrument based on Samples
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentSampler_u8 => "Instrument|Sampler\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Instrument based on Synthesis
         /// </summary>
         public const string kInstrumentSynth = "Instrument|Synth";
-
+        
         /// <summary>
         /// Instrument based on Synthesis
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentSynth_u8 => "Instrument|Synth\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Instrument based on Synthesis and Samples
         /// </summary>
         public const string kInstrumentSynthSampler = "Instrument|Synth|Sampler";
-
+        
         /// <summary>
         /// Instrument based on Synthesis and Samples
         /// </summary>
         public static ReadOnlySpan<byte> kInstrumentSynthSampler_u8 => "Instrument|Synth|Sampler\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// used for SurroundPanner
         /// </summary>
         public const string kSpatial = "Spatial";
-
+        
         /// <summary>
         /// used for SurroundPanner
         /// </summary>
         public static ReadOnlySpan<byte> kSpatial_u8 => "Spatial\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// used for SurroundPanner and as insert effect
         /// </summary>
         public const string kSpatialFx = "Spatial|Fx";
-
+        
         /// <summary>
         /// used for SurroundPanner and as insert effect
         /// </summary>
         public static ReadOnlySpan<byte> kSpatialFx_u8 => "Spatial|Fx\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// indicates that it supports only realtime process call, no processing faster than realtime
         /// </summary>
         public const string kOnlyRealTime = "OnlyRT";
-
+        
         /// <summary>
         /// indicates that it supports only realtime process call, no processing faster than realtime
         /// </summary>
         public static ReadOnlySpan<byte> kOnlyRealTime_u8 => "OnlyRT\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// used for plug-in offline processing  (will not work as normal insert plug-in)
         /// </summary>
         public const string kOnlyOfflineProcess = "OnlyOfflineProcess";
-
+        
         /// <summary>
         /// used for plug-in offline processing  (will not work as normal insert plug-in)
         /// </summary>
         public static ReadOnlySpan<byte> kOnlyOfflineProcess_u8 => "OnlyOfflineProcess\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
         /// </summary>
         public const string kOnlyARA = "OnlyARA";
-
+        
         /// <summary>
         /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
         /// </summary>
         public static ReadOnlySpan<byte> kOnlyARA_u8 => "OnlyARA\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
         /// </summary>
         public const string kNoOfflineProcess = "NoOfflineProcess";
-
+        
         /// <summary>
         /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
         /// </summary>
         public static ReadOnlySpan<byte> kNoOfflineProcess_u8 => "NoOfflineProcess\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// used for Mixconverter/Up-Mixer/Down-Mixer
         /// </summary>
         public const string kUpDownMix = "Up-Downmix";
-
+        
         /// <summary>
         /// used for Mixconverter/Up-Mixer/Down-Mixer
         /// </summary>
         public static ReadOnlySpan<byte> kUpDownMix_u8 => "Up-Downmix\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// Meter, Scope, FFT-Display, not selectable as insert plug-in
         /// </summary>
         public const string kAnalyzer = "Analyzer";
-
+        
         /// <summary>
         /// Meter, Scope, FFT-Display, not selectable as insert plug-in
         /// </summary>
         public static ReadOnlySpan<byte> kAnalyzer_u8 => "Analyzer\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
         /// </summary>
         public const string kAmbisonics = "Ambisonics";
-
+        
         /// <summary>
         /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
         /// </summary>
         public static ReadOnlySpan<byte> kAmbisonics_u8 => "Ambisonics\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// used for Mono only plug-in [optional]
         /// </summary>
         public const string kMono = "Mono";
-
+        
         /// <summary>
         /// used for Mono only plug-in [optional]
         /// </summary>
         public static ReadOnlySpan<byte> kMono_u8 => "Mono\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// used for Stereo only plug-in [optional]
         /// </summary>
         public const string kStereo = "Stereo";
-
+        
         /// <summary>
         /// used for Stereo only plug-in [optional]
         /// </summary>
         public static ReadOnlySpan<byte> kStereo_u8 => "Stereo\0"u8;
     }
-
+    
     public static partial class PlugType
     {
         /// <summary>
         /// used for Surround only plug-in [optional]
         /// </summary>
         public const string kSurround = "Surround";
-
+        
         /// <summary>
         /// used for Surround only plug-in [optional]
         /// </summary>
         public static ReadOnlySpan<byte> kSurround_u8 => "Surround\0"u8;
     }
-
+    
     public static partial class ChannelContext
     {
         /// <summary>
@@ -17257,7 +17257,7 @@ internal static partial class LibVst
         /// string (TChar) [optional]: unique id string used to identify a channel
         /// </remarks>
         public const string kChannelUIDKey = "channel uid";
-
+        
         /// <summary>
         /// Keys used as AttrID (Attribute ID) in the return IAttributeList of
         /// IInfoListener::setChannelContextInfos
@@ -17268,72 +17268,72 @@ internal static partial class LibVst
         /// </remarks>
         public static ReadOnlySpan<byte> kChannelUIDKey_u8 => "channel uid\0"u8;
     }
-
+    
     public static partial class ChannelContext
     {
         /// <summary>
         /// integer (int64) [optional]: number of characters in kChannelUIDKey
         /// </summary>
         public const string kChannelUIDLengthKey = "channel uid length";
-
+        
         /// <summary>
         /// integer (int64) [optional]: number of characters in kChannelUIDKey
         /// </summary>
         public static ReadOnlySpan<byte> kChannelUIDLengthKey_u8 => "channel uid length\0"u8;
     }
-
+    
     public static partial class ChannelContext
     {
         /// <summary>
         /// string (TChar) [optional]: name of the channel like displayed in the mixer
         /// </summary>
         public const string kChannelNameKey = "channel name";
-
+        
         /// <summary>
         /// string (TChar) [optional]: name of the channel like displayed in the mixer
         /// </summary>
         public static ReadOnlySpan<byte> kChannelNameKey_u8 => "channel name\0"u8;
     }
-
+    
     public static partial class ChannelContext
     {
         /// <summary>
         /// integer (int64) [optional]: number of characters in kChannelNameKey
         /// </summary>
         public const string kChannelNameLengthKey = "channel name length";
-
+        
         /// <summary>
         /// integer (int64) [optional]: number of characters in kChannelNameKey
         /// </summary>
         public static ReadOnlySpan<byte> kChannelNameLengthKey_u8 => "channel name length\0"u8;
     }
-
+    
     public static partial class ChannelContext
     {
         /// <summary>
         /// color (ColorSpec) [optional]: used color for the channel in mixer or track
         /// </summary>
         public const string kChannelColorKey = "channel color";
-
+        
         /// <summary>
         /// color (ColorSpec) [optional]: used color for the channel in mixer or track
         /// </summary>
         public static ReadOnlySpan<byte> kChannelColorKey_u8 => "channel color\0"u8;
     }
-
+    
     public static partial class ChannelContext
     {
         /// <summary>
         /// integer (int64) [optional]: index of the channel in a channel index namespace, start with 1 not * 0!
         /// </summary>
         public const string kChannelIndexKey = "channel index";
-
+        
         /// <summary>
         /// integer (int64) [optional]: index of the channel in a channel index namespace, start with 1 not * 0!
         /// </summary>
         public static ReadOnlySpan<byte> kChannelIndexKey_u8 => "channel index\0"u8;
     }
-
+    
     public static partial class ChannelContext
     {
         /// <summary>
@@ -17344,7 +17344,7 @@ internal static partial class LibVst
         /// index namespace is "Output"  -&gt; order 3
         /// </summary>
         public const string kChannelIndexNamespaceOrderKey = "channel index namespace order";
-
+        
         /// <summary>
         /// integer (int64) [optional]: define the order of the current used index namespace, start with 1 not 0!
         /// For example:
@@ -17354,107 +17354,107 @@ internal static partial class LibVst
         /// </summary>
         public static ReadOnlySpan<byte> kChannelIndexNamespaceOrderKey_u8 => "channel index namespace order\0"u8;
     }
-
+    
     public static partial class ChannelContext
     {
         /// <summary>
         /// string (TChar) [optional]: name of the channel index namespace for example "Input", "Output", "Channel", ...
         /// </summary>
         public const string kChannelIndexNamespaceKey = "channel index namespace";
-
+        
         /// <summary>
         /// string (TChar) [optional]: name of the channel index namespace for example "Input", "Output", "Channel", ...
         /// </summary>
         public static ReadOnlySpan<byte> kChannelIndexNamespaceKey_u8 => "channel index namespace\0"u8;
     }
-
+    
     public static partial class ChannelContext
     {
         /// <summary>
         /// integer (int64) [optional]: number of characters in kChannelIndexNamespaceKey
         /// </summary>
         public const string kChannelIndexNamespaceLengthKey = "channel index namespace length";
-
+        
         /// <summary>
         /// integer (int64) [optional]: number of characters in kChannelIndexNamespaceKey
         /// </summary>
         public static ReadOnlySpan<byte> kChannelIndexNamespaceLengthKey_u8 => "channel index namespace length\0"u8;
     }
-
+    
     public static partial class ChannelContext
     {
         /// <summary>
         /// PNG image representation as binary [optional]
         /// </summary>
         public const string kChannelImageKey = "channel image";
-
+        
         /// <summary>
         /// PNG image representation as binary [optional]
         /// </summary>
         public static ReadOnlySpan<byte> kChannelImageKey_u8 => "channel image\0"u8;
     }
-
+    
     public static partial class ChannelContext
     {
         /// <summary>
         /// integer (int64) [optional]: routing position of the plug-in in the channel (see ChannelPluginLocation)
         /// </summary>
         public const string kChannelPluginLocationKey = "channel plugin location";
-
+        
         /// <summary>
         /// integer (int64) [optional]: routing position of the plug-in in the channel (see ChannelPluginLocation)
         /// </summary>
         public static ReadOnlySpan<byte> kChannelPluginLocationKey_u8 => "channel plugin location\0"u8;
     }
-
+    
     public static partial class ViewType
     {
         public const string kEditor = "editor";
-
+        
         public static ReadOnlySpan<byte> kEditor_u8 => "editor\0"u8;
     }
-
+    
     public static partial class FunctionNameType
     {
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public const string kCompGainReduction = "Comp:GainReduction";
-
+        
         /// <summary>
-        ///
+        /// 
         /// </summary>
         public static ReadOnlySpan<byte> kCompGainReduction_u8 => "Comp:GainReduction\0"u8;
     }
-
+    
     public static partial class FunctionNameType
     {
         public const string kCompGainReductionMax = "Comp:GainReductionMax";
-
+        
         public static ReadOnlySpan<byte> kCompGainReductionMax_u8 => "Comp:GainReductionMax\0"u8;
     }
-
+    
     public static partial class FunctionNameType
     {
         public const string kCompGainReductionPeakHold = "Comp:GainReductionPeakHold";
-
+        
         public static ReadOnlySpan<byte> kCompGainReductionPeakHold_u8 => "Comp:GainReductionPeakHold\0"u8;
     }
-
+    
     public static partial class FunctionNameType
     {
         public const string kCompResetGainReductionMax = "Comp:ResetGainReductionMax";
-
+        
         public static ReadOnlySpan<byte> kCompResetGainReductionMax_u8 => "Comp:ResetGainReductionMax\0"u8;
     }
-
+    
     public static partial class FunctionNameType
     {
         public const string kLowLatencyMode = "LowLatencyMode";
-
+        
         public static ReadOnlySpan<byte> kLowLatencyMode_u8 => "LowLatencyMode\0"u8;
     }
-
+    
     public static partial class FunctionNameType
     {
         /// <summary>
@@ -17464,7 +17464,7 @@ internal static partial class LibVst
         /// 1 means LowLatency enable
         /// </summary>
         public const string kDryWetMix = "DryWetMix";
-
+        
         /// <summary>
         /// Useful for live situation where low
         /// latency is required:
@@ -17473,7 +17473,7 @@ internal static partial class LibVst
         /// </summary>
         public static ReadOnlySpan<byte> kDryWetMix_u8 => "DryWetMix\0"u8;
     }
-
+    
     public static partial class FunctionNameType
     {
         /// <summary>
@@ -17483,7 +17483,7 @@ internal static partial class LibVst
         /// 1.0 means Wet Signal only
         /// </summary>
         public const string kRandomize = "Randomize";
-
+        
         /// <summary>
         /// Allowing to mix the original (Dry) Signal with the processed one (Wet):
         /// 0.0 means Dry Signal only,
@@ -17492,346 +17492,346 @@ internal static partial class LibVst
         /// </summary>
         public static ReadOnlySpan<byte> kRandomize_u8 => "Randomize\0"u8;
     }
-
+    
     public static partial class FunctionNameType
     {
         /// <summary>
         /// Gravity point X-axis [0, 1]=&gt;[L-R] (for stereo: middle between left and right)
         /// </summary>
         public const string kPanPosCenterX = "PanPosCenterX";
-
+        
         /// <summary>
         /// Gravity point X-axis [0, 1]=&gt;[L-R] (for stereo: middle between left and right)
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterX_u8 => "PanPosCenterX\0"u8;
     }
-
+    
     public static partial class FunctionNameType
     {
         /// <summary>
         /// Gravity point Y-axis [0, 1]=&gt;[Front-Rear]
         /// </summary>
         public const string kPanPosCenterY = "PanPosCenterY";
-
+        
         /// <summary>
         /// Gravity point Y-axis [0, 1]=&gt;[Front-Rear]
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterY_u8 => "PanPosCenterY\0"u8;
     }
-
+    
     public static partial class FunctionNameType
     {
         /// <summary>
         /// Gravity point Z-axis [0, 1]=&gt;[Bottom-Top]
         /// </summary>
         public const string kPanPosCenterZ = "PanPosCenterZ";
-
+        
         /// <summary>
         /// Gravity point Z-axis [0, 1]=&gt;[Bottom-Top]
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterZ_u8 => "PanPosCenterZ\0"u8;
     }
-
+    
     public static partial class CurveType
     {
         public const string kSegment = "segment";
-
+        
         public static ReadOnlySpan<byte> kSegment_u8 => "segment\0"u8;
     }
-
+    
     public static partial class CurveType
     {
         public const string kValueList = "valueList";
-
+        
         public static ReadOnlySpan<byte> kValueList_u8 => "valueList\0"u8;
     }
-
+    
     public static partial class Attributes
     {
         /// <summary>
         /// string attribute : See AttributesStyle for available string value
         /// </summary>
         public const string kStyle = "style";
-
+        
         /// <summary>
         /// string attribute : See AttributesStyle for available string value
         /// </summary>
         public static ReadOnlySpan<byte> kStyle_u8 => "style\0"u8;
     }
-
+    
     public static partial class Attributes
     {
         /// <summary>
         /// string attribute : See AttributesStyle for available string value
         /// </summary>
         public const string kLEDStyle = "ledStyle";
-
+        
         /// <summary>
         /// string attribute : See AttributesStyle for available string value
         /// </summary>
         public static ReadOnlySpan<byte> kLEDStyle_u8 => "ledStyle\0"u8;
     }
-
+    
     public static partial class Attributes
     {
         /// <summary>
         /// string attribute : See AttributesStyle for available string value
         /// </summary>
         public const string kSwitchStyle = "switchStyle";
-
+        
         /// <summary>
         /// string attribute : See AttributesStyle for available string value
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchStyle_u8 => "switchStyle\0"u8;
     }
-
+    
     public static partial class Attributes
     {
         /// <summary>
         /// float attribute
         /// </summary>
         public const string kKnobTurnsPerFullRange = "turnsPerFullRange";
-
+        
         /// <summary>
         /// float attribute
         /// </summary>
         public static ReadOnlySpan<byte> kKnobTurnsPerFullRange_u8 => "turnsPerFullRange\0"u8;
     }
-
+    
     public static partial class Attributes
     {
         /// <summary>
         /// string attribute : See AttributesFunction for available string value
         /// </summary>
         public const string kFunction = "function";
-
+        
         /// <summary>
         /// string attribute : See AttributesFunction for available string value
         /// </summary>
         public static ReadOnlySpan<byte> kFunction_u8 => "function\0"u8;
     }
-
+    
     public static partial class Attributes
     {
         /// <summary>
         /// string attribute : See AttributesFlags for available string value
         /// </summary>
         public const string kFlags = "flags";
-
+        
         /// <summary>
         /// string attribute : See AttributesFlags for available string value
         /// </summary>
         public static ReadOnlySpan<byte> kFlags_u8 => "flags\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Gravity point X-axis (L-R) (for stereo: middle between left and right)
         /// </summary>
         public const string kPanPosCenterXFunc = "PanPosCenterX";
-
+        
         /// <summary>
         /// Gravity point X-axis (L-R) (for stereo: middle between left and right)
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterXFunc_u8 => "PanPosCenterX\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Gravity point Y-axis (Front-Rear)
         /// </summary>
         public const string kPanPosCenterYFunc = "PanPosCenterY";
-
+        
         /// <summary>
         /// Gravity point Y-axis (Front-Rear)
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterYFunc_u8 => "PanPosCenterY\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Left channel Position in X-axis
         /// </summary>
         public const string kPanPosFrontLeftXFunc = "PanPosFrontLeftX";
-
+        
         /// <summary>
         /// Left channel Position in X-axis
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosFrontLeftXFunc_u8 => "PanPosFrontLeftX\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Left channel Position in Y-axis
         /// </summary>
         public const string kPanPosFrontLeftYFunc = "PanPosFrontLeftY";
-
+        
         /// <summary>
         /// Left channel Position in Y-axis
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosFrontLeftYFunc_u8 => "PanPosFrontLeftY\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Right channel Position in X-axis
         /// </summary>
         public const string kPanPosFrontRightXFunc = "PanPosFrontRightX";
-
+        
         /// <summary>
         /// Right channel Position in X-axis
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosFrontRightXFunc_u8 => "PanPosFrontRightX\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Right channel Position in Y-axis
         /// </summary>
         public const string kPanPosFrontRightYFunc = "PanPosFrontRightY";
-
+        
         /// <summary>
         /// Right channel Position in Y-axis
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosFrontRightYFunc_u8 => "PanPosFrontRightY\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Rotation around the Center (gravity point)
         /// </summary>
         public const string kPanRotationFunc = "PanRotation";
-
+        
         /// <summary>
         /// Rotation around the Center (gravity point)
         /// </summary>
         public static ReadOnlySpan<byte> kPanRotationFunc_u8 => "PanRotation\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Panning Law
         /// </summary>
         public const string kPanLawFunc = "PanLaw";
-
+        
         /// <summary>
         /// Panning Law
         /// </summary>
         public static ReadOnlySpan<byte> kPanLawFunc_u8 => "PanLaw\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Panning Mirror Mode
         /// </summary>
         public const string kPanMirrorModeFunc = "PanMirrorMode";
-
+        
         /// <summary>
         /// Panning Mirror Mode
         /// </summary>
         public static ReadOnlySpan<byte> kPanMirrorModeFunc_u8 => "PanMirrorMode\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Panning LFE Gain
         /// </summary>
         public const string kPanLfeGainFunc = "PanLfeGain";
-
+        
         /// <summary>
         /// Panning LFE Gain
         /// </summary>
         public static ReadOnlySpan<byte> kPanLfeGainFunc_u8 => "PanLfeGain\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Gain Reduction for compressor
         /// </summary>
         public const string kGainReductionFunc = "GainReduction";
-
+        
         /// <summary>
         /// Gain Reduction for compressor
         /// </summary>
         public static ReadOnlySpan<byte> kGainReductionFunc_u8 => "GainReduction\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Solo
         /// </summary>
         public const string kSoloFunc = "Solo";
-
+        
         /// <summary>
         /// Solo
         /// </summary>
         public static ReadOnlySpan<byte> kSoloFunc_u8 => "Solo\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Mute
         /// </summary>
         public const string kMuteFunc = "Mute";
-
+        
         /// <summary>
         /// Mute
         /// </summary>
         public static ReadOnlySpan<byte> kMuteFunc_u8 => "Mute\0"u8;
     }
-
+    
     public static partial class AttributesFunction
     {
         /// <summary>
         /// Volume
         /// </summary>
         public const string kVolumeFunc = "Volume";
-
+        
         /// <summary>
         /// Volume
         /// </summary>
         public static ReadOnlySpan<byte> kVolumeFunc_u8 => "Volume\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
         /// the associated layer should use the inverse value of parameter (1 - x).
         /// </summary>
         public const string kInverseStyle = "inverse";
-
+        
         /// <summary>
         /// the associated layer should use the inverse value of parameter (1 - x).
         /// </summary>
         public static ReadOnlySpan<byte> kInverseStyle_u8 => "inverse\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
         /// |======&gt;----- (the default one if not specified)
         /// </summary>
         public const string kLEDWrapLeftStyle = "wrapLeft";
-
+        
         /// <summary>
         /// |======&gt;----- (the default one if not specified)
         /// </summary>
         public static ReadOnlySpan<byte> kLEDWrapLeftStyle_u8 => "wrapLeft\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
@@ -17839,14 +17839,14 @@ internal static partial class LibVst
         /// ====|
         /// </summary>
         public const string kLEDWrapRightStyle = "wrapRight";
-
+        
         /// <summary>
         /// &lt;
         /// ====|
         /// </summary>
         public static ReadOnlySpan<byte> kLEDWrapRightStyle_u8 => "wrapRight\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
@@ -17854,53 +17854,53 @@ internal static partial class LibVst
         /// ==|==&gt;---
         /// </summary>
         public const string kLEDSpreadStyle = "spread";
-
+        
         /// <summary>
         /// &lt;
         /// ==|==&gt;---
         /// </summary>
         public static ReadOnlySpan<byte> kLEDSpreadStyle_u8 => "spread\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
         /// ------|===&gt;--
         /// </summary>
         public const string kLEDBoostCutStyle = "boostCut";
-
+        
         /// <summary>
         /// ------|===&gt;--
         /// </summary>
         public static ReadOnlySpan<byte> kLEDBoostCutStyle_u8 => "boostCut\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
         /// --------|----
         /// </summary>
         public const string kLEDSingleDotStyle = "singleDot";
-
+        
         /// <summary>
         /// --------|----
         /// </summary>
         public static ReadOnlySpan<byte> kLEDSingleDotStyle_u8 => "singleDot\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
         /// Apply only when pressed, unpressed will reset the value to min.
         /// </summary>
         public const string kSwitchPushStyle = "push";
-
+        
         /// <summary>
         /// Apply only when pressed, unpressed will reset the value to min.
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchPushStyle_u8 => "push\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
@@ -17908,224 +17908,224 @@ internal static partial class LibVst
         /// The default one if not specified (with 2 states values it is a OnOff switch).
         /// </summary>
         public const string kSwitchPushIncLoopedStyle = "pushIncLooped";
-
+        
         /// <summary>
         /// Push will increment the value. When the max is reached it will restart with min.
         /// The default one if not specified (with 2 states values it is a OnOff switch).
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchPushIncLoopedStyle_u8 => "pushIncLooped\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
         /// Push will decrement the value. When the min is reached it will restart with max.
         /// </summary>
         public const string kSwitchPushDecLoopedStyle = "pushDecLooped";
-
+        
         /// <summary>
         /// Push will decrement the value. When the min is reached it will restart with max.
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchPushDecLoopedStyle_u8 => "pushDecLooped\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
         /// Increment after each press (delta depends of the curve).
         /// </summary>
         public const string kSwitchPushIncStyle = "pushInc";
-
+        
         /// <summary>
         /// Increment after each press (delta depends of the curve).
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchPushIncStyle_u8 => "pushInc\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
         /// Decrement after each press (delta depends of the curve).
         /// </summary>
         public const string kSwitchPushDecStyle = "pushDec";
-
+        
         /// <summary>
         /// Decrement after each press (delta depends of the curve).
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchPushDecStyle_u8 => "pushDec\0"u8;
     }
-
+    
     public static partial class AttributesStyle
     {
         /// <summary>
-        /// Each push-release will change the value between min and max.
+        /// Each push-release will change the value between min and max. 
         /// A timeout between push and release could be used to simulate a push style (if timeout is reached).
         /// </summary>
         public const string kSwitchLatchStyle = "latch";
-
+        
         /// <summary>
-        /// Each push-release will change the value between min and max.
+        /// Each push-release will change the value between min and max. 
         /// A timeout between push and release could be used to simulate a push style (if timeout is reached).
         /// </summary>
         public static ReadOnlySpan<byte> kSwitchLatchStyle_u8 => "latch\0"u8;
     }
-
+    
     public static partial class AttributesFlags
     {
         /// <summary>
         /// the associated layer marked as hideable allows a remote to hide or make it not usable a parameter when the associated value is inactive
         /// </summary>
         public const string kHideableFlag = "hideable";
-
+        
         /// <summary>
         /// the associated layer marked as hideable allows a remote to hide or make it not usable a parameter when the associated value is inactive
         /// </summary>
         public static ReadOnlySpan<byte> kHideableFlag_u8 => "hideable\0"u8;
     }
-
+    
     public static partial class PresetAttributes
     {
         /// <summary>
         /// plug-in name
         /// </summary>
         public const string kPlugInName = "PlugInName";
-
+        
         /// <summary>
         /// plug-in name
         /// </summary>
         public static ReadOnlySpan<byte> kPlugInName_u8 => "PlugInName\0"u8;
     }
-
+    
     public static partial class PresetAttributes
     {
         /// <summary>
         /// eg. "Fx|Dynamics", "Instrument", "Instrument|Synth"
         /// </summary>
         public const string kPlugInCategory = "PlugInCategory";
-
+        
         /// <summary>
         /// eg. "Fx|Dynamics", "Instrument", "Instrument|Synth"
         /// </summary>
         public static ReadOnlySpan<byte> kPlugInCategory_u8 => "PlugInCategory\0"u8;
     }
-
+    
     public static partial class PresetAttributes
     {
         /// <summary>
         /// eg. instrument group (like 'Piano' or 'Piano|A. Piano')
         /// </summary>
         public const string kInstrument = "MusicalInstrument";
-
+        
         /// <summary>
         /// eg. instrument group (like 'Piano' or 'Piano|A. Piano')
         /// </summary>
         public static ReadOnlySpan<byte> kInstrument_u8 => "MusicalInstrument\0"u8;
     }
-
+    
     public static partial class PresetAttributes
     {
         /// <summary>
         /// eg. 'Pop', 'Jazz', 'Classic'
         /// </summary>
         public const string kStyle = "MusicalStyle";
-
+        
         /// <summary>
         /// eg. 'Pop', 'Jazz', 'Classic'
         /// </summary>
         public static ReadOnlySpan<byte> kStyle_u8 => "MusicalStyle\0"u8;
     }
-
+    
     public static partial class PresetAttributes
     {
         /// <summary>
         /// eg. instrument nature (like 'Soft' 'Dry' 'Acoustic')
         /// </summary>
         public const string kCharacter = "MusicalCharacter";
-
+        
         /// <summary>
         /// eg. instrument nature (like 'Soft' 'Dry' 'Acoustic')
         /// </summary>
         public static ReadOnlySpan<byte> kCharacter_u8 => "MusicalCharacter\0"u8;
     }
-
+    
     public static partial class PresetAttributes
     {
         /// <summary>
         /// Type of the given state see @ref StateType : Project / Default Preset or Normal Preset
         /// </summary>
         public const string kStateType = "StateType";
-
+        
         /// <summary>
         /// Type of the given state see @ref StateType : Project / Default Preset or Normal Preset
         /// </summary>
         public static ReadOnlySpan<byte> kStateType_u8 => "StateType\0"u8;
     }
-
+    
     public static partial class PresetAttributes
     {
         /// <summary>
         /// Full file path string (if available) where the preset comes from (be sure to use a bigger string when asking for it (with 1024 characters))
         /// </summary>
         public const string kFilePathStringType = "FilePathString";
-
+        
         /// <summary>
         /// Full file path string (if available) where the preset comes from (be sure to use a bigger string when asking for it (with 1024 characters))
         /// </summary>
         public static ReadOnlySpan<byte> kFilePathStringType_u8 => "FilePathString\0"u8;
     }
-
+    
     public static partial class PresetAttributes
     {
         /// <summary>
         /// name of the preset
         /// </summary>
         public const string kName = "Name";
-
+        
         /// <summary>
         /// name of the preset
         /// </summary>
         public static ReadOnlySpan<byte> kName_u8 => "Name\0"u8;
     }
-
+    
     public static partial class PresetAttributes
     {
         /// <summary>
         /// filename of the preset (including extension)
         /// </summary>
         public const string kFileName = "FileName";
-
+        
         /// <summary>
         /// filename of the preset (including extension)
         /// </summary>
         public static ReadOnlySpan<byte> kFileName_u8 => "FileName\0"u8;
     }
-
+    
     public static partial class StateType
     {
         /// <summary>
         /// the state is restored from a project loading or it is saved in a project
         /// </summary>
         public const string kProject = "Project";
-
+        
         /// <summary>
         /// the state is restored from a project loading or it is saved in a project
         /// </summary>
         public static ReadOnlySpan<byte> kProject_u8 => "Project\0"u8;
     }
-
+    
     public static partial class StateType
     {
         /// <summary>
         /// the state is restored from a preset (marked as default) or the host wants to store a default state of the plug-in
         /// </summary>
         public const string kDefault = "Default";
-
+        
         /// <summary>
         /// the state is restored from a preset (marked as default) or the host wants to store a default state of the plug-in
         /// </summary>
         public static ReadOnlySpan<byte> kDefault_u8 => "Default\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         /// <summary>
@@ -18136,7 +18136,7 @@ internal static partial class LibVst
         /// {
         /// </remarks>
         public const string kAccordion = "Accordion";
-
+        
         /// <summary>
         ///  musicalInstrument Predefined Musical Instrument
         /// </summary>
@@ -18146,805 +18146,805 @@ internal static partial class LibVst
         /// </remarks>
         public static ReadOnlySpan<byte> kAccordion_u8 => "Accordion\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kAccordionAccordion = "Accordion|Accordion";
-
+        
         public static ReadOnlySpan<byte> kAccordionAccordion_u8 => "Accordion|Accordion\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kAccordionHarmonica = "Accordion|Harmonica";
-
+        
         public static ReadOnlySpan<byte> kAccordionHarmonica_u8 => "Accordion|Harmonica\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kAccordionOther = "Accordion|Other";
-
+        
         public static ReadOnlySpan<byte> kAccordionOther_u8 => "Accordion|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBass = "Bass";
-
+        
         public static ReadOnlySpan<byte> kBass_u8 => "Bass\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBassABass = "Bass|A. Bass";
-
+        
         public static ReadOnlySpan<byte> kBassABass_u8 => "Bass|A. Bass\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBassEBass = "Bass|E. Bass";
-
+        
         public static ReadOnlySpan<byte> kBassEBass_u8 => "Bass|E. Bass\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBassSynthBass = "Bass|Synth Bass";
-
+        
         public static ReadOnlySpan<byte> kBassSynthBass_u8 => "Bass|Synth Bass\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBassOther = "Bass|Other";
-
+        
         public static ReadOnlySpan<byte> kBassOther_u8 => "Bass|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBrass = "Brass";
-
+        
         public static ReadOnlySpan<byte> kBrass_u8 => "Brass\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBrassFrenchHorn = "Brass|French Horn";
-
+        
         public static ReadOnlySpan<byte> kBrassFrenchHorn_u8 => "Brass|French Horn\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBrassTrumpet = "Brass|Trumpet";
-
+        
         public static ReadOnlySpan<byte> kBrassTrumpet_u8 => "Brass|Trumpet\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBrassTrombone = "Brass|Trombone";
-
+        
         public static ReadOnlySpan<byte> kBrassTrombone_u8 => "Brass|Trombone\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBrassTuba = "Brass|Tuba";
-
+        
         public static ReadOnlySpan<byte> kBrassTuba_u8 => "Brass|Tuba\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBrassSection = "Brass|Section";
-
+        
         public static ReadOnlySpan<byte> kBrassSection_u8 => "Brass|Section\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBrassSynth = "Brass|Synth";
-
+        
         public static ReadOnlySpan<byte> kBrassSynth_u8 => "Brass|Synth\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kBrassOther = "Brass|Other";
-
+        
         public static ReadOnlySpan<byte> kBrassOther_u8 => "Brass|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kChromaticPerc = "Chromatic Perc";
-
+        
         public static ReadOnlySpan<byte> kChromaticPerc_u8 => "Chromatic Perc\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kChromaticPercBell = "Chromatic Perc|Bell";
-
+        
         public static ReadOnlySpan<byte> kChromaticPercBell_u8 => "Chromatic Perc|Bell\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kChromaticPercMallett = "Chromatic Perc|Mallett";
-
+        
         public static ReadOnlySpan<byte> kChromaticPercMallett_u8 => "Chromatic Perc|Mallett\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kChromaticPercWood = "Chromatic Perc|Wood";
-
+        
         public static ReadOnlySpan<byte> kChromaticPercWood_u8 => "Chromatic Perc|Wood\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kChromaticPercPercussion = "Chromatic Perc|Percussion";
-
+        
         public static ReadOnlySpan<byte> kChromaticPercPercussion_u8 => "Chromatic Perc|Percussion\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kChromaticPercTimpani = "Chromatic Perc|Timpani";
-
+        
         public static ReadOnlySpan<byte> kChromaticPercTimpani_u8 => "Chromatic Perc|Timpani\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kChromaticPercOther = "Chromatic Perc|Other";
-
+        
         public static ReadOnlySpan<byte> kChromaticPercOther_u8 => "Chromatic Perc|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPerc = "Drum&Perc";
-
+        
         public static ReadOnlySpan<byte> kDrumPerc_u8 => "Drum&Perc\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPercDrumsetGM = "Drum&Perc|Drumset GM";
-
+        
         public static ReadOnlySpan<byte> kDrumPercDrumsetGM_u8 => "Drum&Perc|Drumset GM\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPercDrumset = "Drum&Perc|Drumset";
-
+        
         public static ReadOnlySpan<byte> kDrumPercDrumset_u8 => "Drum&Perc|Drumset\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPercDrumMenues = "Drum&Perc|Drum Menues";
-
+        
         public static ReadOnlySpan<byte> kDrumPercDrumMenues_u8 => "Drum&Perc|Drum Menues\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPercBeats = "Drum&Perc|Beats";
-
+        
         public static ReadOnlySpan<byte> kDrumPercBeats_u8 => "Drum&Perc|Beats\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPercPercussion = "Drum&Perc|Percussion";
-
+        
         public static ReadOnlySpan<byte> kDrumPercPercussion_u8 => "Drum&Perc|Percussion\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPercKickDrum = "Drum&Perc|Kick Drum";
-
+        
         public static ReadOnlySpan<byte> kDrumPercKickDrum_u8 => "Drum&Perc|Kick Drum\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPercSnareDrum = "Drum&Perc|Snare Drum";
-
+        
         public static ReadOnlySpan<byte> kDrumPercSnareDrum_u8 => "Drum&Perc|Snare Drum\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPercToms = "Drum&Perc|Toms";
-
+        
         public static ReadOnlySpan<byte> kDrumPercToms_u8 => "Drum&Perc|Toms\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPercHiHats = "Drum&Perc|HiHats";
-
+        
         public static ReadOnlySpan<byte> kDrumPercHiHats_u8 => "Drum&Perc|HiHats\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPercCymbals = "Drum&Perc|Cymbals";
-
+        
         public static ReadOnlySpan<byte> kDrumPercCymbals_u8 => "Drum&Perc|Cymbals\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kDrumPercOther = "Drum&Perc|Other";
-
+        
         public static ReadOnlySpan<byte> kDrumPercOther_u8 => "Drum&Perc|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kEthnic = "Ethnic";
-
+        
         public static ReadOnlySpan<byte> kEthnic_u8 => "Ethnic\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kEthnicAsian = "Ethnic|Asian";
-
+        
         public static ReadOnlySpan<byte> kEthnicAsian_u8 => "Ethnic|Asian\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kEthnicAfrican = "Ethnic|African";
-
+        
         public static ReadOnlySpan<byte> kEthnicAfrican_u8 => "Ethnic|African\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kEthnicEuropean = "Ethnic|European";
-
+        
         public static ReadOnlySpan<byte> kEthnicEuropean_u8 => "Ethnic|European\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kEthnicLatin = "Ethnic|Latin";
-
+        
         public static ReadOnlySpan<byte> kEthnicLatin_u8 => "Ethnic|Latin\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kEthnicAmerican = "Ethnic|American";
-
+        
         public static ReadOnlySpan<byte> kEthnicAmerican_u8 => "Ethnic|American\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kEthnicAlien = "Ethnic|Alien";
-
+        
         public static ReadOnlySpan<byte> kEthnicAlien_u8 => "Ethnic|Alien\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kEthnicOther = "Ethnic|Other";
-
+        
         public static ReadOnlySpan<byte> kEthnicOther_u8 => "Ethnic|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kGuitar = "Guitar/Plucked";
-
+        
         public static ReadOnlySpan<byte> kGuitar_u8 => "Guitar/Plucked\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kGuitarAGuitar = "Guitar/Plucked|A. Guitar";
-
+        
         public static ReadOnlySpan<byte> kGuitarAGuitar_u8 => "Guitar/Plucked|A. Guitar\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kGuitarEGuitar = "Guitar/Plucked|E. Guitar";
-
+        
         public static ReadOnlySpan<byte> kGuitarEGuitar_u8 => "Guitar/Plucked|E. Guitar\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kGuitarHarp = "Guitar/Plucked|Harp";
-
+        
         public static ReadOnlySpan<byte> kGuitarHarp_u8 => "Guitar/Plucked|Harp\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kGuitarEthnic = "Guitar/Plucked|Ethnic";
-
+        
         public static ReadOnlySpan<byte> kGuitarEthnic_u8 => "Guitar/Plucked|Ethnic\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kGuitarOther = "Guitar/Plucked|Other";
-
+        
         public static ReadOnlySpan<byte> kGuitarOther_u8 => "Guitar/Plucked|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kKeyboard = "Keyboard";
-
+        
         public static ReadOnlySpan<byte> kKeyboard_u8 => "Keyboard\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kKeyboardClavi = "Keyboard|Clavi";
-
+        
         public static ReadOnlySpan<byte> kKeyboardClavi_u8 => "Keyboard|Clavi\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kKeyboardEPiano = "Keyboard|E. Piano";
-
+        
         public static ReadOnlySpan<byte> kKeyboardEPiano_u8 => "Keyboard|E. Piano\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kKeyboardHarpsichord = "Keyboard|Harpsichord";
-
+        
         public static ReadOnlySpan<byte> kKeyboardHarpsichord_u8 => "Keyboard|Harpsichord\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kKeyboardOther = "Keyboard|Other";
-
+        
         public static ReadOnlySpan<byte> kKeyboardOther_u8 => "Keyboard|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kMusicalFX = "Musical FX";
-
+        
         public static ReadOnlySpan<byte> kMusicalFX_u8 => "Musical FX\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kMusicalFXHitsStabs = "Musical FX|Hits&Stabs";
-
+        
         public static ReadOnlySpan<byte> kMusicalFXHitsStabs_u8 => "Musical FX|Hits&Stabs\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kMusicalFXMotion = "Musical FX|Motion";
-
+        
         public static ReadOnlySpan<byte> kMusicalFXMotion_u8 => "Musical FX|Motion\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kMusicalFXSweeps = "Musical FX|Sweeps";
-
+        
         public static ReadOnlySpan<byte> kMusicalFXSweeps_u8 => "Musical FX|Sweeps\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kMusicalFXBeepsBlips = "Musical FX|Beeps&Blips";
-
+        
         public static ReadOnlySpan<byte> kMusicalFXBeepsBlips_u8 => "Musical FX|Beeps&Blips\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kMusicalFXScratches = "Musical FX|Scratches";
-
+        
         public static ReadOnlySpan<byte> kMusicalFXScratches_u8 => "Musical FX|Scratches\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kMusicalFXOther = "Musical FX|Other";
-
+        
         public static ReadOnlySpan<byte> kMusicalFXOther_u8 => "Musical FX|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kOrgan = "Organ";
-
+        
         public static ReadOnlySpan<byte> kOrgan_u8 => "Organ\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kOrganElectric = "Organ|Electric";
-
+        
         public static ReadOnlySpan<byte> kOrganElectric_u8 => "Organ|Electric\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kOrganPipe = "Organ|Pipe";
-
+        
         public static ReadOnlySpan<byte> kOrganPipe_u8 => "Organ|Pipe\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kOrganOther = "Organ|Other";
-
+        
         public static ReadOnlySpan<byte> kOrganOther_u8 => "Organ|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kPiano = "Piano";
-
+        
         public static ReadOnlySpan<byte> kPiano_u8 => "Piano\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kPianoAPiano = "Piano|A. Piano";
-
+        
         public static ReadOnlySpan<byte> kPianoAPiano_u8 => "Piano|A. Piano\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kPianoEGrand = "Piano|E. Grand";
-
+        
         public static ReadOnlySpan<byte> kPianoEGrand_u8 => "Piano|E. Grand\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kPianoOther = "Piano|Other";
-
+        
         public static ReadOnlySpan<byte> kPianoOther_u8 => "Piano|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSoundFX = "Sound FX";
-
+        
         public static ReadOnlySpan<byte> kSoundFX_u8 => "Sound FX\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSoundFXNature = "Sound FX|Nature";
-
+        
         public static ReadOnlySpan<byte> kSoundFXNature_u8 => "Sound FX|Nature\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSoundFXMechanical = "Sound FX|Mechanical";
-
+        
         public static ReadOnlySpan<byte> kSoundFXMechanical_u8 => "Sound FX|Mechanical\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSoundFXSynthetic = "Sound FX|Synthetic";
-
+        
         public static ReadOnlySpan<byte> kSoundFXSynthetic_u8 => "Sound FX|Synthetic\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSoundFXOther = "Sound FX|Other";
-
+        
         public static ReadOnlySpan<byte> kSoundFXOther_u8 => "Sound FX|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kStrings = "Strings";
-
+        
         public static ReadOnlySpan<byte> kStrings_u8 => "Strings\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kStringsViolin = "Strings|Violin";
-
+        
         public static ReadOnlySpan<byte> kStringsViolin_u8 => "Strings|Violin\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kStringsViola = "Strings|Viola";
-
+        
         public static ReadOnlySpan<byte> kStringsViola_u8 => "Strings|Viola\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kStringsCello = "Strings|Cello";
-
+        
         public static ReadOnlySpan<byte> kStringsCello_u8 => "Strings|Cello\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kStringsBass = "Strings|Bass";
-
+        
         public static ReadOnlySpan<byte> kStringsBass_u8 => "Strings|Bass\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kStringsSection = "Strings|Section";
-
+        
         public static ReadOnlySpan<byte> kStringsSection_u8 => "Strings|Section\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kStringsSynth = "Strings|Synth";
-
+        
         public static ReadOnlySpan<byte> kStringsSynth_u8 => "Strings|Synth\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kStringsOther = "Strings|Other";
-
+        
         public static ReadOnlySpan<byte> kStringsOther_u8 => "Strings|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthLead = "Synth Lead";
-
+        
         public static ReadOnlySpan<byte> kSynthLead_u8 => "Synth Lead\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthLeadAnalog = "Synth Lead|Analog";
-
+        
         public static ReadOnlySpan<byte> kSynthLeadAnalog_u8 => "Synth Lead|Analog\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthLeadDigital = "Synth Lead|Digital";
-
+        
         public static ReadOnlySpan<byte> kSynthLeadDigital_u8 => "Synth Lead|Digital\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthLeadArpeggio = "Synth Lead|Arpeggio";
-
+        
         public static ReadOnlySpan<byte> kSynthLeadArpeggio_u8 => "Synth Lead|Arpeggio\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthLeadOther = "Synth Lead|Other";
-
+        
         public static ReadOnlySpan<byte> kSynthLeadOther_u8 => "Synth Lead|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthPad = "Synth Pad";
-
+        
         public static ReadOnlySpan<byte> kSynthPad_u8 => "Synth Pad\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthPadSynthChoir = "Synth Pad|Synth Choir";
-
+        
         public static ReadOnlySpan<byte> kSynthPadSynthChoir_u8 => "Synth Pad|Synth Choir\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthPadAnalog = "Synth Pad|Analog";
-
+        
         public static ReadOnlySpan<byte> kSynthPadAnalog_u8 => "Synth Pad|Analog\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthPadDigital = "Synth Pad|Digital";
-
+        
         public static ReadOnlySpan<byte> kSynthPadDigital_u8 => "Synth Pad|Digital\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthPadMotion = "Synth Pad|Motion";
-
+        
         public static ReadOnlySpan<byte> kSynthPadMotion_u8 => "Synth Pad|Motion\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthPadOther = "Synth Pad|Other";
-
+        
         public static ReadOnlySpan<byte> kSynthPadOther_u8 => "Synth Pad|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthComp = "Synth Comp";
-
+        
         public static ReadOnlySpan<byte> kSynthComp_u8 => "Synth Comp\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthCompAnalog = "Synth Comp|Analog";
-
+        
         public static ReadOnlySpan<byte> kSynthCompAnalog_u8 => "Synth Comp|Analog\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthCompDigital = "Synth Comp|Digital";
-
+        
         public static ReadOnlySpan<byte> kSynthCompDigital_u8 => "Synth Comp|Digital\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kSynthCompOther = "Synth Comp|Other";
-
+        
         public static ReadOnlySpan<byte> kSynthCompOther_u8 => "Synth Comp|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kVocal = "Vocal";
-
+        
         public static ReadOnlySpan<byte> kVocal_u8 => "Vocal\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kVocalLeadVocal = "Vocal|Lead Vocal";
-
+        
         public static ReadOnlySpan<byte> kVocalLeadVocal_u8 => "Vocal|Lead Vocal\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kVocalAdlibs = "Vocal|Adlibs";
-
+        
         public static ReadOnlySpan<byte> kVocalAdlibs_u8 => "Vocal|Adlibs\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kVocalChoir = "Vocal|Choir";
-
+        
         public static ReadOnlySpan<byte> kVocalChoir_u8 => "Vocal|Choir\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kVocalSolo = "Vocal|Solo";
-
+        
         public static ReadOnlySpan<byte> kVocalSolo_u8 => "Vocal|Solo\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kVocalFX = "Vocal|FX";
-
+        
         public static ReadOnlySpan<byte> kVocalFX_u8 => "Vocal|FX\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kVocalSpoken = "Vocal|Spoken";
-
+        
         public static ReadOnlySpan<byte> kVocalSpoken_u8 => "Vocal|Spoken\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kVocalOther = "Vocal|Other";
-
+        
         public static ReadOnlySpan<byte> kVocalOther_u8 => "Vocal|Other\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kWoodwinds = "Woodwinds";
-
+        
         public static ReadOnlySpan<byte> kWoodwinds_u8 => "Woodwinds\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kWoodwindsEthnic = "Woodwinds|Ethnic";
-
+        
         public static ReadOnlySpan<byte> kWoodwindsEthnic_u8 => "Woodwinds|Ethnic\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kWoodwindsFlute = "Woodwinds|Flute";
-
+        
         public static ReadOnlySpan<byte> kWoodwindsFlute_u8 => "Woodwinds|Flute\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kWoodwindsOboe = "Woodwinds|Oboe";
-
+        
         public static ReadOnlySpan<byte> kWoodwindsOboe_u8 => "Woodwinds|Oboe\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kWoodwindsEnglHorn = "Woodwinds|Engl. Horn";
-
+        
         public static ReadOnlySpan<byte> kWoodwindsEnglHorn_u8 => "Woodwinds|Engl. Horn\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kWoodwindsClarinet = "Woodwinds|Clarinet";
-
+        
         public static ReadOnlySpan<byte> kWoodwindsClarinet_u8 => "Woodwinds|Clarinet\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kWoodwindsSaxophone = "Woodwinds|Saxophone";
-
+        
         public static ReadOnlySpan<byte> kWoodwindsSaxophone_u8 => "Woodwinds|Saxophone\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kWoodwindsBassoon = "Woodwinds|Bassoon";
-
+        
         public static ReadOnlySpan<byte> kWoodwindsBassoon_u8 => "Woodwinds|Bassoon\0"u8;
     }
-
+    
     public static partial class MusicalInstrument
     {
         public const string kWoodwindsOther = "Woodwinds|Other";
-
+        
         public static ReadOnlySpan<byte> kWoodwindsOther_u8 => "Woodwinds|Other\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         /// <summary>
@@ -18955,7 +18955,7 @@ internal static partial class LibVst
         /// {
         /// </remarks>
         public const string kAlternativeIndie = "Alternative/Indie";
-
+        
         /// <summary>
         ///  musicalStyle Predefined Musical Style
         /// </summary>
@@ -18965,763 +18965,763 @@ internal static partial class LibVst
         /// </remarks>
         public static ReadOnlySpan<byte> kAlternativeIndie_u8 => "Alternative/Indie\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAlternativeIndieGothRock = "Alternative/Indie|Goth Rock";
-
+        
         public static ReadOnlySpan<byte> kAlternativeIndieGothRock_u8 => "Alternative/Indie|Goth Rock\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAlternativeIndieGrunge = "Alternative/Indie|Grunge";
-
+        
         public static ReadOnlySpan<byte> kAlternativeIndieGrunge_u8 => "Alternative/Indie|Grunge\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAlternativeIndieNewWave = "Alternative/Indie|New Wave";
-
+        
         public static ReadOnlySpan<byte> kAlternativeIndieNewWave_u8 => "Alternative/Indie|New Wave\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAlternativeIndiePunk = "Alternative/Indie|Punk";
-
+        
         public static ReadOnlySpan<byte> kAlternativeIndiePunk_u8 => "Alternative/Indie|Punk\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAlternativeIndieCollegeRock = "Alternative/Indie|College Rock";
-
+        
         public static ReadOnlySpan<byte> kAlternativeIndieCollegeRock_u8 => "Alternative/Indie|College Rock\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAlternativeIndieDarkWave = "Alternative/Indie|Dark Wave";
-
+        
         public static ReadOnlySpan<byte> kAlternativeIndieDarkWave_u8 => "Alternative/Indie|Dark Wave\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAlternativeIndieHardcore = "Alternative/Indie|Hardcore";
-
+        
         public static ReadOnlySpan<byte> kAlternativeIndieHardcore_u8 => "Alternative/Indie|Hardcore\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAmbientChillOut = "Ambient/ChillOut";
-
+        
         public static ReadOnlySpan<byte> kAmbientChillOut_u8 => "Ambient/ChillOut\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAmbientChillOutNewAgeMeditation = "Ambient/ChillOut|New Age/Meditation";
-
+        
         public static ReadOnlySpan<byte> kAmbientChillOutNewAgeMeditation_u8 => "Ambient/ChillOut|New Age/Meditation\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAmbientChillOutDarkAmbient = "Ambient/ChillOut|Dark Ambient";
-
+        
         public static ReadOnlySpan<byte> kAmbientChillOutDarkAmbient_u8 => "Ambient/ChillOut|Dark Ambient\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAmbientChillOutDowntempo = "Ambient/ChillOut|Downtempo";
-
+        
         public static ReadOnlySpan<byte> kAmbientChillOutDowntempo_u8 => "Ambient/ChillOut|Downtempo\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kAmbientChillOutLounge = "Ambient/ChillOut|Lounge";
-
+        
         public static ReadOnlySpan<byte> kAmbientChillOutLounge_u8 => "Ambient/ChillOut|Lounge\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kBlues = "Blues";
-
+        
         public static ReadOnlySpan<byte> kBlues_u8 => "Blues\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kBluesAcousticBlues = "Blues|Acoustic Blues";
-
+        
         public static ReadOnlySpan<byte> kBluesAcousticBlues_u8 => "Blues|Acoustic Blues\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kBluesCountryBlues = "Blues|Country Blues";
-
+        
         public static ReadOnlySpan<byte> kBluesCountryBlues_u8 => "Blues|Country Blues\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kBluesElectricBlues = "Blues|Electric Blues";
-
+        
         public static ReadOnlySpan<byte> kBluesElectricBlues_u8 => "Blues|Electric Blues\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kBluesChicagoBlues = "Blues|Chicago Blues";
-
+        
         public static ReadOnlySpan<byte> kBluesChicagoBlues_u8 => "Blues|Chicago Blues\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kClassical = "Classical";
-
+        
         public static ReadOnlySpan<byte> kClassical_u8 => "Classical\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kClassicalBaroque = "Classical|Baroque";
-
+        
         public static ReadOnlySpan<byte> kClassicalBaroque_u8 => "Classical|Baroque\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kClassicalChamberMusic = "Classical|Chamber Music";
-
+        
         public static ReadOnlySpan<byte> kClassicalChamberMusic_u8 => "Classical|Chamber Music\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kClassicalMedieval = "Classical|Medieval";
-
+        
         public static ReadOnlySpan<byte> kClassicalMedieval_u8 => "Classical|Medieval\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kClassicalModernComposition = "Classical|Modern Composition";
-
+        
         public static ReadOnlySpan<byte> kClassicalModernComposition_u8 => "Classical|Modern Composition\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kClassicalOpera = "Classical|Opera";
-
+        
         public static ReadOnlySpan<byte> kClassicalOpera_u8 => "Classical|Opera\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kClassicalGregorian = "Classical|Gregorian";
-
+        
         public static ReadOnlySpan<byte> kClassicalGregorian_u8 => "Classical|Gregorian\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kClassicalRenaissance = "Classical|Renaissance";
-
+        
         public static ReadOnlySpan<byte> kClassicalRenaissance_u8 => "Classical|Renaissance\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kClassicalClassic = "Classical|Classic";
-
+        
         public static ReadOnlySpan<byte> kClassicalClassic_u8 => "Classical|Classic\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kClassicalRomantic = "Classical|Romantic";
-
+        
         public static ReadOnlySpan<byte> kClassicalRomantic_u8 => "Classical|Romantic\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kClassicalSoundtrack = "Classical|Soundtrack";
-
+        
         public static ReadOnlySpan<byte> kClassicalSoundtrack_u8 => "Classical|Soundtrack\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kCountry = "Country";
-
+        
         public static ReadOnlySpan<byte> kCountry_u8 => "Country\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kCountryCountryWestern = "Country|Country/Western";
-
+        
         public static ReadOnlySpan<byte> kCountryCountryWestern_u8 => "Country|Country/Western\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kCountryHonkyTonk = "Country|Honky Tonk";
-
+        
         public static ReadOnlySpan<byte> kCountryHonkyTonk_u8 => "Country|Honky Tonk\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kCountryUrbanCowboy = "Country|Urban Cowboy";
-
+        
         public static ReadOnlySpan<byte> kCountryUrbanCowboy_u8 => "Country|Urban Cowboy\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kCountryBluegrass = "Country|Bluegrass";
-
+        
         public static ReadOnlySpan<byte> kCountryBluegrass_u8 => "Country|Bluegrass\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kCountryAmericana = "Country|Americana";
-
+        
         public static ReadOnlySpan<byte> kCountryAmericana_u8 => "Country|Americana\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kCountrySquaredance = "Country|Squaredance";
-
+        
         public static ReadOnlySpan<byte> kCountrySquaredance_u8 => "Country|Squaredance\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kCountryNorthAmericanFolk = "Country|North American Folk";
-
+        
         public static ReadOnlySpan<byte> kCountryNorthAmericanFolk_u8 => "Country|North American Folk\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDance = "Electronica/Dance";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDance_u8 => "Electronica/Dance\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceMinimal = "Electronica/Dance|Minimal";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceMinimal_u8 => "Electronica/Dance|Minimal\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceClassicHouse = "Electronica/Dance|Classic House";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceClassicHouse_u8 => "Electronica/Dance|Classic House\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceElektroHouse = "Electronica/Dance|Elektro House";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceElektroHouse_u8 => "Electronica/Dance|Elektro House\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceFunkyHouse = "Electronica/Dance|Funky House";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceFunkyHouse_u8 => "Electronica/Dance|Funky House\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceIndustrial = "Electronica/Dance|Industrial";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceIndustrial_u8 => "Electronica/Dance|Industrial\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceElectronicBodyMusic = "Electronica/Dance|Electronic Body Music";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceElectronicBodyMusic_u8 => "Electronica/Dance|Electronic Body Music\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceTripHop = "Electronica/Dance|Trip Hop";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceTripHop_u8 => "Electronica/Dance|Trip Hop\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceTechno = "Electronica/Dance|Techno";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceTechno_u8 => "Electronica/Dance|Techno\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceDrumNBassJungle = "Electronica/Dance|Drum'n'Bass/Jungle";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceDrumNBassJungle_u8 => "Electronica/Dance|Drum'n'Bass/Jungle\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceElektro = "Electronica/Dance|Elektro";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceElektro_u8 => "Electronica/Dance|Elektro\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceTrance = "Electronica/Dance|Trance";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceTrance_u8 => "Electronica/Dance|Trance\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceDub = "Electronica/Dance|Dub";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceDub_u8 => "Electronica/Dance|Dub\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kElectronicaDanceBigBeats = "Electronica/Dance|Big Beats";
-
+        
         public static ReadOnlySpan<byte> kElectronicaDanceBigBeats_u8 => "Electronica/Dance|Big Beats\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kExperimental = "Experimental";
-
+        
         public static ReadOnlySpan<byte> kExperimental_u8 => "Experimental\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kExperimentalNewMusic = "Experimental|New Music";
-
+        
         public static ReadOnlySpan<byte> kExperimentalNewMusic_u8 => "Experimental|New Music\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kExperimentalFreeImprovisation = "Experimental|Free Improvisation";
-
+        
         public static ReadOnlySpan<byte> kExperimentalFreeImprovisation_u8 => "Experimental|Free Improvisation\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kExperimentalElectronicArtMusic = "Experimental|Electronic Art Music";
-
+        
         public static ReadOnlySpan<byte> kExperimentalElectronicArtMusic_u8 => "Experimental|Electronic Art Music\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kExperimentalNoise = "Experimental|Noise";
-
+        
         public static ReadOnlySpan<byte> kExperimentalNoise_u8 => "Experimental|Noise\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kJazz = "Jazz";
-
+        
         public static ReadOnlySpan<byte> kJazz_u8 => "Jazz\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kJazzNewOrleansJazz = "Jazz|New Orleans Jazz";
-
+        
         public static ReadOnlySpan<byte> kJazzNewOrleansJazz_u8 => "Jazz|New Orleans Jazz\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kJazzTraditionalJazz = "Jazz|Traditional Jazz";
-
+        
         public static ReadOnlySpan<byte> kJazzTraditionalJazz_u8 => "Jazz|Traditional Jazz\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kJazzOldtimeJazzDixiland = "Jazz|Oldtime Jazz/Dixiland";
-
+        
         public static ReadOnlySpan<byte> kJazzOldtimeJazzDixiland_u8 => "Jazz|Oldtime Jazz/Dixiland\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kJazzFusion = "Jazz|Fusion";
-
+        
         public static ReadOnlySpan<byte> kJazzFusion_u8 => "Jazz|Fusion\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kJazzAvantgarde = "Jazz|Avantgarde";
-
+        
         public static ReadOnlySpan<byte> kJazzAvantgarde_u8 => "Jazz|Avantgarde\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kJazzLatinJazz = "Jazz|Latin Jazz";
-
+        
         public static ReadOnlySpan<byte> kJazzLatinJazz_u8 => "Jazz|Latin Jazz\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kJazzFreeJazz = "Jazz|Free Jazz";
-
+        
         public static ReadOnlySpan<byte> kJazzFreeJazz_u8 => "Jazz|Free Jazz\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kJazzRagtime = "Jazz|Ragtime";
-
+        
         public static ReadOnlySpan<byte> kJazzRagtime_u8 => "Jazz|Ragtime\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kPop = "Pop";
-
+        
         public static ReadOnlySpan<byte> kPop_u8 => "Pop\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kPopBritpop = "Pop|Britpop";
-
+        
         public static ReadOnlySpan<byte> kPopBritpop_u8 => "Pop|Britpop\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kPopRock = "Pop|Pop/Rock";
-
+        
         public static ReadOnlySpan<byte> kPopRock_u8 => "Pop|Pop/Rock\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kPopTeenPop = "Pop|Teen Pop";
-
+        
         public static ReadOnlySpan<byte> kPopTeenPop_u8 => "Pop|Teen Pop\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kPopChartDance = "Pop|Chart Dance";
-
+        
         public static ReadOnlySpan<byte> kPopChartDance_u8 => "Pop|Chart Dance\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kPop80sPop = "Pop|80's Pop";
-
+        
         public static ReadOnlySpan<byte> kPop80sPop_u8 => "Pop|80's Pop\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kPopDancehall = "Pop|Dancehall";
-
+        
         public static ReadOnlySpan<byte> kPopDancehall_u8 => "Pop|Dancehall\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kPopDisco = "Pop|Disco";
-
+        
         public static ReadOnlySpan<byte> kPopDisco_u8 => "Pop|Disco\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetal = "Rock/Metal";
-
+        
         public static ReadOnlySpan<byte> kRockMetal_u8 => "Rock/Metal\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalBluesRock = "Rock/Metal|Blues Rock";
-
+        
         public static ReadOnlySpan<byte> kRockMetalBluesRock_u8 => "Rock/Metal|Blues Rock\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalClassicRock = "Rock/Metal|Classic Rock";
-
+        
         public static ReadOnlySpan<byte> kRockMetalClassicRock_u8 => "Rock/Metal|Classic Rock\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalHardRock = "Rock/Metal|Hard Rock";
-
+        
         public static ReadOnlySpan<byte> kRockMetalHardRock_u8 => "Rock/Metal|Hard Rock\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalRockRoll = "Rock/Metal|Rock &amp; Roll";
-
+        
         public static ReadOnlySpan<byte> kRockMetalRockRoll_u8 => "Rock/Metal|Rock &amp; Roll\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalSingerSongwriter = "Rock/Metal|Singer/Songwriter";
-
+        
         public static ReadOnlySpan<byte> kRockMetalSingerSongwriter_u8 => "Rock/Metal|Singer/Songwriter\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalHeavyMetal = "Rock/Metal|Heavy Metal";
-
+        
         public static ReadOnlySpan<byte> kRockMetalHeavyMetal_u8 => "Rock/Metal|Heavy Metal\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalDeathBlackMetal = "Rock/Metal|Death/Black Metal";
-
+        
         public static ReadOnlySpan<byte> kRockMetalDeathBlackMetal_u8 => "Rock/Metal|Death/Black Metal\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalNuMetal = "Rock/Metal|NuMetal";
-
+        
         public static ReadOnlySpan<byte> kRockMetalNuMetal_u8 => "Rock/Metal|NuMetal\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalReggae = "Rock/Metal|Reggae";
-
+        
         public static ReadOnlySpan<byte> kRockMetalReggae_u8 => "Rock/Metal|Reggae\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalBallad = "Rock/Metal|Ballad";
-
+        
         public static ReadOnlySpan<byte> kRockMetalBallad_u8 => "Rock/Metal|Ballad\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalAlternativeRock = "Rock/Metal|Alternative Rock";
-
+        
         public static ReadOnlySpan<byte> kRockMetalAlternativeRock_u8 => "Rock/Metal|Alternative Rock\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalRockabilly = "Rock/Metal|Rockabilly";
-
+        
         public static ReadOnlySpan<byte> kRockMetalRockabilly_u8 => "Rock/Metal|Rockabilly\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalThrashMetal = "Rock/Metal|Thrash Metal";
-
+        
         public static ReadOnlySpan<byte> kRockMetalThrashMetal_u8 => "Rock/Metal|Thrash Metal\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kRockMetalProgressiveRock = "Rock/Metal|Progressive Rock";
-
+        
         public static ReadOnlySpan<byte> kRockMetalProgressiveRock_u8 => "Rock/Metal|Progressive Rock\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kUrbanHipHopRB = "Urban (Hip-Hop / R&B)";
-
+        
         public static ReadOnlySpan<byte> kUrbanHipHopRB_u8 => "Urban (Hip-Hop / R&B)\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kUrbanHipHopRBClassic = "Urban (Hip-Hop / R&B)|Classic R&B";
-
+        
         public static ReadOnlySpan<byte> kUrbanHipHopRBClassic_u8 => "Urban (Hip-Hop / R&B)|Classic R&B\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kUrbanHipHopRBModern = "Urban (Hip-Hop / R&B)|Modern R&B";
-
+        
         public static ReadOnlySpan<byte> kUrbanHipHopRBModern_u8 => "Urban (Hip-Hop / R&B)|Modern R&B\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kUrbanHipHopRBPop = "Urban (Hip-Hop / R&B)|R&B Pop";
-
+        
         public static ReadOnlySpan<byte> kUrbanHipHopRBPop_u8 => "Urban (Hip-Hop / R&B)|R&B Pop\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kUrbanHipHopRBWestCoastHipHop = "Urban (Hip-Hop / R&B)|WestCoast Hip-Hop";
-
+        
         public static ReadOnlySpan<byte> kUrbanHipHopRBWestCoastHipHop_u8 => "Urban (Hip-Hop / R&B)|WestCoast Hip-Hop\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kUrbanHipHopRBEastCoastHipHop = "Urban (Hip-Hop / R&B)|EastCoast Hip-Hop";
-
+        
         public static ReadOnlySpan<byte> kUrbanHipHopRBEastCoastHipHop_u8 => "Urban (Hip-Hop / R&B)|EastCoast Hip-Hop\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kUrbanHipHopRBRapHipHop = "Urban (Hip-Hop / R&B)|Rap/Hip Hop";
-
+        
         public static ReadOnlySpan<byte> kUrbanHipHopRBRapHipHop_u8 => "Urban (Hip-Hop / R&B)|Rap/Hip Hop\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kUrbanHipHopRBSoul = "Urban (Hip-Hop / R&B)|Soul";
-
+        
         public static ReadOnlySpan<byte> kUrbanHipHopRBSoul_u8 => "Urban (Hip-Hop / R&B)|Soul\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kUrbanHipHopRBFunk = "Urban (Hip-Hop / R&B)|Funk";
-
+        
         public static ReadOnlySpan<byte> kUrbanHipHopRBFunk_u8 => "Urban (Hip-Hop / R&B)|Funk\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnic = "World/Ethnic";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnic_u8 => "World/Ethnic\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnicAfrica = "World/Ethnic|Africa";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnicAfrica_u8 => "World/Ethnic|Africa\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnicAsia = "World/Ethnic|Asia";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnicAsia_u8 => "World/Ethnic|Asia\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnicCeltic = "World/Ethnic|Celtic";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnicCeltic_u8 => "World/Ethnic|Celtic\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnicEurope = "World/Ethnic|Europe";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnicEurope_u8 => "World/Ethnic|Europe\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnicKlezmer = "World/Ethnic|Klezmer";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnicKlezmer_u8 => "World/Ethnic|Klezmer\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnicScandinavia = "World/Ethnic|Scandinavia";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnicScandinavia_u8 => "World/Ethnic|Scandinavia\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnicEasternEurope = "World/Ethnic|Eastern Europe";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnicEasternEurope_u8 => "World/Ethnic|Eastern Europe\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnicIndiaOriental = "World/Ethnic|India/Oriental";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnicIndiaOriental_u8 => "World/Ethnic|India/Oriental\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnicNorthAmerica = "World/Ethnic|North America";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnicNorthAmerica_u8 => "World/Ethnic|North America\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnicSouthAmerica = "World/Ethnic|South America";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnicSouthAmerica_u8 => "World/Ethnic|South America\0"u8;
     }
-
+    
     public static partial class MusicalStyle
     {
         public const string kWorldEthnicAustralia = "World/Ethnic|Australia";
-
+        
         public static ReadOnlySpan<byte> kWorldEthnicAustralia_u8 => "World/Ethnic|Australia\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         /// <summary>
@@ -19732,7 +19732,7 @@ internal static partial class LibVst
         /// {----TYPE------------------------------------
         /// </remarks>
         public const string kMono = "Mono";
-
+        
         /// <summary>
         ///  musicalCharacter Predefined Musical Character
         /// </summary>
@@ -19742,390 +19742,390 @@ internal static partial class LibVst
         /// </remarks>
         public static ReadOnlySpan<byte> kMono_u8 => "Mono\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kPoly = "Poly";
-
+        
         public static ReadOnlySpan<byte> kPoly_u8 => "Poly\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kSplit = "Split";
-
+        
         public static ReadOnlySpan<byte> kSplit_u8 => "Split\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kLayer = "Layer";
-
+        
         public static ReadOnlySpan<byte> kLayer_u8 => "Layer\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kGlide = "Glide";
-
+        
         public static ReadOnlySpan<byte> kGlide_u8 => "Glide\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kGlissando = "Glissando";
-
+        
         public static ReadOnlySpan<byte> kGlissando_u8 => "Glissando\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kMajor = "Major";
-
+        
         public static ReadOnlySpan<byte> kMajor_u8 => "Major\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kMinor = "Minor";
-
+        
         public static ReadOnlySpan<byte> kMinor_u8 => "Minor\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kSingle = "Single";
-
+        
         public static ReadOnlySpan<byte> kSingle_u8 => "Single\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kEnsemble = "Ensemble";
-
+        
         public static ReadOnlySpan<byte> kEnsemble_u8 => "Ensemble\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kAcoustic = "Acoustic";
-
+        
         public static ReadOnlySpan<byte> kAcoustic_u8 => "Acoustic\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kElectric = "Electric";
-
+        
         public static ReadOnlySpan<byte> kElectric_u8 => "Electric\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kAnalog = "Analog";
-
+        
         public static ReadOnlySpan<byte> kAnalog_u8 => "Analog\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kDigital = "Digital";
-
+        
         public static ReadOnlySpan<byte> kDigital_u8 => "Digital\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kVintage = "Vintage";
-
+        
         public static ReadOnlySpan<byte> kVintage_u8 => "Vintage\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kModern = "Modern";
-
+        
         public static ReadOnlySpan<byte> kModern_u8 => "Modern\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kOld = "Old";
-
+        
         public static ReadOnlySpan<byte> kOld_u8 => "Old\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kNew = "New";
-
+        
         public static ReadOnlySpan<byte> kNew_u8 => "New\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         /// <summary>
         /// ----TONE------------------------------------
         /// </summary>
         public const string kClean = "Clean";
-
+        
         /// <summary>
         /// ----TONE------------------------------------
         /// </summary>
         public static ReadOnlySpan<byte> kClean_u8 => "Clean\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kDistorted = "Distorted";
-
+        
         public static ReadOnlySpan<byte> kDistorted_u8 => "Distorted\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kDry = "Dry";
-
+        
         public static ReadOnlySpan<byte> kDry_u8 => "Dry\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kProcessed = "Processed";
-
+        
         public static ReadOnlySpan<byte> kProcessed_u8 => "Processed\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kHarmonic = "Harmonic";
-
+        
         public static ReadOnlySpan<byte> kHarmonic_u8 => "Harmonic\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kDissonant = "Dissonant";
-
+        
         public static ReadOnlySpan<byte> kDissonant_u8 => "Dissonant\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kClear = "Clear";
-
+        
         public static ReadOnlySpan<byte> kClear_u8 => "Clear\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kNoisy = "Noisy";
-
+        
         public static ReadOnlySpan<byte> kNoisy_u8 => "Noisy\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kThin = "Thin";
-
+        
         public static ReadOnlySpan<byte> kThin_u8 => "Thin\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kRich = "Rich";
-
+        
         public static ReadOnlySpan<byte> kRich_u8 => "Rich\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kDark = "Dark";
-
+        
         public static ReadOnlySpan<byte> kDark_u8 => "Dark\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kBright = "Bright";
-
+        
         public static ReadOnlySpan<byte> kBright_u8 => "Bright\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kCold = "Cold";
-
+        
         public static ReadOnlySpan<byte> kCold_u8 => "Cold\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kWarm = "Warm";
-
+        
         public static ReadOnlySpan<byte> kWarm_u8 => "Warm\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kMetallic = "Metallic";
-
+        
         public static ReadOnlySpan<byte> kMetallic_u8 => "Metallic\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kWooden = "Wooden";
-
+        
         public static ReadOnlySpan<byte> kWooden_u8 => "Wooden\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kGlass = "Glass";
-
+        
         public static ReadOnlySpan<byte> kGlass_u8 => "Glass\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kPlastic = "Plastic";
-
+        
         public static ReadOnlySpan<byte> kPlastic_u8 => "Plastic\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         /// <summary>
         /// ----ENVELOPE------------------------------------
         /// </summary>
         public const string kPercussive = "Percussive";
-
+        
         /// <summary>
         /// ----ENVELOPE------------------------------------
         /// </summary>
         public static ReadOnlySpan<byte> kPercussive_u8 => "Percussive\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kSoft = "Soft";
-
+        
         public static ReadOnlySpan<byte> kSoft_u8 => "Soft\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kFast = "Fast";
-
+        
         public static ReadOnlySpan<byte> kFast_u8 => "Fast\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kSlow = "Slow";
-
+        
         public static ReadOnlySpan<byte> kSlow_u8 => "Slow\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kShort = "Short";
-
+        
         public static ReadOnlySpan<byte> kShort_u8 => "Short\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kLong = "Long";
-
+        
         public static ReadOnlySpan<byte> kLong_u8 => "Long\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kAttack = "Attack";
-
+        
         public static ReadOnlySpan<byte> kAttack_u8 => "Attack\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kRelease = "Release";
-
+        
         public static ReadOnlySpan<byte> kRelease_u8 => "Release\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kDecay = "Decay";
-
+        
         public static ReadOnlySpan<byte> kDecay_u8 => "Decay\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kSustain = "Sustain";
-
+        
         public static ReadOnlySpan<byte> kSustain_u8 => "Sustain\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kFastAttack = "Fast Attack";
-
+        
         public static ReadOnlySpan<byte> kFastAttack_u8 => "Fast Attack\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kSlowAttack = "Slow Attack";
-
+        
         public static ReadOnlySpan<byte> kSlowAttack_u8 => "Slow Attack\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kShortRelease = "Short Release";
-
+        
         public static ReadOnlySpan<byte> kShortRelease_u8 => "Short Release\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kLongRelease = "Long Release";
-
+        
         public static ReadOnlySpan<byte> kLongRelease_u8 => "Long Release\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kStatic = "Static";
-
+        
         public static ReadOnlySpan<byte> kStatic_u8 => "Static\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kMoving = "Moving";
-
+        
         public static ReadOnlySpan<byte> kMoving_u8 => "Moving\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kLoop = "Loop";
-
+        
         public static ReadOnlySpan<byte> kLoop_u8 => "Loop\0"u8;
     }
-
+    
     public static partial class MusicalCharacter
     {
         public const string kOneShot = "One Shot";
-
+        
         public static ReadOnlySpan<byte> kOneShot_u8 => "One Shot\0"u8;
     }
-
+    
     public partial class ComObjectManager
     {
         private static void RegisterAllInterfaces()

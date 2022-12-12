@@ -101,12 +101,12 @@ public class CodeGenerator
 
         // Prepare for the C# generated file
         var csFile = new CSharpGeneratedFile("/LibVst.generated.cs");
+        csFile.Members.Add(new CSharpFreeMember() { Text = "#pragma warning disable CS0649" });
         csFile.Members.Add(new CSharpNamespace("NPlug.Interop") { IsFileScoped = true });
-
         csFile.Members.Add(new CSharpUsingDeclaration("System.Diagnostics.CodeAnalysis"));
         csFile.Members.Add(new CSharpUsingDeclaration("System.Runtime.CompilerServices"));
         csFile.Members.Add(new CSharpUsingDeclaration("System.Runtime.InteropServices"));
-        
+
         var csLibVst = new CSharpClass("LibVst")
         {
             Modifiers = CSharpModifiers.Static | CSharpModifiers.Partial,
@@ -249,7 +249,7 @@ public class CodeGenerator
 
         return builder.ToString();
     }
-    
+
 
     private void ProcessNamespaces(CppNamespace ns, List<CppNamespace> namespaces)
     {
@@ -374,7 +374,7 @@ public class CodeGenerator
     private CSharpEnum? ProcessEnum(CppEnum cppEnum)
     {
         if (string.IsNullOrEmpty(cppEnum.Name)) return null;
-        
+
         var csEnum = new CSharpEnum(cppEnum.Name)
         {
             CppElement = cppEnum
@@ -404,8 +404,16 @@ public class CodeGenerator
 
         return csEnum;
     }
-    
+
+
     private CSharpType GetCSharpType(CppType cppType)
+    {
+        var csType = GetCSharpTypeImpl(cppType);
+        csType.CppElement = cppType;
+        return csType;
+    }
+
+    private CSharpType GetCSharpTypeImpl(CppType cppType)
     {
         if (cppType is CppQualifiedType qualifiedType && qualifiedType.Qualifier == CppTypeQualifier.Const)
         {
@@ -544,6 +552,23 @@ public class CodeGenerator
         }
 
         return type;
+    }
+
+    private CSharpType GetUnmanagedReturnType(CSharpType csType)
+    {
+        if (csType is CSharpStruct)
+        {
+            if (csType.CppElement is CppTypedef typeDef && (typeDef.ElementType.TypeKind == CppTypeKind.Primitive || typeDef.ElementType.TypeKind == CppTypeKind.Pointer))
+            {
+                return GetCSharpType(typeDef.ElementType);
+            }
+        }
+        else if (csType.ToString() == "ComResult")
+        {
+            return CSharpPrimitiveType.Int();
+        }
+
+        return csType;
     }
 
     static void ApplyUnsafe(CSharpStruct csStruct, CSharpType csType)
@@ -792,11 +817,7 @@ public class CodeGenerator
                     csMethodWrap.Attributes.Add(new CSharpFreeAttribute("UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})"));
 
                     csMethod.ReturnType = GetCSharpReturnOrParameterType(cppMethod.ReturnType);
-                    csMethodWrap.ReturnType = csMethod.ReturnType;
-                    if (csMethodWrap.ReturnType.ToString() == "ComResult")
-                    {
-                        csMethodWrap.ReturnType = CSharpPrimitiveType.Int();
-                    }
+                    csMethodWrap.ReturnType = GetUnmanagedReturnType(csMethod.ReturnType);
                     csMethod.Parameters.Add(new CSharpParameter("self") { ParameterType = new CSharpFreeType($"{name}*") });
                     foreach (var cppMethodParameter in cppMethod.Parameters)
                     {
@@ -810,7 +831,7 @@ public class CodeGenerator
                     csMethodWrap.Parameters.AddRange(csMethod.Parameters);
                     csMethodWrap.Body = (writer, element) =>
                     {
-                        var returnTypeAsStr = csMethodWrap.ReturnType.ToString();
+                        var returnTypeAsStr = csMethod.ReturnType.ToString();
                         var isComResult = returnTypeAsStr == "ComResult";
 
                         writer.WriteLine("if (InteropHelper.IsTracerEnabled)");
@@ -844,7 +865,7 @@ public class CodeGenerator
                             writer.WriteLine("__evt__.Exception = ex;");
                             if (isComResult)
                             {
-                                writer.WriteLine("return ex;");
+                                writer.WriteLine("return (ComResult)ex;");
                             }
                             else if (returnTypeAsStr != "void")
                             {
@@ -886,7 +907,7 @@ public class CodeGenerator
                             writer.OpenBraceBlock();
                             if (isComResult)
                             {
-                                writer.WriteLine("return ex;");
+                                writer.WriteLine("return (ComResult)ex;");
                             }
                             else if (returnTypeAsStr != "void")
                             {
@@ -1027,7 +1048,14 @@ public class CodeGenerator
         {
             csMethod.Attributes.Add(new CSharpFreeAttribute("UnscopedRef"));
         }
+
         csMethod.ReturnType = GetCSharpReturnOrParameterType(cppMethod.ReturnType);
+        var unmanagedReturnType = GetUnmanagedReturnType(csMethod.ReturnType);
+        if (csMethod.ReturnType.ToString() != "ComResult")
+        {
+            csMethod.ReturnType = unmanagedReturnType;
+        }
+
         foreach (var cppMethodParameter in cppMethod.Parameters)
         {
             var csParameter = new CSharpParameter
@@ -1070,13 +1098,8 @@ public class CodeGenerator
                 functionPointer.IsUnmanaged = true;
                 functionPointer.UnmanagedCallingConvention.Add("MemberFunction");
                 functionPointer.Parameters.Insert(0, thisPointer);
+                functionPointer.ReturnType = unmanagedReturnType;
                 var builder = new StringBuilder();
-
-                // Change ComResult to int
-                if (functionPointer.ReturnType.ToString() == "ComResult")
-                {
-                    functionPointer.ReturnType = CSharpPrimitiveType.Int();
-                }
 
                 writer.WriteLine("if (InteropHelper.IsTracerEnabled)");
                 writer.OpenBraceBlock();
@@ -1200,7 +1223,7 @@ public class CodeGenerator
 
         return (match.Groups[1].Value, result);
     }
-    
+
     private string[] LoadContent(string filePath)
     {
         if (!_fileToContent.TryGetValue(filePath, out var content))
@@ -1210,7 +1233,7 @@ public class CodeGenerator
         }
         return content;
     }
-    
+
     record struct Uuid(uint Value1, uint Value2, uint Value3, uint Value4)
     {
         public ushort Value2High => (ushort)(Value2 >> 16);

@@ -13,17 +13,20 @@ internal static unsafe partial class LibVst
     {
         public void CopyFrom(string name)
         {
-            var maxLength = Math.Min(name.Length, 127);
-            var localSpan = MemoryMarshal.CreateSpan(ref this.Value[0], maxLength + 1);
+            var maxLength = Math.Min(name.Length, sizeof(String128));
+            var localSpan = MemoryMarshal.CreateSpan(ref this.Value[0], maxLength);
             name.AsSpan().Slice(0, maxLength).CopyTo(localSpan);
-            localSpan[maxLength] = (char)0;
+            if (maxLength < sizeof(String128))
+            {
+                localSpan[maxLength] = (char)0;
+            }
         }
 
         public override string ToString()
         {
             fixed (char* pValue = Value)
             {
-                var span = new ReadOnlySpan<char>(pValue, 128);
+                var span = new ReadOnlySpan<char>(pValue, sizeof(String128));
                 var index = span.IndexOf((char)0);
                 if (index >= 0)
                 {

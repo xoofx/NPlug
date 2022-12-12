@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace NPlug.Interop;
 
@@ -10,19 +11,24 @@ internal static unsafe partial class LibVst
 {
     public partial struct IProgramListData
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IAudioProcessorProgramListData Get(IProgramListData* self) => (IAudioProcessorProgramListData)((ComObjectHandle*)self)->Target!;
+
         private static partial ComResult programDataSupported_ToManaged(IProgramListData* self, ProgramListID listId)
         {
-            throw new NotImplementedException();
+            return Get(self).IsProgramDataSupported(new AudioProgramListId(listId.Value));
         }
 
         private static partial ComResult getProgramData_ToManaged(IProgramListData* self, ProgramListID listId, int programIndex, IBStream* data)
         {
-            throw new NotImplementedException();
+            Get(self).GetProgramData(new AudioProgramListId(listId.Value), programIndex, IBStreamClient.GetStream(data));
+            return true;
         }
 
         private static partial ComResult setProgramData_ToManaged(IProgramListData* self, ProgramListID listId, int programIndex, IBStream* data)
         {
-            throw new NotImplementedException();
+            Get(self).SetProgramData(new AudioProgramListId(listId.Value), programIndex, IBStreamClient.GetStream(data));
+            return true;
         }
     }
 }

@@ -170,7 +170,7 @@ public abstract class AudioControllerHost
 public record struct AudioProgressId(ulong Value);
 
 /// <summary>
-/// 
+///
 /// </summary>
 public enum AudioProgressType : uint
 {
@@ -185,4 +185,7 @@ public enum AudioProgressType : uint
     UIBackgroundTask,
 }
 
-public record struct AudioProgramListId(int Value);
+public readonly record struct AudioProgramListId(int Value)
+{
+    public static readonly AudioProgramListId NoPrograms = new (-1);
+}

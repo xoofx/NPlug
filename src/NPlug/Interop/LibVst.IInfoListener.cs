@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace NPlug.Interop;
 
@@ -10,9 +11,20 @@ internal static unsafe partial class LibVst
 {
     public partial struct IInfoListener
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IAudioControllerInfoListener Get(IInfoListener* self) => (IAudioControllerInfoListener)((ComObjectHandle*)self)->Target!;
+
         private static partial ComResult setChannelContextInfos_ToManaged(IInfoListener* self, LibVst.IAttributeList* list)
         {
-            throw new NotImplementedException();
+            var controller = Get(self);
+            // Should be always the case, but in case
+            if (controller.Host is AudioHostApplicationClient hostClient)
+            {
+                Get(self).SetChannelContextInfos(new AudioAttributeList(hostClient, (nint)list));
+                return true;
+            }
+
+            return false;
         }
     }
 }

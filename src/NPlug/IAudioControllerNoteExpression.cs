@@ -25,12 +25,12 @@ public interface IAudioControllerNoteExpression : IAudioController
     /// <summary>
     /// Returns number of supported note change types for event bus index and channel.
     /// </summary>
-    int GetNoteExpressionCount(int busIndex, int channel);
+    int GetNoteExpressionCount(int busIndex, short channel);
 
     /// <summary>
     /// Returns note change type info.
     /// </summary>
-    AudioNoteExpressionTypeInfo GetNoteExpressionInfo(int busIndex, int channel, int noteExpressionIndex);
+    AudioNoteExpressionTypeInfo GetNoteExpressionInfo(int busIndex, short channel, int noteExpressionIndex);
 
     /// <summary>
     /// Gets a user readable representation of the normalized note change value.

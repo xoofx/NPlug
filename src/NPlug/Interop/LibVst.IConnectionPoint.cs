@@ -15,6 +15,9 @@ internal static unsafe partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static IAudioConnectionPoint Get(IConnectionPoint* self) => (NPlug.IAudioConnectionPoint)((ComObjectHandle*)self)->Target!;
 
+        /// <summary>
+        /// Keep track of active connection points.
+        /// </summary>
         private static readonly Dictionary<IntPtr, AudioConnectionPoint> ActiveConnectionPoints = new();
 
         private static partial ComResult connect_ToManaged(IConnectionPoint* self, IConnectionPoint* other)
@@ -57,7 +60,7 @@ internal static unsafe partial class LibVst
         private static partial ComResult notify_ToManaged(IConnectionPoint* self, IMessage* message)
         {
             var connectionPoint = Get(self);
-            // We support only 
+            // We support only
             if (connectionPoint is IAudioPluginComponent { Host: AudioHostApplicationClient host })
             {
                 var audioMessage = new AudioMessage(host, (IntPtr)message, new AudioAttributeList(host, (IntPtr)message->getAttributes()));

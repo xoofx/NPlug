@@ -29,6 +29,18 @@ internal static unsafe partial class LibVst
             { IPluginFactory2.IId, TryMatchQueryInterface<IPluginFactory2, IAudioPluginFactory> },
             { IPluginFactory3.IId, TryMatchQueryInterface<IPluginFactory3, IAudioPluginFactory> },
             { IProcessContextRequirements.IId, TryMatchQueryInterface<IProcessContextRequirements, NPlug.IAudioProcessor> },
+            { IAutomationState.IId, TryMatchQueryInterface<IAutomationState, IAudioControllerAutomationState> },
+            { IEditController2.IId, TryMatchQueryInterface<IEditController2, IAudioControllerExtended> },
+            { IEditControllerHostEditing.IId, TryMatchQueryInterface<IEditControllerHostEditing, IAudioControllerHostEditing> },
+            { IInfoListener.IId, TryMatchQueryInterface<IInfoListener, IAudioControllerInfoListener> },
+            { IInterAppAudioPresetManager.IId, TryMatchQueryInterface<IInterAppAudioPresetManager, IAudioControllerInterAppAudioPresetManager> },
+            { IKeyswitchController.IId, TryMatchQueryInterface<IKeyswitchController, IAudioControllerKeySwitch> },
+            { IMidiMapping.IId, TryMatchQueryInterface<IMidiMapping, IAudioControllerMidiMapping> },
+            { INoteExpressionController.IId, TryMatchQueryInterface<INoteExpressionController, IAudioControllerNoteExpression> },
+            { IProgramListData.IId, TryMatchQueryInterface<IProgramListData, IAudioProcessorProgramListData> },
+            { IUnitData.IId, TryMatchQueryInterface<IUnitData, IAudioProcessorUnitData> },
+            { IUnitInfo.IId, TryMatchQueryInterface<IUnitInfo, IAudioControllerUnitInfo> },
+            { IXmlRepresentationController.IId, TryMatchQueryInterface<IXmlRepresentationController, IAudioControllerXmlRepresentation> },
         };
 
         private static partial ComResult queryInterface_ToManaged(FUnknown* pObj, Guid* iid, void** pInterface)

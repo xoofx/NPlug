@@ -4,7 +4,11 @@
 
 namespace NPlug;
 
-public class AudioProgramListInfo
-{
-
-}
+/// <summary>
+/// Basic Program List Description.
+/// </summary>
+/// <param name="Id">program list identifier</param>
+/// <param name="Name">name of program list</param>
+/// <param name="ProgramCount">number of programs in this list</param>
+/// <seealso cref="IAudioControllerUnitInfo"/>
+public sealed record AudioProgramListInfo(AudioProgramListId Id, string Name, int ProgramCount);

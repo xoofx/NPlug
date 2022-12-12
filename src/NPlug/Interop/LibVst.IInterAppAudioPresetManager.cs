@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace NPlug.Interop;
 
@@ -10,24 +11,31 @@ internal static unsafe partial class LibVst
 {
     public partial struct IInterAppAudioPresetManager
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IAudioControllerInterAppAudioPresetManager Get(IInterAppAudioPresetManager* self) => (IAudioControllerInterAppAudioPresetManager)((ComObjectHandle*)self)->Target!;
+
         private static partial ComResult runLoadPresetBrowser_ToManaged(IInterAppAudioPresetManager* self)
         {
-            throw new NotImplementedException();
+            Get(self).RunLoadPresetBrowser();
+            return true;
         }
-        
+
         private static partial ComResult runSavePresetBrowser_ToManaged(IInterAppAudioPresetManager* self)
         {
-            throw new NotImplementedException();
+            Get(self).RunSavePresetBrowser();
+            return true;
         }
-        
+
         private static partial ComResult loadNextPreset_ToManaged(IInterAppAudioPresetManager* self)
         {
-            throw new NotImplementedException();
+            Get(self).LoadNextPreset();
+            return true;
         }
-        
+
         private static partial ComResult loadPreviousPreset_ToManaged(IInterAppAudioPresetManager* self)
         {
-            throw new NotImplementedException();
+            Get(self).LoadPreviousPreset();
+            return true;
         }
     }
 }

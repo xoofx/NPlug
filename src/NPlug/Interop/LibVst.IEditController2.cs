@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace NPlug.Interop;
 
@@ -10,19 +11,22 @@ internal static unsafe partial class LibVst
 {
     public partial struct IEditController2
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IAudioControllerExtended Get(IEditController2* self) => (IAudioControllerExtended)((ComObjectHandle*)self)->Target!;
+
         private static partial ComResult setKnobMode_ToManaged(IEditController2* self, KnobMode mode)
         {
-            throw new NotImplementedException();
+            return Get(self).TrySetKnobMode((AudioControllerKnobModes)mode.Value);
         }
 
         private static partial ComResult openHelp_ToManaged(IEditController2* self, byte onlyCheck)
         {
-            throw new NotImplementedException();
+            return Get(self).TryOpenHelp(onlyCheck != 0);
         }
 
         private static partial ComResult openAboutBox_ToManaged(IEditController2* self, byte onlyCheck)
         {
-            throw new NotImplementedException();
+            return Get(self).TryOpenAboutBox(onlyCheck != 0);
         }
     }
 }

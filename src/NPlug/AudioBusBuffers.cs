@@ -10,19 +10,19 @@ namespace NPlug;
 public readonly unsafe ref struct AudioBusBuffers
 {
     /// <summary>
-    /// number of audio channels in bus
+    /// Number of audio channels in bus.
     /// </summary>
     public readonly int ChannelCount;
 
     /// <summary>
-    /// Bitset of silence state per channel
+    /// Bitset of silence state per channel.
     /// </summary>
     public readonly ulong SilenceFlags;
 
     private readonly void** _channelBuffers;
 
     public bool IsChannelSilence(int index) => (SilenceFlags & (1UL << index)) != 0;
-    
+
     public Span<float> AsFloat32(in AudioProcessSetupData setupData, in AudioProcessData processData, int channelIndex)
     {
         if (setupData.SampleSize != AudioSampleSize.Float32) throw new InvalidOperationException($"Expecting 32-bit samples but getting {setupData.SampleSize}");

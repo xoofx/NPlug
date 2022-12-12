@@ -22,17 +22,17 @@ public interface IAudioControllerExtended : IAudioController
 
     /// <summary>
     /// Host could ask to open the plug-in help (could be: opening a PDF document or link to a web page).
-    /// The host could call it with onlyCheck set to true for testing support of open Help. 
+    /// The host could call it with onlyCheck set to true for testing support of open Help.
     /// Return kResultFalse means not supported function.
     /// </summary>
     /// <remarks>
     /// VST Method from `IEditController2`.
     /// </remarks>
-    bool TryOpenHelp(byte onlyCheck);
+    bool TryOpenHelp(bool onlyCheck);
 
     /// <summary>
     /// Host could ask to open the plug-in about box.
-    /// The host could call it with onlyCheck set to true for testing support of open AboutBox. 
+    /// The host could call it with onlyCheck set to true for testing support of open AboutBox.
     /// Return kResultFalse means not supported function.
     /// </summary>
     bool TryOpenAboutBox(bool onlyCheck);

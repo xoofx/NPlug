@@ -37,6 +37,7 @@ public class CodeGenerator
     private readonly Dictionary<string, string[]> _fileToContent;
     private readonly Dictionary<string, CSharpType> _cppTypeToCSharpType;
     private readonly HashSet<string> _hostOnly;
+    private readonly HashSet<string> _pluginOnly;
     private readonly List<CSharpGeneratedFile> _toManagedFiles;
     private readonly List<CSharpStruct> _allGeneratedVtbls;
     private CSharpClass? _container;
@@ -47,6 +48,11 @@ public class CodeGenerator
         _hostOnly = new HashSet<string>()
         {
             "IComponentHandler3" // Force this component to be host only
+        };
+        _pluginOnly = new HashSet<string>()
+        {
+            "IPluginFactory2", // Force this component to be plugin only
+            "IPluginFactory3" // Force this component to be plugin only
         };
         _nameToIID = new Dictionary<string, Uuid>();
         _generatedCSharpElements = new Dictionary<string, CSharpElement>();
@@ -97,9 +103,10 @@ public class CodeGenerator
         var csFile = new CSharpGeneratedFile("/LibVst.generated.cs");
         csFile.Members.Add(new CSharpNamespace("NPlug.Interop") { IsFileScoped = true });
 
-        csFile.Members.Add(new CSharpUsingDeclaration("System.Runtime.InteropServices"));
+        csFile.Members.Add(new CSharpUsingDeclaration("System.Diagnostics.CodeAnalysis"));
         csFile.Members.Add(new CSharpUsingDeclaration("System.Runtime.CompilerServices"));
-
+        csFile.Members.Add(new CSharpUsingDeclaration("System.Runtime.InteropServices"));
+        
         var csLibVst = new CSharpClass("LibVst")
         {
             Modifiers = CSharpModifiers.Static | CSharpModifiers.Partial,
@@ -671,6 +678,10 @@ public class CodeGenerator
             {
                 kind = InterfaceKind.Host;
             }
+            else if (_pluginOnly.Contains(name))
+            {
+                kind = InterfaceKind.Plugin;
+            }
 
             if (kind == InterfaceKind.None)
             {
@@ -693,7 +704,7 @@ public class CodeGenerator
                 var baseType = GetBaseType(cppClass);
                 if (baseType is not null)
                 {
-                    WriteBaseMethods(baseType, csStruct, rcwMethods, ref virtualMethodIndex);
+                    WriteBaseMethods(baseType, csStruct, rcwMethods, ref virtualMethodIndex, (CSharpStruct)GetCSharpType(baseType));
                 }
             }
 
@@ -984,17 +995,17 @@ public class CodeGenerator
 
     private static CppClass? GetBaseType(CppClass cppClass) => cppClass.BaseTypes.Count > 0 ? cppClass.BaseTypes[0].Type as CppClass : null;
 
-    private void WriteBaseMethods(CppClass cppClass, CSharpStruct csClass, List<CSharpMethod> rcwMethods, ref int virtualMethodIndex)
+    private void WriteBaseMethods(CppClass cppClass, CSharpStruct csClass, List<CSharpMethod> rcwMethods, ref int virtualMethodIndex, CSharpStruct? csBaseClass = null)
     {
         var baseClass = cppClass.BaseTypes.Count > 0 ? cppClass.BaseTypes[0].Type as CppClass : null;
         if (baseClass is not null)
         {
-            WriteBaseMethods(baseClass, csClass, rcwMethods, ref virtualMethodIndex);
+            WriteBaseMethods(baseClass, csClass, rcwMethods, ref virtualMethodIndex, (CSharpStruct)GetCSharpType(baseClass));
         }
 
         foreach (var cppMethod in cppClass.Functions.Where(function => (function.Flags & CppFunctionFlags.Pure) != 0))
         {
-            var csMethod = CreateMethodRcw(cppMethod, csClass, virtualMethodIndex);
+            var csMethod = CreateMethodRcw(cppMethod, csClass, virtualMethodIndex, csBaseClass);
             rcwMethods.Add(csMethod);
             virtualMethodIndex++;
         }
@@ -1002,7 +1013,7 @@ public class CodeGenerator
 
     private static readonly CSharpAttribute MethodImplAggressiveInliningAttribute = new CSharpFreeAttribute($"MethodImpl({nameof(MethodImplOptions)}.{nameof(MethodImplOptions.AggressiveInlining)})");
 
-    private CSharpMethod CreateMethodRcw(CppFunction cppMethod, CSharpStruct csClass, int virtualMethodIndex)
+    private CSharpMethod CreateMethodRcw(CppFunction cppMethod, CSharpStruct csClass, int virtualMethodIndex, CSharpStruct? csBaseClass = null)
     {
         var csMethod = new CSharpMethod
         {
@@ -1012,6 +1023,10 @@ public class CodeGenerator
         };
         UpdateComment(csMethod);
         csMethod.Attributes.Add(MethodImplAggressiveInliningAttribute);
+        if (csBaseClass != null)
+        {
+            csMethod.Attributes.Add(new CSharpFreeAttribute("UnscopedRef"));
+        }
         csMethod.ReturnType = GetCSharpReturnOrParameterType(cppMethod.ReturnType);
         foreach (var cppMethodParameter in cppMethod.Parameters)
         {
@@ -1025,67 +1040,98 @@ public class CodeGenerator
 
         var localVirtualMethodIndex = virtualMethodIndex;
 
-        csMethod.Body = (writer, element) =>
+        if (csBaseClass != null)
         {
-            var functionPointer = csMethod.ToFunctionPointer();
-            var thisPointer = new CSharpPointerType(csClass);
-            functionPointer.IsUnmanaged = true;
-            functionPointer.Parameters.Insert(0, thisPointer);
-            var builder = new StringBuilder();
-
-            writer.WriteLine("if (InteropHelper.IsTracerEnabled)");
-            writer.OpenBraceBlock();
+            csMethod.Body = (writer, element) =>
             {
-                writer.WriteLine($"var __self__ = ({thisPointer})Unsafe.AsPointer(ref this);");
-                writer.WriteLine($"var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof({csClass.Name}), \"{cppMethod.Name}\");");
-
-                if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
-                {
-                    builder.Append("var __result__ = ");
-                }
-                builder.Append($"(({functionPointer})Vtbl[{localVirtualMethodIndex}])(__self__");
-                for (var i = 0; i < csMethod.Parameters.Count; i++)
-                {
-                    var csParam = csMethod.Parameters[i];
-                    builder.Append(", ");
-                    builder.Append(csParam.Name);
-                }
-
-                builder.Append(");");
-                writer.WriteLine(builder.ToString());
-
-                if (csMethod.ReturnType.ToString() == "ComResult")
-                {
-                    writer.WriteLine("__evt__.Result = __result__.Value;");
-                }
-                writer.WriteLine("__evt__.Dispose();");
-                if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
-                {
-                    writer.WriteLine("return __result__;");
-                }
-            }
-            writer.CloseBraceBlock();
-            writer.WriteLine("else");
-            writer.OpenBraceBlock();
-            {
-                builder.Clear();
+                var builder = new StringBuilder();
                 if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
                 {
                     builder.Append("return ");
                 }
-                builder.Append($"(({functionPointer})Vtbl[{localVirtualMethodIndex}])(({thisPointer})Unsafe.AsPointer(ref this)");
+                builder.Append($"Unsafe.As<{csClass.Name}, {csBaseClass.Name}>(ref this).{csMethod.Name}(");
                 for (var i = 0; i < csMethod.Parameters.Count; i++)
                 {
                     var csParam = csMethod.Parameters[i];
-                    builder.Append(", ");
+                    if (i > 0) builder.Append(", ");
                     builder.Append(csParam.Name);
                 }
 
                 builder.Append(");");
                 writer.WriteLine(builder.ToString());
-            }
-            writer.CloseBraceBlock();
-        };
+            };
+        }
+        else
+        {
+            csMethod.Body = (writer, element) =>
+            {
+                var functionPointer = csMethod.ToFunctionPointer();
+                var thisPointer = new CSharpPointerType(csClass);
+                functionPointer.IsUnmanaged = true;
+                functionPointer.UnmanagedCallingConvention.Add("MemberFunction");
+                functionPointer.Parameters.Insert(0, thisPointer);
+                var builder = new StringBuilder();
+
+                // Change ComResult to int
+                if (functionPointer.ReturnType.ToString() == "ComResult")
+                {
+                    functionPointer.ReturnType = CSharpPrimitiveType.Int();
+                }
+
+                writer.WriteLine("if (InteropHelper.IsTracerEnabled)");
+                writer.OpenBraceBlock();
+                {
+                    writer.WriteLine($"var __self__ = ({thisPointer})Unsafe.AsPointer(ref this);");
+                    writer.WriteLine($"var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof({csClass.Name}), \"{cppMethod.Name}\");");
+
+                    if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
+                    {
+                        builder.Append("var __result__ = ");
+                    }
+                    builder.Append($"(({functionPointer})Vtbl[{localVirtualMethodIndex}])(__self__");
+                    for (var i = 0; i < csMethod.Parameters.Count; i++)
+                    {
+                        var csParam = csMethod.Parameters[i];
+                        builder.Append(", ");
+                        builder.Append(csParam.Name);
+                    }
+
+                    builder.Append(");");
+                    writer.WriteLine(builder.ToString());
+
+                    if (csMethod.ReturnType.ToString() == "ComResult")
+                    {
+                        writer.WriteLine("__evt__.Result = __result__;");
+                    }
+                    writer.WriteLine("__evt__.Dispose();");
+                    if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
+                    {
+                        writer.WriteLine("return __result__;");
+                    }
+                }
+                writer.CloseBraceBlock();
+                writer.WriteLine("else");
+                writer.OpenBraceBlock();
+                {
+                    builder.Clear();
+                    if (!cppMethod.ReturnType.Equals(CppPrimitiveType.Void))
+                    {
+                        builder.Append("return ");
+                    }
+                    builder.Append($"(({functionPointer})Vtbl[{localVirtualMethodIndex}])(({thisPointer})Unsafe.AsPointer(ref this)");
+                    for (var i = 0; i < csMethod.Parameters.Count; i++)
+                    {
+                        var csParam = csMethod.Parameters[i];
+                        builder.Append(", ");
+                        builder.Append(csParam.Name);
+                    }
+
+                    builder.Append(");");
+                    writer.WriteLine(builder.ToString());
+                }
+                writer.CloseBraceBlock();
+            };
+        }
         return csMethod;
     }
 

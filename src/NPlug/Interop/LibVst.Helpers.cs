@@ -30,6 +30,11 @@ internal static unsafe partial class LibVst
         }
     }
 
+    private static void CopyStringToUTF16(string text, ref String128 str128)
+    {
+        str128.CopyFrom(text);
+    }
+
     private static string GetPluginSubCategory(AudioProcessorCategory category)
     {
         return category switch

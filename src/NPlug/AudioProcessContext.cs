@@ -5,6 +5,9 @@
 // ReSharper disable UnassignedReadonlyField
 namespace NPlug;
 
+/// <summary>
+/// Available context from <see cref="AudioProcessData.GetContext"/> when processing audio in <see cref="AudioProcessor.Process"/>.
+/// </summary>
 public readonly struct AudioProcessContext
 {
     /// <summary>

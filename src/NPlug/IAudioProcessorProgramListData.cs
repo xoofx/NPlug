@@ -9,7 +9,15 @@ namespace NPlug;
 /// <summary>
 /// Component extension to access program list data.
 /// </summary>
-public interface IAudioControllerProgramListData : IAudioController
+/// <remarks>
+///  vstIPlug vst300: IProgramListData
+/// - [plug imp]
+/// - [extends IComponent]
+/// - [released: 3.0.0]
+/// - [optional]A component can support program list data via this interface or/and
+/// unit preset data (IUnitData).
+/// </remarks>
+public interface IAudioProcessorProgramListData : IAudioProcessor
 {
     /// <summary>
     /// Returns kResultTrue if the given Program List ID supports Program Data.

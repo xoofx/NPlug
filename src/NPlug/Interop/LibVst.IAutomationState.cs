@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace NPlug.Interop;
 
@@ -10,9 +11,13 @@ internal static unsafe partial class LibVst
 {
     public partial struct IAutomationState
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IAudioControllerAutomationState Get(IAutomationState* self) => (NPlug.IAudioControllerAutomationState)((ComObjectHandle*)self)->Target!;
+
         private static partial ComResult setAutomationState_ToManaged(IAutomationState* self, int state)
         {
-            throw new NotImplementedException();
+            Get(self).SetAutomationState((AudioControllerAutomationStates)state);
+            return true;
         }
     }
 }

@@ -41,7 +41,7 @@ public abstract class AudioController : AudioPluginComponent
         return false;
     }
 
-    protected virtual bool TryOpenHelp(byte onlyCheck)
+    protected virtual bool TryOpenHelp(bool onlyCheck)
     {
         return false;
     }
@@ -63,7 +63,7 @@ public abstract class AudioController : AudioPluginComponent
     {
         return Initialize(new AudioControllerSetup(this, hostApplication));
     }
-    
+
     void IAudioController.SetComponentState(Stream streamInput)
     {
         var reader = _streamReader;
@@ -149,13 +149,13 @@ public abstract class AudioController : AudioPluginComponent
     {
         throw new NotImplementedException();
     }
-    
+
     bool IAudioControllerExtended.TrySetKnobMode(AudioControllerKnobModes mode)
     {
         return TrySetKnobMode(mode);
     }
 
-    bool IAudioControllerExtended.TryOpenHelp(byte onlyCheck)
+    bool IAudioControllerExtended.TryOpenHelp(bool onlyCheck)
     {
         return TryOpenHelp(onlyCheck);
     }

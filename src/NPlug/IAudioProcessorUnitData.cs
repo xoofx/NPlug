@@ -7,9 +7,17 @@ using System.IO;
 namespace NPlug;
 
 /// <summary>
-/// Component extension to access program list data.
+/// Component extension to access unit data.
 /// </summary>
-public interface IAudioControllerUnitData : IAudioController
+/// <remarks>
+///  vstIPlug vst300: IUnitData
+/// - [plug imp]
+/// - [extends IComponent]
+/// - [released: 3.0.0]
+/// - [optional]A component can support unit preset data via this interface or
+/// program list data (IProgramListData).
+/// </remarks>
+public interface IAudioProcessorUnitData : IAudioProcessor
 {
     /// <summary>
     /// Returns kResultTrue if the specified unit supports export and import of preset data.

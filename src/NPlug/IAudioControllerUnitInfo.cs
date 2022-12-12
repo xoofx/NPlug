@@ -10,7 +10,7 @@ namespace NPlug;
 /// Edit controller extension to describe the plug-in structure.
 /// </summary>
 /// <remarks>
-///  vstIPlug vst300
+///  vstIPlug vst300: IUnitInfo
 /// - [plug imp]
 /// - [extends IEditController]
 /// - [released: 3.0.0]
@@ -85,7 +85,7 @@ public interface IAudioControllerUnitInfo : IAudioController
     /// - If the component supports program list data (IProgramListData), the destination of the data
     /// stream is the program specified by list-Id and program index (first and second parameter)
     /// - If the component supports unit data (IUnitData), the destination is the unit specified by the first
-    /// parameter - in this case parameter programIndex is 
+    /// parameter - in this case parameter programIndex is
     /// &lt;
     /// 0).
     /// </summary>

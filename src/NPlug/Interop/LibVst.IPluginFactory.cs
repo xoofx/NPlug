@@ -46,6 +46,7 @@ internal static unsafe partial class LibVst
         private static partial ComResult createInstance_ToManaged(IPluginFactory* self, FIDString cid, FIDString iid, void** obj)
         {
             var comResult = false;
+            *obj = null;
             var pluginComponent = Get(self).CreateInstance(*(Guid*)cid.Value);
             if (pluginComponent != null)
             {

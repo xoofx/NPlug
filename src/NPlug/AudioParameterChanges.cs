@@ -58,5 +58,6 @@ public readonly record struct AudioParameterId(int Value)
 
 public readonly record struct AudioUnitId(int Value)
 {
+    public static readonly AudioUnitId NoUnits = new (-1);
     public static implicit operator AudioUnitId(int value) => new(value);
 }

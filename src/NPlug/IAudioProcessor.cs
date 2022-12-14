@@ -16,12 +16,6 @@ namespace NPlug;
 // [3.0.0] Interfaces supported by the host
 // https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical+Documentation/Change+History/3.0.0/Host+Interfaces.html
 
-// TODO: To add
-// - IProcessContextRequirements
-// - IAudioPresentationLatency
-// 
-
-
 public interface IAudioProcessor : IAudioPluginComponent
 {
     /// <summary>

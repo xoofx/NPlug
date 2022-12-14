@@ -45,7 +45,7 @@ public interface IAudioPluginView
     /// Is Platform UI Type supported
     /// </summary>
     /// <param name="platform">the type of the platform</param>
-    bool IsPlatformTypeSupported(OSPlatform platform);
+    bool IsPlatformTypeSupported(AudioPluginViewPlatform platform);
 
     /// <summary>
     /// The parent window of the view has been created, the (platform) representation of the view
@@ -56,7 +56,7 @@ public interface IAudioPluginView
     /// </summary>
     /// <param name="parent">: platform handle of the parent window or view</param>
     /// <param name="type">: @ref platformUIType which should be created</param>
-    void Attached(nint parent, PlatformViewType type);
+    void Attached(nint parent, AudioPluginViewPlatform type);
 
     /// <summary>
     /// The parent window of the view is about to be destroyed.
@@ -144,47 +144,4 @@ public interface IAudioPluginView
     /// </summary>
     /// <param name="factor"></param>
     void SetContentScaleFactor(float factor);
-}
-
-public interface IAudioPluginFrame
-{
-    void ResizeView(IAudioPluginView view, ViewRectangle newSize);
-}
-
-
-public readonly record struct ViewRectangle(int Left, int Top, int Right, int Bottom);
-
-
-public enum PlatformViewType
-{
-    /// <summary>
-    /// The parent parameter in <see cref="IAudioPluginView.Attached"/>::attached() is a HWND handle. You should attach a child window to it.
-    /// (Microsoft Windows)
-    /// </summary>
-    Hwnd,
-
-    /// <summary>
-    /// The parent parameter in IPlugView::attached() is a WindowRef. You should attach a HIViewRef to the content view of the window.
-    /// HIViewRef. (Mac OS X)
-    /// </summary>
-    HIView,
-
-    /// <summary>
-    /// The parent parameter in IPlugView::attached() is a NSView pointer. You should attach a HIViewRef to the content view of the window.
-    /// NSView pointer. (Mac OS X)
-    /// </summary>
-    NSView,
-
-    /// <summary>
-    /// The parent parameter in IPlugView::attached() is a UIView pointer. You should attach an UIView to it.
-    /// UIView pointer. (iOS)
-    /// </summary>
-    UIView,
-
-    /// <summary>
-    /// The parent parameter in IPlugView::attached() is a X11 Window supporting XEmbed. You should attach a Window to it that supports the XEmbed extension.
-    /// X11 Window ID. (X11)
-    /// See https://standards.freedesktop.org/xembed-spec/xembed-spec-latest.html
-    /// </summary>
-    X11EmbedWindowID
 }

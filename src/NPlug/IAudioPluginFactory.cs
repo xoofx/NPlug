@@ -14,5 +14,5 @@ public interface IAudioPluginFactory
 
     AudioPluginClassInfo GetPluginClassInfo(int index);
 
-    IAudioPluginComponent? CreateInstance(Guid pluginId);
+    IAudioPluginObject? CreateInstance(Guid pluginId);
 }

@@ -65,7 +65,7 @@ internal static unsafe partial class LibVst
             AudioProcessorCategory.InstrumentSampler => PlugType.kInstrumentSampler,
             AudioProcessorCategory.InstrumentSynthesizer => PlugType.kInstrumentSynth,
             AudioProcessorCategory.InstrumentSynthesizerSampler => PlugType.kInstrumentSynthSampler,
-            _ => throw new ArgumentOutOfRangeException(nameof(category), category, null)
+            _ => ""
         };
     }
 }

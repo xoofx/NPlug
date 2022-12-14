@@ -9,6 +9,18 @@ namespace NPlug.Interop;
 
 internal static unsafe partial class LibVst
 {
+    private static string GetPluginCategory(AudioPluginClassInfo classInfo) => GetPluginCategory(classInfo.PluginCategory);
+    private static string GetPluginCategory(AudioPluginCategory category)
+    {
+        return category switch
+        {
+            AudioPluginCategory.Processor => AudioEffectCategory,
+            AudioPluginCategory.Controller => ComponentControllerCategory,
+            AudioPluginCategory.TestProvider => "Test Class",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
     public partial struct IPluginFactory
     {
         private static IAudioPluginFactory Get(IPluginFactory* self) => ((ComObjectHandle*)self)->As<IAudioPluginFactory>();
@@ -36,7 +48,7 @@ internal static unsafe partial class LibVst
         private static partial ComResult getClassInfo_ToManaged(IPluginFactory* self, int index, PClassInfo* info)
         {
             var pluginClassInfo = Get(self).GetPluginClassInfo(index);
-            info->cid = pluginClassInfo.Id;
+            info->cid = pluginClassInfo.ClassId;
             info->cardinality = pluginClassInfo.Cardinality;
             CopyStringToUTF8(AudioEffectCategory, info->category, 32);
             CopyStringToUTF8(pluginClassInfo.Name, info->name, 64);

@@ -15,10 +15,10 @@ internal static unsafe partial class LibVst
         private static partial ComResult getClassInfo2_ToManaged(IPluginFactory2* self, int index, PClassInfo2* info)
         {
             var pluginClassInfo = Get(self).GetPluginClassInfo(index);
-            info->cid = pluginClassInfo.Id;
+            info->cid = pluginClassInfo.ClassId;
             info->cardinality = pluginClassInfo.Cardinality;
             //public fixed byte category[32];
-            CopyStringToUTF8(pluginClassInfo is AudioProcessorClassInfo ? AudioEffectCategory : ComponentControllerCategory, info->category, 32);
+            CopyStringToUTF8(GetPluginCategory(pluginClassInfo), info->category, 32);
             //public fixed byte name[64];
             CopyStringToUTF8(pluginClassInfo.Name, info->name, 64);
             info->classFlags = (uint)pluginClassInfo.ClassFlags;

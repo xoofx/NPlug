@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace NPlug.Interop;
 
@@ -10,9 +11,13 @@ internal static unsafe partial class LibVst
 {
     public partial struct IPrefetchableSupport
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IAudioProcessorPrefetchable Get(IPrefetchableSupport* self) => ((ComObjectHandle*)self)->As<IAudioProcessorPrefetchable>();
+        
         private static partial ComResult getPrefetchableSupport_ToManaged(IPrefetchableSupport* self, LibVst.PrefetchableSupport* prefetchable)
         {
-            throw new NotImplementedException();
+            prefetchable->Value = (uint)Get(self).PrefetchableSupport;
+            return true;
         }
     }
 }

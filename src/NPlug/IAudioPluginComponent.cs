@@ -11,7 +11,7 @@ namespace NPlug;
 /// A list of supported host context interfaces should be included in the documentation
 /// of a specific category. 
 /// </summary>
-public interface IAudioPluginComponent
+public interface IAudioPluginComponent : IAudioPluginObject
 {
     /// <summary>
     /// The host passes a number of interfaces as context to initialize the plug-in class.

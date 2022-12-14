@@ -17,10 +17,10 @@ internal static unsafe partial class LibVst
         private static partial ComResult getClassInfoUnicode_ToManaged(IPluginFactory3* self, int index, PClassInfoW* info)
         {
             var pluginClassInfo = Get(self).GetPluginClassInfo(index);
-            info->cid = pluginClassInfo.Id;
+            info->cid = pluginClassInfo.ClassId;
             info->cardinality = pluginClassInfo.Cardinality;
             //public fixed byte category[32];
-            CopyStringToUTF8(pluginClassInfo is AudioProcessorClassInfo ? AudioEffectCategory : ComponentControllerCategory, info->category, 32);
+            CopyStringToUTF8(GetPluginCategory(pluginClassInfo), info->category, 32);
             //public fixed char name[64];
             CopyStringToUTF16(pluginClassInfo.Name, info->name, 64);
             info->classFlags = (uint)pluginClassInfo.ClassFlags;
@@ -38,6 +38,7 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult setHostContext_ToManaged(IPluginFactory3* self, FUnknown* context)
         {
+            // TODO
             throw new NotImplementedException();
         }
     }

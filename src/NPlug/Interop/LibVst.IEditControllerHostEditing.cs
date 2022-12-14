@@ -12,7 +12,7 @@ internal static unsafe partial class LibVst
     public partial struct IEditControllerHostEditing
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAudioControllerHostEditing Get(IEditControllerHostEditing* self) => (IAudioControllerHostEditing)((ComObjectHandle*)self)->Target!;
+        private static IAudioControllerHostEditing Get(IEditControllerHostEditing* self) => ((ComObjectHandle*)self)->As<IAudioControllerHostEditing>();
 
         private static partial ComResult beginEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID)
         {

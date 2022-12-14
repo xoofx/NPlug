@@ -12,7 +12,7 @@ internal static unsafe partial class LibVst
     public partial struct IEditController2
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAudioControllerExtended Get(IEditController2* self) => (IAudioControllerExtended)((ComObjectHandle*)self)->Target!;
+        private static IAudioControllerExtended Get(IEditController2* self) => ((ComObjectHandle*)self)->As<IAudioControllerExtended>();
 
         private static partial ComResult setKnobMode_ToManaged(IEditController2* self, KnobMode mode)
         {

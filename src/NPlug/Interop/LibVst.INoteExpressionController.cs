@@ -13,7 +13,7 @@ internal static unsafe partial class LibVst
     public partial struct INoteExpressionController
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAudioControllerNoteExpression Get(INoteExpressionController* self) => (IAudioControllerNoteExpression)((ComObjectHandle*)self)->Target!;
+        private static IAudioControllerNoteExpression Get(INoteExpressionController* self) => ((ComObjectHandle*)self)->As<IAudioControllerNoteExpression>();
 
         private static partial int getNoteExpressionCount_ToManaged(INoteExpressionController* self, int busIndex, short channel)
         {

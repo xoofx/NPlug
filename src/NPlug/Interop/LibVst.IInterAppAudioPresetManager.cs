@@ -12,7 +12,7 @@ internal static unsafe partial class LibVst
     public partial struct IInterAppAudioPresetManager
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAudioControllerInterAppAudioPresetManager Get(IInterAppAudioPresetManager* self) => (IAudioControllerInterAppAudioPresetManager)((ComObjectHandle*)self)->Target!;
+        private static IAudioControllerInterAppAudioPresetManager Get(IInterAppAudioPresetManager* self) => ((ComObjectHandle*)self)->As<IAudioControllerInterAppAudioPresetManager>();
 
         private static partial ComResult runLoadPresetBrowser_ToManaged(IInterAppAudioPresetManager* self)
         {

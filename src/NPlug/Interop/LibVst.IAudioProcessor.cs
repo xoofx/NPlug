@@ -25,7 +25,7 @@ internal static unsafe partial class LibVst
         }
 #endif
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static NPlug.IAudioProcessor Get(IAudioProcessor* self) => (NPlug.IAudioProcessor)((ComObjectHandle*)self)->Target!;
+        private static NPlug.IAudioProcessor Get(IAudioProcessor* self) => ((ComObjectHandle*)self)->As<NPlug.IAudioProcessor>();
 
         private static partial ComResult setBusArrangements_ToManaged(IAudioProcessor* self, SpeakerArrangement* inputs, int numIns, SpeakerArrangement* outputs, int numOuts)
         {

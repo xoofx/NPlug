@@ -12,7 +12,7 @@ internal static unsafe partial class LibVst
     public partial struct IUnitData
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAudioProcessorUnitData Get(IUnitData* self) => (IAudioProcessorUnitData)((ComObjectHandle*)self)->Target!;
+        private static IAudioProcessorUnitData Get(IUnitData* self) => ((ComObjectHandle*)self)->As<IAudioProcessorUnitData>();
 
         private static partial ComResult unitDataSupported_ToManaged(IUnitData* self, UnitID unitID)
         {

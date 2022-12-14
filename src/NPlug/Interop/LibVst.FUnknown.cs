@@ -41,6 +41,11 @@ internal static unsafe partial class LibVst
             { IUnitData.IId, TryMatchQueryInterface<IUnitData, IAudioProcessorUnitData> },
             { IUnitInfo.IId, TryMatchQueryInterface<IUnitInfo, IAudioControllerUnitInfo> },
             { IXmlRepresentationController.IId, TryMatchQueryInterface<IXmlRepresentationController, IAudioControllerXmlRepresentation> },
+            { IAudioPresentationLatency.IId, TryMatchQueryInterface<IAudioPresentationLatency, IAudioProcessor> },
+            { INoteExpressionPhysicalUIMapping.IId, TryMatchQueryInterface<INoteExpressionPhysicalUIMapping, IAudioControllerNoteExpressionPhysicalUIMapping> },
+            { IMidiLearn.IId, TryMatchQueryInterface<IMidiLearn, IAudioControllerMidiLearn> },
+            { IParameterFunctionName.IId, TryMatchQueryInterface<IParameterFunctionName, IAudioControllerParameterFunctionName> },
+            { IPlugViewContentScaleSupport.IId, TryMatchQueryInterface<IPlugViewContentScaleSupport, IAudioPluginView> },
         };
 
         private static partial ComResult queryInterface_ToManaged(FUnknown* pObj, Guid* iid, void** pInterface)

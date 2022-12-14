@@ -12,7 +12,7 @@ internal static unsafe partial class LibVst
     public partial struct IComponent
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static NPlug.IAudioProcessor Get(IComponent* self) => (NPlug.IAudioProcessor)((ComObjectHandle*)self)->Target!;
+        private static NPlug.IAudioProcessor Get(IComponent* self) => ((ComObjectHandle*)self)->As<NPlug.IAudioProcessor>();
         
         private static partial ComResult getControllerClassId_ToManaged(IComponent* self, Guid* classId)
         {

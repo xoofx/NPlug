@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using NPlug.Backend;
@@ -14,7 +15,7 @@ internal static unsafe partial class LibVst
     public partial struct IEditController
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static NPlug.IAudioController Get(IEditController* self) => (NPlug.IAudioController)((ComObjectHandle*)self)->Target!;
+        private static NPlug.IAudioController Get(IEditController* self) => ((ComObjectHandle*)self)->As<NPlug.IAudioController>();
 
         private static partial ComResult setComponentState_ToManaged(IEditController* self, IBStream* state)
         {
@@ -91,7 +92,7 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult setComponentHandler_ToManaged(IEditController* self, IComponentHandler* handler)
         {
-            Get(self).SetControllerHost(new AudioControllerHostProxy(handler));
+            Get(self).SetControllerHandler(new AudioControllerHandlerProxy(handler));
             return true;
         }
 
@@ -108,7 +109,7 @@ internal static unsafe partial class LibVst
     /// <summary>
     /// Access to all the optional native handlers.
     /// </summary>
-    private class AudioControllerHostProxy : AudioControllerHost
+    private class AudioControllerHandlerProxy : IAudioControllerHandler
     {
         private readonly IComponentHandler* _handler;
         private readonly IComponentHandler2* _handler2;
@@ -117,7 +118,7 @@ internal static unsafe partial class LibVst
         private readonly IProgress* _progress;
         private readonly IUnitHandler* _unitHandler;
 
-        public AudioControllerHostProxy(IComponentHandler* handler)
+        public AudioControllerHandlerProxy(IComponentHandler* handler)
         {
             _handler = handler;
 
@@ -152,35 +153,35 @@ internal static unsafe partial class LibVst
             }
         }
         
-        public override void BeginEdit(AudioParameterId id)
+        public void BeginEdit(AudioParameterId id)
         {
             _handler->beginEdit(id);
         }
 
-        public override void PerformEdit(AudioParameterId id, double valueNormalized)
+        public void PerformEdit(AudioParameterId id, double valueNormalized)
         {
             _handler->performEdit(id, valueNormalized);
         }
 
-        public override void EndEdit(AudioParameterId id)
+        public void EndEdit(AudioParameterId id)
         {
             _handler->endEdit(id);
         }
 
-        public override void RestartComponent(AudioRestartFlags flags)
+        public void RestartComponent(AudioRestartFlags flags)
         {
             _handler->restartComponent((int)flags);
         }
 
-        public override bool IsAdvancedEditSupported => _handler2 != null;
+        public bool IsAdvancedEditSupported => _handler2 != null;
 
-        public override void SetDirty(bool state)
+        public void SetDirty(bool state)
         {
             ThrowIfNotIsAdvancedEditSupported();
             _handler2->setDirty(state ? (byte)1 : (byte)0);
         }
 
-        public override void RequestOpenEditor(string name)
+        public void RequestOpenEditor(string name)
         {
             ThrowIfNotIsAdvancedEditSupported();
             using var tempUtf8 = new TempUtf8String(name);
@@ -190,13 +191,13 @@ internal static unsafe partial class LibVst
             }
         }
 
-        public override void StartGroupEdit()
+        public void StartGroupEdit()
         {
             ThrowIfNotIsAdvancedEditSupported();
             _handler2->startGroupEdit();
         }
 
-        public override void FinishGroupEdit()
+        public void FinishGroupEdit()
         {
             ThrowIfNotIsAdvancedEditSupported();
             _handler2->finishGroupEdit();
@@ -207,16 +208,16 @@ internal static unsafe partial class LibVst
             if (!IsAdvancedEditSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsAdvancedEditSupported)} is false");
         }
 
-        public override bool IsCreateContextMenuSupported => _handler3 != null;
+        public bool IsCreateContextMenuSupported => _handler3 != null;
 
-        public override AudioContextMenu CreateContextMenu(IAudioPluginView plugView, AudioParameterId paramID)
+        public IAudioContextMenu CreateContextMenu(IAudioPluginView plugView, AudioParameterId paramID)
         {
             ThrowIfNotIsCreateContextMenuSupported();
 
             var comObject = ComObjectManager.Instance.GetOrCreateComObject(plugView);
             var nativePlugView = comObject.QueryInterface<IPlugView>();
             var nativeContextMenu = _handler3->createContextMenu(nativePlugView, (ParamID*)&paramID);
-            var audioContextMenu = new AudioContextMenu(AudioContextMenuBackendVst.Instance, (IntPtr)nativeContextMenu);
+            var audioContextMenu = new AudioContextMenuVst(nativeContextMenu);
             return audioContextMenu;
         }
 
@@ -225,9 +226,9 @@ internal static unsafe partial class LibVst
             if (!IsCreateContextMenuSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsCreateContextMenuSupported)} is false");
         }
 
-        public override bool IsRequestBusActivationSupported => _busActivation != null;
+        public bool IsRequestBusActivationSupported => _busActivation != null;
 
-        public override void RequestBusActivation(BusMediaType type, NPlug.BusDirection dir, int index, bool state)
+        public void RequestBusActivation(BusMediaType type, NPlug.BusDirection dir, int index, bool state)
         {
             ThrowIfNotIsRequestBusActivationSupported();
             _busActivation->requestBusActivation(new MediaType((int)type), new BusDirection((int)dir), index, state ? (byte)1 : (byte)0);
@@ -238,9 +239,9 @@ internal static unsafe partial class LibVst
             if (!IsRequestBusActivationSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsRequestBusActivationSupported)} is false");
         }
 
-        public override bool IsProgressSupported => _progress != null;
+        public bool IsProgressSupported => _progress != null;
 
-        public override AudioProgressId StartProgress(AudioProgressType type, string? optionalDescription)
+        public AudioProgressId StartProgress(AudioProgressType type, string? optionalDescription)
         {
             ThrowIfNotIsProgressSupported();
             fixed (char* pOpt = optionalDescription)
@@ -251,13 +252,13 @@ internal static unsafe partial class LibVst
             }
         }
 
-        public override void UpdateProgress(AudioProgressId id, double normValue)
+        public void UpdateProgress(AudioProgressId id, double normValue)
         {
             ThrowIfNotIsProgressSupported();
             _progress->update(new ID(id.Value), normValue);
         }
 
-        public override void FinishProgress(AudioProgressId id)
+        public void FinishProgress(AudioProgressId id)
         {
             ThrowIfNotIsProgressSupported();
             _progress->finish(new ID(id.Value));
@@ -268,15 +269,15 @@ internal static unsafe partial class LibVst
             if (!IsProgressSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsProgressSupported)} is false");
         }
 
-        public override bool IsUnitAndProgramListSupported => _unitHandler != null;
+        public bool IsUnitAndProgramListSupported => _unitHandler != null;
 
-        public override void NotifyUnitSelection(AudioUnitId unitId)
+        public void NotifyUnitSelection(AudioUnitId unitId)
         {
             ThrowIfNotIsUnitAndProgramListSupported();
             _unitHandler->notifyUnitSelection(new UnitID(unitId.Value));
         }
 
-        public override void NotifyProgramListChange(AudioProgramListId listId, int programIndex)
+        public void NotifyProgramListChange(AudioProgramListId listId, int programIndex)
         {
             ThrowIfNotIsUnitAndProgramListSupported();
             _unitHandler->notifyProgramListChange(new ProgramListID(listId.Value), programIndex);
@@ -288,52 +289,80 @@ internal static unsafe partial class LibVst
         }
     }
 
-    private class AudioContextMenuBackendVst : IAudioContextMenuBackend
+    private sealed class AudioContextMenuVst : IAudioContextMenu
     {
-        public static readonly AudioContextMenuBackendVst Instance = new AudioContextMenuBackendVst();
-
-        public int GetItemCount(in AudioContextMenu contextMenu)
+        private readonly IContextMenu* _contextMenu;
+        private readonly List<(AudioContextMenuItem, nint, AudioContextMenuAction?)> _items;
+        private bool _disposed;
+        
+        public AudioContextMenuVst(IContextMenu* contextMenu)
         {
-            return Get(contextMenu)->getItemCount();
+            _contextMenu = contextMenu;
+            _items = new List<(AudioContextMenuItem, nint, AudioContextMenuAction?)>();
+        }
+        
+        public int GetItemCount()
+        {
+            return _contextMenu->getItemCount();
         }
 
-        public void GetItem(in AudioContextMenu contextMenu, int index, out AudioContextMenuItem item, out AudioContextMenuAction? target)
+        public void GetItem(int index, out AudioContextMenuItem item, out AudioContextMenuAction? target)
         {
-            item = new AudioContextMenuItem(string.Empty);
-            target = null;
-            Item nativeItem;
-            IContextMenuTarget* nativeTarget;
-            if (Get(contextMenu)->getItem(index, &nativeItem, &nativeTarget))
+            // We are using our internal list
+            var tuple = _items[index];
+            item = tuple.Item1;
+            target = tuple.Item3;
+            //item = new AudioContextMenuItem(string.Empty);
+            //target = null;
+            //Item nativeItem;
+            //IContextMenuTarget* nativeTarget;
+            //if (_contextMenu->getItem(index, &nativeItem, &nativeTarget))
+            //{
+            //    item = ConvertTo(nativeItem.Value);
+            //    target = tag => nativeTarget->executeMenuItem(tag);
+            //}
+        }
+
+        public void AddItem(in AudioContextMenuItem item, AudioContextMenuAction? target)
+        {
+            var nativeItem = ConvertFrom(item);
+            ComObject? comObject = null;
+            IContextMenuTarget* nativeTarget = null;
+            if (target is not null)
             {
-                item = ConvertTo(nativeItem.Value);
-                // TODO: add target
+                comObject = ComObjectManager.Instance.GetOrCreateComObject(target);
+                nativeTarget = comObject.QueryInterface<IContextMenuTarget>();
+            }
+            if (_contextMenu->addItem((Item*)&nativeItem, nativeTarget))
+            {
+                _items.Add((item, (nint)nativeTarget, target));
+            }
+            else
+            {
+                // Release the native target
+                comObject?.ReleaseRef();
             }
         }
 
-        public void AddItem(in AudioContextMenu contextMenu, in AudioContextMenuItem item, AudioContextMenuAction target)
+        public void RemoveItem(in AudioContextMenuItem item, AudioContextMenuAction? target)
         {
             var nativeItem = ConvertFrom(item);
-
-            // TODO: add the target
-            Get(contextMenu)->addItem((Item*)&nativeItem, null);
+            foreach (var tuple in _items)
+            {
+                if (tuple.Item1 == item && tuple.Item3 == target)
+                {
+                    _contextMenu->removeItem((Item*)&nativeItem, (IContextMenuTarget*)tuple.Item2);
+                    break;
+                }
+            }
         }
 
-        public void RemoveItem(in AudioContextMenu contextMenu, in AudioContextMenuItem item, AudioContextMenuAction target)
+        public void Popup(int x, int y)
         {
-            var nativeItem = ConvertFrom(item);
-            // TODO: add the target
-            Get(contextMenu)->removeItem((Item*)&nativeItem, null);
-        }
-
-        public void Popup(in AudioContextMenu contextMenu, int x, int y)
-        {
-            Get(contextMenu)->popup(new UCoord(x), new UCoord(y));
+            _contextMenu->popup(new UCoord(x), new UCoord(y));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IContextMenu* Get(in AudioContextMenu contextMenu) => (IContextMenu*)contextMenu.NativeContext;
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
         private static IContextMenuItem ConvertFrom(in AudioContextMenuItem item)
         {
             var nativeItem = new IContextMenuItem();
@@ -343,12 +372,24 @@ internal static unsafe partial class LibVst
             return nativeItem;
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static AudioContextMenuItem ConvertTo(in IContextMenuItem item)
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //private static AudioContextMenuItem ConvertTo(in IContextMenuItem item)
+        //{
+        //    var span = MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in item.name.Value[0]), 128);
+        //    span = span.Slice(0, span.IndexOf((char)0));
+        //    return new AudioContextMenuItem(new string(span), item.tag, (AudioContextMenuItemFlags)item.flags);
+        //}
+        public void Dispose()
         {
-            var span = MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in item.name.Value[0]), 128);
-            span = span.Slice(0, span.IndexOf((char)0));
-            return new AudioContextMenuItem(new string(span), item.tag, (AudioContextMenuItemFlags)item.flags);
+            if (_disposed) return;
+            _disposed = true;
+            foreach (var item in _items)
+            {
+                ((IContextMenuTarget*)item.Item2)->release();
+            }
+
+            _items.Clear();
+            _contextMenu->release();
         }
     }
 }

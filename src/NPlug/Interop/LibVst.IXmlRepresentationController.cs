@@ -12,7 +12,7 @@ internal static unsafe partial class LibVst
     public partial struct IXmlRepresentationController
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAudioControllerXmlRepresentation Get(IXmlRepresentationController* self) => (IAudioControllerXmlRepresentation)((ComObjectHandle*)self)->Target!;
+        private static IAudioControllerXmlRepresentation Get(IXmlRepresentationController* self) => ((ComObjectHandle*)self)->As<IAudioControllerXmlRepresentation>();
 
         private static partial ComResult getXmlRepresentationStream_ToManaged(IXmlRepresentationController* self, LibVst.RepresentationInfo* info, LibVst.IBStream* stream)
         {

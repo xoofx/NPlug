@@ -6,21 +6,6 @@ using System.IO;
 
 namespace NPlug;
 
-// TODO: To add
-// - *IUnitInfo 3.0.0
-// - *IMidiMapping 3.0.1
-// - *IEditController2 3.1.0 
-// - *IEditControllerHostEditing 3.5.0
-// - *INoteExpressionController 3.5.0
-// - *IKeyswitchController 3.5.0
-// - *IXmlRepresentationController 3.5.0
-// - *IInterAppAudioPresetManager 3.6.0
-// - *IAutomationState 3.6.5
-// - *IInfoListener 3.6.5
-// - INoteExpressionPhysicalUIMapping 3.6.11
-// - IMidiLearn 3.6.12
-// - IParameterFunctionName 3.7.0
-
 /// <summary>
 /// The controller part of an effect or instrument with parameter handling (export, definition, conversion...).
 /// </summary>
@@ -109,8 +94,8 @@ public interface IAudioController : IAudioPluginComponent
     /// Gets from host a handler which allows the Plugin-in to communicate with the host.
     /// Note: This is mandatory if the host is using the <see cref="IAudioController"/>.
     /// </summary>
-    /// <param name="controllerHost">The controller host.</param>
-    void SetControllerHost(AudioControllerHost controllerHost);
+    /// <param name="controllerHandler">The controller host.</param>
+    void SetControllerHandler(IAudioControllerHandler controllerHandler);
 
     /// <summary>
     /// Creates the editor view of the plug-in, currently only "editor" is supported, see \ref ViewType.
@@ -118,5 +103,5 @@ public interface IAudioController : IAudioPluginComponent
     /// </summary>
     /// <param name="name">The name of the view (`editor` is only supported)</param>
     /// <returns>The plugin view.</returns>
-    IAudioPluginView CreateView(string name);
+    IAudioPluginView? CreateView(string name);
 }

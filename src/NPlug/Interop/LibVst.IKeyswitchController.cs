@@ -12,7 +12,7 @@ internal static unsafe partial class LibVst
     public partial struct IKeyswitchController
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAudioControllerKeySwitch Get(IKeyswitchController* self) => (IAudioControllerKeySwitch)((ComObjectHandle*)self)->Target!;
+        private static IAudioControllerKeySwitch Get(IKeyswitchController* self) => ((ComObjectHandle*)self)->As<IAudioControllerKeySwitch>();
 
         private static partial int getKeyswitchCount_ToManaged(IKeyswitchController* self, int busIndex, short channel)
         {

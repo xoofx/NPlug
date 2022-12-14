@@ -5,7 +5,7 @@
 namespace NPlug;
 
 /// <summary>
-/// Delegate used by <see cref="AudioContextMenu"/>.
+/// Delegate used by <see cref="IAudioContextMenu"/>.
 /// </summary>
 /// <param name="tag">The associated tag to the triggered menu item (<see cref="AudioContextMenuItem.Tag"/>) </param>
-public delegate void AudioContextMenuAction(uint tag);
+public delegate void AudioContextMenuAction(int tag);

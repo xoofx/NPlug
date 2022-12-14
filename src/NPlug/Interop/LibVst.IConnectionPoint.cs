@@ -13,7 +13,7 @@ internal static unsafe partial class LibVst
     public partial struct IConnectionPoint
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAudioConnectionPoint Get(IConnectionPoint* self) => (NPlug.IAudioConnectionPoint)((ComObjectHandle*)self)->Target!;
+        private static IAudioConnectionPoint Get(IConnectionPoint* self) => ((ComObjectHandle*)self)->As<IAudioConnectionPoint>();
 
         /// <summary>
         /// Keep track of active connection points.

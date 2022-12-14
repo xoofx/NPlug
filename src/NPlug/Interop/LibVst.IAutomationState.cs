@@ -12,7 +12,7 @@ internal static unsafe partial class LibVst
     public partial struct IAutomationState
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAudioControllerAutomationState Get(IAutomationState* self) => (NPlug.IAudioControllerAutomationState)((ComObjectHandle*)self)->Target!;
+        private static IAudioControllerAutomationState Get(IAutomationState* self) => ((ComObjectHandle*)self)->As<IAudioControllerAutomationState>();
 
         private static partial ComResult setAutomationState_ToManaged(IAutomationState* self, int state)
         {

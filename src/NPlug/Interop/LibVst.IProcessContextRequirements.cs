@@ -11,7 +11,7 @@ internal static unsafe partial class LibVst
     public partial struct IProcessContextRequirements
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static NPlug.IAudioProcessor Get(IProcessContextRequirements* self) => (NPlug.IAudioProcessor)((ComObjectHandle*)self)->Target!;
+        private static NPlug.IAudioProcessor Get(IProcessContextRequirements* self) => ((ComObjectHandle*)self)->As<NPlug.IAudioProcessor>();
 
         private static partial uint getProcessContextRequirements_ToManaged(IProcessContextRequirements* self)
         {

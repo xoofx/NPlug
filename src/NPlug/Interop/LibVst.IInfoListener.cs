@@ -12,7 +12,7 @@ internal static unsafe partial class LibVst
     public partial struct IInfoListener
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAudioControllerInfoListener Get(IInfoListener* self) => (IAudioControllerInfoListener)((ComObjectHandle*)self)->Target!;
+        private static IAudioControllerInfoListener Get(IInfoListener* self) => ((ComObjectHandle*)self)->As<IAudioControllerInfoListener>();
 
         private static partial ComResult setChannelContextInfos_ToManaged(IInfoListener* self, LibVst.IAttributeList* list)
         {

@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace NPlug.Interop;
 
@@ -10,6 +11,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IPluginFactory3
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static IAudioPluginFactory Get(IPluginFactory3* self) => ((ComObjectHandle*)self)->As<IAudioPluginFactory>();
 
         private static partial ComResult getClassInfoUnicode_ToManaged(IPluginFactory3* self, int index, PClassInfoW* info)

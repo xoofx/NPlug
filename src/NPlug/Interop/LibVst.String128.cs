@@ -18,7 +18,7 @@ internal static unsafe partial class LibVst
             name.AsSpan().Slice(0, maxLength).CopyTo(localSpan);
             if (maxLength < sizeof(String128))
             {
-                localSpan[maxLength] = (char)0;
+                this.Value[maxLength] = (char)0;
             }
         }
 

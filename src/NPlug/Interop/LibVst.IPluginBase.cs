@@ -10,7 +10,7 @@ internal static unsafe partial class LibVst
 {
     public partial struct IPluginBase
     {
-        private static IAudioPluginComponent Get(IPluginBase* self) => (IAudioPluginComponent)((ComObjectHandle*)self)->Target!;
+        private static IAudioPluginComponent Get(IPluginBase* self) => ((ComObjectHandle*)self)->As<IAudioPluginComponent>();
 
         private static partial ComResult initialize_ToManaged(IPluginBase* self, LibVst.FUnknown* context)
         {

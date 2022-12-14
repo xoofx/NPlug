@@ -12,7 +12,7 @@ internal static unsafe partial class LibVst
     public partial struct IMidiMapping
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAudioControllerMidiMapping Get(IMidiMapping* self) => (IAudioControllerMidiMapping)((ComObjectHandle*)self)->Target!;
+        private static IAudioControllerMidiMapping Get(IMidiMapping* self) => ((ComObjectHandle*)self)->As<IAudioControllerMidiMapping>();
 
         private static partial ComResult getMidiControllerAssignment_ToManaged(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id)
         {

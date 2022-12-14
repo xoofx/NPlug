@@ -140,12 +140,12 @@ public abstract class AudioController : AudioPluginComponent
         throw new NotImplementedException();
     }
 
-    void IAudioController.SetControllerHost(AudioControllerHost controllerHost)
+    public void SetControllerHandler(IAudioControllerHandler controllerHandler)
     {
         throw new NotImplementedException();
     }
 
-    IAudioPluginView IAudioController.CreateView(string name)
+    IAudioPluginView? IAudioController.CreateView(string name)
     {
         throw new NotImplementedException();
     }

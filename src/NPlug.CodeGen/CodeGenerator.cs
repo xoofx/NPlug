@@ -38,6 +38,7 @@ public class CodeGenerator
     private readonly Dictionary<string, CSharpType> _cppTypeToCSharpType;
     private readonly HashSet<string> _hostOnly;
     private readonly HashSet<string> _pluginOnly;
+    private readonly HashSet<string> _typesToExclude;
     private readonly List<CSharpGeneratedFile> _toManagedFiles;
     private readonly List<CSharpStruct> _allGeneratedVtbls;
     private CSharpClass? _container;
@@ -47,12 +48,23 @@ public class CodeGenerator
     {
         _hostOnly = new HashSet<string>()
         {
-            "IComponentHandler3" // Force this component to be host only
+            "IComponentHandler3", // Force this component to be host only
+            "IStringResult",
         };
         _pluginOnly = new HashSet<string>()
         {
             "IPluginFactory2", // Force this component to be plugin only
             "IPluginFactory3" // Force this component to be plugin only
+        };
+        // The following types don't seem to be used in the VST3 SDK itself
+        _typesToExclude = new HashSet<string>()
+        {
+            "IErrorContext",
+            "IString",
+            "IPersistent",
+            "IPluginCompatibility",
+            "IInterAppAudioConnectionNotification",
+            "ICloneable",
         };
         _nameToIID = new Dictionary<string, Uuid>();
         _generatedCSharpElements = new Dictionary<string, CSharpElement>();
@@ -255,14 +267,14 @@ public class CodeGenerator
     {
         foreach (var cppClass in ns.Classes)
         {
-            if (IsUnknown(cppClass))
+            if (IsUnknown(cppClass) && !_typesToExclude.Contains(cppClass.Name))
             {
                 GetOrCreateStruct(cppClass);
             }
-            else if (cppClass.Name.StartsWith("I"))
-            {
-                //Console.WriteLine($"{GetParentNamespace(ns)}{cppClass.Name} not supported");
-            }
+            //else if (cppClass.Name.StartsWith("I"))
+            //{
+            //    //Console.WriteLine($"{GetParentNamespace(ns)}{cppClass.Name} not supported");
+            //}
         }
 
         foreach (var cppEnum in ns.Enums)

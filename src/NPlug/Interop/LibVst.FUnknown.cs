@@ -49,6 +49,8 @@ internal static unsafe partial class LibVst
             { IPrefetchableSupport.IId, TryMatchQueryInterface<IPrefetchableSupport, IAudioProcessorPrefetchable> },
             { ITestPlugProvider.IId, TryMatchQueryInterface<ITestPlugProvider, IAudioTestProvider> },
             { ITestPlugProvider2.IId, TryMatchQueryInterface<ITestPlugProvider2, IAudioTestProvider> },
+            { IContextMenuTarget.IId, TryMatchQueryInterface<IContextMenuTarget, System.Delegate> },
+            { IParameterFinder.IId, TryMatchQueryInterface<IParameterFinder , IAudioPluginView> },
         };
 
         private static partial ComResult queryInterface_ToManaged(FUnknown* pObj, Guid* iid, void** pInterface)

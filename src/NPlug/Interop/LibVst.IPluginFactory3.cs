@@ -38,8 +38,8 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult setHostContext_ToManaged(IPluginFactory3* self, FUnknown* context)
         {
-            // TODO
-            throw new NotImplementedException();
+            // Not implemented in the SDK, so not sure what it can be used for...
+            return ComResult.NotImplemented;
         }
     }
 }

@@ -65,6 +65,7 @@ public class CodeGenerator
             "IPluginCompatibility",
             "IInterAppAudioConnectionNotification",
             "ICloneable",
+            "ISizeableStream",
         };
         _nameToIID = new Dictionary<string, Uuid>();
         _generatedCSharpElements = new Dictionary<string, CSharpElement>();

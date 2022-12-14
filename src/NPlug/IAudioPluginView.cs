@@ -143,5 +143,12 @@ public interface IAudioPluginView
     /// plug-in is able to render in different scalings.
     /// </summary>
     /// <param name="factor"></param>
+    /// <remarks>IPlugViewContentScaleSupport</remarks>
     void SetContentScaleFactor(float factor);
+
+    /// <summary>
+    /// Find out which parameter in plug-in view is at given position (relative to plug-in view).
+    /// </summary>
+    /// <remarks>IParameterFinder</remarks>
+    bool TryFindParameter(int xPos, int yPos, out AudioParameterId parameterId);
 }

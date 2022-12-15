@@ -116,41 +116,4 @@ internal static unsafe partial class LibVst
         public override bool CanSeek => true;
         public override bool CanWrite => true;
     }
-
-    /// <summary>
-    /// Managed equivalent is <see cref="Stream"/>.
-    /// </summary>
-    public partial struct IBStream
-    {
-        private static Stream Get(IBStream* stream) => (Stream)((ComObjectHandle*)stream)->Target!;
-
-        private static partial ComResult read_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesRead)
-        {
-            var stream = Get(self);
-            *numBytesRead = stream.Read(new Span<byte>(buffer, numBytes));
-            return true;
-        }
-
-        private static partial ComResult write_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesWritten)
-        {
-            var stream = Get(self);
-            stream.Write(new Span<byte>(buffer, numBytes));
-            *numBytesWritten = numBytes;
-            return true;
-        }
-
-        private static partial ComResult seek_ToManaged(IBStream* self, long pos, int mode, long* result)
-        {
-            var stream = Get(self);
-            *result = stream.Seek(pos, mode == 0 ? SeekOrigin.Begin : mode == 1 ? SeekOrigin.Current : SeekOrigin.End);
-            return true;
-        }
-
-        private static partial ComResult tell_ToManaged(IBStream* self, long* pos)
-        {
-            var stream = Get(self);
-            *pos = stream.Position;
-            return true;
-        }
-    }
 }

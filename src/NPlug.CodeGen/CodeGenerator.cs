@@ -46,26 +46,31 @@ public class CodeGenerator
 
     public CodeGenerator(string sdkFolder)
     {
+        // Force these components to be host only
         _hostOnly = new HashSet<string>()
         {
-            "IComponentHandler3", // Force this component to be host only
+            "IBStream",
+            "IComponentHandler3",
             "IStringResult",
         };
+        // Force these components to be plugin only
         _pluginOnly = new HashSet<string>()
         {
-            "IPluginFactory2", // Force this component to be plugin only
-            "IPluginFactory3" // Force this component to be plugin only
+            "IPluginFactory2",
+            "IPluginFactory3"
         };
         // The following types don't seem to be used in the VST3 SDK itself
         _typesToExclude = new HashSet<string>()
         {
+            "ICloneable",
+            "IDependent",
             "IErrorContext",
-            "IString",
+            "IInterAppAudioConnectionNotification",
             "IPersistent",
             "IPluginCompatibility",
-            "IInterAppAudioConnectionNotification",
-            "ICloneable",
             "ISizeableStream",
+            "IString",
+            "IUpdateHandler",
         };
         _nameToIID = new Dictionary<string, Uuid>();
         _generatedCSharpElements = new Dictionary<string, CSharpElement>();

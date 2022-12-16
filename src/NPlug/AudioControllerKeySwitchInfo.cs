@@ -44,5 +44,5 @@ public sealed class AudioControllerKeySwitchInfo
     /// <summary>
     /// id of unit this key switch belongs to (see @ref vst3Units), -1 means no unit used.
     /// </summary>
-    public AudioUnitId UnitId { get; init; } = AudioUnitId.NoUnits;
+    public AudioUnitId UnitId { get; init; } = AudioUnitId.NoParent;
 }

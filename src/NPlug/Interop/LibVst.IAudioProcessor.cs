@@ -118,7 +118,7 @@ internal static unsafe partial class LibVst
 
         public AudioParameterId GetParameterId(in AudioParameterValueQueue parameterValueQueue)
         {
-            return new AudioParameterId(unchecked((int)Get(parameterValueQueue)->getParameterId().Value));
+            return new AudioParameterId(unchecked((int)Get(parameterValueQueue)->getParameterId()));
         }
 
         public int GetPointCount(in AudioParameterValueQueue parameterValueQueue)

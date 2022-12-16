@@ -20,6 +20,8 @@ public readonly unsafe ref struct AudioBusData
 
     private readonly AudioBusBuffers* _audioBuffers;
 
+    public AudioBusBuffers this[int index] => GetBuffer(index);
+
     public AudioBusBuffers GetBuffer(int index)
     {
         if ((uint)index >= (uint)BufferCount) throw new ArgumentOutOfRangeException(nameof(index));

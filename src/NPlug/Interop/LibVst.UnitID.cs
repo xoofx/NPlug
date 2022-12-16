@@ -6,9 +6,9 @@ namespace NPlug.Interop;
 
 internal static unsafe partial class LibVst
 {
-    public partial record struct ParamValue
+    public partial record struct UnitID
     {
-        public static implicit operator double(ParamValue paramValue) => paramValue.Value;
-        public static implicit operator ParamValue(double value) => new ParamValue(value);
+        public static implicit operator AudioUnitId(UnitID id) => new(id.Value);
+        public static implicit operator UnitID(AudioUnitId id) => new(id.Value);
     }
 }

@@ -2,6 +2,11 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using NPlug.IO;
+
 namespace NPlug;
 
 /// <summary>
@@ -9,35 +14,27 @@ namespace NPlug;
 /// A parameter info describes a parameter of the controller.
 /// The id must always be the same for a parameter as this uniquely identifies the parameter.
 /// </summary>
-public sealed class AudioParameterInfo
+public sealed record AudioParameterInfo(AudioParameterId Id, string Title)
 {
-    public AudioParameterInfo(AudioParameterId id, string title, string shortTitle, string units)
-    {
-        Id = id;
-        Title = title;
-        ShortTitle = shortTitle;
-        Units = units;
-    }
-
     /// <summary>
     /// unique identifier of this parameter (named tag too)
     /// </summary>
-    public AudioParameterId Id { get; }
+    public AudioParameterId Id { get; init; } = Id;
 
     /// <summary>
     /// parameter title (e.g. "Volume")
     /// </summary>
-    public string Title { get; }
+    public string Title { get; init; } = Title;
 
     /// <summary>
     /// parameter shortTitle (e.g. "Vol")
     /// </summary>
-    public string ShortTitle { get; }
+    public string ShortTitle { get; init; } = string.Empty;
 
     /// <summary>
     /// parameter unit (e.g. "dB")
     /// </summary>
-    public string Units { get; }
+    public string Units { get; init; } = string.Empty;
 
     /// <summary>
     /// number of discrete steps (0: continuous, 1: toggle, discrete value otherwise 
@@ -58,5 +55,5 @@ public sealed class AudioParameterInfo
     /// <summary>
     /// Flags for the parameter
     /// </summary>
-    public AudioParameterFlags Flags { get; init; }
+    public AudioParameterFlags Flags { get; init; } = AudioParameterFlags.CanAutomate;
 }

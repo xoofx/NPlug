@@ -2,6 +2,7 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace NPlug;
@@ -56,7 +57,7 @@ public interface IAudioControllerUnitInfo : IAudioController
     /// <summary>
     /// Gets for a given program list ID, program index and attributeId the associated attribute value.
     /// </summary>
-    string GetProgramInfo(AudioProgramListId listId, int programIndex, string attributeId);
+    bool TryGetProgramInfo(AudioProgramListId listId, int programIndex, string attributeId, [NotNullWhen(true)] out string? attributeValue);
 
     /// <summary>
     /// Returns kResultTrue if the given program index of a given program list ID supports PitchNames.
@@ -67,7 +68,7 @@ public interface IAudioControllerUnitInfo : IAudioController
     /// Gets the PitchName for a given program list ID, program index and pitch.
     /// If PitchNames are changed the plug-in should inform the host with IUnitHandler::notifyProgramListChange.
     /// </summary>
-    string GetProgramPitchName(AudioProgramListId listId, int programIndex, short midiPitch);
+    bool TryGetProgramPitchName(AudioProgramListId listId, int programIndex, short midiPitch, [NotNullWhen(true)] out string? pitchName);
 
     /// <summary>
     /// Gets or sets the current selected unit.

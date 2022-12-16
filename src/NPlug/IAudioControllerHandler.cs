@@ -188,4 +188,6 @@ public enum AudioProgressType : uint
 public readonly record struct AudioProgramListId(int Value)
 {
     public static readonly AudioProgramListId NoPrograms = new (-1);
+
+    public static implicit operator AudioProgramListId(int value) => new(value);
 }

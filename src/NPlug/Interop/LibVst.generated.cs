@@ -760,9 +760,18 @@ internal static partial class LibVst
     public unsafe partial struct FIDString
     {
         public byte* Value;
+        
+        public static implicit operator byte*(FIDString value) => value.Value;
+        
+        public static implicit operator FIDString(byte* value) => new FIDString() { Value = value };
     }
     
-    public partial record struct IAttrID(LibVst.FIDString Value);
+    public partial record struct IAttrID(LibVst.FIDString Value)
+    {
+        public static implicit operator LibVst.FIDString(IAttrID value) => value.Value;
+        
+        public static implicit operator IAttrID(LibVst.FIDString value) => new(value);
+    }
     
     /// <summary>
     /// FVariant struct declaration
@@ -1002,19 +1011,19 @@ internal static partial class LibVst
         /// Returns the attribute's ID for the given index.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LibVst.IAttrID getAttributeID(int index)
+        public LibVst.FIDString getAttributeID(int index)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes2*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes2), "getAttributeID");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes2*, int, LibVst.IAttrID>)Vtbl[14])(__self__, index);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes2*, int, LibVst.FIDString>)Vtbl[14])(__self__, index);
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes2*, int, LibVst.IAttrID>)Vtbl[14])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), index);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes2*, int, LibVst.FIDString>)Vtbl[14])((LibVst.IAttributes2*)Unsafe.AsPointer(ref this), index);
             }
         }
         
@@ -1185,7 +1194,7 @@ internal static partial class LibVst
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, LibVst.PFactoryInfo*, int>)&getFactoryInfo_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, int>)&countClasses_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, int, LibVst.PClassInfo*, int>)&getClassInfo_Wrapper;
-            vtbl[6] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, LibVst.FIDString, LibVst.FIDString, void**, int>)&createInstance_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, byte*, byte*, void**, int>)&createInstance_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -1313,7 +1322,7 @@ internal static partial class LibVst
         private static partial ComResult createInstance_ToManaged(IPluginFactory* self, LibVst.FIDString cid, LibVst.FIDString _iid, void** obj);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int createInstance_Wrapper(IPluginFactory* self, LibVst.FIDString cid, LibVst.FIDString _iid, void** obj)
+        private static int createInstance_Wrapper(IPluginFactory* self, byte* cid, byte* _iid, void** obj)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -1988,8 +1997,8 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPlugView*, LibVst.FIDString, int>)&isPlatformTypeSupported_Wrapper;
-            vtbl[4] = (delegate*unmanaged[MemberFunction]<IPlugView*, void*, LibVst.FIDString, int>)&attached_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPlugView*, byte*, int>)&isPlatformTypeSupported_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IPlugView*, void*, byte*, int>)&attached_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IPlugView*, int>)&removed_Wrapper;
             vtbl[6] = (delegate*unmanaged[MemberFunction]<IPlugView*, float, int>)&onWheel_Wrapper;
             vtbl[7] = (delegate*unmanaged[MemberFunction]<IPlugView*, ushort, short, short, int>)&onKeyDown_Wrapper;
@@ -2012,7 +2021,7 @@ internal static partial class LibVst
         private static partial ComResult isPlatformTypeSupported_ToManaged(IPlugView* self, LibVst.FIDString type);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int isPlatformTypeSupported_Wrapper(IPlugView* self, LibVst.FIDString type)
+        private static int isPlatformTypeSupported_Wrapper(IPlugView* self, byte* type)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -2056,7 +2065,7 @@ internal static partial class LibVst
         private static partial ComResult attached_ToManaged(IPlugView* self, void* parent, LibVst.FIDString type);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int attached_Wrapper(IPlugView* self, void* parent, LibVst.FIDString type)
+        private static int attached_Wrapper(IPlugView* self, void* parent, byte* type)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -2544,7 +2553,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPlugViewContentScaleSupport*, LibVst.ScaleFactor, int>)&setContentScaleFactor_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPlugViewContentScaleSupport*, float, int>)&setContentScaleFactor_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -2613,7 +2622,7 @@ internal static partial class LibVst
         private static partial ComResult setContentScaleFactor_ToManaged(IPlugViewContentScaleSupport* self, LibVst.ScaleFactor factor);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int setContentScaleFactor_Wrapper(IPlugViewContentScaleSupport* self, LibVst.ScaleFactor factor)
+        private static int setContentScaleFactor_Wrapper(IPlugViewContentScaleSupport* self, float factor)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -2661,7 +2670,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct ScaleFactor(float Value);
+    public partial record struct ScaleFactor(float Value)
+    {
+        public static implicit operator float(ScaleFactor value) => value.Value;
+        
+        public static implicit operator ScaleFactor(float value) => new(value);
+    }
     
     /// <summary>
     /// 
@@ -3260,6 +3274,10 @@ internal static partial class LibVst
     public unsafe partial struct AttrID
     {
         public byte* Value;
+        
+        public static implicit operator byte*(AttrID value) => value.Value;
+        
+        public static implicit operator AttrID(byte* value) => new AttrID() { Value = value };
     }
     
     /// <summary>
@@ -3445,11 +3463,11 @@ internal static partial class LibVst
         {
             IPluginBase.InitializeVtbl(vtbl);
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IComponent*, Guid*, int>)&getControllerClassId_Wrapper;
-            vtbl[6] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.IoMode, int>)&setIoMode_Wrapper;
-            vtbl[7] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.MediaType, LibVst.BusDirection, int>)&getBusCount_Wrapper;
-            vtbl[8] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.MediaType, LibVst.BusDirection, int, LibVst.BusInfo*, int>)&getBusInfo_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IComponent*, int, int>)&setIoMode_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IComponent*, int, int, int>)&getBusCount_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IComponent*, int, int, int, LibVst.BusInfo*, int>)&getBusInfo_Wrapper;
             vtbl[9] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.RoutingInfo*, LibVst.RoutingInfo*, int>)&getRoutingInfo_Wrapper;
-            vtbl[10] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.MediaType, LibVst.BusDirection, int, byte, int>)&activateBus_Wrapper;
+            vtbl[10] = (delegate*unmanaged[MemberFunction]<IComponent*, int, int, int, byte, int>)&activateBus_Wrapper;
             vtbl[11] = (delegate*unmanaged[MemberFunction]<IComponent*, byte, int>)&setActive_Wrapper;
             vtbl[12] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.IBStream*, int>)&setState_Wrapper;
             vtbl[13] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.IBStream*, int>)&getState_Wrapper;
@@ -3502,7 +3520,7 @@ internal static partial class LibVst
         private static partial ComResult setIoMode_ToManaged(IComponent* self, LibVst.IoMode mode);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int setIoMode_Wrapper(IComponent* self, LibVst.IoMode mode)
+        private static int setIoMode_Wrapper(IComponent* self, int mode)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -3540,7 +3558,7 @@ internal static partial class LibVst
         private static partial int getBusCount_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getBusCount_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir)
+        private static int getBusCount_Wrapper(IComponent* self, int type, int dir)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -3578,7 +3596,7 @@ internal static partial class LibVst
         private static partial ComResult getBusInfo_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, LibVst.BusInfo* bus);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getBusInfo_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, LibVst.BusInfo* bus)
+        private static int getBusInfo_Wrapper(IComponent* self, int type, int dir, int index, LibVst.BusInfo* bus)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -3658,7 +3676,7 @@ internal static partial class LibVst
         private static partial ComResult activateBus_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int activateBus_Wrapper(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state)
+        private static int activateBus_Wrapper(IComponent* self, int type, int dir, int index, byte state)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -3820,11 +3838,26 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct IoMode(int Value);
+    public partial record struct IoMode(int Value)
+    {
+        public static implicit operator int(IoMode value) => value.Value;
+        
+        public static implicit operator IoMode(int value) => new(value);
+    }
     
-    public partial record struct MediaType(int Value);
+    public partial record struct MediaType(int Value)
+    {
+        public static implicit operator int(MediaType value) => value.Value;
+        
+        public static implicit operator MediaType(int value) => new(value);
+    }
     
-    public partial record struct BusDirection(int Value);
+    public partial record struct BusDirection(int Value)
+    {
+        public static implicit operator int(BusDirection value) => value.Value;
+        
+        public static implicit operator BusDirection(int value) => new(value);
+    }
     
     /// <summary>
     /// BusInfo:
@@ -3882,7 +3915,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct BusType(int Value);
+    public partial record struct BusType(int Value)
+    {
+        public static implicit operator int(BusType value) => value.Value;
+        
+        public static implicit operator BusType(int value) => new(value);
+    }
     
     /// <summary>
     /// Routing Information:
@@ -4211,7 +4249,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct TQuarterNotes(double Value);
+    public partial record struct TQuarterNotes(double Value)
+    {
+        public static implicit operator double(TQuarterNotes value) => value.Value;
+        
+        public static implicit operator TQuarterNotes(double value) => new(value);
+    }
     
     /// <summary>
     /// Note-on event specific data. Used in @ref Event (union)
@@ -4382,9 +4425,19 @@ internal static partial class LibVst
         public LibVst.NoteExpressionValue value;
     }
     
-    public partial record struct NoteExpressionTypeID(uint Value);
+    public partial record struct NoteExpressionTypeID(uint Value)
+    {
+        public static implicit operator uint(NoteExpressionTypeID value) => value.Value;
+        
+        public static implicit operator NoteExpressionTypeID(uint value) => new(value);
+    }
     
-    public partial record struct NoteExpressionValue(double Value);
+    public partial record struct NoteExpressionValue(double Value)
+    {
+        public static implicit operator double(NoteExpressionValue value) => value.Value;
+        
+        public static implicit operator NoteExpressionValue(double value) => new(value);
+    }
     
     /// <summary>
     /// Note Expression Text event. Used in Event (union)
@@ -4743,19 +4796,19 @@ internal static partial class LibVst
         /// Returns its associated ID.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LibVst.ParamID getParameterId()
+        public uint getParameterId()
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "getParameterId");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, LibVst.ParamID>)Vtbl[3])(__self__);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, uint>)Vtbl[3])(__self__);
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, LibVst.ParamID>)Vtbl[3])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this));
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, uint>)Vtbl[3])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this));
             }
         }
         
@@ -4837,9 +4890,19 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct ParamID(uint Value);
+    public partial record struct ParamID(uint Value)
+    {
+        public static implicit operator uint(ParamID value) => value.Value;
+        
+        public static implicit operator ParamID(uint value) => new(value);
+    }
     
-    public partial record struct ParamValue(double Value);
+    public partial record struct ParamValue(double Value)
+    {
+        public static implicit operator double(ParamValue value) => value.Value;
+        
+        public static implicit operator ParamValue(double value) => new(value);
+    }
     
     /// <summary>
     /// Audio processing interface: Vst::IAudioProcessor
@@ -4861,7 +4924,7 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, LibVst.SpeakerArrangement*, int, LibVst.SpeakerArrangement*, int, int>)&setBusArrangements_Wrapper;
-            vtbl[4] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, LibVst.BusDirection, int, LibVst.SpeakerArrangement*, int>)&getBusArrangement_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, int, int, LibVst.SpeakerArrangement*, int>)&getBusArrangement_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, int, int>)&canProcessSampleSize_Wrapper;
             vtbl[6] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, uint>)&getLatencySamples_Wrapper;
             vtbl[7] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, LibVst.ProcessSetup*, int>)&setupProcessing_Wrapper;
@@ -4935,7 +4998,7 @@ internal static partial class LibVst
         private static partial ComResult getBusArrangement_ToManaged(IAudioProcessor* self, LibVst.BusDirection dir, int index, LibVst.SpeakerArrangement* arr);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getBusArrangement_Wrapper(IAudioProcessor* self, LibVst.BusDirection dir, int index, LibVst.SpeakerArrangement* arr)
+        private static int getBusArrangement_Wrapper(IAudioProcessor* self, int dir, int index, LibVst.SpeakerArrangement* arr)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -5572,7 +5635,12 @@ internal static partial class LibVst
         public LibVst.SampleRate sampleRate;
     }
     
-    public partial record struct SampleRate(double Value);
+    public partial record struct SampleRate(double Value)
+    {
+        public static implicit operator double(SampleRate value) => value.Value;
+        
+        public static implicit operator SampleRate(double value) => new(value);
+    }
     
     /// <summary>
     /// Any data needed in audio processing.
@@ -5693,9 +5761,19 @@ internal static partial class LibVst
         public LibVst.AudioBusBuffers.Union union;
     }
     
-    public partial record struct Sample32(float Value);
+    public partial record struct Sample32(float Value)
+    {
+        public static implicit operator float(Sample32 value) => value.Value;
+        
+        public static implicit operator Sample32(float value) => new(value);
+    }
     
-    public partial record struct Sample64(double Value);
+    public partial record struct Sample64(double Value)
+    {
+        public static implicit operator double(Sample64 value) => value.Value;
+        
+        public static implicit operator Sample64(double value) => new(value);
+    }
     
     /// <summary>
     /// Audio processing context.
@@ -5864,7 +5942,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct TSamples(long Value);
+    public partial record struct TSamples(long Value)
+    {
+        public static implicit operator long(TSamples value) => value.Value;
+        
+        public static implicit operator TSamples(long value) => new(value);
+    }
     
     /// <summary>
     /// Description of a chord.
@@ -5972,7 +6055,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged[MemberFunction]<IAudioPresentationLatency*, LibVst.BusDirection, int, uint, int>)&setAudioPresentationLatencySamples_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IAudioPresentationLatency*, int, int, uint, int>)&setAudioPresentationLatencySamples_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -5984,7 +6067,7 @@ internal static partial class LibVst
         private static partial ComResult setAudioPresentationLatencySamples_ToManaged(IAudioPresentationLatency* self, LibVst.BusDirection dir, int busIndex, uint latencyInSamples);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int setAudioPresentationLatencySamples_Wrapper(IAudioPresentationLatency* self, LibVst.BusDirection dir, int busIndex, uint latencyInSamples)
+        private static int setAudioPresentationLatencySamples_Wrapper(IAudioPresentationLatency* self, int dir, int busIndex, uint latencyInSamples)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -6507,7 +6590,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct Item(LibVst.IContextMenuItem Value);
+    public partial record struct Item(LibVst.IContextMenuItem Value)
+    {
+        public static implicit operator LibVst.IContextMenuItem(Item value) => value.Value;
+        
+        public static implicit operator Item(LibVst.IContextMenuItem value) => new(value);
+    }
     
     /// <summary>
     /// Context Menu Item Target interface: Vst::IContextMenuTarget
@@ -6655,7 +6743,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct UCoord(int Value);
+    public partial record struct UCoord(int Value)
+    {
+        public static implicit operator int(UCoord value) => value.Value;
+        
+        public static implicit operator UCoord(int value) => new(value);
+    }
     
     /// <summary>
     /// Extended host callback interface Vst::IComponentHandler3 for an edit controller.
@@ -7458,7 +7551,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct ID(ulong Value);
+    public partial record struct ID(ulong Value)
+    {
+        public static implicit operator ulong(ID value) => value.Value;
+        
+        public static implicit operator ID(ulong value) => new(value);
+    }
     
     /// <summary>
     /// Edit controller component interface: Vst::IEditController
@@ -7484,14 +7582,14 @@ internal static partial class LibVst
             vtbl[7] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.IBStream*, int>)&getState_Wrapper;
             vtbl[8] = (delegate*unmanaged[MemberFunction]<IEditController*, int>)&getParameterCount_Wrapper;
             vtbl[9] = (delegate*unmanaged[MemberFunction]<IEditController*, int, LibVst.ParameterInfo*, int>)&getParameterInfo_Wrapper;
-            vtbl[10] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128*, int>)&getParamStringByValue_Wrapper;
-            vtbl[11] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, char*, LibVst.ParamValue*, int>)&getParamValueByString_Wrapper;
-            vtbl[12] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)&normalizedParamToPlain_Wrapper;
-            vtbl[13] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)&plainParamToNormalized_Wrapper;
-            vtbl[14] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, double>)&getParamNormalized_Wrapper;
-            vtbl[15] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.ParamID, LibVst.ParamValue, int>)&setParamNormalized_Wrapper;
+            vtbl[10] = (delegate*unmanaged[MemberFunction]<IEditController*, uint, double, LibVst.String128*, int>)&getParamStringByValue_Wrapper;
+            vtbl[11] = (delegate*unmanaged[MemberFunction]<IEditController*, uint, char*, LibVst.ParamValue*, int>)&getParamValueByString_Wrapper;
+            vtbl[12] = (delegate*unmanaged[MemberFunction]<IEditController*, uint, double, double>)&normalizedParamToPlain_Wrapper;
+            vtbl[13] = (delegate*unmanaged[MemberFunction]<IEditController*, uint, double, double>)&plainParamToNormalized_Wrapper;
+            vtbl[14] = (delegate*unmanaged[MemberFunction]<IEditController*, uint, double>)&getParamNormalized_Wrapper;
+            vtbl[15] = (delegate*unmanaged[MemberFunction]<IEditController*, uint, double, int>)&setParamNormalized_Wrapper;
             vtbl[16] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.IComponentHandler*, int>)&setComponentHandler_Wrapper;
-            vtbl[17] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.FIDString, LibVst.IPlugView*>)&createView_Wrapper;
+            vtbl[17] = (delegate*unmanaged[MemberFunction]<IEditController*, byte*, LibVst.IPlugView*>)&createView_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -7694,7 +7792,7 @@ internal static partial class LibVst
         private static partial ComResult getParamStringByValue_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getParamStringByValue_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string)
+        private static int getParamStringByValue_Wrapper(IEditController* self, uint id, double valueNormalized, LibVst.String128* @string)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -7732,7 +7830,7 @@ internal static partial class LibVst
         private static partial ComResult getParamValueByString_ToManaged(IEditController* self, LibVst.ParamID id, char* @string, LibVst.ParamValue* valueNormalized);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getParamValueByString_Wrapper(IEditController* self, LibVst.ParamID id, char* @string, LibVst.ParamValue* valueNormalized)
+        private static int getParamValueByString_Wrapper(IEditController* self, uint id, char* @string, LibVst.ParamValue* valueNormalized)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -7771,7 +7869,7 @@ internal static partial class LibVst
         private static partial LibVst.ParamValue normalizedParamToPlain_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static double normalizedParamToPlain_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized)
+        private static double normalizedParamToPlain_Wrapper(IEditController* self, uint id, double valueNormalized)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -7809,7 +7907,7 @@ internal static partial class LibVst
         private static partial LibVst.ParamValue plainParamToNormalized_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue plainValue);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static double plainParamToNormalized_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue plainValue)
+        private static double plainParamToNormalized_Wrapper(IEditController* self, uint id, double plainValue)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -7847,7 +7945,7 @@ internal static partial class LibVst
         private static partial LibVst.ParamValue getParamNormalized_ToManaged(IEditController* self, LibVst.ParamID id);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static double getParamNormalized_Wrapper(IEditController* self, LibVst.ParamID id)
+        private static double getParamNormalized_Wrapper(IEditController* self, uint id)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -7887,7 +7985,7 @@ internal static partial class LibVst
         private static partial ComResult setParamNormalized_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue value);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int setParamNormalized_Wrapper(IEditController* self, LibVst.ParamID id, LibVst.ParamValue value)
+        private static int setParamNormalized_Wrapper(IEditController* self, uint id, double value)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -7966,7 +8064,7 @@ internal static partial class LibVst
         private static partial LibVst.IPlugView* createView_ToManaged(IEditController* self, LibVst.FIDString name);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static LibVst.IPlugView* createView_Wrapper(IEditController* self, LibVst.FIDString name)
+        private static LibVst.IPlugView* createView_Wrapper(IEditController* self, byte* name)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -8110,7 +8208,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct UnitID(int Value);
+    public partial record struct UnitID(int Value)
+    {
+        public static implicit operator int(UnitID value) => value.Value;
+        
+        public static implicit operator UnitID(int value) => new(value);
+    }
     
     /// <summary>
     /// Edit controller component interface extension: Vst::IEditController2
@@ -8133,7 +8236,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged[MemberFunction]<IEditController2*, LibVst.KnobMode, int>)&setKnobMode_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IEditController2*, int, int>)&setKnobMode_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IEditController2*, byte, int>)&openHelp_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IEditController2*, byte, int>)&openAboutBox_Wrapper;
         }
@@ -8148,7 +8251,7 @@ internal static partial class LibVst
         private static partial ComResult setKnobMode_ToManaged(IEditController2* self, LibVst.KnobMode mode);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int setKnobMode_Wrapper(IEditController2* self, LibVst.KnobMode mode)
+        private static int setKnobMode_Wrapper(IEditController2* self, int mode)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -8276,7 +8379,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct KnobMode(int Value);
+    public partial record struct KnobMode(int Value)
+    {
+        public static implicit operator int(KnobMode value) => value.Value;
+        
+        public static implicit operator KnobMode(int value) => new(value);
+    }
     
     /// <summary>
     /// MIDI Mapping interface: Vst::IMidiMapping
@@ -8333,7 +8441,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiMapping*, int, short, LibVst.CtrlNumber, LibVst.ParamID*, int>)&getMidiControllerAssignment_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiMapping*, int, short, short, LibVst.ParamID*, int>)&getMidiControllerAssignment_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -8349,7 +8457,7 @@ internal static partial class LibVst
         private static partial ComResult getMidiControllerAssignment_ToManaged(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getMidiControllerAssignment_Wrapper(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id)
+        private static int getMidiControllerAssignment_Wrapper(IMidiMapping* self, int busIndex, short channel, short midiControllerNumber, LibVst.ParamID* id)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -8397,7 +8505,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct CtrlNumber(short Value);
+    public partial record struct CtrlNumber(short Value)
+    {
+        public static implicit operator short(CtrlNumber value) => value.Value;
+        
+        public static implicit operator CtrlNumber(short value) => new(value);
+    }
     
     /// <summary>
     /// Parameter Editing from host: Vst::IEditControllerHostEditing
@@ -8429,8 +8542,8 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged[MemberFunction]<IEditControllerHostEditing*, LibVst.ParamID, int>)&beginEditFromHost_Wrapper;
-            vtbl[4] = (delegate*unmanaged[MemberFunction]<IEditControllerHostEditing*, LibVst.ParamID, int>)&endEditFromHost_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IEditControllerHostEditing*, uint, int>)&beginEditFromHost_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IEditControllerHostEditing*, uint, int>)&endEditFromHost_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -8442,7 +8555,7 @@ internal static partial class LibVst
         private static partial ComResult beginEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int beginEditFromHost_Wrapper(IEditControllerHostEditing* self, LibVst.ParamID paramID)
+        private static int beginEditFromHost_Wrapper(IEditControllerHostEditing* self, uint paramID)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -8480,7 +8593,7 @@ internal static partial class LibVst
         private static partial ComResult endEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int endEditFromHost_Wrapper(IEditControllerHostEditing* self, LibVst.ParamID paramID)
+        private static int endEditFromHost_Wrapper(IEditControllerHostEditing* self, uint paramID)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -8552,8 +8665,8 @@ internal static partial class LibVst
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, int>)&getNoteExpressionCount_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, int, LibVst.NoteExpressionTypeInfo*, int>)&getNoteExpressionInfo_Wrapper;
-            vtbl[5] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128*, int>)&getNoteExpressionStringByValue_Wrapper;
-            vtbl[6] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, char*, LibVst.NoteExpressionValue*, int>)&getNoteExpressionValueByString_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, uint, double, LibVst.String128*, int>)&getNoteExpressionStringByValue_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, uint, char*, LibVst.NoteExpressionValue*, int>)&getNoteExpressionValueByString_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -8641,7 +8754,7 @@ internal static partial class LibVst
         private static partial ComResult getNoteExpressionStringByValue_ToManaged(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getNoteExpressionStringByValue_Wrapper(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string)
+        private static int getNoteExpressionStringByValue_Wrapper(INoteExpressionController* self, int busIndex, short channel, uint id, double valueNormalized, LibVst.String128* @string)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -8679,7 +8792,7 @@ internal static partial class LibVst
         private static partial ComResult getNoteExpressionValueByString_ToManaged(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, char* @string, LibVst.NoteExpressionValue* valueNormalized);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getNoteExpressionValueByString_Wrapper(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, char* @string, LibVst.NoteExpressionValue* valueNormalized)
+        private static int getNoteExpressionValueByString_Wrapper(INoteExpressionController* self, int busIndex, short channel, uint id, char* @string, LibVst.NoteExpressionValue* valueNormalized)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -8996,7 +9109,12 @@ internal static partial class LibVst
         public int flags;
     }
     
-    public partial record struct KeyswitchTypeID(uint Value);
+    public partial record struct KeyswitchTypeID(uint Value)
+    {
+        public static implicit operator uint(KeyswitchTypeID value) => value.Value;
+        
+        public static implicit operator KeyswitchTypeID(uint value) => new(value);
+    }
     
     /// <summary>
     /// Private plug-in message: Vst::IMessage
@@ -10243,7 +10361,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiLearn*, int, short, LibVst.CtrlNumber, int>)&onLiveMIDIControllerInput_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiLearn*, int, short, short, int>)&onLiveMIDIControllerInput_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -10255,7 +10373,7 @@ internal static partial class LibVst
         private static partial ComResult onLiveMIDIControllerInput_ToManaged(IMidiLearn* self, int busIndex, short channel, LibVst.CtrlNumber midiCC);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int onLiveMIDIControllerInput_Wrapper(IMidiLearn* self, int busIndex, short channel, LibVst.CtrlNumber midiCC)
+        private static int onLiveMIDIControllerInput_Wrapper(IMidiLearn* self, int busIndex, short channel, short midiCC)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -10384,7 +10502,7 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged[MemberFunction]<IParameterFunctionName*, LibVst.UnitID, LibVst.FIDString, LibVst.ParamID*, int>)&getParameterIDFromFunctionName_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IParameterFunctionName*, int, byte*, LibVst.ParamID*, int>)&getParameterIDFromFunctionName_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -10397,7 +10515,7 @@ internal static partial class LibVst
         private static partial ComResult getParameterIDFromFunctionName_ToManaged(IParameterFunctionName* self, LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getParameterIDFromFunctionName_Wrapper(IParameterFunctionName* self, LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID)
+        private static int getParameterIDFromFunctionName_Wrapper(IParameterFunctionName* self, int unitID, byte* functionName, LibVst.ParamID* paramID)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -10614,7 +10732,12 @@ internal static partial class LibVst
         public LibVst.NoteExpressionTypeID noteExpressionTypeID;
     }
     
-    public partial record struct PhysicalUITypeID(uint Value);
+    public partial record struct PhysicalUITypeID(uint Value)
+    {
+        public static implicit operator uint(PhysicalUITypeID value) => value.Value;
+        
+        public static implicit operator PhysicalUITypeID(uint value) => new(value);
+    }
     
     /// <summary>
     /// Host callback interface for an edit controller: Vst::IPlugInterfaceSupport
@@ -10902,7 +11025,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct PrefetchableSupport(uint Value);
+    public partial record struct PrefetchableSupport(uint Value)
+    {
+        public static implicit operator uint(PrefetchableSupport value) => value.Value;
+        
+        public static implicit operator PrefetchableSupport(uint value) => new(value);
+    }
     
     /// <summary>
     /// Extended plug-in interface IEditController for a component: Vst::IXmlRepresentationController
@@ -11856,7 +11984,12 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct ProgramListID(int Value);
+    public partial record struct ProgramListID(int Value)
+    {
+        public static implicit operator int(ProgramListID value) => value.Value;
+        
+        public static implicit operator ProgramListID(int value) => new(value);
+    }
     
     /// <summary>
     /// Host callback for extended unit support: Vst::IUnitHandler2
@@ -11984,13 +12117,13 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, LibVst.UnitInfo*, int>)&getUnitInfo_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int>)&getProgramListCount_Wrapper;
             vtbl[6] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, LibVst.ProgramListInfo*, int>)&getProgramListInfo_Wrapper;
-            vtbl[7] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.ProgramListID, int, LibVst.String128*, int>)&getProgramName_Wrapper;
-            vtbl[8] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.ProgramListID, int, LibVst.CString, LibVst.String128*, int>)&getProgramInfo_Wrapper;
-            vtbl[9] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.ProgramListID, int, int>)&hasProgramPitchNames_Wrapper;
-            vtbl[10] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.ProgramListID, int, short, LibVst.String128*, int>)&getProgramPitchName_Wrapper;
-            vtbl[11] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.UnitID>)&getSelectedUnit_Wrapper;
-            vtbl[12] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.UnitID, int>)&selectUnit_Wrapper;
-            vtbl[13] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, LibVst.MediaType, LibVst.BusDirection, int, int, LibVst.UnitID*, int>)&getUnitByBus_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int, LibVst.String128*, int>)&getProgramName_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int, byte*, LibVst.String128*, int>)&getProgramInfo_Wrapper;
+            vtbl[9] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int, int>)&hasProgramPitchNames_Wrapper;
+            vtbl[10] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int, short, LibVst.String128*, int>)&getProgramPitchName_Wrapper;
+            vtbl[11] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int>)&getSelectedUnit_Wrapper;
+            vtbl[12] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int>)&selectUnit_Wrapper;
+            vtbl[13] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int, int, int, LibVst.UnitID*, int>)&getUnitByBus_Wrapper;
             vtbl[14] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int, LibVst.IBStream*, int>)&setUnitProgramData_Wrapper;
         }
         
@@ -12158,7 +12291,7 @@ internal static partial class LibVst
         private static partial ComResult getProgramName_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.String128* name);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getProgramName_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.String128* name)
+        private static int getProgramName_Wrapper(IUnitInfo* self, int listId, int programIndex, LibVst.String128* name)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12196,7 +12329,7 @@ internal static partial class LibVst
         private static partial ComResult getProgramInfo_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getProgramInfo_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue)
+        private static int getProgramInfo_Wrapper(IUnitInfo* self, int listId, int programIndex, byte* attributeId, LibVst.String128* attributeValue)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12234,7 +12367,7 @@ internal static partial class LibVst
         private static partial ComResult hasProgramPitchNames_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int hasProgramPitchNames_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex)
+        private static int hasProgramPitchNames_Wrapper(IUnitInfo* self, int listId, int programIndex)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12273,7 +12406,7 @@ internal static partial class LibVst
         private static partial ComResult getProgramPitchName_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getProgramPitchName_Wrapper(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name)
+        private static int getProgramPitchName_Wrapper(IUnitInfo* self, int listId, int programIndex, short midiPitch, LibVst.String128* name)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12312,7 +12445,7 @@ internal static partial class LibVst
         private static partial LibVst.UnitID getSelectedUnit_ToManaged(IUnitInfo* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static LibVst.UnitID getSelectedUnit_Wrapper(IUnitInfo* self)
+        private static int getSelectedUnit_Wrapper(IUnitInfo* self)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12350,7 +12483,7 @@ internal static partial class LibVst
         private static partial ComResult selectUnit_ToManaged(IUnitInfo* self, LibVst.UnitID unitId);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int selectUnit_Wrapper(IUnitInfo* self, LibVst.UnitID unitId)
+        private static int selectUnit_Wrapper(IUnitInfo* self, int unitId)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12389,7 +12522,7 @@ internal static partial class LibVst
         private static partial ComResult getUnitByBus_ToManaged(IUnitInfo* self, LibVst.MediaType type, LibVst.BusDirection dir, int busIndex, int channel, LibVst.UnitID* unitId);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getUnitByBus_Wrapper(IUnitInfo* self, LibVst.MediaType type, LibVst.BusDirection dir, int busIndex, int channel, LibVst.UnitID* unitId)
+        private static int getUnitByBus_Wrapper(IUnitInfo* self, int type, int dir, int busIndex, int channel, LibVst.UnitID* unitId)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12535,6 +12668,10 @@ internal static partial class LibVst
     public unsafe partial struct CString
     {
         public byte* Value;
+        
+        public static implicit operator byte*(CString value) => value.Value;
+        
+        public static implicit operator CString(byte* value) => new CString() { Value = value };
     }
     
     /// <summary>
@@ -12558,9 +12695,9 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged[MemberFunction]<IProgramListData*, LibVst.ProgramListID, int>)&programDataSupported_Wrapper;
-            vtbl[4] = (delegate*unmanaged[MemberFunction]<IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, int>)&getProgramData_Wrapper;
-            vtbl[5] = (delegate*unmanaged[MemberFunction]<IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, int>)&setProgramData_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IProgramListData*, int, int>)&programDataSupported_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IProgramListData*, int, int, LibVst.IBStream*, int>)&getProgramData_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IProgramListData*, int, int, LibVst.IBStream*, int>)&setProgramData_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -12572,7 +12709,7 @@ internal static partial class LibVst
         private static partial ComResult programDataSupported_ToManaged(IProgramListData* self, LibVst.ProgramListID listId);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int programDataSupported_Wrapper(IProgramListData* self, LibVst.ProgramListID listId)
+        private static int programDataSupported_Wrapper(IProgramListData* self, int listId)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12610,7 +12747,7 @@ internal static partial class LibVst
         private static partial ComResult getProgramData_ToManaged(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getProgramData_Wrapper(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
+        private static int getProgramData_Wrapper(IProgramListData* self, int listId, int programIndex, LibVst.IBStream* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12648,7 +12785,7 @@ internal static partial class LibVst
         private static partial ComResult setProgramData_ToManaged(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int setProgramData_Wrapper(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
+        private static int setProgramData_Wrapper(IProgramListData* self, int listId, int programIndex, LibVst.IBStream* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12717,9 +12854,9 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged[MemberFunction]<IUnitData*, LibVst.UnitID, int>)&unitDataSupported_Wrapper;
-            vtbl[4] = (delegate*unmanaged[MemberFunction]<IUnitData*, LibVst.UnitID, LibVst.IBStream*, int>)&getUnitData_Wrapper;
-            vtbl[5] = (delegate*unmanaged[MemberFunction]<IUnitData*, LibVst.UnitID, LibVst.IBStream*, int>)&setUnitData_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IUnitData*, int, int>)&unitDataSupported_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IUnitData*, int, LibVst.IBStream*, int>)&getUnitData_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IUnitData*, int, LibVst.IBStream*, int>)&setUnitData_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -12731,7 +12868,7 @@ internal static partial class LibVst
         private static partial ComResult unitDataSupported_ToManaged(IUnitData* self, LibVst.UnitID unitID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int unitDataSupported_Wrapper(IUnitData* self, LibVst.UnitID unitID)
+        private static int unitDataSupported_Wrapper(IUnitData* self, int unitID)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12769,7 +12906,7 @@ internal static partial class LibVst
         private static partial ComResult getUnitData_ToManaged(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getUnitData_Wrapper(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data)
+        private static int getUnitData_Wrapper(IUnitData* self, int unitId, LibVst.IBStream* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -12807,7 +12944,7 @@ internal static partial class LibVst
         private static partial ComResult setUnitData_ToManaged(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int setUnitData_Wrapper(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data)
+        private static int setUnitData_Wrapper(IUnitData* self, int unitId, LibVst.IBStream* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {

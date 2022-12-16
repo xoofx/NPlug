@@ -520,11 +520,16 @@ public class CodeGenerator
                                 if (csParameterType is CSharpPointerType)
                                 {
                                     csStruct.Members.Add(new CSharpField("Value") { FieldType = csParameterType });
+                                    csStruct.Members.Add(new CSharpFreeMember() { Text = $"public static implicit operator {csParameterType.GetName()}({csStruct.Name} value) => value.Value;" });
+                                    csStruct.Members.Add(new CSharpFreeMember() { Text = $"public static implicit operator {csStruct.Name}({csParameterType.GetName()} value) => new {csStruct.Name}() {{ Value = value }};" });
                                 }
                                 else
                                 {
                                     csStruct.IsRecord = true;
                                     csStruct.RecordParameters.Add(new CSharpParameter("Value") { ParameterType = csParameterType });
+                                    csStruct.Members.Add(new CSharpFreeMember() { Text = $"public static implicit operator {csParameterType.GetName()}({csStruct.Name} value) => value.Value;" });
+                                    csStruct.Members.Add(new CSharpFreeMember() { Text = $"public static implicit operator {csStruct.Name}({csParameterType.GetName()} value) => new(value);" });
+
                                 }
 
                                 ApplyUnsafe(csStruct, csParameterType);
@@ -571,14 +576,18 @@ public class CodeGenerator
 
         return type;
     }
-
-    private CSharpType GetUnmanagedReturnType(CSharpType csType)
+    private CSharpType GetUnmanagedType(CSharpType csType)
     {
-        if (csType is CSharpStruct)
+        if (csType is CSharpStruct csStruct)
         {
-            if (csType.CppElement is CppTypedef typeDef && (typeDef.ElementType.TypeKind == CppTypeKind.Primitive || typeDef.ElementType.TypeKind == CppTypeKind.Pointer))
+            var name = csStruct.Name;
+            if (csType.CppElement is CppTypedef typeDef)
             {
-                return GetCSharpType(typeDef.ElementType);
+                var canonicalType = typeDef.ElementType.GetCanonicalType();
+                if (canonicalType.TypeKind == CppTypeKind.Primitive || canonicalType.TypeKind == CppTypeKind.Pointer)
+                {
+                    return GetCSharpType(typeDef.ElementType);
+                }
             }
         }
         else if (csType.ToString() == "ComResult")
@@ -835,7 +844,7 @@ public class CodeGenerator
                     csMethodWrap.Attributes.Add(new CSharpFreeAttribute("UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})"));
 
                     csMethod.ReturnType = GetCSharpReturnOrParameterType(cppMethod.ReturnType);
-                    csMethodWrap.ReturnType = GetUnmanagedReturnType(csMethod.ReturnType);
+                    csMethodWrap.ReturnType = GetUnmanagedType(csMethod.ReturnType);
                     csMethod.Parameters.Add(new CSharpParameter("self") { ParameterType = new CSharpFreeType($"{name}*") });
                     foreach (var cppMethodParameter in cppMethod.Parameters)
                     {
@@ -846,7 +855,18 @@ public class CodeGenerator
                         };
                         csMethod.Parameters.Add(csParameter);
                     }
-                    csMethodWrap.Parameters.AddRange(csMethod.Parameters);
+
+                    // Copy C# parameter for wrapper, but replace any typedef to parameter
+                    foreach (var csParameter in csMethod.Parameters)
+                    {
+                        var csParameterForWrapper = new CSharpParameter()
+                        {
+                            Name = csParameter.Name,
+                            ParameterType = GetUnmanagedType(csParameter.ParameterType)
+                        };
+                        csMethodWrap.Parameters.Add(csParameterForWrapper);
+                    }
+
                     csMethodWrap.Body = (writer, element) =>
                     {
                         var returnTypeAsStr = csMethod.ReturnType.ToString();
@@ -1068,7 +1088,7 @@ public class CodeGenerator
         }
 
         csMethod.ReturnType = GetCSharpReturnOrParameterType(cppMethod.ReturnType);
-        var unmanagedReturnType = GetUnmanagedReturnType(csMethod.ReturnType);
+        var unmanagedReturnType = GetUnmanagedType(csMethod.ReturnType);
         if (csMethod.ReturnType.ToString() != "ComResult")
         {
             csMethod.ReturnType = unmanagedReturnType;

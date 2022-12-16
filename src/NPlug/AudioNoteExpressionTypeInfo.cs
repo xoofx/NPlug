@@ -34,7 +34,7 @@ public sealed record AudioNoteExpressionTypeInfo
     /// <summary>
     /// id of unit this NoteExpression belongs to (see @ref vst3Units), in order to sort the note expression, it is possible to use unitId like for parameters. -1 means no unit used.
     /// </summary>
-    public AudioUnitId UnitId { get; init; } = AudioUnitId.NoUnits;
+    public AudioUnitId UnitId { get; init; } = AudioUnitId.NoParent;
 
     /// <summary>
     /// value description see @ref NoteExpressionValueDescription

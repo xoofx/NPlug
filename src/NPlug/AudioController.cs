@@ -9,30 +9,46 @@ using System.IO;
 
 namespace NPlug;
 
-public abstract class AudioController : AudioPluginComponent
+public abstract partial class AudioController<TAudioRootUnit> : AudioPluginComponent
     , IAudioController
     , IAudioControllerExtended
     , IAudioControllerMidiMapping
+    , IAudioControllerUnitInfo
+    where TAudioRootUnit : AudioRootUnit, new()
 {
     private PortableBinaryReader? _streamReader;
     private PortableBinaryWriter? _streamWriter;
 
-    internal readonly List<AudioParameterInfo> ParameterInfos;
-
     protected AudioController()
     {
-        ParameterInfos = new List<AudioParameterInfo>();
+        _programLists = new List<AudioProgramList>();
+        _mapProgramIdToIndex = new Dictionary<AudioProgramListId, int>();
+        RootUnit = new TAudioRootUnit();
+        RootUnit.Initialize();
+        _selectedUnit = RootUnit;
     }
 
-    protected abstract bool Initialize(AudioControllerSetup setup);
+    public TAudioRootUnit RootUnit { get; }
+
+    protected virtual bool Initialize(AudioHostApplication host)
+    {
+        return true;
+    }
 
     protected virtual void RestoreComponentState(PortableBinaryReader reader)
     {
+        RootUnit.Load(reader);
     }
 
-    protected abstract void SaveState(PortableBinaryWriter writer);
+    protected virtual void SaveState(PortableBinaryWriter writer)
+    {
+        RootUnit.Save(writer);
+    }
 
-    protected abstract void RestoreState(PortableBinaryReader reader);
+    protected void RestoreState(PortableBinaryReader reader)
+    {
+        RootUnit.Load(reader);
+    }
 
     // IEditController2
 
@@ -61,7 +77,7 @@ public abstract class AudioController : AudioPluginComponent
 
     internal override bool InitializeInternal(AudioHostApplication hostApplication)
     {
-        return Initialize(new AudioControllerSetup(this, hostApplication));
+        return Initialize(hostApplication);
     }
 
     void IAudioController.SetComponentState(Stream streamInput)
@@ -104,40 +120,6 @@ public abstract class AudioController : AudioPluginComponent
             writer.Stream = streamOutput;
         }
         SaveState(writer);
-    }
-
-    int IAudioController.ParameterCount => ParameterInfos.Count;
-
-    AudioParameterInfo IAudioController.GetParameterInfo(int paramIndex) => ParameterInfos[paramIndex];
-
-    string IAudioController.GetParameterStringByValue(AudioParameterId id, double valueNormalized)
-    {
-        throw new NotImplementedException();
-    }
-
-    double IAudioController.GetParameterValueByString(AudioParameterId id, string valueAsString)
-    {
-        throw new NotImplementedException();
-    }
-
-    double IAudioController.NormalizedParameterToPlain(AudioParameterId id, double valueNormalized)
-    {
-        throw new NotImplementedException();
-    }
-
-    double IAudioController.PlainParameterToNormalized(AudioParameterId id, double plainValue)
-    {
-        throw new NotImplementedException();
-    }
-
-    double IAudioController.GetParameterNormalized(AudioParameterId id)
-    {
-        throw new NotImplementedException();
-    }
-
-    void IAudioController.SetParameterNormalized(AudioParameterId id, double valueNormalized)
-    {
-        throw new NotImplementedException();
     }
 
     public void SetControllerHandler(IAudioControllerHandler controllerHandler)

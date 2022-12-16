@@ -11,7 +11,7 @@ using NPlug.IO;
 
 namespace NPlug;
 
-public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
+public abstract partial class AudioProcessor<TAudioRootUnit> : AudioPluginComponent, IAudioProcessor where TAudioRootUnit: AudioRootUnit, new()
 {
     internal readonly List<BusInfo> AudioInputBuses;
     internal readonly List<BusInfo> AudioOutputBuses;
@@ -36,9 +36,13 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
         LatencySamples = latencySamples;
         TailSamples = tailSamples;
         ProcessContextRequirementFlags = processContextRequirementFlags;
+        RootUnit = new TAudioRootUnit();
+        RootUnit.Initialize();
     }
     
     public AudioSampleSizeSupport SampleSizeSupport { get; }
+
+    public TAudioRootUnit RootUnit { get; }
 
     public AudioProcessContextRequirementFlags ProcessContextRequirementFlags { get; }
 
@@ -59,7 +63,7 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
         return (SampleSizeSupport & (AudioSampleSizeSupport)(1 << (int)sampleSize)) != 0;
     }
 
-    protected abstract bool Initialize(AudioProcessorSetup setup);
+    protected abstract bool Initialize(AudioHostApplication host);
 
     protected virtual bool TryGetBusRoutingInfo(in BusRoutingInfo inInfo, out BusRoutingInfo outInfo)
     {
@@ -80,9 +84,15 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
     {
     }
 
-    protected abstract void SaveState(PortableBinaryWriter writer);
+    protected virtual void SaveState(PortableBinaryWriter writer)
+    {
+        RootUnit.Save(writer);
+    }
 
-    protected abstract void RestoreState(PortableBinaryReader reader);
+    protected virtual void RestoreState(PortableBinaryReader reader)
+    {
+        RootUnit.Load(reader);
+    }
 
     protected abstract void Process(in AudioProcessSetupData setupData, in AudioProcessData data);
 
@@ -102,7 +112,7 @@ public abstract class AudioProcessor : AudioPluginComponent, IAudioProcessor
 
     internal override bool InitializeInternal(AudioHostApplication hostApplication)
     {
-        return Initialize(new AudioProcessorSetup(this, hostApplication));
+        return Initialize(hostApplication);
     }
 
     void IAudioProcessor.SetInputOutputMode(InputOutputMode mode)

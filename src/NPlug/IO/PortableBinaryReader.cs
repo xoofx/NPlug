@@ -153,7 +153,7 @@ public class PortableBinaryReader
     public unsafe double ReadFloat64()
     {
         long data;
-        if (_stream.Read(new Span<byte>(&data, 4)) != 4)
+        if (_stream.Read(new Span<byte>(&data, 8)) != 8)
         {
             throw new EndOfStreamException();
         }

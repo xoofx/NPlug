@@ -54,8 +54,12 @@ internal static unsafe partial class LibVst
             var managedUnit = Get(self);
             if (managedUnit.Host is AudioHostApplicationClient client)
             {
-                attributeValue->CopyFrom(Get(self).GetProgramInfo(new AudioProgramListId(listId.Value), programIndex, client.GetOrCreateString(attributeId.Value)));
-                return true;
+                if (Get(self).TryGetProgramInfo(new AudioProgramListId(listId.Value), programIndex, client.GetOrCreateString(attributeId.Value), out var attributeValueManaged))
+                {
+                    attributeValue->CopyFrom(attributeValueManaged);
+                    return true;
+                }
+                return false;
             }
 
             return false;
@@ -68,7 +72,11 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult getProgramPitchName_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name)
         {
-            name->CopyFrom(Get(self).GetProgramPitchName(new AudioProgramListId(listId.Value), programIndex, midiPitch));
+            if (Get(self).TryGetProgramPitchName(new AudioProgramListId(listId.Value), programIndex, midiPitch, out var pitchName))
+            {
+                name->CopyFrom(pitchName);
+                return true;
+            }
             return true;
         }
 

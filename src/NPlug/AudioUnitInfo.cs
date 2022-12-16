@@ -24,7 +24,7 @@ public sealed record AudioUnitInfo(AudioUnitId Id)
     /// <summary>
     /// identifier of parent unit (kNoParentUnitId: does not apply, this unit is the root)
     /// </summary>
-    public AudioUnitId ParentUnitId { get; init; } = AudioUnitId.NoUnits;
+    public AudioUnitId ParentUnitId { get; init; } = AudioUnitId.NoParent;
 
     /// <summary>
     /// name, optional for the root component, required otherwise

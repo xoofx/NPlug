@@ -2,19 +2,25 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using NPlug.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
+using NPlug.IO;
 
 namespace NPlug;
 
-public abstract class AudioRootUnit : AudioUnit
+public abstract class AudioRootUnit : AudioUnit, IDisposable
 {
     private readonly List<AudioUnit> _allUnits;
     private readonly Dictionary<AudioUnitId, int> _unitIdToIndex;
     private readonly List<AudioParameter> _allParameters;
     private readonly Dictionary<AudioParameterId, int> _parameterIdToIndex;
-
+    private nuint _allParameterSizeInBytes;
+    private unsafe double* _pointerToBuffer;
+    
     protected AudioRootUnit(string unitName, AudioProgramList? programList = null) : base(unitName, 0, programList)
     {
         _allParameters = new List<AudioParameter>();
@@ -30,20 +36,18 @@ public abstract class AudioRootUnit : AudioUnit
 
     public void Initialize()
     {
-        _allUnits.Clear();
-        _unitIdToIndex.Clear();
-        _allParameters.Clear();
-        _parameterIdToIndex.Clear();
+        if (IsInitialized) throw new InvalidOperationException("This unit is already initialized");
         RegisterUnit(this);
+        InitializeBuffer();
     }
 
     public int TotalParameterCount => _allParameters.Count;
 
     public int TotalUnitCount => _allUnits.Count;
 
-    public AudioParameter GetParameterFromRoot(int index) => _allParameters[index];
+    public AudioParameter GetParameterByRootIndex(int index) => _allParameters[index];
 
-    public AudioUnit GetUnitFromRoot(int index) => _allUnits[index];
+    public AudioUnit GetUnitByRootIndex(int index) => _allUnits[index];
     
 
     public bool TryGetParameterById(AudioParameterId id, [NotNullWhen(true)] out AudioParameter? parameter)
@@ -68,6 +72,23 @@ public abstract class AudioRootUnit : AudioUnit
         throw new ArgumentException($"Invalid parameter id {id}. No parameter found with this id", nameof(id));
     }
 
+    public unsafe ref double GetNormalizedValueById(AudioParameterId id)
+    {
+        if (!_parameterIdToIndex.TryGetValue(id, out int parameterIndex))
+        {
+            throw new ArgumentException($"Invalid parameter id {id}. No parameter found with this id", nameof(id));
+        }
+
+        if (_pointerToBuffer != null)
+        {
+            return ref _pointerToBuffer[parameterIndex];
+        }
+        else
+        {
+            return ref _allParameters[parameterIndex].LocalNormalizedValue;
+        }
+    }
+
     public bool TryGetUnitById(AudioUnitId id, [NotNullWhen(true)] out AudioUnit? unit)
     {
         unit = null;
@@ -78,6 +99,70 @@ public abstract class AudioRootUnit : AudioUnit
         }
 
         return false;
+    }
+
+    public override unsafe void Load(PortableBinaryReader reader)
+    {
+        // Don't try to read anything if the stream is empty.
+        if (reader.Stream.Length == 0) return;
+
+        // Fast path
+        var pointerBuffer = _pointerToBuffer;
+        if (pointerBuffer != null)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                reader.Stream.ReadExactly(new Span<byte>(pointerBuffer, (int)_allParameterSizeInBytes));
+            }
+            else
+            {
+                var pValue = _pointerToBuffer;
+                var endValue = _pointerToBuffer + _allParameters.Count;
+                while (pValue < endValue)
+                {
+                    *pValue = reader.ReadFloat64();
+                    pValue++;
+                }
+            }
+        }
+        else
+        {
+            foreach (var parameter in _allParameters)
+            {
+                parameter.LocalNormalizedValue = reader.ReadFloat64();
+            }
+        }
+    }
+
+    public override unsafe void Save(PortableBinaryWriter writer)
+    {
+        // Fast path
+        var pointerBuffer = _pointerToBuffer;
+        if (pointerBuffer != null)
+        {
+            // Fast path
+            if (BitConverter.IsLittleEndian)
+            {
+                writer.Stream.Write(new ReadOnlySpan<byte>(pointerBuffer, (int)_allParameterSizeInBytes));
+            }
+            else
+            {
+                var pValue = _pointerToBuffer;
+                var endValue = _pointerToBuffer + _allParameters.Count;
+                while (pValue < endValue)
+                {
+                    writer.WriteFloat64(*pValue);
+                    pValue++;
+                }
+            }
+        }
+        else
+        {
+            foreach (var parameter in _allParameters)
+            {
+                writer.WriteFloat64(parameter.LocalNormalizedValue);
+            }
+        }
     }
 
     private void RegisterUnit(AudioUnit unit)
@@ -109,7 +194,7 @@ public abstract class AudioRootUnit : AudioUnit
         var parameterCount = unit.ParameterCount;
         for (int i = 0; i < parameterCount; i++)
         {
-            var parameter = unit.GetParameter(i);
+            var parameter = unit.GetLocalParameter(i);
             RegisterParameter(parameter);
         }
     }
@@ -131,5 +216,44 @@ public abstract class AudioRootUnit : AudioUnit
 
         _parameterIdToIndex[parameter.Id] = _allParameters.Count;
         _allParameters.Add(parameter);
+    }
+   
+    private unsafe void InitializeBuffer()
+    {
+        // Allocate the memory for all parameters (double size)
+        var allParameterSizeInBytes = _allParameters.Count * sizeof(double);
+        var memoryToAllocate = MathHelper.AlignToUpper((nuint)allParameterSizeInBytes, AlignedSize);
+        _pointerToBuffer = (double*)NativeMemory.AlignedAlloc(memoryToAllocate, (nuint)AlignedSize);
+        if (_pointerToBuffer == null) throw new OutOfMemoryException("Unable to allocate native memory for the parameters");
+        NativeMemory.Fill(_pointerToBuffer, memoryToAllocate, 0);
+        _allParameterSizeInBytes = (nuint)allParameterSizeInBytes;
+
+        // Assign a pointer slot to each parameter
+        var pValue = _pointerToBuffer;
+        for (var i = 0; i < _allParameters.Count; i++)
+        {
+            var audioParameter = _allParameters[i];
+            audioParameter.PointerToNormalizedValueInSharedBuffer = pValue;
+            *pValue = audioParameter.NormalizedValue;
+            pValue++;
+        }
+
+        // Mark all unit initialized
+        foreach (var unit in _allUnits)
+        {
+            unit.IsInitialized = true;
+        }
+    }
+
+    private static readonly uint AlignedSize = (uint)(Vector256.IsHardwareAccelerated ? Vector256<byte>.Count : Vector128.IsHardwareAccelerated ? Vector128<byte>.Count : sizeof(double));
+
+    public unsafe void Dispose()
+    {
+        if (_pointerToBuffer != null)
+        {
+            NativeMemory.Free(_pointerToBuffer);
+            _pointerToBuffer = null;
+            _allParameterSizeInBytes = 0;
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace NPlug;
 /// parameter change.This allows the host to automate them in the same way as other parameters.
 /// <see cref="AudioMidiControllerNumber"/> can be a typical MIDI controller value extended to some others values like pitchbend or
 /// aftertouch.
-/// If the mapping has changed, the plug-in must call <see cref="AudioControllerHost.RestartComponent"/>
+/// If the mapping has changed, the plug-in must call <see cref="IAudioControllerHandler.RestartComponent"/>
 /// to inform the host about this change.
 /// </summary>
 /// <remarks>

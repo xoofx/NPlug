@@ -38,6 +38,12 @@ public class AudioUnit
 
     public string Name { get; }
 
+    public bool IsInitialized
+    {
+        get;
+        internal set;
+    }
+
     public AudioProgramList? ProgramList { get; }
 
     public int ParameterCount => _parameters.Count;
@@ -46,10 +52,21 @@ public class AudioUnit
 
     public int ChildUnitCount => _children.Count;
 
+    /// <summary>
+    /// Gets the parameter attached directly to this unit.
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public AudioParameter GetLocalParameter(int index)
+    {
+        return _parameters[index];
+    }
+    
     public AudioUnit GetChildUnit(int index) => _children[index];
 
     public TAudioUnit AddUnit<TAudioUnit>(TAudioUnit unit) where TAudioUnit : AudioUnit
     {
+        AssertNotInitialized();
         if (unit.ParentUnit != null)
         {
             throw new ArgumentException("The unit is already attached to another container");
@@ -57,11 +74,6 @@ public class AudioUnit
         unit.ParentUnit = this;
         _children.Add(unit);
         return unit;
-    }
-    
-    public AudioParameter GetParameter(int index)
-    {
-        return _parameters[index];
     }
 
     public virtual void Load(PortableBinaryReader reader)
@@ -95,6 +107,7 @@ public class AudioUnit
 
     public TAudioParameter AddParameter<TAudioParameter>(TAudioParameter parameter) where TAudioParameter: AudioParameter
     {
+        AssertNotInitialized();
         if (parameter.Unit != null)
         {
             throw new ArgumentException($"The parameter is already attached to the unit `{parameter.Unit.UnitInfo.Name}`");
@@ -107,5 +120,10 @@ public class AudioUnit
     public override string ToString()
     {
         return $"Unit {UnitInfo.Name}, UnitCount = {ChildUnitCount}, ParameterCount = {ParameterCount}";
+    }
+
+    private void AssertNotInitialized()
+    {
+        if (IsInitialized) throw new InvalidOperationException("Cannot modify this unit if it is already initialized");
     }
 }

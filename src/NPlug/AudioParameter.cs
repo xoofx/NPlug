@@ -3,12 +3,22 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace NPlug;
 
 public class AudioParameter
 {
-    private double _normalizedValue;
+    /// <summary>
+    /// This value is only used temporarily until the <see cref="AudioRootUnit"/> is initialized.
+    /// Then it is the <see cref="PointerToNormalizedValueInSharedBuffer"/> that is used.
+    /// </summary>
+    internal double LocalNormalizedValue;
+
+    /// <summary>
+    /// This pointer is setup by <see cref="AudioRootUnit"/> in InitializeBuffers.
+    /// </summary>
+    internal unsafe double* PointerToNormalizedValueInSharedBuffer;
 
     protected AudioParameterInfo InfoBase;
 
@@ -49,15 +59,32 @@ public class AudioParameter
     
     public AudioUnit? Unit { get; internal set; }
 
+    private unsafe ref double RawNormalizedValue
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            if (PointerToNormalizedValueInSharedBuffer != null)
+            { 
+                return ref *PointerToNormalizedValueInSharedBuffer;
+            }
+            else
+            {
+                return ref LocalNormalizedValue;
+            }
+        }
+    }
+
     public double NormalizedValue
     {
-        get => _normalizedValue;
+        get => RawNormalizedValue;
         set
         {
             value = Math.Clamp(value, 0.0, 1.0);
-            if (_normalizedValue != value)
+            ref var rawNormalizedValue = ref RawNormalizedValue;
+            if (rawNormalizedValue != value)
             {
-                _normalizedValue = value;
+                rawNormalizedValue = value;
                 Changed?.Invoke();
             }
         }
@@ -74,7 +101,7 @@ public class AudioParameter
     {
         if (Info.StepCount == 1)
         {
-            return _normalizedValue > 0.5 ? "On" : "Off";
+            return RawNormalizedValue > 0.5 ? "On" : "Off";
         }
 
         return valueNormalized.ToString(GetPrecisionFormat(Precision));

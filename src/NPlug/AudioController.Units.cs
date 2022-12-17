@@ -17,7 +17,7 @@ public abstract partial class AudioController<TAudioRootUnit>
 
     int IAudioControllerUnitInfo.UnitCount => RootUnit.TotalUnitCount;
 
-    AudioUnitInfo IAudioControllerUnitInfo.GetUnitInfo(int unitIndex) => RootUnit.GetUnitFromRoot(unitIndex).UnitInfo;
+    AudioUnitInfo IAudioControllerUnitInfo.GetUnitInfo(int unitIndex) => RootUnit.GetUnitByRootIndex(unitIndex).UnitInfo;
 
     AudioUnitId IAudioControllerUnitInfo.SelectedUnit
     {

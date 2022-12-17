@@ -8,7 +8,7 @@ public abstract partial class AudioController<TAudioRootUnit>
 {
     int IAudioController.ParameterCount => RootUnit.TotalParameterCount;
 
-    AudioParameterInfo IAudioController.GetParameterInfo(int paramIndex) => RootUnit.GetParameterFromRoot(paramIndex).Info;
+    AudioParameterInfo IAudioController.GetParameterInfo(int paramIndex) => RootUnit.GetParameterByRootIndex(paramIndex).Info;
 
     string IAudioController.GetParameterStringByValue(AudioParameterId id, double valueNormalized)
     {

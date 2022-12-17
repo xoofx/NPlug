@@ -12,21 +12,25 @@ using NPlug.IO;
 
 namespace NPlug;
 
-public abstract class AudioRootUnit : AudioUnit, IDisposable
+public abstract class AudioProcessorModel : AudioUnit, IDisposable
 {
     private readonly List<AudioUnit> _allUnits;
     private readonly Dictionary<AudioUnitId, int> _unitIdToIndex;
     private readonly List<AudioParameter> _allParameters;
     private readonly Dictionary<AudioParameterId, int> _parameterIdToIndex;
+    private readonly List<AudioProgramList> _allProgramLists;
+    private readonly Dictionary<AudioProgramListId, int> _programListIdToIndex;
     private nuint _allParameterSizeInBytes;
     private unsafe double* _pointerToBuffer;
     
-    protected AudioRootUnit(string unitName, AudioProgramList? programList = null) : base(unitName, 0, programList)
+    protected AudioProcessorModel(string unitName, AudioProgramList? programList = null) : base(unitName, 0, programList)
     {
         _allParameters = new List<AudioParameter>();
         _parameterIdToIndex = new Dictionary<AudioParameterId, int>();
         _allUnits = new List<AudioUnit>();
         _unitIdToIndex = new Dictionary<AudioUnitId, int>();
+        _allProgramLists = new List<AudioProgramList>();
+        _programListIdToIndex = new Dictionary<AudioProgramListId, int>();
 
         ByPassParameter = new AudioBoolParameter("ByPass", flags: AudioParameterFlags.IsBypass | AudioParameterFlags.CanAutomate);
         AddParameter(ByPassParameter);
@@ -41,15 +45,34 @@ public abstract class AudioRootUnit : AudioUnit, IDisposable
         InitializeBuffer();
     }
 
-    public int TotalParameterCount => _allParameters.Count;
+    public int ParameterCount => _allParameters.Count;
 
-    public int TotalUnitCount => _allUnits.Count;
+    public int UnitCount => _allUnits.Count;
 
-    public AudioParameter GetParameterByRootIndex(int index) => _allParameters[index];
+    public int ProgramListCount => _allProgramLists.Count;
 
-    public AudioUnit GetUnitByRootIndex(int index) => _allUnits[index];
+    public bool HasProgramLists => _allProgramLists.Count > 0;
+
+    public bool ContainsProgramList(AudioProgramListId id) => _programListIdToIndex.ContainsKey(id);
+
+    public AudioParameter GetParameterByIndex(int index) => _allParameters[index];
+
+    public AudioUnit GetUnitByIndex(int index) => _allUnits[index];
+
+    public AudioProgramList GetProgramListByIndex(int index) => _allProgramLists[index];
+
+    public AudioProgramList GetProgramListById(AudioProgramListId id) => _allProgramLists[_programListIdToIndex[id]];
+
+    /// <summary>
+    /// Event when a parameter value has changed.
+    /// </summary>
+    public event Action<AudioParameter>? ParameterValueChanged;
+
+    /// <summary>
+    /// Event when a program is changed for a unit.
+    /// </summary>
+    public event Action<AudioUnit>? SelectedProgramChanged;
     
-
     public bool TryGetParameterById(AudioParameterId id, [NotNullWhen(true)] out AudioParameter? parameter)
     {
         parameter = null;
@@ -83,10 +106,8 @@ public abstract class AudioRootUnit : AudioUnit, IDisposable
         {
             return ref _pointerToBuffer[parameterIndex];
         }
-        else
-        {
-            return ref _allParameters[parameterIndex].LocalNormalizedValue;
-        }
+
+        return ref _allParameters[parameterIndex].LocalNormalizedValue;
     }
 
     public bool TryGetUnitById(AudioUnitId id, [NotNullWhen(true)] out AudioUnit? unit)
@@ -165,6 +186,16 @@ public abstract class AudioRootUnit : AudioUnit, IDisposable
         }
     }
 
+    internal override void OnParameterValueChangedInternal(AudioParameter parameter)
+    {
+        ParameterValueChanged?.Invoke(parameter);
+    }
+
+    internal override void OnSelectedProgramChanged(AudioUnit unit)
+    {
+        SelectedProgramChanged?.Invoke(unit);
+    }
+
     private void RegisterUnit(AudioUnit unit)
     {
         RegisterSingleUnit(unit);
@@ -191,12 +222,41 @@ public abstract class AudioRootUnit : AudioUnit, IDisposable
         _unitIdToIndex.Add(unit.Id, _allUnits.Count);
         _allUnits.Add(unit);
 
-        var parameterCount = unit.ParameterCount;
+        var parameterCount = unit.LocalParameterCount;
         for (int i = 0; i < parameterCount; i++)
         {
             var parameter = unit.GetLocalParameter(i);
             RegisterParameter(parameter);
         }
+
+        // Initialize the program list
+        if (unit.ProgramList is { } programList)
+        {
+            RegisterProgramList(programList);
+        }
+    }
+
+    private void RegisterProgramList(AudioProgramList programList)
+    {
+        if (programList.Id == 0)
+        {
+            programList.Id = _allProgramLists.Count + 1;
+        }
+
+        // If the program list is shared, don't throw if it is multi-referenced
+        if (_programListIdToIndex.TryGetValue(programList.Id, out var programListIndex))
+        {
+            var existingProgramList = _allProgramLists[programListIndex];
+            if (existingProgramList != programList)
+            {
+                throw new InvalidOperationException($"Unable to add the program list with the name `{programList.Name}`. A program list with the same id {programList.Id} and name `{existingProgramList.Name}` is already added");
+            }
+            return;
+        }
+
+        _programListIdToIndex.Add(programList.Id, _allProgramLists.Count);
+        _allProgramLists.Add(programList);
+        programList.Initialized = true;
     }
 
     private void RegisterParameter(AudioParameter parameter)

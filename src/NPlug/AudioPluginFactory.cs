@@ -109,7 +109,7 @@ public sealed class AudioPluginFactory : IAudioPluginFactory
             {
                 return _audioController;
             }
-            _audioController = (IAudioController)_factory.CreateInstance(GetAudioProcessor().ControllerId)!;
+            _audioController = (IAudioController)_factory.CreateInstance(GetAudioProcessor().ControllerClassId)!;
             return _audioController;
         }
 

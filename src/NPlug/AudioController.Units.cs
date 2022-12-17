@@ -11,13 +11,26 @@ public abstract partial class AudioController<TAudioRootUnit>
 {
     private AudioUnit _selectedUnit;
 
-    public AudioUnit SelectedUnit => _selectedUnit;
+    public AudioUnit SelectedUnit
+    {
+        get { return _selectedUnit; }
+        set
+        {
+            if (value != _selectedUnit)
+            {
+                _selectedUnit = value;
+                var handler = Handler;
+                if (handler is not null && handler.IsUnitAndProgramListSupported)
+                {
+                    handler.NotifyUnitSelection(value.Id);
+                }
+            }
+        }
+    }
 
-    public event Action<AudioUnit>? OnSelectedUnitChanged;
+    int IAudioControllerUnitInfo.UnitCount => RootUnit.UnitCount;
 
-    int IAudioControllerUnitInfo.UnitCount => RootUnit.TotalUnitCount;
-
-    AudioUnitInfo IAudioControllerUnitInfo.GetUnitInfo(int unitIndex) => RootUnit.GetUnitByRootIndex(unitIndex).UnitInfo;
+    AudioUnitInfo IAudioControllerUnitInfo.GetUnitInfo(int unitIndex) => RootUnit.GetUnitByIndex(unitIndex).UnitInfo;
 
     AudioUnitId IAudioControllerUnitInfo.SelectedUnit
     {
@@ -37,7 +50,6 @@ public abstract partial class AudioController<TAudioRootUnit>
             if (!ReferenceEquals(nextUnit, _selectedUnit))
             {
                 _selectedUnit = nextUnit;
-                OnSelectedUnitChanged?.Invoke(nextUnit);
             }
         }
     }

@@ -13,6 +13,7 @@ public class AudioUnit
     private readonly List<AudioParameter> _parameters;
     private readonly List<AudioUnit> _children;
     private AudioUnitId _id;
+    private int _selectedProgramIndex;
 
     public AudioUnit(string unitName, int id = 0, AudioProgramList? programList = null)
     {
@@ -21,6 +22,10 @@ public class AudioUnit
         _children = new List<AudioUnit>();
         _parameters = new List<AudioParameter>();
         ProgramList = programList;
+        if (programList != null)
+        {
+            programList.ProgramDataChanged += ProgramListOnProgramDataChanged;
+        }
     }
 
     public AudioUnitInfo UnitInfo => new (_id)
@@ -46,7 +51,35 @@ public class AudioUnit
 
     public AudioProgramList? ProgramList { get; }
 
-    public int ParameterCount => _parameters.Count;
+    public int SelectedProgramIndex
+    {
+        get => _selectedProgramIndex;
+        set
+        {
+            AssertProgramList();
+
+            if ((uint)value >= (uint)ProgramList!.Count) throw new ArgumentOutOfRangeException(nameof(value));
+            LoadProgram(value);
+            var previousValue = _selectedProgramIndex;
+            _selectedProgramIndex = value;
+            if (previousValue != value)
+            {
+                OnSelectedProgramChanged(this);
+            }
+        }
+    }
+
+    private void ProgramListOnProgramDataChanged(AudioProgram obj)
+    {
+        // If the selected program is on this unit and the program data has changed.
+        // Load the program data into the unit
+        if (obj.Index == SelectedProgramIndex)
+        {
+            LoadProgram(SelectedProgramIndex);
+        }
+    }
+
+    public int LocalParameterCount => _parameters.Count;
 
     public AudioUnit? ParentUnit { get; private set; }
 
@@ -74,6 +107,14 @@ public class AudioUnit
         unit.ParentUnit = this;
         _children.Add(unit);
         return unit;
+    }
+
+    public void LoadProgram(int programIndex)
+    {
+        AssertProgramList();
+
+        var stream = ProgramList![programIndex].GetOrLoadProgramData();
+        Load(new PortableBinaryReader(stream, false));
     }
 
     public virtual void Load(PortableBinaryReader reader)
@@ -119,11 +160,26 @@ public class AudioUnit
 
     public override string ToString()
     {
-        return $"Unit {UnitInfo.Name}, UnitCount = {ChildUnitCount}, ParameterCount = {ParameterCount}";
+        return $"Unit {UnitInfo.Name}, UnitCount = {ChildUnitCount}, ParameterCount = {LocalParameterCount}";
+    }
+
+    internal virtual void OnParameterValueChangedInternal(AudioParameter parameter)
+    {
+        ParentUnit?.OnParameterValueChangedInternal(parameter);
+    }
+
+    internal virtual void OnSelectedProgramChanged(AudioUnit unit)
+    {
+        ParentUnit?.OnSelectedProgramChanged(unit);
     }
 
     private void AssertNotInitialized()
     {
         if (IsInitialized) throw new InvalidOperationException("Cannot modify this unit if it is already initialized");
+    }
+
+    private void AssertProgramList()
+    {
+        if (ProgramList is null) throw new InvalidOperationException("No program list attached to this unit");
     }
 }

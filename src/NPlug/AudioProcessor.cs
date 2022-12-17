@@ -11,7 +11,10 @@ using NPlug.IO;
 
 namespace NPlug;
 
-public abstract partial class AudioProcessor<TAudioRootUnit> : AudioPluginComponent, IAudioProcessor where TAudioRootUnit: AudioRootUnit, new()
+public abstract partial class AudioProcessor<TAudioProcessorModel>
+    : AudioPluginComponent
+    , IAudioProcessor
+    where TAudioProcessorModel: AudioProcessorModel, new()
 {
     internal readonly List<BusInfo> AudioInputBuses;
     internal readonly List<BusInfo> AudioOutputBuses;
@@ -36,17 +39,17 @@ public abstract partial class AudioProcessor<TAudioRootUnit> : AudioPluginCompon
         LatencySamples = latencySamples;
         TailSamples = tailSamples;
         ProcessContextRequirementFlags = processContextRequirementFlags;
-        RootUnit = new TAudioRootUnit();
-        RootUnit.Initialize();
+        Model = new TAudioProcessorModel();
+        Model.Initialize();
     }
     
     public AudioSampleSizeSupport SampleSizeSupport { get; }
 
-    public TAudioRootUnit RootUnit { get; }
+    public TAudioProcessorModel Model { get; }
 
     public AudioProcessContextRequirementFlags ProcessContextRequirementFlags { get; }
 
-    public abstract Guid ControllerId { get; }
+    public abstract Guid ControllerClassId { get; }
 
     public InputOutputMode InputOutputMode { get; private set; }
 
@@ -56,7 +59,7 @@ public abstract partial class AudioProcessor<TAudioRootUnit> : AudioPluginCompon
 
     public bool IsActive { get; private set; }
 
-    public bool IsProcessing { get; private set; }
+    protected ref readonly AudioProcessSetupData ProcessSetupData => ref _processSetupData;
     
     protected bool IsSampleSizeSupported(AudioSampleSize sampleSize)
     {
@@ -86,15 +89,13 @@ public abstract partial class AudioProcessor<TAudioRootUnit> : AudioPluginCompon
 
     protected virtual void SaveState(PortableBinaryWriter writer)
     {
-        RootUnit.Save(writer);
+        Model.Save(writer);
     }
 
     protected virtual void RestoreState(PortableBinaryReader reader)
     {
-        RootUnit.Load(reader);
+        Model.Load(reader);
     }
-
-    protected abstract void Process(in AudioProcessSetupData setupData, in AudioProcessData data);
 
     protected virtual void OnAudioBusPresentationLatencyChanged(AudioBusInfo busInfo, uint previousPresentationLatencyInSamples)
     {
@@ -109,6 +110,19 @@ public abstract partial class AudioProcessor<TAudioRootUnit> : AudioPluginCompon
 
         return CollectionsMarshal.AsSpan(list);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected ReadOnlySpan<BusInfo> GetAudioOutputBuses() => GetBusInfoList(BusMediaType.Audio, BusDirection.Output);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected ReadOnlySpan<BusInfo> GetAudioInputBuses() => GetBusInfoList(BusMediaType.Audio, BusDirection.Input);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected ReadOnlySpan<BusInfo> GetEventOutputBuses() => GetBusInfoList(BusMediaType.Event, BusDirection.Output);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected ReadOnlySpan<BusInfo> GetEventInputBuses() => GetBusInfoList(BusMediaType.Event, BusDirection.Input);
+    
 
     internal override bool InitializeInternal(AudioHostApplication hostApplication)
     {
@@ -201,28 +215,6 @@ public abstract partial class AudioProcessor<TAudioRootUnit> : AudioPluginCompon
     {
         IsActive = state;
         OnActivate(state);
-    }
-
-    bool IAudioProcessor.SetupProcessing(in AudioProcessSetupData processSetupData)
-    {
-        if (IsSampleSizeSupported(processSetupData.SampleSize))
-        {
-            _processSetupData = processSetupData;
-            OnSetupProcessing(processSetupData);
-            return true;
-        }
-
-        return false;
-    }
-
-    void IAudioProcessor.SetProcessing(bool state)
-    {
-        IsProcessing = state;
-    }
-
-    void IAudioProcessor.Process(in AudioProcessData processData)
-    {
-        Process(in _processSetupData, in processData);
     }
 
     void IAudioProcessor.SetAudioPresentationLatencySamples(BusDirection dir, int busIndex, uint latencyInSamples)

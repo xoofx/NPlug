@@ -122,15 +122,16 @@ public sealed class AudioStringListParameter : AudioParameter
         get => _items;
         set
         {
+            if (value.Length < 2) throw new ArgumentException("Expecting an array with at least 2 strings");
             _items = value;
-            InfoBase = InfoBase with { StepCount = _items.Length, DefaultNormalizedValue = 0.0};
+            InfoBase = InfoBase with { StepCount = _items.Length - 1, DefaultNormalizedValue = 0.0 };
         }
     }
 
     public override string ToString(double valueNormalized)
     {
-        var stepCount = Items.Length;
-        if (stepCount == 0) return string.Empty;
+        var stepCount = Items.Length - 1;
+        if (stepCount < 1) return string.Empty;
 
         return Items[(int)ToPlain(valueNormalized)];
     }
@@ -151,17 +152,17 @@ public sealed class AudioStringListParameter : AudioParameter
 
     public override double ToPlain(double normalizedValue)
     {
-        var stepCount = Items.Length;
-        if (stepCount <= 1) return 0.0;
+        var stepCount = Items.Length - 1;
+        if (stepCount < 1) return 0.0;
 
-        return (int)(Math.Clamp(normalizedValue, 0.0, 1.0) * (stepCount - 1));
+        return (int)(Math.Clamp(normalizedValue, 0.0, 1.0) * stepCount);
     }
 
     public override double ToNormalized(double plainValue)
     {
-        var stepCount = Items.Length;
-        if (stepCount <= 1) return 0.0;
+        var stepCount = Items.Length - 1;
+        if (stepCount < 1) return 0.0;
 
-        return plainValue / (stepCount - 1);
+        return plainValue / stepCount;
     }
 }

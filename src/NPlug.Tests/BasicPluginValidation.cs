@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.Security.Cryptography;
-using NPlug.HelloWorldPlugin;
+using NPlug;
 using NPlug.Interop;
 using NPlug.Validator;
 
@@ -12,7 +12,7 @@ public class BasicPluginValidation
     public static void Main()
     {
         //InteropHelper.Tracer = new InteropTracer();
-        var factory = HelloWorldProcessor.GetFactory();
+        var factory = HelloWorldPlugin.GetFactory();
         AudioPluginValidator.Validate(factory, Console.Out, Console.Error);
 
         if (InteropHelper.HasObjectAlive())
@@ -27,7 +27,7 @@ public class BasicPluginValidation
     {
         InteropHelper.Tracer = new InteropTracer();
 
-        var factory = HelloWorldProcessor.GetFactory();
+        var factory = HelloWorldPlugin.GetFactory();
         AudioPluginValidator.Validate(factory, Console.Out, Console.Error);
     }
 

@@ -10,13 +10,13 @@ namespace NPlug;
 public class AudioParameter
 {
     /// <summary>
-    /// This value is only used temporarily until the <see cref="AudioRootUnit"/> is initialized.
+    /// This value is only used temporarily until the <see cref="AudioProcessorModel"/> is initialized.
     /// Then it is the <see cref="PointerToNormalizedValueInSharedBuffer"/> that is used.
     /// </summary>
     internal double LocalNormalizedValue;
 
     /// <summary>
-    /// This pointer is setup by <see cref="AudioRootUnit"/> in InitializeBuffers.
+    /// This pointer is setup by <see cref="AudioProcessorModel"/> in InitializeBuffers.
     /// </summary>
     internal unsafe double* PointerToNormalizedValueInSharedBuffer;
 
@@ -45,8 +45,6 @@ public class AudioParameter
         NormalizedValue = defaultNormalizedValue;
     }
 
-    public event Action? Changed;
-
     public bool IsControllerOnly { get; init; }
 
     public AudioParameterId Id { get; internal set; }
@@ -59,7 +57,13 @@ public class AudioParameter
     
     public AudioUnit? Unit { get; internal set; }
 
-    private unsafe ref double RawNormalizedValue
+    /// <summary>
+    /// Gets a direct access to the raw normalized value.
+    /// </summary>
+    /// <remarks>
+    /// Unlike <see cref="NormalizedValue"/>, this doesn't clamp or trigger a <see cref="Changed"/> event.
+    /// </remarks>
+    internal unsafe ref double RawNormalizedValue
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
@@ -77,6 +81,7 @@ public class AudioParameter
 
     public double NormalizedValue
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => RawNormalizedValue;
         set
         {
@@ -85,7 +90,7 @@ public class AudioParameter
             if (rawNormalizedValue != value)
             {
                 rawNormalizedValue = value;
-                Changed?.Invoke();
+                OnParameterValueChanged();
             }
         }
     }
@@ -135,6 +140,11 @@ public class AudioParameter
     public override string ToString()
     {
         return $"[{Info.Id.Value}] {Info.Title} = {ToString(NormalizedValue)}";
+    }
+
+    private void OnParameterValueChanged()
+    {
+        Unit?.OnParameterValueChangedInternal(this);
     }
 
     private static string GetPrecisionFormat(int precision)

@@ -22,7 +22,7 @@ public readonly ref struct AudioParameterChanges
     public int Count {
         get
         {
-            return NativeContext == IntPtr.Zero ? 0 : _backend!.GetParameterCount(this);
+            return NativeContext == nint.Zero || _backend is null ? 0 : _backend!.GetParameterCount(this);
         }
     }
 
@@ -40,7 +40,7 @@ public readonly ref struct AudioParameterChanges
 
     private IAudioParameterChangesBackend GetSafeBackend()
     {
-        if (_backend is null) ThrowNotInitialized();
+        if (_backend is null || NativeContext == nint.Zero) ThrowNotInitialized();
         return _backend;
     }
 

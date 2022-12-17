@@ -22,7 +22,7 @@ public interface IAudioProcessor : IAudioPluginComponent
     /// Called before initializing the component to get information about the controller class.
     /// </summary>
     /// <value></value>
-    Guid ControllerId { get; }
+    Guid ControllerClassId { get; }
 
     /// <summary>
     /// Gets the requirement flags for the content of the <see cref="AudioProcessContext"/> during processing audio.

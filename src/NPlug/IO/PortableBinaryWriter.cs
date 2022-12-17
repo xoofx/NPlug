@@ -10,25 +10,22 @@ using System.Runtime.InteropServices;
 
 namespace NPlug.IO;
 
-public class PortableBinaryWriter
+public class PortableBinaryWriter : IDisposable
 {
-    private Stream _stream;
-
-    internal PortableBinaryWriter() : this(Stream.Null)
+    internal PortableBinaryWriter() : this(Stream.Null, false)
     {
     }
 
-    public PortableBinaryWriter(Stream stream)
+    public PortableBinaryWriter(Stream stream, bool owned = true)
     {
-        _stream = stream;
+        Stream = stream;
+        Owned = owned;
     }
 
-    public Stream Stream
-    {
-        get => _stream;
-        set => _stream = value;
-    }
-    
+    public bool Owned { get; set; }
+
+    public Stream Stream { get; set; }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public unsafe void WriteEnum<T>(T data) where T : unmanaged, Enum
     {
@@ -37,19 +34,19 @@ public class PortableBinaryWriter
         {
             span.Reverse();
         }
-        _stream.Write(span);
+        Stream.Write(span);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public unsafe void WriteByte(byte data)
     {
-        _stream.Write(new Span<byte>(&data, 1));
+        Stream.Write(new Span<byte>(&data, 1));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public unsafe void WriteBool(bool data)
     {
-        _stream.Write(new Span<byte>(&data, 1));
+        Stream.Write(new Span<byte>(&data, 1));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -59,7 +56,7 @@ public class PortableBinaryWriter
         {
             data = BinaryPrimitives.ReverseEndianness(data);
         } 
-        _stream.Write(new Span<byte>(&data, 2));
+        Stream.Write(new Span<byte>(&data, 2));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -69,7 +66,7 @@ public class PortableBinaryWriter
         {
             data = BinaryPrimitives.ReverseEndianness(data);
         }
-        _stream.Write(new Span<byte>(&data, 2));
+        Stream.Write(new Span<byte>(&data, 2));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -79,7 +76,7 @@ public class PortableBinaryWriter
         {
             data = BinaryPrimitives.ReverseEndianness(data);
         }
-        _stream.Write(new Span<byte>(&data, 4));
+        Stream.Write(new Span<byte>(&data, 4));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -89,7 +86,7 @@ public class PortableBinaryWriter
         {
             data = BinaryPrimitives.ReverseEndianness(data);
         }
-        _stream.Write(new Span<byte>(&data, 4));
+        Stream.Write(new Span<byte>(&data, 4));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -99,7 +96,7 @@ public class PortableBinaryWriter
         {
             data = BinaryPrimitives.ReverseEndianness(data);
         }
-        _stream.Write(new Span<byte>(&data, 8));
+        Stream.Write(new Span<byte>(&data, 8));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -109,7 +106,7 @@ public class PortableBinaryWriter
         {
             data = BinaryPrimitives.ReverseEndianness(data);
         }
-        _stream.Write(new Span<byte>(&data, 8));
+        Stream.Write(new Span<byte>(&data, 8));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -119,7 +116,7 @@ public class PortableBinaryWriter
         {
             data = BitConverter.Int32BitsToSingle(BinaryPrimitives.ReverseEndianness(BitConverter.SingleToInt32Bits(data)));
         }
-        _stream.Write(new Span<byte>(&data, 4));
+        Stream.Write(new Span<byte>(&data, 4));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -129,7 +126,7 @@ public class PortableBinaryWriter
         {
             data = BitConverter.Int64BitsToDouble(BinaryPrimitives.ReverseEndianness(BitConverter.DoubleToInt64Bits(data)));
         }
-        _stream.Write(new Span<byte>(&data, 8));
+        Stream.Write(new Span<byte>(&data, 8));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -139,7 +136,15 @@ public class PortableBinaryWriter
         if (data.Length > 0)
         {
             var span = MemoryMarshal.Cast<char, byte>(data.AsSpan());
-            _stream.Write(span);
+            Stream.Write(span);
+        }
+    }
+
+    public void Dispose()
+    {
+        if (Owned)
+        {
+            Stream.Dispose();
         }
     }
 }

@@ -7,7 +7,7 @@ using System;
 
 namespace NPlug;
 
-public readonly unsafe ref struct AudioBusBuffers
+public unsafe ref struct AudioBusBuffers
 {
     /// <summary>
     /// Number of audio channels in bus.
@@ -17,9 +17,22 @@ public readonly unsafe ref struct AudioBusBuffers
     /// <summary>
     /// Bitset of silence state per channel.
     /// </summary>
-    public readonly ulong SilenceFlags;
+    public ulong SilenceFlags;
 
     private readonly void** _channelBuffers;
+
+
+    public void SetChannelSilence(int channelIndex, bool silence)
+    {
+        if (silence)
+        {
+            SilenceFlags |= (1UL << channelIndex);
+        }
+        else
+        {
+            SilenceFlags &= ~(1UL << channelIndex);
+        }
+    }
 
     public bool IsChannelSilence(int channelIndex) => (SilenceFlags & (1UL << channelIndex)) != 0;
 

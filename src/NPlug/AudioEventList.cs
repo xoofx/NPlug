@@ -22,7 +22,7 @@ public readonly ref struct AudioEventList
     /// <summary>
     /// Returns the count of events.
     /// </summary>
-    public int Count => _backend?.GetEventCount(this) ?? 0;
+    public int Count => NativeContext != nint.Zero && _backend != null ? _backend.GetEventCount(this) : 0;
 
     /// <summary>
     /// Gets parameter by index.
@@ -42,7 +42,7 @@ public readonly ref struct AudioEventList
 
     private IAudioEventListBackend GetSafeBackend()
     {
-        if (_backend is null) ThrowNotInitialized();
+        if (NativeContext == nint.Zero || _backend is null) ThrowNotInitialized();
         return _backend;
     }
 

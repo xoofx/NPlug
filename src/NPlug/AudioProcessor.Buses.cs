@@ -4,7 +4,7 @@
 
 namespace NPlug;
 
-public abstract partial class AudioProcessor<TAudioRootUnit>
+public abstract partial class AudioProcessor<TAudioProcessorModel>
 {
 
     public void AddDefaultStereoAudioInput()

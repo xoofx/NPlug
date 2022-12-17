@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <NPlugInteropTracer>true</NPlugInteropTracer>
+    <!--<NPlugInteropTracer>true</NPlugInteropTracer>-->
     <StartupObject>NPlug.Tests.BasicPluginValidation</StartupObject>
   </PropertyGroup>
 

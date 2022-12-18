@@ -20,42 +20,87 @@ public class AudioParameter
     /// </summary>
     internal unsafe double* PointerToNormalizedValueInSharedBuffer;
 
-    protected AudioParameterInfo InfoBase;
-
     public AudioParameter(AudioParameterInfo info)
     {
         Id = info.Id;
-        InfoBase = info;
+        Title = info.Title;
+        ShortTitle = info.ShortTitle;
+        Units = info.Units;
+        StepCount = info.StepCount;
+        DefaultNormalizedValue = info.DefaultNormalizedValue;
+        Flags = info.Flags;
         Precision = 4;
-        NormalizedValue = Info.DefaultNormalizedValue;
+        NormalizedValue = info.DefaultNormalizedValue;
     }
 
     public AudioParameter(string title, int id = 0, string? units = null, string? shortTitle = null, int stepCount = 0, double defaultNormalizedValue = 0.0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate)
     {
         Id = id;
-        InfoBase = new AudioParameterInfo(id, title)
-        {
-            Units = units ?? string.Empty,
-            ShortTitle = shortTitle ?? title,
-            StepCount = stepCount,
-            DefaultNormalizedValue = defaultNormalizedValue,
-            Flags = flags
-        };
+        Title = title;
+        ShortTitle = shortTitle ?? title;
+        Units = units ?? string.Empty;
+        StepCount = stepCount;
+        DefaultNormalizedValue = defaultNormalizedValue;
+        Flags = flags;
         Precision = 4;
         NormalizedValue = defaultNormalizedValue;
     }
 
     public bool IsControllerOnly { get; init; }
 
+    /// <summary>
+    /// unique identifier of this parameter (named tag too)
+    /// </summary>
     public AudioParameterId Id { get; internal set; }
 
-    public AudioParameterInfo Info => InfoBase with
+    /// <summary>
+    /// parameter title (e.g. "Volume")
+    /// </summary>
+    public string Title { get; }
+
+    /// <summary>
+    /// parameter shortTitle (e.g. "Vol")
+    /// </summary>
+    public string ShortTitle { get; }
+
+    /// <summary>
+    /// parameter unit (e.g. "dB")
+    /// </summary>
+    public string Units { get; }
+
+    /// <summary>
+    /// number of discrete steps (0: continuous, 1: toggle, discrete value otherwise 
+    /// (corresponding to max - min, for example: 127 for a min = 0 and a max = 127) - see @ref vst3ParameterIntro)
+    /// </summary>
+    public int StepCount { get; protected set; }
+
+    /// <summary>
+    /// default normalized value [0,1] (in case of discrete value: defaultNormalizedValue = defDiscreteValue / stepCount)
+    /// </summary>
+    public double DefaultNormalizedValue { get; protected set; }
+
+    /// <summary>
+    /// id of unit this parameter belongs to (see @ref vst3Units)
+    /// </summary>
+    public AudioUnit? Unit { get; internal set; }
+
+    /// <summary>
+    /// Flags for the parameter
+    /// </summary>
+    public AudioParameterFlags Flags { get; }
+    
+    /// <summary>
+    /// Gets the associated <see cref="AudioParameterInfo"/> object.
+    /// </summary>
+    /// <returns></returns>
+    public AudioParameterInfo GetInfo() => new (Id, Title)
     {
-        Id = Id,
+        ShortTitle = ShortTitle,
+        Units = Units,
+        StepCount = StepCount,
+        DefaultNormalizedValue = DefaultNormalizedValue,
         UnitId = Unit?.Id ?? AudioUnitId.NoParent
     };
-    
-    public AudioUnit? Unit { get; internal set; }
 
     /// <summary>
     /// Gets a direct access to the raw normalized value.
@@ -104,7 +149,7 @@ public class AudioParameter
     /// <returns></returns>
     public virtual string ToString(double valueNormalized)
     {
-        if (Info.StepCount == 1)
+        if (StepCount == 1)
         {
             return RawNormalizedValue > 0.5 ? "On" : "Off";
         }
@@ -119,7 +164,7 @@ public class AudioParameter
     /// <returns></returns>
     public virtual double FromString(string plainValueAsString)
     {
-        if (Info.StepCount == 1)
+        if (StepCount == 1)
         {
             return (plainValueAsString.Equals("on", StringComparison.OrdinalIgnoreCase) || plainValueAsString.Equals("true", StringComparison.OrdinalIgnoreCase)) ? 1.0 : 0.0;
         }
@@ -139,7 +184,7 @@ public class AudioParameter
 
     public override string ToString()
     {
-        return $"[{Info.Id.Value}] {Info.Title} = {ToString(NormalizedValue)}";
+        return $"[{Id.Value}] {Title} = {ToString(NormalizedValue)}";
     }
 
     private void OnParameterValueChanged()

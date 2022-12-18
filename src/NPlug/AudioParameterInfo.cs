@@ -1,12 +1,6 @@
 // Copyright (c) Alexandre Mutel. All rights reserved.
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using NPlug.IO;
-
 namespace NPlug;
 
 /// <summary>
@@ -14,7 +8,7 @@ namespace NPlug;
 /// A parameter info describes a parameter of the controller.
 /// The id must always be the same for a parameter as this uniquely identifies the parameter.
 /// </summary>
-public sealed record AudioParameterInfo(AudioParameterId Id, string Title)
+public record struct AudioParameterInfo(AudioParameterId Id, string Title)
 {
     /// <summary>
     /// unique identifier of this parameter (named tag too)

@@ -69,13 +69,13 @@ public abstract partial class AudioController<TAudioRootUnit>
 
     private void RootUnitOnParameterValueChanged(AudioParameter obj)
     {
-        if (!ReferenceEquals(EditedParameter, obj)) throw new InvalidOperationException($"The parameter {obj.Id}/{obj.Info.Title} is being edited without a call to {nameof(BeginEditParameter)}/{nameof(EndEditParameter)}.");
+        if (!ReferenceEquals(EditedParameter, obj)) throw new InvalidOperationException($"The parameter {obj.Id}/{obj.Title} is being edited without a call to {nameof(BeginEditParameter)}/{nameof(EndEditParameter)}.");
         GetHandler().PerformEdit(obj.Id, obj.NormalizedValue);
     }
     
     int IAudioController.ParameterCount => RootUnit.ParameterCount;
 
-    AudioParameterInfo IAudioController.GetParameterInfo(int paramIndex) => RootUnit.GetParameterByIndex(paramIndex).Info;
+    AudioParameterInfo IAudioController.GetParameterInfo(int paramIndex) => RootUnit.GetParameterByIndex(paramIndex).GetInfo();
 
     string IAudioController.GetParameterStringByValue(AudioParameterId id, double valueNormalized)
     {

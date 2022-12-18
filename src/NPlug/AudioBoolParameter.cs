@@ -11,7 +11,7 @@ public class AudioBoolParameter : AudioParameter
 {
     public AudioBoolParameter(AudioParameterInfo info) : base(info)
     {
-        InfoBase = InfoBase with { StepCount = 1 };
+        StepCount = 1;
     }
 
     public AudioBoolParameter(string title, int id = 0, string? units = null, string? shortTitle = null, bool defaultValue = false, AudioParameterFlags flags = AudioParameterFlags.CanAutomate) : base(title, id, units, shortTitle, 1, defaultValue ? 1.0 : 0.0, flags)
@@ -41,7 +41,8 @@ public sealed class AudioRangeParameter : AudioParameter
     {
         MinPlainValue = minPlainValue;
         MaxPlainValue = maxPlainValue;
-        InfoBase = InfoBase with { DefaultNormalizedValue = ToNormalized(defaultPlainValue) };
+        DefaultNormalizedValue = ToNormalized(defaultPlainValue);
+        NormalizedValue = DefaultNormalizedValue;
     }
 
     public double MinPlainValue { get; set; }
@@ -50,7 +51,7 @@ public sealed class AudioRangeParameter : AudioParameter
 
     public override string ToString(double valueNormalized)
     {
-        if (Info.StepCount > 1)
+        if (StepCount > 1)
         {
             var value = (long)ToPlain(valueNormalized);
             return value.ToString(CultureInfo.InvariantCulture);
@@ -61,7 +62,7 @@ public sealed class AudioRangeParameter : AudioParameter
 
     public override double FromString(string plainValueAsString)
     {
-        if (Info.StepCount > 1)
+        if (StepCount > 1)
         {
             long.TryParse(plainValueAsString, out var value);
             return ToNormalized(value);
@@ -76,7 +77,7 @@ public sealed class AudioRangeParameter : AudioParameter
 
     public override double ToPlain(double normalizedValue)
     {
-        var stepCount = Info.StepCount;
+        var stepCount = StepCount;
         if (stepCount > 1)
         {
             return Math.Min(stepCount, (int)(normalizedValue * (stepCount + 1))) + MinPlainValue;
@@ -87,7 +88,7 @@ public sealed class AudioRangeParameter : AudioParameter
 
     public override double ToNormalized(double plainValue)
     {
-        var stepCount = Info.StepCount;
+        var stepCount = StepCount;
         if (stepCount > 1)
         {
             return (plainValue - MinPlainValue) / stepCount;
@@ -97,8 +98,7 @@ public sealed class AudioRangeParameter : AudioParameter
     }
 }
 
-
-public sealed class AudioStringListParameter : AudioParameter
+public class AudioStringListParameter : AudioParameter
 {
     private string[] _items;
 
@@ -107,14 +107,15 @@ public sealed class AudioStringListParameter : AudioParameter
         var items = Array.Empty<string>();
         _items = items;
         Items = items;
-        InfoBase = InfoBase with { DefaultNormalizedValue = 0.0 };
+        DefaultNormalizedValue = 0.0;
+        NormalizedValue = 0.0;
     }
 
     public AudioStringListParameter(string title, string[] items, int id = 0, string? units = null, string? shortTitle = null, int selectedItem = 0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate | AudioParameterFlags.IsList) : base(title, id, units, shortTitle, 0, 0.0, flags)
     {
         _items = items;
         Items = items;
-        InfoBase = InfoBase with { DefaultNormalizedValue = ToNormalized(selectedItem) };
+        DefaultNormalizedValue = ToNormalized(selectedItem);
     }
     
     public string[] Items
@@ -124,14 +125,27 @@ public sealed class AudioStringListParameter : AudioParameter
         {
             if (value.Length < 2) throw new ArgumentException("Expecting an array with at least 2 strings");
             _items = value;
-            InfoBase = InfoBase with { StepCount = _items.Length - 1, DefaultNormalizedValue = 0.0 };
+            StepCount = _items.Length - 1;
+            DefaultNormalizedValue = 0.0;
+        }
+    }
+
+    public int SelectedItem
+    {
+        get
+        {
+            return (int)ToPlain(RawNormalizedValue);
+        }
+        set
+        {
+            if ((uint)value >= (uint)Items.Length) throw new ArgumentOutOfRangeException(nameof(value));
+            NormalizedValue = ToNormalized(value);
         }
     }
 
     public override string ToString(double valueNormalized)
     {
-        var stepCount = Items.Length - 1;
-        if (stepCount < 1) return string.Empty;
+        if (StepCount < 1) return string.Empty;
 
         return Items[(int)ToPlain(valueNormalized)];
     }
@@ -150,17 +164,17 @@ public sealed class AudioStringListParameter : AudioParameter
         return 0.0;
     }
 
-    public override double ToPlain(double normalizedValue)
+    public sealed override double ToPlain(double normalizedValue)
     {
-        var stepCount = Items.Length - 1;
+        var stepCount = StepCount;
         if (stepCount < 1) return 0.0;
 
-        return (int)(Math.Clamp(normalizedValue, 0.0, 1.0) * stepCount);
+        return (int)(Math.Min(stepCount, normalizedValue * (stepCount + 1)));
     }
 
-    public override double ToNormalized(double plainValue)
+    public sealed override double ToNormalized(double plainValue)
     {
-        var stepCount = Items.Length - 1;
+        var stepCount = StepCount;
         if (stepCount < 1) return 0.0;
 
         return plainValue / stepCount;

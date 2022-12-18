@@ -6,32 +6,32 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace NPlug;
 
-public abstract partial class AudioController<TAudioRootUnit>
+public abstract partial class AudioController<TAudioControllerModel>
 {
-    int IAudioControllerUnitInfo.ProgramListCount => RootUnit.ProgramListCount;
+    int IAudioControllerUnitInfo.ProgramListCount => Model.ProgramListCount;
 
     AudioProgramListInfo IAudioControllerUnitInfo.GetProgramListInfo(int listIndex)
     {
-        return RootUnit.GetProgramListByIndex(listIndex).Info;
+        return Model.GetProgramListByIndex(listIndex).Info;
     }
 
     string IAudioControllerUnitInfo.GetProgramName(AudioProgramListId listId, int programIndex)
     {
-        return RootUnit.GetProgramListById(listId).Name;
+        return Model.GetProgramListById(listId).Name;
     }
 
     bool IAudioControllerUnitInfo.TryGetProgramInfo(AudioProgramListId listId, int programIndex, string attributeId, [NotNullWhen(true)] out string? attributeValue)
     {
-        return RootUnit.GetProgramListById(listId).Attributes.TryGetValue(attributeId, out attributeValue);
+        return Model.GetProgramListById(listId).Attributes.TryGetValue(attributeId, out attributeValue);
     }
 
     bool IAudioControllerUnitInfo.HasProgramPitchNames(AudioProgramListId listId, int programIndex)
     {
-        return RootUnit.GetProgramListById(listId)[programIndex].PitchNames.Count > 0;
+        return Model.GetProgramListById(listId)[programIndex].PitchNames.Count > 0;
     }
 
     bool IAudioControllerUnitInfo.TryGetProgramPitchName(AudioProgramListId listId, int programIndex, short midiPitch, [NotNullWhen(true)] out string? pitchName)
     {
-        return RootUnit.GetProgramListById(listId)[programIndex].PitchNames.TryGetValue(midiPitch, out pitchName);
+        return Model.GetProgramListById(listId)[programIndex].PitchNames.TryGetValue(midiPitch, out pitchName);
     }
 }

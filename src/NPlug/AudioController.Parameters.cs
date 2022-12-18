@@ -6,7 +6,7 @@ using System;
 
 namespace NPlug;
 
-public abstract partial class AudioController<TAudioRootUnit>
+public abstract partial class AudioController<TAudioControllerModel>
 {
     /// <summary>
     /// The parameter being edited (set/unset via <see cref="BeginEditParameter"/> and <see cref="EndEditParameter"/>)
@@ -73,37 +73,37 @@ public abstract partial class AudioController<TAudioRootUnit>
         GetHandler().PerformEdit(obj.Id, obj.NormalizedValue);
     }
     
-    int IAudioController.ParameterCount => RootUnit.ParameterCount;
+    int IAudioController.ParameterCount => Model.ParameterCount;
 
-    AudioParameterInfo IAudioController.GetParameterInfo(int paramIndex) => RootUnit.GetParameterByIndex(paramIndex).GetInfo();
+    AudioParameterInfo IAudioController.GetParameterInfo(int paramIndex) => Model.GetParameterByIndex(paramIndex).GetInfo();
 
     string IAudioController.GetParameterStringByValue(AudioParameterId id, double valueNormalized)
     {
-        return RootUnit.GetParameterById(id).ToString(valueNormalized);
+        return Model.GetParameterById(id).ToString(valueNormalized);
     }
 
     double IAudioController.GetParameterValueByString(AudioParameterId id, string valueAsString)
     {
-        return RootUnit.GetParameterById(id).FromString(valueAsString);
+        return Model.GetParameterById(id).FromString(valueAsString);
     }
 
     double IAudioController.NormalizedParameterToPlain(AudioParameterId id, double valueNormalized)
     {
-        return RootUnit.GetParameterById(id).ToPlain(valueNormalized);
+        return Model.GetParameterById(id).ToPlain(valueNormalized);
     }
 
     double IAudioController.PlainParameterToNormalized(AudioParameterId id, double plainValue)
     {
-        return RootUnit.GetParameterById(id).ToNormalized(plainValue);
+        return Model.GetParameterById(id).ToNormalized(plainValue);
     }
 
     double IAudioController.GetParameterNormalized(AudioParameterId id)
     {
-        return RootUnit.GetParameterById(id).NormalizedValue;
+        return Model.GetParameterById(id).NormalizedValue;
     }
 
     void IAudioController.SetParameterNormalized(AudioParameterId id, double valueNormalized)
     {
-        RootUnit.GetParameterById(id).RawNormalizedValue = valueNormalized;
+        Model.GetParameterById(id).RawNormalizedValue = valueNormalized;
     }
 }

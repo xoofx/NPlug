@@ -10,25 +10,26 @@ using System.Runtime.CompilerServices;
 
 namespace NPlug;
 
-public abstract partial class AudioController<TAudioRootUnit> : AudioPluginComponent
+public abstract partial class AudioController<TAudioControllerModel> : AudioPluginComponent
     , IAudioController
     , IAudioControllerExtended
     , IAudioControllerMidiMapping
     , IAudioControllerUnitInfo
-    where TAudioRootUnit : AudioProcessorModel, new()
+    where TAudioControllerModel : AudioProcessorModel, new()
 {
     private PortableBinaryReader? _streamReader;
     private PortableBinaryWriter? _streamWriter;
 
     protected AudioController()
     {
-        RootUnit = new TAudioRootUnit();
-        RootUnit.Initialize();
-        _selectedUnit = RootUnit;
-        RootUnit.ParameterValueChanged += RootUnitOnParameterValueChanged;
+        Model = new TAudioControllerModel();
+        Model.Initialize();
+        _selectedUnit = Model;
+        Model.ParameterValueChanged += RootUnitOnParameterValueChanged;
+        MapMidiCCToAudioParameter = new Dictionary<AudioMidiControllerNumber, AudioParameter>();
     }
 
-    public TAudioRootUnit RootUnit { get; }
+    public TAudioControllerModel Model { get; }
 
     public IAudioControllerHandler? Handler { get; private set; }
 
@@ -39,7 +40,7 @@ public abstract partial class AudioController<TAudioRootUnit> : AudioPluginCompo
 
     protected virtual void RestoreComponentState(PortableBinaryReader reader)
     {
-        RootUnit.Load(reader);
+        Model.Load(reader);
     }
 
     protected virtual void SaveState(PortableBinaryWriter writer)
@@ -66,14 +67,6 @@ public abstract partial class AudioController<TAudioRootUnit> : AudioPluginCompo
 
     protected virtual bool TryOpenAboutBox(bool onlyCheck)
     {
-        return false;
-    }
-
-    // IMidiMapping
-
-    protected virtual bool TryGetMidiControllerAssignment(int busIndex, int channel, AudioMidiControllerNumber midiControllerNumber, out AudioParameterId id)
-    {
-        id = default;
         return false;
     }
 

@@ -67,7 +67,7 @@ internal static unsafe partial class LibVst
             var hashValue = XxHash3.HashToUInt64(span);
             lock (_nativeUTF8ToManaged)
             {
-                ref var managedString = ref CollectionsMarshal.GetValueRefOrNullRef(_nativeUTF8ToManaged, hashValue);
+                ref var managedString = ref CollectionsMarshal.GetValueRefOrAddDefault(_nativeUTF8ToManaged, hashValue, out _);
                 return managedString ??= Encoding.UTF8.GetString(span);
             }
         }
@@ -108,7 +108,7 @@ internal static unsafe partial class LibVst
         {
             lock (_managedToNativeUTF8)
             {
-                ref var ptr = ref CollectionsMarshal.GetValueRefOrNullRef(_managedToNativeUTF8, str);
+                ref var ptr = ref CollectionsMarshal.GetValueRefOrAddDefault(_managedToNativeUTF8, str, out _);
                 var localPtr = ptr;
                 if (localPtr == IntPtr.Zero)
                 {

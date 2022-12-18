@@ -7,7 +7,7 @@ using System.IO;
 
 namespace NPlug;
 
-public abstract partial class AudioController<TAudioRootUnit>
+public abstract partial class AudioController<TAudioControllerModel>
 {
     private AudioUnit _selectedUnit;
 
@@ -28,9 +28,9 @@ public abstract partial class AudioController<TAudioRootUnit>
         }
     }
 
-    int IAudioControllerUnitInfo.UnitCount => RootUnit.UnitCount;
+    int IAudioControllerUnitInfo.UnitCount => Model.UnitCount;
 
-    AudioUnitInfo IAudioControllerUnitInfo.GetUnitInfo(int unitIndex) => RootUnit.GetUnitByIndex(unitIndex).UnitInfo;
+    AudioUnitInfo IAudioControllerUnitInfo.GetUnitInfo(int unitIndex) => Model.GetUnitByIndex(unitIndex).UnitInfo;
 
     AudioUnitId IAudioControllerUnitInfo.SelectedUnit
     {
@@ -40,9 +40,9 @@ public abstract partial class AudioController<TAudioRootUnit>
             AudioUnit? nextUnit;
             if (value.Value == 0)
             {
-                nextUnit = RootUnit;
+                nextUnit = Model;
             }
-            else if (!RootUnit.TryGetUnitById(value, out nextUnit))
+            else if (!Model.TryGetUnitById(value, out nextUnit))
             {
                 throw new ArgumentException($"Invalid Unit selected with id {value}. Unit does not exist!");
             }

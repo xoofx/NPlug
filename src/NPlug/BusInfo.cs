@@ -18,11 +18,14 @@ public abstract class BusInfo
         BusType = busType;
         Flags = flags;
     }
-    
+
     /// <summary>
     /// Gets the name of the bus.
     /// </summary>
-    public string Name { get; }
+    /// <remarks>
+    /// Changing the bus name after registration requires to call <see cref="IAudioControllerHandler.RestartComponent"/> with <see cref="AudioRestartFlags.IoTitlesChanged"/>.
+    /// </remarks>
+    public string Name { get; set; }
 
     /// <summary>
     /// Gets a boolean indicating whether this bus is active.

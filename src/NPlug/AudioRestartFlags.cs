@@ -2,11 +2,14 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using System;
+
 namespace NPlug;
 
 /// <summary>
-/// Flags used for <see cref="AudioControllerHost.RestartComponent"/>
+/// Flags used for <see cref="IAudioControllerHandler.RestartComponent"/>
 /// </summary>
+[Flags]
 public enum AudioRestartFlags
 {
     /// <summary>

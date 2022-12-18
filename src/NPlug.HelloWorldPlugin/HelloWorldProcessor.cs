@@ -57,7 +57,7 @@ public static class HelloWorldPlugin
             SubUnit21 = SubUnit2.AddUnit(new AudioUnit("SubUnit2.1"));
 
             DelayParameter = AddParameter(new AudioParameter("Delay", units: "ms"));
-            HelloParameter = AddParameter(new AudioRangeParameter("hello", minPlainValue: 2000.0, maxPlainValue: 20480.0, defaultPlainValue: 4000.0));
+            HelloParameter = AddParameter(new AudioRangeParameter("hello", minValue: 2000.0, maxValue: 20480.0, defaultPlainValue: 4000.0));
             ListParameter = AddParameter(new AudioStringListParameter("List", new[] { "A", "B", "C" }));
         }
 

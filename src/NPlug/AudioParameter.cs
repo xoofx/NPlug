@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 
 namespace NPlug;
@@ -27,10 +28,10 @@ public class AudioParameter
         ShortTitle = info.ShortTitle;
         Units = info.Units;
         StepCount = info.StepCount;
-        DefaultNormalizedValue = info.DefaultNormalizedValue;
+        DefaultNormalizedValue = Math.Clamp(info.DefaultNormalizedValue, 0.0, 1.0);
         Flags = info.Flags;
         Precision = 4;
-        NormalizedValue = info.DefaultNormalizedValue;
+        NormalizedValue = DefaultNormalizedValue;
     }
 
     public AudioParameter(string title, int id = 0, string? units = null, string? shortTitle = null, int stepCount = 0, double defaultNormalizedValue = 0.0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate)
@@ -40,10 +41,10 @@ public class AudioParameter
         ShortTitle = shortTitle ?? title;
         Units = units ?? string.Empty;
         StepCount = stepCount;
-        DefaultNormalizedValue = defaultNormalizedValue;
+        DefaultNormalizedValue = Math.Clamp(defaultNormalizedValue, 0.0, 1.0);
         Flags = flags;
         Precision = 4;
-        NormalizedValue = defaultNormalizedValue;
+        NormalizedValue = DefaultNormalizedValue;
     }
 
     public bool IsControllerOnly { get; init; }
@@ -56,17 +57,26 @@ public class AudioParameter
     /// <summary>
     /// parameter title (e.g. "Volume")
     /// </summary>
-    public string Title { get; }
+    /// <remarks>
+    /// Changing this property after registration requires to call <see cref="IAudioControllerHandler.RestartComponent"/> with <see cref="AudioRestartFlags.ParamTitlesChanged"/>.
+    /// </remarks>
+    public string Title { get; set; }
 
     /// <summary>
     /// parameter shortTitle (e.g. "Vol")
     /// </summary>
-    public string ShortTitle { get; }
+    /// <remarks>
+    /// Changing this property after registration requires to call <see cref="IAudioControllerHandler.RestartComponent"/> with <see cref="AudioRestartFlags.ParamTitlesChanged"/>.
+    /// </remarks>
+    public string ShortTitle { get; set; }
 
     /// <summary>
     /// parameter unit (e.g. "dB")
     /// </summary>
-    public string Units { get; }
+    /// <remarks>
+    /// Changing this property after registration requires to call <see cref="IAudioControllerHandler.RestartComponent"/> with <see cref="AudioRestartFlags.ParamTitlesChanged"/>.
+    /// </remarks>
+    public string Units { get; set; }
 
     /// <summary>
     /// number of discrete steps (0: continuous, 1: toggle, discrete value otherwise 
@@ -77,7 +87,10 @@ public class AudioParameter
     /// <summary>
     /// default normalized value [0,1] (in case of discrete value: defaultNormalizedValue = defDiscreteValue / stepCount)
     /// </summary>
-    public double DefaultNormalizedValue { get; protected set; }
+    /// <remarks>
+    /// Changing this property after registration requires to call <see cref="IAudioControllerHandler.RestartComponent"/> with <see cref="AudioRestartFlags.ParamTitlesChanged"/>.
+    /// </remarks>
+    public double DefaultNormalizedValue { get; set; }
 
     /// <summary>
     /// id of unit this parameter belongs to (see @ref vst3Units)
@@ -87,7 +100,10 @@ public class AudioParameter
     /// <summary>
     /// Flags for the parameter
     /// </summary>
-    public AudioParameterFlags Flags { get; }
+    /// <remarks>
+    /// Changing this property after registration requires to call <see cref="IAudioControllerHandler.RestartComponent"/> with <see cref="AudioRestartFlags.ParamTitlesChanged"/>.
+    /// </remarks>
+    public AudioParameterFlags Flags { get; set; }
     
     /// <summary>
     /// Gets the associated <see cref="AudioParameterInfo"/> object.
@@ -99,7 +115,8 @@ public class AudioParameter
         Units = Units,
         StepCount = StepCount,
         DefaultNormalizedValue = DefaultNormalizedValue,
-        UnitId = Unit?.Id ?? AudioUnitId.NoParent
+        UnitId = Unit?.Id ?? AudioUnitId.NoParent,
+        Flags = Flags,
     };
 
     /// <summary>
@@ -153,8 +170,7 @@ public class AudioParameter
         {
             return RawNormalizedValue > 0.5 ? "On" : "Off";
         }
-
-        return valueNormalized.ToString(GetPrecisionFormat(Precision));
+        return valueNormalized.ToString(GetPrecisionFormat(Precision), CultureInfo.InvariantCulture);
     }
 
     /// <summary>
@@ -168,7 +184,7 @@ public class AudioParameter
         {
             return (plainValueAsString.Equals("on", StringComparison.OrdinalIgnoreCase) || plainValueAsString.Equals("true", StringComparison.OrdinalIgnoreCase)) ? 1.0 : 0.0;
         }
-        double.TryParse(plainValueAsString, out var value);
+        double.TryParse(plainValueAsString, CultureInfo.InvariantCulture, out var value);
         return value;
     }
 
@@ -184,7 +200,7 @@ public class AudioParameter
 
     public override string ToString()
     {
-        return $"[{Id.Value}] {Title} = {ToString(NormalizedValue)}";
+        return $"[{Id.Value}] {Title} = {ToString(NormalizedValue)} {Units}";
     }
 
     private void OnParameterValueChanged()

@@ -57,6 +57,8 @@ public static class HelloWorldPlugin
     {
         public HelloWorldModel() : base("HelloWorld")
         {
+            AddByPassParameter();
+
             SubUnit1 = AddUnit(new AudioUnit("SubUnit1"));
             SubUnit11 = SubUnit1.AddUnit(new AudioUnit("SubUnit1.1"));
             SubUnit2 = AddUnit(new AudioUnit("SubUnit2"));

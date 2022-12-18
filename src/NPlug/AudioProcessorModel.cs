@@ -12,6 +12,10 @@ using NPlug.IO;
 
 namespace NPlug;
 
+/// <summary>
+/// The <see cref="AudioProcessor{TAudioProcessorModel}"/> model that will be shared between
+/// the controller and processor. Provides a definition of units, parameters and program lists.
+/// </summary>
 public abstract class AudioProcessorModel : AudioUnit, IDisposable
 {
     private readonly List<AudioUnit> _allUnits;
@@ -31,19 +35,9 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         _unitIdToIndex = new Dictionary<AudioUnitId, int>();
         _allProgramLists = new List<AudioProgramList>();
         _programListIdToIndex = new Dictionary<AudioProgramListId, int>();
-
-        ByPassParameter = new AudioBoolParameter("ByPass", flags: AudioParameterFlags.IsBypass | AudioParameterFlags.CanAutomate);
-        AddParameter(ByPassParameter);
     }
     
-    public AudioBoolParameter ByPassParameter { get; }
-
-    public void Initialize()
-    {
-        if (IsInitialized) throw new InvalidOperationException("This unit is already initialized");
-        RegisterUnit(this);
-        InitializeBuffer();
-    }
+    public AudioBoolParameter? ByPassParameter { get; private set; }
 
     public int ParameterCount => _allParameters.Count;
 
@@ -72,7 +66,32 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
     /// Event when a program is changed for a unit.
     /// </summary>
     public event Action<AudioUnit>? SelectedProgramChanged;
-    
+
+    /// <summary>
+    /// Add a default by-pass parameter (e.g for effects).
+    /// </summary>
+    /// <param name="name">The name of the parameter. Default is "ByPass".</param>
+    public void AddByPassParameter(string name = "ByPass")
+    {
+        // Don't add a bypass parameter if it was already added.
+        if (ByPassParameter is null)
+        {
+            ByPassParameter = new AudioBoolParameter(name, flags: AudioParameterFlags.IsBypass | AudioParameterFlags.CanAutomate);
+            AddParameter(ByPassParameter);
+        }
+    }
+
+    /// <summary>
+    /// Initialize this model.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">If the model has been already initialized.</exception>
+    public void Initialize()
+    {
+        if (IsInitialized) throw new InvalidOperationException("This unit is already initialized");
+        RegisterUnit(this);
+        InitializeBuffer();
+    }
+
     public bool TryGetParameterById(AudioParameterId id, [NotNullWhen(true)] out AudioParameter? parameter)
     {
         parameter = null;

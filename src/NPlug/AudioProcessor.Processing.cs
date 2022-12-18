@@ -10,9 +10,8 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
 {
     public bool IsProcessing { get; private set; }
 
-    public bool IsByPass => Model.ByPassParameter.Value;
-
-
+    public bool ShouldByPass => Model.ByPassParameter?.Value ?? false;
+    
     protected virtual void PreProcess(in AudioProcessData data)
     {
     }
@@ -38,14 +37,12 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
 
     protected virtual void ProcessCore(in AudioProcessData data)
     {
-
     }
 
     protected virtual void ProcessRecalculate(in AudioProcessData data)
     {
     }
-
-
+    
     protected virtual bool ProcessParameterChanges(in AudioProcessData data)
     {
         var parameterChanges = data.Input.ParameterChanges;
@@ -88,7 +85,7 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
 
     protected virtual bool ProcessByPass(in AudioProcessData data)
     {
-        if (!IsByPass || data.SampleCount == 0) return false;
+        if (!ShouldByPass || data.SampleCount == 0) return false;
 
         ref readonly var setupData = ref ProcessSetupData;
         var inputCount = data.Input.BufferCount;
@@ -156,7 +153,6 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
             }
         }
     }
-
 
     bool IAudioProcessor.SetupProcessing(in AudioProcessSetupData processSetupData)
     {

@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using NPlug.IO;
 
 namespace NPlug;
 
@@ -17,6 +18,7 @@ public class AudioProgram
     {
         Name = name;
         PitchNames = new Dictionary<short, string>();
+        Attributes = new Dictionary<string, string>();
     }
 
     public string Name { get; }
@@ -26,31 +28,37 @@ public class AudioProgram
     public AudioProgramList? Parent { get; internal set; }
 
     public Dictionary<short, string> PitchNames { get; }
-
-    public Stream GetOrLoadProgramData()
+    
+    public Dictionary<string, string> Attributes { get; }
+    
+    public void SetProgramDataFromModel(AudioProcessorModel model)
     {
-        AssertInitialized();
-        if (_stream is null)
+        var writer = new PortableBinaryWriter(new MemoryStream(), false);
+        model.Save(writer, AudioProcessorModelStorageMode.SkipProgramChangeParameters);
+        _stream = writer.Stream;
+        _stream.Position = 0;
+        _originalPosition = 0;
+    }
+
+    public Stream? GetProgramData()
+    {
+        if (_stream is { })
         {
-            _stream = Parent!.LoadProgramDataInternal(Index);
-            _originalPosition = _stream.Position;
+            _stream.Position = _originalPosition;
         }
-        _stream.Position = _originalPosition;
         return _stream;
     }
 
-    public void LoadProgramDataFromStream(Stream stream)
+    public void SetProgramDataFromStream(Stream stream)
     {
-        AssertInitialized();
         var memoryStream = new MemoryStream();
+        if (stream.CanSeek)
+        {
+            memoryStream.Capacity = (int)stream.Length;
+        }
         stream.CopyTo(memoryStream);
         _stream = memoryStream;
+        memoryStream.Position = 0;
         _originalPosition = 0;
-        Parent!.OnProgramDataChanged(this);
-    }
-
-    private void AssertInitialized()
-    {
-        if (Parent is null) throw new InvalidOperationException($"Cannot load program data {Name} as the program is not attached to a program list");
     }
 }

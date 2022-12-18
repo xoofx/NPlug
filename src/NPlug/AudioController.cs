@@ -40,7 +40,7 @@ public abstract partial class AudioController<TAudioControllerModel> : AudioPlug
 
     protected virtual void RestoreComponentState(PortableBinaryReader reader)
     {
-        Model.Load(reader);
+        Model.Load(reader, AudioProcessorModelStorageMode.Default);
     }
 
     protected virtual void SaveState(PortableBinaryWriter writer)

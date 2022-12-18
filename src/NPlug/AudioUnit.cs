@@ -13,7 +13,6 @@ public class AudioUnit
     private readonly List<AudioParameter> _parameters;
     private readonly List<AudioUnit> _children;
     private AudioUnitId _id;
-    private int _selectedProgramIndex;
 
     public AudioUnit(string unitName, int id = 0, AudioProgramList? programList = null)
     {
@@ -22,10 +21,6 @@ public class AudioUnit
         _children = new List<AudioUnit>();
         _parameters = new List<AudioParameter>();
         ProgramList = programList;
-        if (programList != null)
-        {
-            programList.ProgramDataChanged += ProgramListOnProgramDataChanged;
-        }
     }
 
     public AudioUnitInfo UnitInfo => new (_id)
@@ -43,7 +38,7 @@ public class AudioUnit
 
     public string Name { get; }
 
-    public bool IsInitialized
+    public bool Initialized
     {
         get;
         internal set;
@@ -51,31 +46,20 @@ public class AudioUnit
 
     public AudioProgramList? ProgramList { get; }
 
+    public AudioStringListParameter? ProgramChangeParameter { get; internal set; }
+
     public int SelectedProgramIndex
     {
-        get => _selectedProgramIndex;
+        get => ProgramChangeParameter?.SelectedItem ?? 0;
         set
         {
             AssertProgramList();
+            if (ProgramChangeParameter is null) throw new InvalidOperationException("The unit must be initialized before using the program index");
 
             if ((uint)value >= (uint)ProgramList!.Count) throw new ArgumentOutOfRangeException(nameof(value));
             LoadProgram(value);
-            var previousValue = _selectedProgramIndex;
-            _selectedProgramIndex = value;
-            if (previousValue != value)
-            {
-                OnSelectedProgramChanged(this);
-            }
-        }
-    }
 
-    private void ProgramListOnProgramDataChanged(AudioProgram obj)
-    {
-        // If the selected program is on this unit and the program data has changed.
-        // Load the program data into the unit
-        if (obj.Index == SelectedProgramIndex)
-        {
-            LoadProgram(SelectedProgramIndex);
+            ProgramChangeParameter!.SelectedItem = value;
         }
     }
 
@@ -113,37 +97,70 @@ public class AudioUnit
     {
         AssertProgramList();
 
-        var stream = ProgramList![programIndex].GetOrLoadProgramData();
-        Load(new PortableBinaryReader(stream, false));
+        var program = ProgramList![programIndex];
+        var stream = program.GetProgramData();
+        if (stream is null)
+        {
+            throw new InvalidOperationException($"The program {program.Name} from unit with {Id} (Name: {Name}) does not have a program data attached");
+        }
+        Load(new PortableBinaryReader(stream, false), AudioProcessorModelStorageMode.SkipProgramChangeParameters);
     }
 
-    public virtual void Load(PortableBinaryReader reader)
+    public virtual void Load(PortableBinaryReader reader, AudioProcessorModelStorageMode mode)
     {
         //// Nothing to read
         if (reader.Stream.Length == 0) return;
-    
-        foreach (var parameter in _parameters)
+
+        if (mode == AudioProcessorModelStorageMode.Default)
         {
-            parameter.NormalizedValue = reader.ReadFloat64();
+            foreach (var parameter in _parameters)
+            {
+                parameter.NormalizedValue = reader.ReadFloat64();
+            }
+        }
+        else
+        {
+            foreach (var parameter in _parameters)
+            {
+                if (parameter.IsProgramChange) continue;
+                parameter.NormalizedValue = reader.ReadFloat64();
+            }
         }
 
         foreach (var childUnit in _children)
         {
-            childUnit.Load(reader);
+            childUnit.Load(reader, mode);
         }
     }
 
-    public virtual void Save(PortableBinaryWriter writer)
+    public virtual void Save(PortableBinaryWriter writer, AudioProcessorModelStorageMode mode)
     {
-        foreach (var parameter in _parameters)
+        if (mode == AudioProcessorModelStorageMode.Default)
         {
-            writer.WriteFloat64(parameter.NormalizedValue);
+            foreach (var parameter in _parameters)
+            {
+                writer.WriteFloat64(parameter.NormalizedValue);
+            }
         }
-
+        else
+        {
+            foreach (var parameter in _parameters)
+            {
+                if (parameter.IsProgramChange) continue;
+                writer.WriteFloat64(parameter.NormalizedValue);
+            }
+        }
+        
         foreach (var childUnit in _children)
         {
-            childUnit.Save(writer);
+            childUnit.Save(writer, mode);
         }
+    }
+
+    internal void InsertParameter(int index, AudioParameter parameter)
+    {
+        _parameters.Insert(index, parameter);
+        parameter.Unit = this;
     }
 
     public TAudioParameter AddParameter<TAudioParameter>(TAudioParameter parameter) where TAudioParameter: AudioParameter
@@ -168,14 +185,9 @@ public class AudioUnit
         ParentUnit?.OnParameterValueChangedInternal(parameter);
     }
 
-    internal virtual void OnSelectedProgramChanged(AudioUnit unit)
-    {
-        ParentUnit?.OnSelectedProgramChanged(unit);
-    }
-
     private void AssertNotInitialized()
     {
-        if (IsInitialized) throw new InvalidOperationException("Cannot modify this unit if it is already initialized");
+        if (Initialized) throw new InvalidOperationException("Cannot modify this unit if it is already initialized");
     }
 
     private void AssertProgramList()

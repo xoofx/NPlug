@@ -89,12 +89,12 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
 
     protected virtual void SaveState(PortableBinaryWriter writer)
     {
-        Model.Save(writer);
+        Model.Save(writer, AudioProcessorModelStorageMode.Default);
     }
 
     protected virtual void RestoreState(PortableBinaryReader reader)
     {
-        Model.Load(reader);
+        Model.Load(reader, AudioProcessorModelStorageMode.Default);
     }
 
     protected virtual void OnAudioBusPresentationLatencyChanged(AudioBusInfo busInfo, uint previousPresentationLatencyInSamples)

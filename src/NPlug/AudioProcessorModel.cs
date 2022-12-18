@@ -63,11 +63,6 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
     public event Action<AudioParameter>? ParameterValueChanged;
 
     /// <summary>
-    /// Event when a program is changed for a unit.
-    /// </summary>
-    public event Action<AudioUnit>? SelectedProgramChanged;
-
-    /// <summary>
     /// Add a default by-pass parameter (e.g for effects).
     /// </summary>
     /// <param name="name">The name of the parameter. Default is "ByPass".</param>
@@ -87,7 +82,7 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
     /// <exception cref="InvalidOperationException">If the model has been already initialized.</exception>
     public void Initialize()
     {
-        if (IsInitialized) throw new InvalidOperationException("This unit is already initialized");
+        if (Initialized) throw new InvalidOperationException("This unit is already initialized");
         RegisterUnit(this);
         InitializeBuffer();
     }
@@ -141,10 +136,18 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         return false;
     }
 
-    public override unsafe void Load(PortableBinaryReader reader)
+    public override unsafe void Load(PortableBinaryReader reader, AudioProcessorModelStorageMode mode)
     {
         // Don't try to read anything if the stream is empty.
         if (reader.Stream.Length == 0) return;
+
+        // If the mode to load is not the default one, then we cannot use the optimize one below
+        // and we need to use the lower mode from the base class
+        if (mode != AudioProcessorModelStorageMode.Default)
+        {
+            base.Load(reader, mode);
+            return;
+        }
 
         // Fast path
         var pointerBuffer = _pointerToBuffer;
@@ -174,8 +177,16 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         }
     }
 
-    public override unsafe void Save(PortableBinaryWriter writer)
+    public override unsafe void Save(PortableBinaryWriter writer, AudioProcessorModelStorageMode mode)
     {
+        // If the mode to load is not the default one, then we cannot use the optimize one below
+        // and we need to use the lower mode from the base class
+        if (mode != AudioProcessorModelStorageMode.Default)
+        {
+            base.Save(writer, mode);
+            return;
+        }
+
         // Fast path
         var pointerBuffer = _pointerToBuffer;
         if (pointerBuffer != null)
@@ -207,12 +218,14 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
 
     internal override void OnParameterValueChangedInternal(AudioParameter parameter)
     {
+        // If a program is changed, we load its content into the current unit
+        if ((parameter.Flags & AudioParameterFlags.IsProgramChange) != 0 && parameter is AudioStringListParameter listParameter)
+        {
+            var unit = parameter.Unit!;
+            unit.LoadProgram(listParameter.SelectedItem);
+        }
+        
         ParameterValueChanged?.Invoke(parameter);
-    }
-
-    internal override void OnSelectedProgramChanged(AudioUnit unit)
-    {
-        SelectedProgramChanged?.Invoke(unit);
     }
 
     private void RegisterUnit(AudioUnit unit)
@@ -241,17 +254,22 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         _unitIdToIndex.Add(unit.Id, _allUnits.Count);
         _allUnits.Add(unit);
 
+        // Initialize the program list
+        if (unit.ProgramList is { } programList)
+        {
+            RegisterProgramList(programList);
+
+            // Create the preset selection parameter and register it to the existing parameters
+            var presetParameter = programList.CreateProgramChangeParameter();
+            unit.ProgramChangeParameter = presetParameter;
+            unit.InsertParameter(0, presetParameter);
+        }
+
         var parameterCount = unit.LocalParameterCount;
         for (int i = 0; i < parameterCount; i++)
         {
             var parameter = unit.GetLocalParameter(i);
             RegisterParameter(parameter);
-        }
-
-        // Initialize the program list
-        if (unit.ProgramList is { } programList)
-        {
-            RegisterProgramList(programList);
         }
     }
 
@@ -320,7 +338,7 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         // Mark all unit initialized
         foreach (var unit in _allUnits)
         {
-            unit.IsInitialized = true;
+            unit.Initialized = true;
         }
     }
 

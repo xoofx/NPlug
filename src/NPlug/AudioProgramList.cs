@@ -5,23 +5,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 
 namespace NPlug;
 
-public abstract class AudioProgramList : IReadOnlyList<AudioProgram>
+public class AudioProgramList : IReadOnlyList<AudioProgram>
 {
     private readonly List<AudioProgram> _programs;
-
-    protected AudioProgramList(string name, int id = 0)
+    public AudioProgramList(string name, int id = 0)
     {
         Name = name;
+        ProgramChangeParameterName = $"{name} Preset";
         _programs = new List<AudioProgram>();
         Id = id;
-        Attributes = new Dictionary<string, string>();
     }
 
     public string Name { get; set; }
+
+    public string ProgramChangeParameterName { get; set; }
+
+    public AudioParameterId ProgramChangeParameterId { get; set; }
 
     public int Count  => _programs.Count;
 
@@ -30,12 +32,19 @@ public abstract class AudioProgramList : IReadOnlyList<AudioProgram>
     public AudioProgramListId Id { get; internal set; }
 
     public AudioProgramListInfo Info => new (Id, Name, Count);
-
-    public Dictionary<string, string> Attributes { get; }
     
     public AudioProgram this[int index] => _programs[index];
 
-    public event Action<AudioProgram>? ProgramDataChanged;
+    public virtual AudioStringListParameter CreateProgramChangeParameter()
+    {
+        var items = new string[_programs.Count];
+        for (int i = 0; i < _programs.Count; i++)
+        {
+            items[i] = _programs[i].Name;
+        }
+
+        return new AudioStringListParameter(ProgramChangeParameterName, items, id: ProgramChangeParameterId.Value, flags: AudioParameterFlags.CanAutomate | AudioParameterFlags.IsList | AudioParameterFlags.IsProgramChange);
+    }
 
     public void Add(AudioProgram program)
     {
@@ -48,13 +57,6 @@ public abstract class AudioProgramList : IReadOnlyList<AudioProgram>
         _programs.Add(program);
         program.Parent = this;
     }
-
-    internal Stream LoadProgramDataInternal(int programIndex)
-    {
-        return LoadProgramData(programIndex);
-    }
-
-    protected abstract Stream LoadProgramData(int programIndex);
     
     public List<AudioProgram>.Enumerator GetEnumerator()
     {
@@ -71,13 +73,8 @@ public abstract class AudioProgramList : IReadOnlyList<AudioProgram>
         return ((IEnumerable)_programs).GetEnumerator();
     }
 
-    private void AssertInitialized()
+    protected void AssertInitialized()
     {
         if (Initialized) throw new InvalidOperationException($"Cannot modify this program list {Id} with name {Name} as it is already initialized");
-    }
-
-    internal void OnProgramDataChanged(AudioProgram obj)
-    {
-        ProgramDataChanged?.Invoke(obj);
     }
 }

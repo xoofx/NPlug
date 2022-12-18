@@ -17,12 +17,12 @@ public abstract partial class AudioController<TAudioControllerModel>
 
     string IAudioControllerUnitInfo.GetProgramName(AudioProgramListId listId, int programIndex)
     {
-        return Model.GetProgramListById(listId).Name;
+        return Model.GetProgramListById(listId)[programIndex].Name;
     }
 
     bool IAudioControllerUnitInfo.TryGetProgramInfo(AudioProgramListId listId, int programIndex, string attributeId, [NotNullWhen(true)] out string? attributeValue)
     {
-        return Model.GetProgramListById(listId).Attributes.TryGetValue(attributeId, out attributeValue);
+        return Model.GetProgramListById(listId)[programIndex].Attributes.TryGetValue(attributeId, out attributeValue);
     }
 
     bool IAudioControllerUnitInfo.HasProgramPitchNames(AudioProgramListId listId, int programIndex)

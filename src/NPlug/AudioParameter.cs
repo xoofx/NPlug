@@ -104,6 +104,11 @@ public class AudioParameter
     /// Changing this property after registration requires to call <see cref="IAudioControllerHandler.RestartComponent"/> with <see cref="AudioRestartFlags.ParamTitlesChanged"/>.
     /// </remarks>
     public AudioParameterFlags Flags { get; set; }
+
+    /// <summary>
+    /// Gets a boolean indicating whether this parameter is a program change parameter.
+    /// </summary>
+    public bool IsProgramChange => (Flags & AudioParameterFlags.IsProgramChange) != 0;
     
     /// <summary>
     /// Gets the associated <see cref="AudioParameterInfo"/> object.

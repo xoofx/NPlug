@@ -37,22 +37,3 @@ public readonly record struct AudioProcessSetupData
     /// </summary>
     public readonly double SampleRate;
 }
-
-
-public enum AudioProcessMode
-{
-    /// <summary>
-    /// Realtime processing.
-    /// </summary>
-    Realtime,
-
-    /// <summary>
-    /// Prefetch processing.
-    /// </summary>
-    Prefetch,
-
-    /// <summary>
-    /// Offline processing.
-    /// </summary>
-    Offline,
-}

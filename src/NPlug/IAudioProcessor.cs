@@ -8,14 +8,6 @@ using System.IO;
 
 namespace NPlug;
 
-
-// Discussions https://forums.steinberg.net/t/clarification-of-parameter-handling-in-vst-3/201914
-// https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical+Documentation/API+Documentation/Index.html
-// [3.0.0] Interfaces supported by the plug-in
-// https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical+Documentation/Change+History/3.0.0/Plug+in+Interfaces.html
-// [3.0.0] Interfaces supported by the host
-// https://steinbergmedia.github.io/vst3_dev_portal/pages/Technical+Documentation/Change+History/3.0.0/Host+Interfaces.html
-
 public interface IAudioProcessor : IAudioPluginComponent
 {
     /// <summary>

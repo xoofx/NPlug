@@ -166,28 +166,3 @@ public interface IAudioControllerHandler
     /// </remarks>
     void NotifyProgramListChange(AudioProgramListId listId, int programIndex);
 }
-
-public record struct AudioProgressId(ulong Value);
-
-/// <summary>
-///
-/// </summary>
-public enum AudioProgressType : uint
-{
-    /// <summary>
-    /// plug-in state is restored async (in a background Thread)
-    /// </summary>
-    AsyncStateRestoration = 0,
-
-    /// <summary>
-    /// a plug-in task triggered by a UI action
-    /// </summary>
-    UIBackgroundTask,
-}
-
-public readonly record struct AudioProgramListId(int Value)
-{
-    public static readonly AudioProgramListId NoPrograms = new (-1);
-
-    public static implicit operator AudioProgramListId(int value) => new(value);
-}

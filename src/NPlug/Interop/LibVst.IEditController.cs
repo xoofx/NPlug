@@ -43,20 +43,20 @@ internal static unsafe partial class LibVst
         private static partial ComResult getParameterInfo_ToManaged(IEditController* self, int paramIndex, ParameterInfo* info)
         {
             var parameter = Get(self).GetParameterInfo(paramIndex);
-            info->id = new ParamID(unchecked((uint)parameter.Id.Value));
+            info->id = parameter.Id;
             info->title.CopyFrom(parameter.Title);
             info->shortTitle.CopyFrom(parameter.ShortTitle);
             info->units.CopyFrom(parameter.Units);
             info->stepCount = parameter.StepCount;
-            info->defaultNormalizedValue = new ParamValue(parameter.DefaultNormalizedValue);
-            info->unitId = new UnitID(parameter.UnitId.Value);
+            info->defaultNormalizedValue = parameter.DefaultNormalizedValue;
+            info->unitId = parameter.UnitId;
             info->flags = (int)parameter.Flags;
             return true;
         }
 
         private static partial ComResult getParamStringByValue_ToManaged(IEditController* self, ParamID id, ParamValue valueNormalized, String128* @string)
         {
-            var stringResult = Get(self).GetParameterStringByValue(new AudioParameterId(unchecked((int)id.Value)), valueNormalized.Value);
+            var stringResult = Get(self).GetParameterStringByValue(id, valueNormalized.Value);
             @string->CopyFrom(stringResult);
             return true;
         }
@@ -65,28 +65,28 @@ internal static unsafe partial class LibVst
         {
             var audioProcessor = Get(self);
             var host = (AudioHostApplicationClient)audioProcessor.Host!;
-            valueNormalized->Value = Get(self).GetParameterValueByString(new AudioParameterId(unchecked((int)id.Value)), host.GetOrCreateString128(@string));
+            valueNormalized->Value = Get(self).GetParameterValueByString(id, host.GetOrCreateString128(@string));
             return true;
         }
 
         private static partial ParamValue normalizedParamToPlain_ToManaged(IEditController* self, ParamID id, ParamValue valueNormalized)
         {
-            return new ParamValue(Get(self).NormalizedParameterToPlain(new AudioParameterId(unchecked((int)id.Value)), valueNormalized.Value));
+            return new ParamValue(Get(self).NormalizedParameterToPlain(id, valueNormalized.Value));
         }
 
         private static partial ParamValue plainParamToNormalized_ToManaged(IEditController* self, ParamID id, ParamValue plainValue)
         {
-            return new ParamValue(Get(self).NormalizedParameterToPlain(new AudioParameterId(unchecked((int)id.Value)), plainValue.Value));
+            return new ParamValue(Get(self).NormalizedParameterToPlain(id, plainValue.Value));
         }
 
         private static partial ParamValue getParamNormalized_ToManaged(IEditController* self, ParamID id)
         {
-            return new ParamValue(Get(self).GetParameterNormalized(new AudioParameterId(unchecked((int)id.Value))));
+            return new ParamValue(Get(self).GetParameterNormalized(id));
         }
 
         private static partial ComResult setParamNormalized_ToManaged(IEditController* self, ParamID id, ParamValue value)
         {
-            Get(self).SetParameterNormalized(new AudioParameterId(unchecked((int)id.Value)), value.Value);
+            Get(self).SetParameterNormalized(id, value.Value);
             return true;
         }
 
@@ -101,6 +101,10 @@ internal static unsafe partial class LibVst
             var audioProcessor = Get(self);
             var host = (AudioHostApplicationClient)audioProcessor.Host!;
             var view = Get(self).CreateView(host.GetOrCreateString(name.Value));
+            if (view is null)
+            {
+                return null;
+            }
             var comObject = ComObjectManager.Instance.GetOrCreateComObject(view);
             return comObject.QueryInterface<IPlugView>();
         }

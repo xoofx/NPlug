@@ -13,7 +13,6 @@ namespace NPlug;
 public abstract partial class AudioController<TAudioControllerModel> : AudioPluginComponent
     , IAudioController
     , IAudioControllerExtended
-    , IAudioControllerMidiMapping
     , IAudioControllerUnitInfo
     where TAudioControllerModel : AudioProcessorModel, new()
 {
@@ -70,6 +69,11 @@ public abstract partial class AudioController<TAudioControllerModel> : AudioPlug
         return false;
     }
 
+    protected virtual IAudioPluginView? CreateView()
+    {
+        return null;
+    }
+
     internal override bool InitializeInternal(AudioHostApplication hostApplication)
     {
         return Initialize(hostApplication);
@@ -124,7 +128,7 @@ public abstract partial class AudioController<TAudioControllerModel> : AudioPlug
 
     IAudioPluginView? IAudioController.CreateView(string name)
     {
-        throw new NotImplementedException();
+        return CreateView();
     }
 
     bool IAudioControllerExtended.TrySetKnobMode(AudioControllerKnobModes mode)
@@ -140,11 +144,6 @@ public abstract partial class AudioController<TAudioControllerModel> : AudioPlug
     bool IAudioControllerExtended.TryOpenAboutBox(bool onlyCheck)
     {
         return TryOpenAboutBox(onlyCheck);
-    }
-
-    bool IAudioControllerMidiMapping.TryGetMidiControllerAssignment(int busIndex, int channel, AudioMidiControllerNumber midiControllerNumber, out AudioParameterId id)
-    {
-        return TryGetMidiControllerAssignment(busIndex, channel, midiControllerNumber, out id);
     }
 
     private IAudioControllerHandler GetHandler([CallerMemberName] string? callerName = null)

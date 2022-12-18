@@ -8,7 +8,6 @@ public class HelloWorldProcessor : AudioProcessor<HelloWorldModel>
     {
     }
 
-
     public override Guid ControllerClassId => HelloWorldController.ClassId;
 
     protected override bool Initialize(AudioHostApplication host)

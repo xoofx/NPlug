@@ -8,15 +8,14 @@ using System.Collections.Generic;
 namespace NPlug;
 
 public abstract partial class AudioController<TAudioControllerModel>
+    : IAudioControllerMidiMapping
 {
     public Dictionary<AudioMidiControllerNumber, AudioParameter> MapMidiCCToAudioParameter { get; }
-    
+
     public void SetMidiCCMapping(AudioMidiControllerNumber midiControllerNumber, AudioParameter parameter)
     {
         MapMidiCCToAudioParameter[midiControllerNumber] = parameter;
     }
-    
-    // IMidiMapping
 
     protected virtual bool TryGetMidiControllerAssignment(int busIndex, int channel, AudioMidiControllerNumber midiControllerNumber, out AudioParameterId id)
     {
@@ -28,5 +27,11 @@ public abstract partial class AudioController<TAudioControllerModel>
 
         id = default;
         return false;
+    }
+
+    // IMidiMapping
+    bool IAudioControllerMidiMapping.TryGetMidiControllerAssignment(int busIndex, int channel, AudioMidiControllerNumber midiControllerNumber, out AudioParameterId id)
+    {
+        return TryGetMidiControllerAssignment(busIndex, channel, midiControllerNumber, out id);
     }
 }

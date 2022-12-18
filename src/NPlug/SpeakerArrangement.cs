@@ -315,7 +315,6 @@ public enum SpeakerArrangement : ulong
     Speaker51_5_3 = SpeakerL | SpeakerR | SpeakerC | SpeakerLfe | SpeakerLs | SpeakerRs | SpeakerTfl | SpeakerTfc | SpeakerTfr | SpeakerTrl | SpeakerTrr | SpeakerBfl | SpeakerBfc | SpeakerBfr,
 }
 
-
 public static class SpeakerArrangementExtension
 {
     public static int GetChannelCount(this SpeakerArrangement speakerArrangement) => BitOperations.PopCount((ulong)speakerArrangement);

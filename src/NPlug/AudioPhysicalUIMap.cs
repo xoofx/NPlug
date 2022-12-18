@@ -10,7 +10,6 @@ namespace NPlug;
 /// PhysicalUIMap describes a mapping of a noteExpression Type to a Physical UI Type.
 /// It is used in PhysicalUIMapList.
 /// </summary>
-/// <seealso cref="LibVst.PhysicalUIMapList "/>
 public struct AudioPhysicalUIMap
 {
     /// <summary>

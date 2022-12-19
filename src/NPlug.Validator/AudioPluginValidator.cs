@@ -1,22 +1,21 @@
 using NPlug.Proxy;
 using System.Runtime.InteropServices;
-using NPlug.Interop;
 
 namespace NPlug.Validator;
 
 public static class AudioPluginValidator
 {
-    private static readonly AudioPluginProxy _proxy;
+    private static readonly AudioPluginProxy NativeProxy;
 
     static AudioPluginValidator()
     {
         Initialize();
-        _proxy = AudioPluginProxy.Load(AudioPluginProxy.GetDefaultPath());
+        NativeProxy = AudioPluginProxy.LoadDefault();
     }
 
     public static bool Validate(AudioPluginFactory factory, TextWriter outputLog, TextWriter errorLog)
     {
-        _proxy.SetNativeFactory(factory.Export);
+        NativeProxy.SetNativeFactory(factory.Export);
 
         return Validate(2, new string[]
         {

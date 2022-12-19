@@ -14,10 +14,3 @@ public class SimpleDelayModel : AudioProcessorModel
 
     public AudioParameter Delay { get; }
 }
-
-public static class Program
-{
-    public static void Main()
-    {
-    }
-}

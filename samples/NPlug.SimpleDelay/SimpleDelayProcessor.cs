@@ -4,6 +4,9 @@
 
 namespace NPlug.SimpleDelay;
 
+/// <summary>
+/// Port of C/C++ adelay sample from https://github.com/steinbergmedia/vst3_public_sdk/tree/master/samples/vst/adelay/source
+/// </summary>
 public class SimpleDelayProcessor : AudioProcessor<SimpleDelayModel>
 {
     private float[] _bufferLeft;

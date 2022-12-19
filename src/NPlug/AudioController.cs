@@ -18,6 +18,8 @@ public abstract partial class AudioController<TAudioControllerModel> : AudioPlug
 {
     private PortableBinaryReader? _streamReader;
     private PortableBinaryWriter? _streamWriter;
+    
+
 
     protected AudioController()
     {
@@ -26,6 +28,7 @@ public abstract partial class AudioController<TAudioControllerModel> : AudioPlug
         _selectedUnit = Model;
         Model.ParameterValueChanged += RootUnitOnParameterValueChanged;
         MapMidiCCToAudioParameter = new Dictionary<AudioMidiControllerNumber, AudioParameter>();
+        _mapBusToUnit = new Dictionary<(BusMediaType, BusDirection, int, int), AudioUnit>();
     }
 
     public TAudioControllerModel Model { get; }

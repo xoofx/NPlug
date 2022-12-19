@@ -136,6 +136,16 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         return false;
     }
 
+    public AudioUnit GetUnitById(AudioUnitId id)
+    {
+        if (!TryGetUnitById(id, out var unit))
+        {
+            throw new ArgumentException($"Invalid unit id {id}. No unit found with this id.", nameof(id));
+        }
+
+        return unit;
+    }
+
     public override unsafe void Load(PortableBinaryReader reader, AudioProcessorModelStorageMode mode)
     {
         // Don't try to read anything if the stream is empty.

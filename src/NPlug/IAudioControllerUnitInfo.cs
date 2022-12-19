@@ -79,7 +79,7 @@ public interface IAudioControllerUnitInfo : IAudioController
     /// Gets the according unit if there is an unambiguous relation between a channel or a bus and a unit.
     /// This method mainly is intended to find out which unit is related to a given MIDI input channel.
     /// </summary>
-    void GetUnitByBus(BusMediaType type, BusDirection dir, int busIndex, int channel, out AudioUnitId unitId);
+    bool TryGetUnitByBus(BusMediaType type, BusDirection dir, int busIndex, int channel, out AudioUnitId unitId);
 
     /// <summary>
     /// Receives a preset data stream.

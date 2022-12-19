@@ -3,14 +3,28 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using NPlug.IO;
 
 namespace NPlug;
 
 public abstract partial class AudioController<TAudioControllerModel>
 {
     private AudioUnit _selectedUnit;
+    private readonly Dictionary<(BusMediaType, BusDirection, int, int), AudioUnit> _mapBusToUnit;
 
+    protected void ClearMapBusToUnit()
+    {
+        _mapBusToUnit.Clear();
+    }
+
+    protected void SetMappingBusToUnit(BusMediaType type, BusDirection dir, int busIndex, int channel, AudioUnit unit)
+    {
+        _mapBusToUnit[(type, dir, busIndex, channel)] = unit;
+    }
+    
     public AudioUnit SelectedUnit
     {
         get { return _selectedUnit; }
@@ -26,6 +40,23 @@ public abstract partial class AudioController<TAudioControllerModel>
                 }
             }
         }
+    }
+
+    protected virtual bool TryGetUnitByBus(BusMediaType type, BusDirection dir, int busIndex, int channel, [NotNullWhen(true)] out AudioUnit? unit)
+    {
+        return _mapBusToUnit.TryGetValue((type, dir, busIndex, channel), out unit);
+    }
+
+    protected virtual void SetUnitData(AudioUnit unit, Stream input)
+    {
+        var reader = new PortableBinaryReader(input, false);
+        unit.Load(reader, AudioProcessorModelStorageMode.SkipProgramChangeParameters);
+    }
+
+    protected virtual void SetProgramData(AudioProgramList programList, int programIndex, Stream input)
+    {
+        var program = programList[programIndex];
+        program.SetProgramDataFromStream(input);
     }
 
     int IAudioControllerUnitInfo.UnitCount => Model.UnitCount;
@@ -54,13 +85,26 @@ public abstract partial class AudioController<TAudioControllerModel>
         }
     }
 
-    void IAudioControllerUnitInfo.GetUnitByBus(BusMediaType type, BusDirection dir, int busIndex, int channel, out AudioUnitId unitId)
+    bool IAudioControllerUnitInfo.TryGetUnitByBus(BusMediaType type, BusDirection dir, int busIndex, int channel, out AudioUnitId unitId)
     {
-        throw new NotImplementedException();
+        if (TryGetUnitByBus(type, dir, busIndex, channel, out var unit))
+        {
+            unitId = unit.Id;
+            return true;
+        }
+        unitId = default;
+        return false;
     }
 
     void IAudioControllerUnitInfo.SetUnitProgramData(int listOrUnitId, int programIndex, Stream input)
     {
-        throw new NotImplementedException();
+        if (programIndex < 0)
+        {
+            SetUnitData(Model.GetUnitById(listOrUnitId), input);
+        }
+        else
+        {
+            SetProgramData(Model.GetProgramListById(listOrUnitId), programIndex, input);
+        }
     }
 }

@@ -93,7 +93,7 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult getUnitByBus_ToManaged(IUnitInfo* self, MediaType type, BusDirection dir, int busIndex, int channel, UnitID* unitId)
         {
-            Get(self).GetUnitByBus((BusMediaType)type.Value, (NPlug.BusDirection)dir.Value, busIndex, channel, out *(AudioUnitId*)unitId);
+            Get(self).TryGetUnitByBus((BusMediaType)type.Value, (NPlug.BusDirection)dir.Value, busIndex, channel, out *(AudioUnitId*)unitId);
             return true;
         }
 

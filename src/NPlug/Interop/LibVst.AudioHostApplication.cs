@@ -55,6 +55,7 @@ internal static unsafe partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string GetOrCreateString(byte* str)
         {
+            if (str == null) return string.Empty;
             var span = new Span<byte>(str, int.MaxValue);
             var index = span.IndexOf((byte)0);
             span = span.Slice(0, index);
@@ -75,6 +76,7 @@ internal static unsafe partial class LibVst
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string GetOrCreateString(byte* str, int maxLength)
         {
+            if (str == null) return string.Empty;
             var span = new ReadOnlySpan<byte>(str, maxLength);
             var indexOfZero = span.IndexOf((byte)0);
             if (indexOfZero >= 0)

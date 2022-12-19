@@ -92,7 +92,7 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult setComponentHandler_ToManaged(IEditController* self, IComponentHandler* handler)
         {
-            Get(self).SetControllerHandler(new AudioControllerHandlerProxy(handler));
+            Get(self).SetControllerHandler(handler == null ? null : new AudioControllerHandlerProxy(handler));
             return true;
         }
 

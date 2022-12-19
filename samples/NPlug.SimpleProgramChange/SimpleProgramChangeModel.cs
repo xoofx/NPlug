@@ -6,35 +6,34 @@ namespace NPlug.SimpleProgramChange;
 
 public class SimpleProgramChangeModel : AudioProcessorModel
 {
-    public SimpleProgramChangeModel() : base("NPlug.SimpleProgramChange")
+    public SimpleProgramChangeModel() : base("Root", DefaultProgramListBuilder)
     {
         AddByPassParameter();
-        RootUnit = AddUnit(new AudioUnit("Root", programList: DefaultProgramList));
         Gain = AddParameter(new AudioParameter("Gain", defaultNormalizedValue: 1.0));
     }
 
-    public AudioUnit RootUnit { get; }
-
     public AudioParameter Gain { get; }
     
-    private static readonly AudioProgramList DefaultProgramList = GenerateProgramList();
+    private static readonly AudioProgramListBuilder DefaultProgramListBuilder = GenerateProgramListBuilder();
 
     /// <summary>
     /// Creates a program list that will change the gain depending on the program index
     /// </summary>
-    private static AudioProgramList GenerateProgramList()
+    private static AudioProgramListBuilder GenerateProgramListBuilder()
     {
         var builder = new AudioProgramListBuilder<SimpleProgramChangeModel>("Bank");
         const int programCount = 100;
         for (int i = 0; i < programCount; i++)
         {
             int programIndex = i;
-            builder.Add(new AudioProgram($"Prog {i}"), model =>
+            builder.Add(model =>
             {
                 // We map the gain to the program index (from 0.0 to 1.0 when changing the program)
                 model.Gain.NormalizedValue = ((double)programIndex) / (programCount - 1);
+                return new AudioProgram($"Prog {programIndex}");
             });
         }
-        return builder.Build();
+
+        return builder;
     }
 }

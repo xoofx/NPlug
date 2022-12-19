@@ -59,9 +59,9 @@ Info:       In [0]: "Event Input" (Main-Default Active)
 [Scan Parameters]
 Info:  ===Scan Parameters ====================================
 Info:  This component exports 3 parameter(s)
-Info:     Parameter 000 (id=1): [title="ByPass"] [unit=""] [type = T, default = 0.000000, unit = 0]
-Info:     Parameter 001 (id=2): [title="Gain"] [unit=""] [type = F, default = 1.000000, unit = 0]
-Info:     Parameter 002 (id=3): [title="Bank Preset"] [unit=""] [type = D, default = 0.000000, unit = 1]
+Info:     Parameter 000 (id=1): [title="Bank Preset"] [unit=""] [type = D, default = 0.000000, unit = 0]
+Info:     Parameter 001 (id=2): [title="ByPass"] [unit=""] [type = T, default = 0.000000, unit = 0]
+Info:     Parameter 002 (id=3): [title="Gain"] [unit=""] [type = F, default = 1.000000, unit = 0]
 [Succeeded]
 
 [MIDI Mapping]
@@ -76,9 +76,8 @@ Info:  No MIDI Learn interface supplied!
 
 [Scan Units]
 Info:  ===Scan Units ====================================
-Info:  This component has 2 unit(s).
-Info:     Unit000 (ID = 0): "NPlug.SimpleProgramChange" (parent ID = -1, programlist ID = -1)
-Info:     Unit001 (ID = 1): "Root" (parent ID = 0, programlist ID = 1)
+Info:  This component has 1 unit(s).
+Info:     Unit000 (ID = 0): "Root" (parent ID = -1, programlist ID = 1)
 [Succeeded]
 
 [Scan Programs]
@@ -317,7 +316,6 @@ Info:  ===Accuracy: Block, 1 Parameters, Change every100 Samples ===============
 
 [Accuracy: Sample, 1 Parameters, Change every100 Samples]
 Info:  ===Accuracy: Sample, 1 Parameters, Change every100 Samples ====================================
-Info:     Not all points have been read via IParameterChanges
 [Succeeded]
 
 -------------------------------------------------------------

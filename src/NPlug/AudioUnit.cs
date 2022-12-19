@@ -14,13 +14,13 @@ public class AudioUnit
     private readonly List<AudioUnit> _children;
     private AudioUnitId _id;
 
-    public AudioUnit(string unitName, int id = 0, AudioProgramList? programList = null)
+    public AudioUnit(string unitName, int id = 0, AudioProgramListBuilder? programListBuilder = null)
     {
         Name = unitName;
         _id = id;
         _children = new List<AudioUnit>();
         _parameters = new List<AudioParameter>();
-        ProgramList = programList;
+        ProgramListBuilder = programListBuilder;
     }
 
     public AudioUnitInfo UnitInfo => new (_id)
@@ -44,7 +44,9 @@ public class AudioUnit
         internal set;
     }
 
-    public AudioProgramList? ProgramList { get; }
+    public AudioProgramListBuilder? ProgramListBuilder { get; init; }
+
+    public AudioProgramList? ProgramList { get; internal set; }
 
     public AudioStringListParameter? ProgramChangeParameter { get; internal set; }
 

@@ -3,12 +3,13 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using static NPlug.Interop.LibVst;
 
 namespace NPlug;
 
 public class AudioStringListParameter : AudioParameter
 {
-    private readonly string[] _items;
+    private string[] _items;
 
     public AudioStringListParameter(AudioParameterInfo info, string[] items) : base(info)
     {
@@ -21,7 +22,6 @@ public class AudioStringListParameter : AudioParameter
 
     public AudioStringListParameter(string title, string[] items, string? units = null, int id = 0, string? shortTitle = null, int selectedItem = 0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate | AudioParameterFlags.IsList) : base(title, units, id, shortTitle, 0, 0.0, flags)
     {
-        if (items.Length < 2) throw new ArgumentException("Expecting an array with at least 2 strings", nameof(items));
         _items = items;
         Items = items;
         DefaultNormalizedValue = ToNormalized(selectedItem);
@@ -31,8 +31,9 @@ public class AudioStringListParameter : AudioParameter
     public string[] Items
     {
         get => _items;
-        private init
+        set
         {
+            if (value.Length < 2) throw new ArgumentException("Expecting an array with at least 2 strings", nameof(value));
             _items = value;
             StepCount = _items.Length - 1;
             DefaultNormalizedValue = 0.0;

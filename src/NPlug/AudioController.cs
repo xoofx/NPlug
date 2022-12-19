@@ -26,7 +26,7 @@ public abstract partial class AudioController<TAudioControllerModel> : AudioPlug
         Model = new TAudioControllerModel();
         Model.Initialize();
         _selectedUnit = Model;
-        Model.ParameterValueChanged += RootUnitOnParameterValueChanged;
+        Model.ParameterValueChanged += OnParameterValueChangedInternal;
         MapMidiCCToAudioParameter = new Dictionary<AudioMidiControllerNumber, AudioParameter>();
         _mapBusToUnit = new Dictionary<(BusMediaType, BusDirection, int, int), AudioUnit>();
     }
@@ -47,12 +47,10 @@ public abstract partial class AudioController<TAudioControllerModel> : AudioPlug
 
     protected virtual void SaveState(PortableBinaryWriter writer)
     {
-        //RootUnit.Save(writer);
     }
 
     protected virtual void RestoreState(PortableBinaryReader reader)
     {
-        //RootUnit.Load(reader);
     }
 
     // IEditController2
@@ -124,7 +122,7 @@ public abstract partial class AudioController<TAudioControllerModel> : AudioPlug
         SaveState(writer);
     }
 
-    public void SetControllerHandler(IAudioControllerHandler controllerHandler)
+    public void SetControllerHandler(IAudioControllerHandler? controllerHandler)
     {
         Handler = controllerHandler;
     }

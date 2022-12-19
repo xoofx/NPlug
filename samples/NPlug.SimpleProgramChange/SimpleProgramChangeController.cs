@@ -10,7 +10,7 @@ public class SimpleProgramChangeController : AudioController<SimpleProgramChange
 
     protected override bool Initialize(AudioHostApplication host)
     {
-        SetMappingBusToUnit(BusMediaType.Event, BusDirection.Input, 0, 0, Model.RootUnit);
+        SetMappingBusToUnit(BusMediaType.Event, BusDirection.Input, 0, 0, Model);
         return true;
     }
 }

@@ -31,7 +31,7 @@ public class AudioProgram
     
     public Dictionary<string, string> Attributes { get; }
     
-    public void SetProgramDataFromModel(AudioProcessorModel model)
+    public void SetProgramDataFromUnit(AudioUnit model)
     {
         var writer = new PortableBinaryWriter(new MemoryStream(), false);
         model.Save(writer, AudioProcessorModelStorageMode.SkipProgramChangeParameters);

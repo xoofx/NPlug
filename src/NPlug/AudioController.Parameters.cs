@@ -9,6 +9,11 @@ namespace NPlug;
 public abstract partial class AudioController<TAudioControllerModel>
 {
     /// <summary>
+    /// Property set when SetParameterNormalized is being called and is going to change a parameter
+    /// </summary>
+    private bool ParameterValueChangedFromHost { get; set; }
+    
+    /// <summary>
     /// The parameter being edited (set/unset via <see cref="BeginEditParameter"/> and <see cref="EndEditParameter"/>)
     /// </summary>
     public AudioParameter? EditedParameter { get; private set; }
@@ -66,11 +71,29 @@ public abstract partial class AudioController<TAudioControllerModel>
     {
         GetHandler().RestartComponent(flags);
     }
-
-    private void RootUnitOnParameterValueChanged(AudioParameter obj)
+    
+    protected virtual void OnParameterValueChanged(AudioParameter parameter, bool parameterValueChangedFromHost)
     {
-        if (!ReferenceEquals(EditedParameter, obj)) throw new InvalidOperationException($"The parameter {obj.Id}/{obj.Title} is being edited without a call to {nameof(BeginEditParameter)}/{nameof(EndEditParameter)}.");
-        GetHandler().PerformEdit(obj.Id, obj.NormalizedValue);
+        if (parameterValueChangedFromHost)
+        {
+            if (parameter.IsProgramChange)
+            {
+                var unit = parameter.Unit!;
+                unit.LoadProgram(((AudioStringListParameter)parameter).SelectedItem);
+                // Notify the host that the all parameter values have changed due to a change of program
+                RestartComponent(AudioRestartFlags.ParamValuesChanged);
+            }
+        }
+        else
+        {
+            if (!ReferenceEquals(EditedParameter, parameter)) throw new InvalidOperationException($"The parameter {parameter.Id}/{parameter.Title} is being edited without a call to {nameof(BeginEditParameter)}/{nameof(EndEditParameter)}.");
+            GetHandler().PerformEdit(parameter.Id, parameter.NormalizedValue);
+        }
+    }
+
+    private void OnParameterValueChangedInternal(AudioParameter parameter)
+    {
+        OnParameterValueChanged(parameter, ParameterValueChangedFromHost);
     }
     
     int IAudioController.ParameterCount => Model.ParameterCount;
@@ -104,6 +127,16 @@ public abstract partial class AudioController<TAudioControllerModel>
 
     void IAudioController.SetParameterNormalized(AudioParameterId id, double valueNormalized)
     {
-        Model.GetParameterById(id).RawNormalizedValue = valueNormalized;
+        // The event OnParameterValueChanged will be triggered with this parameter
+        ParameterValueChangedFromHost = true;
+        try
+        {
+            // Will trigger an event
+            Model.GetParameterById(id).NormalizedValue = valueNormalized;
+        }
+        finally
+        {
+            ParameterValueChangedFromHost = false;
+        }
     }
 }

@@ -20,14 +20,14 @@ public class PortableBinaryReader : IDisposable
 
     public PortableBinaryReader(Stream stream, bool owned = true)
     {
+        Stream = stream;
         Owned = owned;
-        Stream = Stream.Null;
     }
-
-    public bool Owned { get; set; }
 
     public Stream Stream { get; set; }
 
+    public bool Owned { get; set; }
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public unsafe T ReadEnum<T>() where T : unmanaged, Enum
     {

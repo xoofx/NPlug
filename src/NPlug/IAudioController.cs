@@ -95,7 +95,7 @@ public interface IAudioController : IAudioPluginComponent
     /// Note: This is mandatory if the host is using the <see cref="IAudioController"/>.
     /// </summary>
     /// <param name="controllerHandler">The controller host.</param>
-    void SetControllerHandler(IAudioControllerHandler controllerHandler);
+    void SetControllerHandler(IAudioControllerHandler? controllerHandler);
 
     /// <summary>
     /// Creates the editor view of the plug-in, currently only "editor" is supported, see \ref ViewType.

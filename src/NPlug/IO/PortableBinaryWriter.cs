@@ -22,10 +22,10 @@ public class PortableBinaryWriter : IDisposable
         Owned = owned;
     }
 
-    public bool Owned { get; set; }
-
     public Stream Stream { get; set; }
 
+    public bool Owned { get; set; }
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public unsafe void WriteEnum<T>(T data) where T : unmanaged, Enum
     {

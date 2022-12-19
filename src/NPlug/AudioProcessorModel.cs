@@ -27,7 +27,7 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
     private nuint _allParameterSizeInBytes;
     private unsafe double* _pointerToBuffer;
     
-    protected AudioProcessorModel(string unitName, AudioProgramList? programList = null) : base(unitName, 0, programList)
+    protected AudioProcessorModel(string unitName, AudioProgramListBuilder? programListBuilder = null) : base(unitName, 0, programListBuilder)
     {
         _allParameters = new List<AudioParameter>();
         _parameterIdToIndex = new Dictionary<AudioParameterId, int>();
@@ -83,8 +83,20 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
     public void Initialize()
     {
         if (Initialized) throw new InvalidOperationException("This unit is already initialized");
+
         RegisterUnit(this);
-        InitializeBuffer();
+
+        InitializeProgramListParameters();
+
+        InitializeParameters();
+
+        InitializeProgramLists();
+
+        // Mark all unit initialized
+        foreach (var unit in _allUnits)
+        {
+            unit.Initialized = true;
+        }
     }
 
     public bool TryGetParameterById(AudioParameterId id, [NotNullWhen(true)] out AudioParameter? parameter)
@@ -263,24 +275,6 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
 
         _unitIdToIndex.Add(unit.Id, _allUnits.Count);
         _allUnits.Add(unit);
-
-        // Initialize the program list
-        if (unit.ProgramList is { } programList)
-        {
-            RegisterProgramList(programList);
-
-            // Create the preset selection parameter and register it to the existing parameters
-            var presetParameter = programList.CreateProgramChangeParameter();
-            unit.ProgramChangeParameter = presetParameter;
-            unit.InsertParameter(0, presetParameter);
-        }
-
-        var parameterCount = unit.LocalParameterCount;
-        for (int i = 0; i < parameterCount; i++)
-        {
-            var parameter = unit.GetLocalParameter(i);
-            RegisterParameter(parameter);
-        }
     }
 
     private void RegisterProgramList(AudioProgramList programList)
@@ -325,8 +319,19 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         _allParameters.Add(parameter);
     }
    
-    private unsafe void InitializeBuffer()
+    private unsafe void InitializeParameters()
     {
+        // Register all parameters from all units
+        foreach (var unit in _allUnits)
+        {
+            var parameterCount = unit.LocalParameterCount;
+            for (int i = 0; i < parameterCount; i++)
+            {
+                var parameter = unit.GetLocalParameter(i);
+                RegisterParameter(parameter);
+            }
+        }
+
         // Allocate the memory for all parameters (double size)
         var allParameterSizeInBytes = _allParameters.Count * sizeof(double);
         var memoryToAllocate = MathHelper.AlignToUpper((nuint)allParameterSizeInBytes, AlignedSize);
@@ -344,11 +349,45 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
             *pValue = audioParameter.NormalizedValue;
             pValue++;
         }
+    }
 
+    private void InitializeProgramLists()
+    {
         // Mark all unit initialized
         foreach (var unit in _allUnits)
         {
-            unit.Initialized = true;
+            InitializeProgramList(unit);
+        }
+    }
+
+    private void InitializeProgramListParameters()
+    {
+        // Mark all unit initialized
+        foreach (var unit in _allUnits)
+        {
+            InitializeProgramListParameters(unit);
+        }
+    }
+
+    private void InitializeProgramListParameters(AudioUnit unit)
+    {
+        // Initialize the program list
+        if (unit.ProgramListBuilder is { } builder)
+        {
+            var presetParameter = builder.CreateProgramChangeParameter();
+            unit.ProgramChangeParameter = presetParameter;
+            unit.InsertParameter(0, presetParameter);
+        }
+    }
+
+    private void InitializeProgramList(AudioUnit unit)
+    {
+        // Initialize the program list
+        if (unit.ProgramListBuilder is { } builder)
+        {
+            var programList = builder.Build(unit);
+            unit.ProgramList = programList;
+            RegisterProgramList(programList);
         }
     }
 

@@ -11,22 +11,14 @@ namespace NPlug;
 public class AudioProgramList : IReadOnlyList<AudioProgram>
 {
     private readonly List<AudioProgram> _programs;
-    public AudioProgramList(string name, int id = 0)
+    public AudioProgramList(string name, int id = 0, int programListCapacity = 0)
     {
         Name = name;
-        ProgramChangeParameterName = $"{name} Preset";
-        _programs = new List<AudioProgram>();
+        _programs = new List<AudioProgram>(programListCapacity);
         Id = id;
-        ProgramChangeCanAutomate = false;
     }
 
     public string Name { get; set; }
-
-    public string ProgramChangeParameterName { get; set; }
-
-    public AudioParameterId ProgramChangeParameterId { get; set; }
-
-    public bool ProgramChangeCanAutomate { get; set; }
 
     public int Count  => _programs.Count;
 
@@ -37,17 +29,6 @@ public class AudioProgramList : IReadOnlyList<AudioProgram>
     public AudioProgramListInfo Info => new (Id, Name, Count);
     
     public AudioProgram this[int index] => _programs[index];
-
-    public virtual AudioStringListParameter CreateProgramChangeParameter()
-    {
-        var items = new string[_programs.Count];
-        for (int i = 0; i < _programs.Count; i++)
-        {
-            items[i] = _programs[i].Name;
-        }
-
-        return new AudioStringListParameter(ProgramChangeParameterName, items, id: ProgramChangeParameterId.Value, flags: (ProgramChangeCanAutomate ? AudioParameterFlags.CanAutomate : AudioParameterFlags.NoFlags) | AudioParameterFlags.IsList | AudioParameterFlags.IsProgramChange);
-    }
 
     public void Add(AudioProgram program)
     {

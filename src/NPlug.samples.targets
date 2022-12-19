@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+
+  </PropertyGroup>
+
+  <!--Simulate the import of these props/targets files as if we were used from a NuGet package-->
+  <Import Project="$(MSBuildThisFileDirectory)NPlug.Proxy/build/NPlug.Proxy.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)NPlug/build/NPlug.targets" />
+
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)NPlug/NPlug.csproj"/>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)NPlug.Proxy/NPlug.Proxy.csproj"/>
+  </ItemGroup>
+</Project>

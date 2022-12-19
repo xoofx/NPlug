@@ -34,7 +34,7 @@ public class AudioParameter
         NormalizedValue = DefaultNormalizedValue;
     }
 
-    public AudioParameter(string title, int id = 0, string? units = null, string? shortTitle = null, int stepCount = 0, double defaultNormalizedValue = 0.0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate)
+    public AudioParameter(string title, string? units = null, int id = 0, string? shortTitle = null, int stepCount = 0, double defaultNormalizedValue = 0.0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate)
     {
         Id = id;
         Title = title;

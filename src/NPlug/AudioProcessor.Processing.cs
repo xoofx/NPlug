@@ -30,12 +30,12 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
 
         if (data.SampleCount > 0 && !ProcessByPass(data))
         {
-            ProcessCore(data);
+            ProcessMain(data);
             PostProcessCheckSilence(data);
         }
     }
 
-    protected virtual void ProcessCore(in AudioProcessData data)
+    protected virtual void ProcessMain(in AudioProcessData data)
     {
     }
 

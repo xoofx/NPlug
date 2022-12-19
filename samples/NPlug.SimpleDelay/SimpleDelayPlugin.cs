@@ -4,15 +4,15 @@
 
 using System.Runtime.CompilerServices;
 
-namespace NPlug;
+namespace NPlug.SimpleDelay;
 
-public static class HelloWorldPlugin
+public static class SimpleDelayPlugin
 {
     public static AudioPluginFactory GetFactory()
     {
-        var factory = new AudioPluginFactory(new("My Company", "https://plugin_corp.com", "contact@plugin_corp.com"));
-        factory.RegisterPlugin<HelloWorldProcessor>(new(HelloWorldProcessor.ClassId, "HelloWorld", AudioProcessorCategory.Effect));
-        factory.RegisterPlugin<HelloWorldController>(new(HelloWorldController.ClassId, "HelloWorld Controller"));
+        var factory = new AudioPluginFactory(new("NPlug", "https://github.com/xoofx/NPlug", "no_reply@nplug.org"));
+        factory.RegisterPlugin<SimpleDelayProcessor>(new(SimpleDelayProcessor.ClassId, "SimpleDelay", AudioProcessorCategory.Effect));
+        factory.RegisterPlugin<SimpleDelayController>(new(SimpleDelayController.ClassId, "SimpleDelay Controller"));
         return factory;
     }
 

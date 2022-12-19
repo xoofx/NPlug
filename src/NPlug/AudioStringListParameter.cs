@@ -19,7 +19,7 @@ public class AudioStringListParameter : AudioParameter
         NormalizedValue = 0.0;
     }
 
-    public AudioStringListParameter(string title, string[] items, int id = 0, string? units = null, string? shortTitle = null, int selectedItem = 0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate | AudioParameterFlags.IsList) : base(title, id, units, shortTitle, 0, 0.0, flags)
+    public AudioStringListParameter(string title, string[] items, string? units = null, int id = 0, string? shortTitle = null, int selectedItem = 0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate | AudioParameterFlags.IsList) : base(title, units, id, shortTitle, 0, 0.0, flags)
     {
         if (items.Length < 2) throw new ArgumentException("Expecting an array with at least 2 strings", nameof(items));
         _items = items;

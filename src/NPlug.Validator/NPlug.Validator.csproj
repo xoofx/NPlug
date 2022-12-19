@@ -10,7 +10,7 @@
     <NPlugProxyLibraryFile>C:\code\NPlug\src\NPlug.Proxy\build\win-x64\native\nplug_proxy.dll</NPlugProxyLibraryFile>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)../NPlug.Proxy/build/NPlug.Proxy.props" />
+  <Import Project="$(MSBuildThisFileDirectory)../NPlug.Proxy/build/NPlug.Proxy.targets" />
 
   <ItemGroup>
     <Content Condition="Exists('$(NPlugProxyLibraryFile)')" Include="$(NPlugProxyLibraryFile)" Link="$(NPlugProxyLibraryLink)">
@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NPlug.HelloWorldPlugin\NPlug.HelloWorldPlugin.csproj" />
     <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.csproj" />
     <ProjectReference Include="..\NPlug\NPlug.csproj" />
   </ItemGroup>

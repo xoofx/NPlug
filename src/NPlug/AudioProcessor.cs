@@ -66,7 +66,10 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
         return (SampleSizeSupport & (AudioSampleSizeSupport)(1 << (int)sampleSize)) != 0;
     }
 
-    protected abstract bool Initialize(AudioHostApplication host);
+    protected virtual bool Initialize(AudioHostApplication host)
+    {
+        return true;
+    }
 
     protected virtual bool TryGetBusRoutingInfo(in BusRoutingInfo inInfo, out BusRoutingInfo outInfo)
     {
@@ -96,33 +99,6 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
     {
         Model.Load(reader, AudioProcessorModelStorageMode.Default);
     }
-
-    protected virtual void OnAudioBusPresentationLatencyChanged(AudioBusInfo busInfo, uint previousPresentationLatencyInSamples)
-    {
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected ReadOnlySpan<BusInfo> GetBusInfoList(BusMediaType type, BusDirection dir)
-    {
-        var list = type == BusMediaType.Audio
-            ? (dir == BusDirection.Input ? AudioInputBuses : AudioOutputBuses)
-            : (dir == BusDirection.Input ? EventInputBuses : EventOutputBuses);
-
-        return CollectionsMarshal.AsSpan(list);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected ReadOnlySpan<BusInfo> GetAudioOutputBuses() => GetBusInfoList(BusMediaType.Audio, BusDirection.Output);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected ReadOnlySpan<BusInfo> GetAudioInputBuses() => GetBusInfoList(BusMediaType.Audio, BusDirection.Input);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected ReadOnlySpan<BusInfo> GetEventOutputBuses() => GetBusInfoList(BusMediaType.Event, BusDirection.Output);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected ReadOnlySpan<BusInfo> GetEventInputBuses() => GetBusInfoList(BusMediaType.Event, BusDirection.Input);
-    
 
     internal override bool InitializeInternal(AudioHostApplication hostApplication)
     {
@@ -167,46 +143,6 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
             writer.Stream = streamOutput;
         }
         SaveState(writer);
-    }
-
-    bool IAudioProcessor.SetBusArrangements(Span<SpeakerArrangement> inputs, Span<SpeakerArrangement> outputs)
-    {
-        if (inputs.Length > AudioInputBuses.Count ||
-            outputs.Length > AudioOutputBuses.Count) return false;
-
-        for (int i = 0; i < inputs.Length; i++)
-        {
-            ((AudioBusInfo)AudioInputBuses[i]).SpeakerArrangement = inputs[i];
-        }
-
-        for (int i = 0; i < outputs.Length; i++)
-        {
-            ((AudioBusInfo)AudioOutputBuses[i]).SpeakerArrangement = outputs[i];
-        }
-
-        return true;
-    }
-
-    SpeakerArrangement IAudioProcessor.GetBusArrangement(BusDirection direction, int index)
-    {
-        var busInfo = (AudioBusInfo)GetBusInfoList(BusMediaType.Audio, direction)[index];
-        return busInfo.SpeakerArrangement;
-    }
-
-    int IAudioProcessor.GetBusCount(BusMediaType type, BusDirection dir)
-    {
-        return GetBusInfoList(type, dir).Length;
-    }
-    
-    BusInfo IAudioProcessor.GetBusInfo(BusMediaType type, BusDirection dir, int index)
-    {
-        return GetBusInfoList(type, dir)[index];
-    }
-
-    void IAudioProcessor.ActivateBus(BusMediaType type, BusDirection dir, int index, bool state)
-    {
-        var busInfo = GetBusInfoList(type, dir)[index];
-        busInfo.IsActive = OnBusActivate(busInfo, state);
     }
 
     bool IAudioProcessor.CanProcessSampleSize(AudioSampleSize sampleSize) => IsSampleSizeSupported(sampleSize);

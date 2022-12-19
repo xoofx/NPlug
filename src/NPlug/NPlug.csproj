@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <None Include="build/NPlug.targets" Pack="true" PackagePath="/build/NPlug.targets" />
+    <None Include="build/NPlugFactoryExport.cs" Pack="true" PackagePath="/build/NPlugFactoryExport.cs" />
   </ItemGroup>
 
   <ItemGroup>

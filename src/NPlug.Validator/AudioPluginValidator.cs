@@ -16,10 +16,7 @@ public static class AudioPluginValidator
 
     public static bool Validate(AudioPluginFactory factory, TextWriter outputLog, TextWriter errorLog)
     {
-        _proxy.SetNativeFactory(() =>
-        {
-            return InteropHelper.ExportToVst3(factory);
-        });
+        _proxy.SetNativeFactory(factory.Export);
 
         return Validate(2, new string[]
         {

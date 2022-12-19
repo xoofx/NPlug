@@ -55,7 +55,7 @@ internal static unsafe partial class LibVst
             return true;
         }
 
-        private static partial ComResult createInstance_ToManaged(IPluginFactory* self, FIDString cid, FIDString iid, void** obj)
+        private static partial ComResult createInstance_ToManaged(IPluginFactory* self, LibVst.FIDString cid, LibVst.FIDString _iid, void** obj)
         {
             var comResult = false;
             *obj = null;
@@ -63,7 +63,7 @@ internal static unsafe partial class LibVst
             if (pluginComponent != null)
             {
                 var comObject = ComObjectManager.Instance.GetOrCreateComObject(pluginComponent);
-                var nativePointerForRequestedInterfaceIid = comObject.QueryInterface(*(Guid*)iid.Value);
+                var nativePointerForRequestedInterfaceIid = comObject.QueryInterface(*(Guid*)_iid.Value);
                 if (nativePointerForRequestedInterfaceIid != IntPtr.Zero)
                 {
                     *obj = (void*)nativePointerForRequestedInterfaceIid;

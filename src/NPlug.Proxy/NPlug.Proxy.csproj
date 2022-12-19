@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>net7.0</TargetFramework>
@@ -33,7 +33,10 @@
   </Target>
 
   <ItemGroup>
-    <None Include="build/win-x64/native/nplug_proxy.dll" Pack="true" PackagePath="/build/win-x64/native/nplug_proxy.dll"/>
-    <None Include="build/NPlug.Proxy.props" Pack="true" PackagePath="/build/NPlug.Proxy.props" />
+    <None Include="build/win-x64/native/nplug_proxy.dll" Pack="true" PackagePath="/build/win-x64/native/nplug_proxy.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="build\NPlug.Proxy.targets" Pack="true" PackagePath="/build/NPlug.Proxy.targets" />
   </ItemGroup>
 </Project>

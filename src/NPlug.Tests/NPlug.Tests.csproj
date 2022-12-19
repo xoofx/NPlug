@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NPlug.HelloWorldPlugin\NPlug.HelloWorldPlugin.csproj" />
+    <ProjectReference Include="..\..\samples\NPlug.SimpleDelay\NPlug.SimpleDelay.csproj" />
     <ProjectReference Include="..\NPlug.Validator\NPlug.Validator.csproj" />
     <ProjectReference Include="..\NPlug\NPlug.csproj" />
   </ItemGroup>

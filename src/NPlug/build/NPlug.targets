@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Global properties-->
+  <PropertyGroup>
+
+    <NPlugInteropTracer Condition="'$(NPlugInteropTracer)' == ''">false</NPlugInteropTracer>
+    <!--Don't export the current project if it is a test project-->
+    <NPlugFactoryExport Condition="'$(NPlugFactoryExport)' == '' AND '$(TestProject)' == 'true'">false</NPlugFactoryExport>
+    <NPlugFactoryExport Condition="'$(NPlugFactoryExport)' == ''">true</NPlugFactoryExport>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(NPlugFactoryExport)' == 'true'">
+    <!--Disable a warning for the usage of `ModuleInitializer` in a library, as we can use it for a plugin that is exported natively-->
+    <!-- https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2255 -->
+    <NoWarn>$(NoWarn);CA2255</NoWarn>
+
+    <!--Defaults for Ilc compilation-->
+    <IlcGenerateCompleteTypeMetadata Condition="'$(IlcGenerateCompleteTypeMetadata)' == ''">false</IlcGenerateCompleteTypeMetadata>
+    <IlcGenerateStackTraceData Condition="'$(IlcGenerateStackTraceData)' == ''">true</IlcGenerateStackTraceData>
+    <IlcTrimMetadata Condition="'$(IlcTrimMetadata)' == ''">true</IlcTrimMetadata>
+    <IlcGenerateStackTraceData Condition="'$(IlcGenerateStackTraceData)' == ''">true</IlcGenerateStackTraceData>
+    <IlcOptimizationPreference Condition="'$(IlcOptimizationPreference)' == ''">Speed</IlcOptimizationPreference>
+    <IlcFoldIdenticalMethodBodies Condition="'$(IlcFoldIdenticalMethodBodies)' == ''">true</IlcFoldIdenticalMethodBodies>
+    <IlcDisableReflection Condition="'$(IlcDisableReflection)' == ''">true</IlcDisableReflection>
+    <InvariantGlobalization Condition="'$(InvariantGlobalization)' == ''">true</InvariantGlobalization>
+
+    <!--NPlug prefers AOT by default, use -->
+    <PublishAot Condition="'$(PublishAot)' == '' AND '$(_IsPublishing)' == 'true'">true</PublishAot>
+
+    <!--A runtimeconfig.json file is required when not in AOT-->
+    <GenerateRuntimeConfigurationFiles Condition="'$(_IsPublishing)' != 'true'">true</GenerateRuntimeConfigurationFiles>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--InteropTracer switch-->
+    <RuntimeHostConfigurationOption Include="NPlug.Interop.InteropHelper.IsTracerEnabled" Value="$(NPlugInteropTracer)" Trim="true" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NPlugFactoryExport)' == 'true'">
+    <Compile Include="$(MSBuildThisFileDirectory)NPlugFactoryExport.cs">
+      <Visible>false</Visible>
+    </Compile>
+  </ItemGroup>
+
+  <!--If AOT is disabled, we are using the proxy to load the managed DLL-->
+  <ItemGroup Condition="'$(PublishAot)' != 'true'">
+    <!--Copy the proxy with the name name than the target library--> 
+    <Content Condition="Exists('$(NPlugProxyLibraryFile)')" Include="$(NPlugProxyLibraryFile)" Link="$(TargetName).vst3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+  </ItemGroup>
+
+  <Target Name="NPlugCheck" Condition="'$(NPlugFactoryExport)' == 'true'" BeforeTargets="Build">
+    <!--Outputs an error if the project using NPlug is not a Library-->
+    <Error ContinueOnError="false" Condition="'$(OutputType)' != 'Library'" Text="Invalid &lt;OutputType&gt;$(OutputType)&lt;/OutputType&gt;. Only `Library` is supported for a NPlug plugin"/>
+  </Target>
+
+
+  <Target Name="NPlugRenameNativeBinaryToVst3" Condition="'$(NPlugFactoryExport)' == 'true' AND '$(PublishAot)' == 'true'" AfterTargets="CopyNativeBinary">
+    <!-- Change the native output extension to a vst3 file -->
+    <Move SourceFiles="$(PublishDir)$(TargetName)$(NativeBinaryExt)" DestinationFiles="$(PublishDir)$(TargetName).vst3" />
+  </Target>
+</Project>

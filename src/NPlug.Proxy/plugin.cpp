@@ -124,9 +124,12 @@ namespace
         void *load_assembly_and_get_function_pointer = nullptr;
         hostfxr_handle cxt = nullptr;
         int rc = init_fptr(config_path, nullptr, &cxt);
-        if ((rc != 0 && rc != 1) || cxt == nullptr)
+        //    rc == 0, Success                            - Hosting components were successfully initialized
+        //    rc == 1, Success_HostAlreadyInitialized     - Config is compatible with already initialized hosting components
+        //    rc == 2, Success_DifferentRuntimeProperties - Config has runtime properties that differ from already initialized hosting components
+        //    rc == 3, CoreHostIncompatibleConfig         - Config is incompatible with already initialized hosting components
+        if ((rc != 0 && rc != 1 && rc != 2) || cxt == nullptr)
         {
-            std::cerr << "Init failed: " << std::hex << std::showbase << rc << std::endl;
             close_fptr(cxt);
             return nullptr;
         }
@@ -136,8 +139,6 @@ namespace
             cxt,
             hdt_load_assembly_and_get_function_pointer,
             &load_assembly_and_get_function_pointer);
-        if (rc != 0 || load_assembly_and_get_function_pointer == nullptr)
-            std::cerr << "Get delegate failed: " << std::hex << std::showbase << rc << std::endl;
 
         close_fptr(cxt);
         return (load_assembly_and_get_function_pointer_fn)load_assembly_and_get_function_pointer;
@@ -176,8 +177,8 @@ void* execute()
     auto posOfExtension = root_path.find_last_of('.');
     assert(posOfExtension != string_t::npos);
     auto fileName = root_path.substr(pos + 1, posOfExtension - pos - 1);
-    posOfExtension = fileName.find_last_of('.');
-    fileName = fileName.substr(0, posOfExtension);
+    //posOfExtension = fileName.find_last_of('.');
+    //fileName = fileName.substr(0, posOfExtension);
     root_path = root_path.substr(0, pos + 1);
 
     //
@@ -186,16 +187,19 @@ void* execute()
     const string_t config_path = root_path + fileName + STR(".runtimeconfig.json");
     load_assembly_and_get_function_pointer_fn load_assembly_and_get_function_pointer = nullptr;
     load_assembly_and_get_function_pointer = get_dotnet_load_assembly(config_path.c_str());
-    assert(load_assembly_and_get_function_pointer != nullptr && "Failure: get_dotnet_load_assembly()");
+    // If we were not able to initialize, don't try to locate the plugin
+    if (load_assembly_and_get_function_pointer == nullptr)
+    {
+        return nullptr;
+    }
 
     //
     // STEP 3: Load managed assembly and get function pointer to a managed method
     //
     const string_t dotnetlib_path = root_path + fileName + STR(".dll");
-    string_t dotnet_type = STR("NPlug.EntryPoint, ");
+    string_t dotnet_type = STR("NPlug.Interop.NPlugFactoryExport, ");
     dotnet_type += fileName;
     const char_t *dotnet_type_method = STR("GetPluginFactory");
-    // <SnippetLoadAndGet>
     // Function pointer to managed delegate
     typedef void* (CORECLR_DELEGATE_CALLTYPE *get_plugin_factory_entry_point_fn)();
     get_plugin_factory_entry_point_fn get_plugin_factory = nullptr;
@@ -206,15 +210,12 @@ void* execute()
         UNMANAGEDCALLERSONLY_METHOD  /*delegate_type_name*/,
         nullptr,
         (void**)&get_plugin_factory);
-    // </SnippetLoadAndGet>
-    assert(rc == 0 && get_plugin_factory != nullptr && "Failure: load_assembly_and_get_function_pointer()");
-
-    return get_plugin_factory();
+    return rc == 0 && get_plugin_factory != nullptr ? get_plugin_factory() : nullptr;
 }
 
 extern "C" {
 
-typedef void* (*GetPluginFactoryFunction)();
+typedef void* (__cdecl *GetPluginFactoryFunction)();
 static GetPluginFactoryFunction _factory;
 
 NPLUG_NATIVE_DLL_EXPORT void nplug_set_plugin_factory(void* factory) {

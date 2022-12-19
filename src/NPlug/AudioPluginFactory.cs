@@ -2,6 +2,7 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using NPlug.Interop;
 using System;
 using System.Collections.Generic;
 
@@ -66,6 +67,19 @@ public sealed class AudioPluginFactory : IAudioPluginFactory
         {
             var componentFactory = _mapGuidToComponentFactory[pluginInfo.ClassId];
             RegisterPlugin(pluginInfo, componentFactory);
+        }
+    }
+
+    /// <summary>
+    /// Exports this factory to native code.
+    /// </summary>
+    /// <returns>A pointer to the exported native factory.</returns>
+    public nint Export()
+    {
+        unsafe
+        {
+            var comObject = LibVst.ComObjectManager.Instance.GetOrCreateComObject(this);
+            return (nint)comObject.QueryInterface<LibVst.IPluginFactory>();
         }
     }
 

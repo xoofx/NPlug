@@ -30,7 +30,7 @@ public static class InteropHelper
         var builder = new StringBuilder();
         foreach (var comObject in LibVst.ComObjectManager.Instance.GetAliveComObjects())
         {
-            builder.AppendLine($"COM Object: {comObject.Target.GetType().FullName} RefCount: {comObject.ReferenceCount} InterfaceCount: {comObject.InterfaceCount}");
+            builder.AppendLine($"COM Object: {comObject.Target?.GetType().FullName} RefCount: {comObject.ReferenceCount} InterfaceCount: {comObject.InterfaceCount}");
             for (int i = 0; i < comObject.InterfaceCount; i++)
             {
                 var ptr = comObject.GetInterfacePointer(i, out var guid);
@@ -42,11 +42,11 @@ public static class InteropHelper
     }
 
 
-    public static unsafe IntPtr ExportToVst3(object managed)
-    {
-        var comObject = LibVst.ComObjectManager.Instance.GetOrCreateComObject(managed);
-        return (IntPtr)comObject.QueryInterface<LibVst.FUnknown>();
-    }
+    //public static unsafe IntPtr ExportToVst3(object managed)
+    //{
+    //    var comObject = LibVst.ComObjectManager.Instance.GetOrCreateComObject(managed);
+    //    return (IntPtr)comObject.QueryInterface<LibVst.FUnknown>();
+    //}
 }
 
 public interface IInteropTracer

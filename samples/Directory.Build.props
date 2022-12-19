@@ -1,0 +1,12 @@
+<Project>
+  <!--Property used to build all the Plugins to a separate folder-->
+  <PropertyGroup>
+    <CommonOutputDirectory>$(MSBuildThisFileDirectory)build\</CommonOutputDirectory>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <OutputPath>$(CommonOutputDirectory)bin\$(Configuration)\</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+    <BaseIntermediateOutputPath>$(CommonOutputDirectory)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj/**</DefaultItemExcludes>
+  </PropertyGroup>
+</Project>

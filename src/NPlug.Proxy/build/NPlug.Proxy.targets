@@ -14,4 +14,13 @@
     <NPlugProxyLibraryLink Condition="'$(NPlugProxyLibraryLink)' == ''">$(NPlugNativeLibraryPrefix)nplug_proxy$(NPlugNativeLibraryExtension)</NPlugProxyLibraryLink>
     <NPlugProxyLibraryFile Condition="'$(NPlugProxyLibraryFile)' == ''">$(MSBuildThisFileDirectory)$(NPlugRuntimeIdentifier)/native/$(NPlugProxyLibraryLink)</NPlugProxyLibraryFile>
   </PropertyGroup>
+
+
+  <Target Name="TryNPlug" BeforeTargets="Build">
+    <Message Importance="high" Text="NPlugRuntimeIdentifier: $(NPlugRuntimeIdentifier)"/>
+    <Message Importance="high" Text="NPlugNativeLibraryExtension: $(NPlugNativeLibraryExtension)"/>
+    <Message Importance="high" Text="NPlugProxyLibraryFile: $(NPlugProxyLibraryFile)"/>
+    <Message Importance="high" Text="NPlugProxyLibraryLink: $(NPlugProxyLibraryLink)"/>
+  </Target>
+
 </Project>

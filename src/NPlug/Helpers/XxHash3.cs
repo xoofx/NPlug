@@ -23,7 +23,6 @@ internal sealed unsafe class XxHash3
     /// <param name="source">The data to hash.</param>
     /// <param name="seed">The seed value for this hash computation.</param>
     /// <returns>The computed XXH3 hash.</returns>
-    [CLSCompliant(false)]
     public static ulong HashToUInt64(ReadOnlySpan<byte> source, long seed = 0)
     {
         uint length = (uint)source.Length;

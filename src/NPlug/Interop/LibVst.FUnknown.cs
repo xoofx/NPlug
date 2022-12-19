@@ -53,11 +53,11 @@ internal static unsafe partial class LibVst
             { IXmlRepresentationController.IId, TryMatchQueryInterface<IXmlRepresentationController, IAudioControllerXmlRepresentation> },
         };
 
-        private static partial ComResult queryInterface_ToManaged(FUnknown* pObj, Guid* iid, void** pInterface)
+        private static partial ComResult queryInterface_ToManaged(FUnknown* self, Guid* _iid, void** obj)
         {
-            *pInterface = (void*)0;
-            var bridge = Get(pObj)->ComObject;
-            return MapGuidToDelegate.TryGetValue(*iid, out var match) && match(iid, bridge, pInterface) ? ComResult.Ok : ComResult.NoInterface;
+            *obj = (void*)0;
+            var bridge = Get(self)->ComObject;
+            return MapGuidToDelegate.TryGetValue(*_iid, out var match) && match(_iid, bridge, obj) ? ComResult.Ok : ComResult.NoInterface;
         }
 
         private static bool TryMatchQueryInterface<TNative, TUser>(Guid* iid, ComObject comObject, void** pInterface) where TNative : unmanaged, INativeGuid, INativeVtbl
@@ -70,14 +70,14 @@ internal static unsafe partial class LibVst
             return false;
         }
 
-        private static partial uint addRef_ToManaged(FUnknown* pObj)
+        private static partial uint addRef_ToManaged(FUnknown* self)
         {
-            return Get(pObj)->ComObject.AddRef();
+            return Get(self)->ComObject.AddRef();
         }
 
-        private static partial uint release_ToManaged(FUnknown* pObj)
+        private static partial uint release_ToManaged(FUnknown* self)
         {
-            return Get(pObj)->ComObject.ReleaseRef();
+            return Get(self)->ComObject.ReleaseRef();
         }
     }
 }

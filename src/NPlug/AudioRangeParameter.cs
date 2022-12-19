@@ -13,7 +13,7 @@ public sealed class AudioRangeParameter : AudioParameter
     {
     }
 
-    public AudioRangeParameter(string title, int id = 0, string? units = null, double minValue = 0.0, double maxValue = 1.0, double defaultPlainValue = 0.0, int stepCount = 0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate, string? shortTitle = null) : base(title, id, units, shortTitle, stepCount, defaultPlainValue, flags)
+    public AudioRangeParameter(string title, string? units = null, int id = 0, double minValue = 0.0, double maxValue = 1.0, double defaultPlainValue = 0.0, int stepCount = 0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate, string? shortTitle = null) : base(title, units, id, shortTitle, stepCount, defaultPlainValue, flags)
     {
         if (minValue >= maxValue) throw new ArgumentException($"Invalid minimum, maximum. The minimum value {minValue} must be < to the maximum value {maxValue}");
         MinValue = minValue;

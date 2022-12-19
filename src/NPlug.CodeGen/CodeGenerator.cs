@@ -32,6 +32,7 @@ public class CodeGenerator
 {
     private readonly string _sdkFolder;
     private readonly string _pluginInterfacesFolder;
+    private string _destinationFolder;
     private readonly Dictionary<string, CSharpElement> _generatedCSharpElements;
     private readonly Dictionary<string, Uuid> _nameToIID;
     private readonly Dictionary<string, string[]> _fileToContent;
@@ -80,6 +81,7 @@ public class CodeGenerator
         _allGeneratedVtbls = new List<CSharpStruct>();
         _sdkFolder = sdkFolder;
         _pluginInterfacesFolder = Path.Combine(_sdkFolder, "pluginterfaces");
+        _destinationFolder = string.Empty;
         if (!Directory.Exists(_pluginInterfacesFolder))
         {
             throw new InvalidOperationException($"Directory {_pluginInterfacesFolder} not found. This doesn't look like a valid VST3 SDK folder.");
@@ -184,9 +186,9 @@ public class CodeGenerator
         _container!.Members.Add(new CSharpField("SdkVersion") { FieldType = CSharpPrimitiveType.String(), Modifiers = CSharpModifiers.Const, Visibility = CSharpVisibility.Public , InitValue = macroSdkVersion.Value});
 
         // AudioEffectCategory
-        var macro = cppAst.Macros.FirstOrDefault(x => x.Name == "kVstAudioEffectClass");
+        var macro = cppAst.Macros.FirstOrDefault(x => x.Name == "kVstAudioEffectClass")!;
         _container!.Members.Add(new CSharpField("AudioEffectCategory") { FieldType = CSharpPrimitiveType.String(), Modifiers = CSharpModifiers.Const, Visibility = CSharpVisibility.Public, InitValue = macro.Value });
-        macro = cppAst.Macros.FirstOrDefault(x => x.Name == "kVstComponentControllerClass");
+        macro = cppAst.Macros.FirstOrDefault(x => x.Name == "kVstComponentControllerClass")!;
         _container!.Members.Add(new CSharpField("ComponentControllerCategory") { FieldType = CSharpPrimitiveType.String(), Modifiers = CSharpModifiers.Const, Visibility = CSharpVisibility.Public, InitValue = macro.Value });
 
         var namespaces = new List<CppNamespace>();
@@ -314,7 +316,7 @@ public class CodeGenerator
                 if (typeDef.Name == "Speaker" || typeDef.Name == "SpeakerArrangement")
                 {
                     var csEnum = (CSharpEnum)_cppTypeToCSharpType["SpeakerArrangement"];
-                    var csEnumItem = new CSharpEnumItem(cppField.Name, cppField.InitExpression.ToString().Replace("(Speaker)", string.Empty).Replace("1 <<", "1UL <<")) { CppElement = cppField };
+                    var csEnumItem = new CSharpEnumItem(cppField.Name, cppField.InitExpression.ToString()!.Replace("(Speaker)", string.Empty).Replace("1 <<", "1UL <<")) { CppElement = cppField };
                     csEnum.Members.Add(csEnumItem);
                 }
             }
@@ -1240,7 +1242,6 @@ public class CodeGenerator
     }
 
     private static readonly Regex RegexMatchIID = new Regex(@"\w+\s*\((\w+)\s*,\s*(0x\w+)\s*,\s*(0x\w+)\s*,\s*(0x\w+)\s*,\s*(0x\w+)\s*\)");
-    private string _destinationFolder;
 
     private static (string, Uuid) ParseIID(string uuidText)
     {

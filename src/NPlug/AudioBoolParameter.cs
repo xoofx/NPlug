@@ -11,7 +11,7 @@ public class AudioBoolParameter : AudioParameter
         StepCount = 1;
     }
 
-    public AudioBoolParameter(string title, int id = 0, string? units = null, string? shortTitle = null, bool defaultValue = false, AudioParameterFlags flags = AudioParameterFlags.CanAutomate) : base(title, id, units, shortTitle, 1, defaultValue ? 1.0 : 0.0, flags)
+    public AudioBoolParameter(string title, int id = 0, string? units = null, string? shortTitle = null, bool defaultValue = false, AudioParameterFlags flags = AudioParameterFlags.CanAutomate) : base(title, units, id, shortTitle, 1, defaultValue ? 1.0 : 0.0, flags)
     {
     }
 

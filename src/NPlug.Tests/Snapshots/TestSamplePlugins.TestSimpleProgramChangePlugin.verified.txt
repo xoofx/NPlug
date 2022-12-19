@@ -1,0 +1,389 @@
+﻿* Loading module...
+
+	{CurrentDirectory}nplug_proxy.dll
+
+* Scanning classes...
+
+  Factory Info:
+	vendor = NPlug
+	url = https://github.com/xoofx/NPlug
+	email = no_reply@nplug.org
+
+  Class Info 0:
+	name = SimpleProgramChange
+	category = Audio Module Class
+	subCategories = Fx
+	version = 0.0
+	sdkVersion = VST 3.7.6
+	cid = D2D46DF833974ACF9008DF3396B890F2
+
+  Class Info 1:
+	name = SimpleProgramChange Controller
+	category = Component Controller Class
+	subCategories = 
+	version = 0.0
+	sdkVersion = VST 3.7.6
+	cid = 59C17896478B4AF186D83BA0817149D5
+
+* Checking snapshots...
+
+Info: No snapshots in Bundle.
+
+* Creating tests...
+
+* Running tests...
+
+-------------------------------------------------------------
+TestSuite : SimpleProgramChange
+-------------------------------------------------------------
+
+-------------------------------------------------------------
+TestSuite : General Tests
+-------------------------------------------------------------
+
+[Scan Editor Classes]
+Info:  ===Scan Editor Classes ====================================
+Info:  This component has an edit controller class
+Info:     Controller CID: {59C17896-478B-4AF1-86D8-3BA0817149D5}
+[Succeeded]
+
+[Scan Buses]
+Info:  ===Scan Buses ====================================
+Info:  => Audio Buses: [1 In(s) => 1 Out(s)]
+Info:       In [0]: "Stereo Input" (Main-Default Active) 
+Info:       Out[0]: "Stereo Output" (Main-Default Active) 
+Info:  => Event Buses: [1 In(s) => 0 Out(s)]
+Info:       In [0]: "Event Input" (Main-Default Active) 
+[Succeeded]
+
+[Scan Parameters]
+Info:  ===Scan Parameters ====================================
+Info:  This component exports 3 parameter(s)
+Info:     Parameter 000 (id=1): [title="ByPass"] [unit=""] [type = T, default = 0.000000, unit = 0]
+Info:     Parameter 001 (id=2): [title="Gain"] [unit=""] [type = F, default = 1.000000, unit = 0]
+Info:     Parameter 002 (id=3): [title="Bank Preset"] [unit=""] [type = D, default = 0.000000, unit = 1]
+[Succeeded]
+
+[MIDI Mapping]
+Info:  ===MIDI Mapping ====================================
+Info:  MIDI Mapping getMidiControllerAssignment (0, 0) : no assignment available!
+[Succeeded]
+
+[MIDI Learn]
+Info:  ===MIDI Learn ====================================
+Info:  No MIDI Learn interface supplied!
+[Succeeded]
+
+[Scan Units]
+Info:  ===Scan Units ====================================
+Info:  This component has 2 unit(s).
+Info:     Unit000 (ID = 0): "NPlug.SimpleProgramChange" (parent ID = -1, programlist ID = -1)
+Info:     Unit001 (ID = 1): "Root" (parent ID = 0, programlist ID = 1)
+[Succeeded]
+
+[Scan Programs]
+Info:  ===Scan Programs ====================================
+Info:  Programlist 000 (id=1):  "Bank" (100 programs).
+Info:  Programlist 000->Program 000: "Prog 0"
+Info:  Programlist 000->Program 001: "Prog 1"
+Info:  Programlist 000->Program 002: "Prog 2"
+Info:  Programlist 000->Program 003: "Prog 3"
+Info:  Programlist 000->Program 004: "Prog 4"
+Info:  Programlist 000->Program 005: "Prog 5"
+Info:  Programlist 000->Program 006: "Prog 6"
+Info:  Programlist 000->Program 007: "Prog 7"
+Info:  Programlist 000->Program 008: "Prog 8"
+Info:  Programlist 000->Program 009: "Prog 9"
+Info:  Programlist 000->Program 010: "Prog 10"
+Info:  Programlist 000->Program 011: "Prog 11"
+Info:  Programlist 000->Program 012: "Prog 12"
+Info:  Programlist 000->Program 013: "Prog 13"
+Info:  Programlist 000->Program 014: "Prog 14"
+Info:  Programlist 000->Program 015: "Prog 15"
+Info:  Programlist 000->Program 016: "Prog 16"
+Info:  Programlist 000->Program 017: "Prog 17"
+Info:  Programlist 000->Program 018: "Prog 18"
+Info:  Programlist 000->Program 019: "Prog 19"
+Info:  Programlist 000->Program 020: "Prog 20"
+Info:  Programlist 000->Program 021: "Prog 21"
+Info:  Programlist 000->Program 022: "Prog 22"
+Info:  Programlist 000->Program 023: "Prog 23"
+Info:  Programlist 000->Program 024: "Prog 24"
+Info:  Programlist 000->Program 025: "Prog 25"
+Info:  Programlist 000->Program 026: "Prog 26"
+Info:  Programlist 000->Program 027: "Prog 27"
+Info:  Programlist 000->Program 028: "Prog 28"
+Info:  Programlist 000->Program 029: "Prog 29"
+Info:  Programlist 000->Program 030: "Prog 30"
+Info:  Programlist 000->Program 031: "Prog 31"
+Info:  Programlist 000->Program 032: "Prog 32"
+Info:  Programlist 000->Program 033: "Prog 33"
+Info:  Programlist 000->Program 034: "Prog 34"
+Info:  Programlist 000->Program 035: "Prog 35"
+Info:  Programlist 000->Program 036: "Prog 36"
+Info:  Programlist 000->Program 037: "Prog 37"
+Info:  Programlist 000->Program 038: "Prog 38"
+Info:  Programlist 000->Program 039: "Prog 39"
+Info:  Programlist 000->Program 040: "Prog 40"
+Info:  Programlist 000->Program 041: "Prog 41"
+Info:  Programlist 000->Program 042: "Prog 42"
+Info:  Programlist 000->Program 043: "Prog 43"
+Info:  Programlist 000->Program 044: "Prog 44"
+Info:  Programlist 000->Program 045: "Prog 45"
+Info:  Programlist 000->Program 046: "Prog 46"
+Info:  Programlist 000->Program 047: "Prog 47"
+Info:  Programlist 000->Program 048: "Prog 48"
+Info:  Programlist 000->Program 049: "Prog 49"
+Info:  Programlist 000->Program 050: "Prog 50"
+Info:  Programlist 000->Program 051: "Prog 51"
+Info:  Programlist 000->Program 052: "Prog 52"
+Info:  Programlist 000->Program 053: "Prog 53"
+Info:  Programlist 000->Program 054: "Prog 54"
+Info:  Programlist 000->Program 055: "Prog 55"
+Info:  Programlist 000->Program 056: "Prog 56"
+Info:  Programlist 000->Program 057: "Prog 57"
+Info:  Programlist 000->Program 058: "Prog 58"
+Info:  Programlist 000->Program 059: "Prog 59"
+Info:  Programlist 000->Program 060: "Prog 60"
+Info:  Programlist 000->Program 061: "Prog 61"
+Info:  Programlist 000->Program 062: "Prog 62"
+Info:  Programlist 000->Program 063: "Prog 63"
+Info:  Programlist 000->Program 064: "Prog 64"
+Info:  Programlist 000->Program 065: "Prog 65"
+Info:  Programlist 000->Program 066: "Prog 66"
+Info:  Programlist 000->Program 067: "Prog 67"
+Info:  Programlist 000->Program 068: "Prog 68"
+Info:  Programlist 000->Program 069: "Prog 69"
+Info:  Programlist 000->Program 070: "Prog 70"
+Info:  Programlist 000->Program 071: "Prog 71"
+Info:  Programlist 000->Program 072: "Prog 72"
+Info:  Programlist 000->Program 073: "Prog 73"
+Info:  Programlist 000->Program 074: "Prog 74"
+Info:  Programlist 000->Program 075: "Prog 75"
+Info:  Programlist 000->Program 076: "Prog 76"
+Info:  Programlist 000->Program 077: "Prog 77"
+Info:  Programlist 000->Program 078: "Prog 78"
+Info:  Programlist 000->Program 079: "Prog 79"
+Info:  Programlist 000->Program 080: "Prog 80"
+Info:  Programlist 000->Program 081: "Prog 81"
+Info:  Programlist 000->Program 082: "Prog 82"
+Info:  Programlist 000->Program 083: "Prog 83"
+Info:  Programlist 000->Program 084: "Prog 84"
+Info:  Programlist 000->Program 085: "Prog 85"
+Info:  Programlist 000->Program 086: "Prog 86"
+Info:  Programlist 000->Program 087: "Prog 87"
+Info:  Programlist 000->Program 088: "Prog 88"
+Info:  Programlist 000->Program 089: "Prog 89"
+Info:  Programlist 000->Program 090: "Prog 90"
+Info:  Programlist 000->Program 091: "Prog 91"
+Info:  Programlist 000->Program 092: "Prog 92"
+Info:  Programlist 000->Program 093: "Prog 93"
+Info:  Programlist 000->Program 094: "Prog 94"
+Info:  Programlist 000->Program 095: "Prog 95"
+Info:  Programlist 000->Program 096: "Prog 96"
+Info:  Programlist 000->Program 097: "Prog 97"
+Info:  Programlist 000->Program 098: "Prog 98"
+Info:  Programlist 000->Program 099: "Prog 99"
+[Succeeded]
+
+[Terminate/Initialize]
+Info:  ===Terminate/Initialize ====================================
+[Succeeded]
+
+[Check Unit Structure]
+Info:  ===Check Unit Structure ====================================
+Info:  All units have valid parent IDs.
+[Succeeded]
+
+[Valid State Transition 32bits]
+Info:  ===Valid State Transition 32bits ====================================
+[Succeeded]
+
+[Valid State Transition 64bits]
+Info:  ===Valid State Transition 64bits ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Bus Consistency]
+Info:  ===Bus Consistency ====================================
+[Succeeded]
+
+[Bus Activation]
+Info:  ===Bus Activation ====================================
+Info:     Bus Activation: Input Audio Bus (0) (kMain)
+Info:     Bus Activation: Output Audio Bus (0) (kMain)
+Info:     Bus Activation: Input Event Bus (0) (kMain)
+[Succeeded]
+
+[Check Audio Bus Arrangement]
+Info:  ===Check Audio Bus Arrangement ====================================
+Info:     Check Input Audio Bus Arrangement (0)
+Info:     Check Output Audio Bus Arrangement (0)
+[Succeeded]
+
+[SideChain Arrangement]
+Info:  ===SideChain Arrangement ====================================
+[Succeeded]
+
+[Suspend/Resume]
+Info:  ===Suspend/Resume ====================================
+[Succeeded]
+
+[Note Expression]
+Info:  ===Note Expression ====================================
+Info:  No Note Expression interface supplied!
+[Succeeded]
+
+[Keyswitch]
+Info:  ===Keyswitch ====================================
+Info:  No Keyswitch interface supplied!
+[Succeeded]
+
+[ProcessContext Requirements]
+Info:  ===ProcessContext Requirements ====================================
+Info:  ProcessContextRequirements:
+Info:   - None
+[Succeeded]
+
+-------------------------------------------------------------
+TestSuite : Single Precision (32 bit) Tests
+-------------------------------------------------------------
+
+[Process Test]
+[Succeeded]
+
+[Process function running in another thread]
+Info:  ===Process function running in another thread ====================================
+[Succeeded]
+
+[Silence Flags]
+Info:  ===Silence Flags ====================================
+[Succeeded]
+
+[Silence Processing]
+Info:  ===Silence Processing ====================================
+[Succeeded]
+
+[Parameters Flush (no Buffer)]
+Info:  ===Parameters Flush (no Buffer) ====================================
+[Succeeded]
+
+[Parameters Flush 2 (only numChannel==0)]
+Info:  ===Parameters Flush 2 (only numChannel==0) ====================================
+[Succeeded]
+
+[Parameters Flush 2 (no Buffer, no parameter change)]
+Info:  ===Parameters Flush 2 (no Buffer, no parameter change) ====================================
+[Succeeded]
+
+[Variable Block Size]
+Info:  ===Variable Block Size ====================================
+[Succeeded]
+
+[Process Format]
+Info:  ===Process Format ====================================
+Info:  ***Tested Sample Rates***
+Info:        22050 Hz - processed successfully!
+Info:        32000 Hz - processed successfully!
+Info:        44100 Hz - processed successfully!
+Info:        48000 Hz - processed successfully!
+Info:        88200 Hz - processed successfully!
+Info:        96000 Hz - processed successfully!
+Info:       192000 Hz - processed successfully!
+Info:       384000 Hz - processed successfully!
+Info:    1234.5678 Hz - processed successfully!
+Info:    12345.678 Hz - processed successfully!
+Info:    123456.78 Hz - processed successfully!
+Info:    1234567.8 Hz - processed successfully!
+[Succeeded]
+
+[Parameter Bypass persistence]
+Info:  ===Parameter Bypass persistence ====================================
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: Stereo: 2 Channels ====================================
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: Mono: 1 Channels]
+Info:  ===In: Mono: 1 Channels, Out: Mono: 1 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      Mono Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[Accuracy: Block, 1 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Block, 1 Parameters, Change every100 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, 1 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Sample, 1 Parameters, Change every100 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+-------------------------------------------------------------
+TestSuite : Double Precision (64 bit) Tests
+-------------------------------------------------------------
+
+[Process Test]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Process function running in another thread]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Silence Flags]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Silence Processing]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Parameters Flush (no Buffer)]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Parameters Flush 2 (only numChannel==0)]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Parameters Flush 2 (no Buffer, no parameter change)]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Variable Block Size]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Process Format]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Parameter Bypass persistence]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: Mono: 1 Channels]
+Info:  ===In: Mono: 1 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, 1 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Block, 1 Parameters, Change every100 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, 1 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Sample, 1 Parameters, Change every100 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+-------------------------------------------------------------
+Result: 47 tests passed, 0 tests failed
+-------------------------------------------------------------

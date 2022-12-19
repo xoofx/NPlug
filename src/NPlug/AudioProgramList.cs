@@ -17,6 +17,7 @@ public class AudioProgramList : IReadOnlyList<AudioProgram>
         ProgramChangeParameterName = $"{name} Preset";
         _programs = new List<AudioProgram>();
         Id = id;
+        ProgramChangeCanAutomate = false;
     }
 
     public string Name { get; set; }
@@ -24,6 +25,8 @@ public class AudioProgramList : IReadOnlyList<AudioProgram>
     public string ProgramChangeParameterName { get; set; }
 
     public AudioParameterId ProgramChangeParameterId { get; set; }
+
+    public bool ProgramChangeCanAutomate { get; set; }
 
     public int Count  => _programs.Count;
 
@@ -43,7 +46,7 @@ public class AudioProgramList : IReadOnlyList<AudioProgram>
             items[i] = _programs[i].Name;
         }
 
-        return new AudioStringListParameter(ProgramChangeParameterName, items, id: ProgramChangeParameterId.Value, flags: AudioParameterFlags.CanAutomate | AudioParameterFlags.IsList | AudioParameterFlags.IsProgramChange);
+        return new AudioStringListParameter(ProgramChangeParameterName, items, id: ProgramChangeParameterId.Value, flags: (ProgramChangeCanAutomate ? AudioParameterFlags.CanAutomate : AudioParameterFlags.NoFlags) | AudioParameterFlags.IsList | AudioParameterFlags.IsProgramChange);
     }
 
     public void Add(AudioProgram program)

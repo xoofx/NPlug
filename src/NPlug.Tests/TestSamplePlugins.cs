@@ -1,5 +1,6 @@
 using NPlug.Interop;
 using NPlug.SimpleDelay;
+using NPlug.SimpleProgramChange;
 using NPlug.Validator;
 
 namespace NPlug.Tests;
@@ -23,6 +24,12 @@ public class TestSamplePlugins
     public Task TestSimpleDelay()
     {
         return VerifyPlugin(SimpleDelayPlugin.GetFactory);
+    }
+
+    [Test]
+    public Task TestSimpleProgramChangePlugin()
+    {
+        return VerifyPlugin(SimpleProgramChangePlugin.GetFactory);
     }
 
     private Task VerifyPlugin(Func<AudioPluginFactory> factory)

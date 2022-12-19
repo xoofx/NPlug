@@ -88,8 +88,8 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
         if (!ShouldByPass || data.SampleCount == 0) return false;
 
         ref readonly var setupData = ref ProcessSetupData;
-        var inputCount = data.Input.BufferCount;
-        var outputCount = data.Output.BufferCount;
+        var inputCount = data.Input.BusCount;
+        var outputCount = data.Output.BusCount;
         var busOutputs = GetAudioOutputBuses();
         for (int bus = 0; bus < inputCount && bus < outputCount; bus++)
         {
@@ -122,8 +122,8 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
 
     protected virtual void PostProcessCheckSilence(in AudioProcessData data)
     {
-        var inputCount = data.Input.BufferCount;
-        var outputCount = data.Output.BufferCount;
+        var inputCount = data.Input.BusCount;
+        var outputCount = data.Output.BusCount;
         var busOutputs = GetBusInfoList(BusMediaType.Audio, BusDirection.Output);
         for (int bus = 0; bus < inputCount && bus < outputCount; bus++)
         {

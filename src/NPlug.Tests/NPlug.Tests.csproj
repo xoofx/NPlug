@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\samples\NPlug.SimpleDelay\NPlug.SimpleDelay.csproj" />
+    <ProjectReference Include="..\..\samples\NPlug.SimpleProgramChange\NPlug.SimpleProgramChange.csproj" />
     <ProjectReference Include="..\NPlug.Validator\NPlug.Validator.csproj" />
     <ProjectReference Include="..\NPlug\NPlug.csproj" />
   </ItemGroup>

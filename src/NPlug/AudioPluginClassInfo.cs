@@ -18,15 +18,11 @@ public abstract class AudioPluginClassInfo
     /// </summary>
     /// <param name="classId"></param>
     /// <param name="name"></param>
-    /// <param name="category"></param>
+    /// <param name="pluginCategory"></param>
     internal AudioPluginClassInfo(Guid classId, string name, AudioPluginCategory pluginCategory)
     {
         ClassId = classId;
         Name = name;
-        ClassFlags = AudioPluginFlags.None;
-        Cardinality = int.MaxValue;
-        Vendor = string.Empty;
-        Version = EmptyVersion;
         PluginCategory = pluginCategory;
     }
 
@@ -48,20 +44,20 @@ public abstract class AudioPluginClassInfo
     /// <summary>
     /// flags used for a specific category, must be defined where category is defined
     /// </summary>
-    public AudioPluginFlags ClassFlags { get; init; }
+    public AudioPluginFlags ClassFlags { get; init; } = AudioPluginFlags.None;
 
     /// <summary>
     /// see @ref PClassInfo
     /// </summary>
-    public int Cardinality { get; init; }
+    public int Cardinality { get; init; } = int.MaxValue;
 
     /// <summary>
     /// overwrite vendor information from factory info
     /// </summary>
-    public string Vendor { get; init; }
+    public string Vendor { get; init; } = string.Empty;
 
     /// <summary>
     /// Version string (e.g. "1.0.0.512" with Major.Minor.Subversion.Build)
     /// </summary>
-    public Version Version { get; init; }
+    public Version Version { get; init; } = EmptyVersion;
 }

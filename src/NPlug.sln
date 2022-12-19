@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{BEA27D3C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{16297621-0984-4A58-ACEE-46EE65183701}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPlug.SimpleProgramChange", "..\samples\NPlug.SimpleProgramChange\NPlug.SimpleProgramChange.csproj", "{B29DFB8F-EECE-4418-955D-E629C9C2B8C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{BBA97FF6-6A3D-43C9-A198-1C4FB8DB374C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBA97FF6-6A3D-43C9-A198-1C4FB8DB374C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBA97FF6-6A3D-43C9-A198-1C4FB8DB374C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B29DFB8F-EECE-4418-955D-E629C9C2B8C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B29DFB8F-EECE-4418-955D-E629C9C2B8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B29DFB8F-EECE-4418-955D-E629C9C2B8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B29DFB8F-EECE-4418-955D-E629C9C2B8C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +88,7 @@ Global
 		{04B6B237-2CC9-4937-B54A-3CBED9976136} = {1693D141-FD83-4131-8819-B17CA027F533}
 		{8870CAF0-455B-4317-912E-3595AB7B78E3} = {1693D141-FD83-4131-8819-B17CA027F533}
 		{BBA97FF6-6A3D-43C9-A198-1C4FB8DB374C} = {081D0270-7FA3-41C7-B7A1-F5D7F5BEBB5F}
+		{B29DFB8F-EECE-4418-955D-E629C9C2B8C2} = {081D0270-7FA3-41C7-B7A1-F5D7F5BEBB5F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95E8F3B3-49E8-400E-97A1-38D8B946DFCA}

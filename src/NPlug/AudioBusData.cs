@@ -8,24 +8,24 @@ namespace NPlug;
 
 public readonly unsafe ref struct AudioBusData
 {
-    public AudioBusData(int bufferCount, AudioBusBuffers* audioBuffers, AudioParameterChanges parameterChanges, AudioEventList events)
+    public AudioBusData(int busCount, AudioBusBuffers* audioBuffers, AudioParameterChanges parameterChanges, AudioEventList events)
     {
-        BufferCount = bufferCount;
+        BusCount = busCount;
         _audioBuffers = audioBuffers;
         ParameterChanges = parameterChanges;
         Events = events;
     }
 
-    public readonly int BufferCount;
+    public readonly int BusCount;
 
     private readonly AudioBusBuffers* _audioBuffers;
 
-    public ref AudioBusBuffers this[int index] => ref GetBuffer(index);
+    public ref AudioBusBuffers this[int busIndex] => ref GetBufferByBusIndex(busIndex);
 
-    public ref AudioBusBuffers GetBuffer(int index)
+    public ref AudioBusBuffers GetBufferByBusIndex(int busIndex)
     {
-        if ((uint)index >= (uint)BufferCount) throw new ArgumentOutOfRangeException(nameof(index));
-        return ref _audioBuffers[index];
+        if ((uint)busIndex >= (uint)BusCount) throw new ArgumentOutOfRangeException(nameof(busIndex));
+        return ref _audioBuffers[busIndex];
     }
 
     public readonly AudioParameterChanges ParameterChanges;

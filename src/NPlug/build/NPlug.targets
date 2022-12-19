@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!--Global properties-->
   <PropertyGroup>
-
+    <!--Interop Tracer is disabled by default-->
     <NPlugInteropTracer Condition="'$(NPlugInteropTracer)' == ''">false</NPlugInteropTracer>
     <!--Don't export the current project if it is a test project-->
     <NPlugFactoryExport Condition="'$(NPlugFactoryExport)' == '' AND '$(TestProject)' == 'true'">false</NPlugFactoryExport>
@@ -24,7 +24,7 @@
     <IlcDisableReflection Condition="'$(IlcDisableReflection)' == ''">true</IlcDisableReflection>
     <InvariantGlobalization Condition="'$(InvariantGlobalization)' == ''">true</InvariantGlobalization>
 
-    <!--NPlug prefers AOT by default, use -->
+    <!--NPlug prefers AOT by default, use it only if we are publishing-->
     <PublishAot Condition="'$(PublishAot)' == '' AND '$(_IsPublishing)' == 'true'">true</PublishAot>
 
     <!--A runtimeconfig.json file is required when not in AOT-->
@@ -32,10 +32,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!--InteropTracer switch-->
+    <!--InteropTracer switch to make it NativeAOT compatible-->
     <RuntimeHostConfigurationOption Include="NPlug.Interop.InteropHelper.IsTracerEnabled" Value="$(NPlugInteropTracer)" Trim="true" />
   </ItemGroup>
 
+  <!--This file is required to export the native function GetPluginFactory-->
   <ItemGroup Condition="'$(NPlugFactoryExport)' == 'true'">
     <Compile Include="$(MSBuildThisFileDirectory)NPlugFactoryExport.cs">
       <Visible>false</Visible>
@@ -55,7 +56,6 @@
     <!--Outputs an error if the project using NPlug is not a Library-->
     <Error ContinueOnError="false" Condition="'$(OutputType)' != 'Library'" Text="Invalid &lt;OutputType&gt;$(OutputType)&lt;/OutputType&gt;. Only `Library` is supported for a NPlug plugin"/>
   </Target>
-
 
   <Target Name="NPlugRenameNativeBinaryToVst3" Condition="'$(NPlugFactoryExport)' == 'true' AND '$(PublishAot)' == 'true'" AfterTargets="CopyNativeBinary">
     <!-- Change the native output extension to a vst3 file -->

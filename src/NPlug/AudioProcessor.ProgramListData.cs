@@ -9,18 +9,18 @@ namespace NPlug;
 public abstract partial class AudioProcessor<TAudioProcessorModel>
     : IAudioProcessorProgramListData
 {
-    public bool IsProgramDataSupported(AudioProgramListId listId)
+    bool IAudioProcessorProgramListData.IsProgramDataSupported(AudioProgramListId listId)
     {
         return Model.ContainsProgramList(listId);
     }
 
-    public void GetProgramData(AudioProgramListId listId, int programIndex, Stream output)
+    void IAudioProcessorProgramListData.GetProgramData(AudioProgramListId listId, int programIndex, Stream output)
     {
         var programDataStream = Model.GetProgramListById(listId)[programIndex].GetProgramData();
         programDataStream?.CopyTo(output);
     }
 
-    public void SetProgramData(AudioProgramListId listId, int programIndex, Stream input)
+    void IAudioProcessorProgramListData.SetProgramData(AudioProgramListId listId, int programIndex, Stream input)
     {
         var program = Model.GetProgramListById(listId)[programIndex];
         program.SetProgramDataFromStream(input);

@@ -125,36 +125,11 @@ internal static unsafe partial class LibVst
         public AudioControllerHandlerProxy(IComponentHandler* handler)
         {
             _handler = handler;
-
-            var pUnk = (void*)0;
-            if (_handler->queryInterface(IComponentHandler2.NativeGuid, &pUnk))
-            {
-                _handler2 = (IComponentHandler2*)pUnk;
-            }
-
-            pUnk = (void*)0;
-            if (_handler->queryInterface(IComponentHandler3.NativeGuid, &pUnk))
-            {
-                _handler3 = (IComponentHandler3*)pUnk;
-            }
-
-            pUnk = (void*)0;
-            if (_handler->queryInterface(IComponentHandlerBusActivation.NativeGuid, &pUnk))
-            {
-                _busActivation = (IComponentHandlerBusActivation*)pUnk;
-            }
-
-            pUnk = (void*)0;
-            if (_handler->queryInterface(IProgress.NativeGuid, &pUnk))
-            {
-                _progress = (IProgress*)pUnk;
-            }
-
-            pUnk = (void*)0;
-            if (_handler->queryInterface(IUnitHandler.NativeGuid, &pUnk))
-            {
-                _unitHandler = (IUnitHandler*)pUnk;
-            }
+            _handler2 = QueryInterface<IComponentHandler, IComponentHandler2>(_handler);
+            _handler3 = QueryInterface<IComponentHandler, IComponentHandler3>(_handler);
+            _busActivation = QueryInterface<IComponentHandler, IComponentHandlerBusActivation>(_handler);
+            _progress = QueryInterface<IComponentHandler, IProgress>(_handler);
+            _unitHandler = QueryInterface<IComponentHandler, IUnitHandler>(_handler);
         }
         
         public void BeginEdit(AudioParameterId id)

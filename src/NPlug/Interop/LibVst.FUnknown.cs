@@ -4,11 +4,43 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace NPlug.Interop;
 
 internal static unsafe partial class LibVst
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public interface INativeUnknown
+    {
+        ComResult queryInterface(Guid* _iid, void** obj);
+        uint addRef();
+        uint release();
+    }
+
+    public static TInterface* QueryInterface<TFrom, TInterface>(TFrom* self)
+        where TInterface : unmanaged, INativeUnknown, INativeGuid
+        where TFrom : unmanaged, INativeUnknown
+    {
+        void* obj;
+        var result = self->queryInterface(TInterface.NativeGuid, &obj);
+
+        // Log which interface is implemented
+        if (InteropHelper.IsTracerEnabled)
+        {
+            if (!MapGuidToName.TryGetValue(*TInterface.NativeGuid, out var name))
+            {
+                name = string.Empty;
+            }
+            InteropHelper.Tracer?.OnQueryInterfaceFromPlugin(*TInterface.NativeGuid, name, result);
+        }
+
+        return result.IsSuccess ? (TInterface*)obj : null;
+    }
+
+    private static readonly Dictionary<Guid, string> MapGuidToName = InteropHelper.IsTracerEnabled ? GetMapGuidToName() : new Dictionary<Guid, string>();
+
     public partial struct FUnknown
     {
 
@@ -53,6 +85,8 @@ internal static unsafe partial class LibVst
             { IXmlRepresentationController.IId, TryMatchQueryInterface<IXmlRepresentationController, IAudioControllerXmlRepresentation> },
         };
 
+
+
         private static partial ComResult queryInterface_ToManaged(FUnknown* self, Guid* _iid, void** obj)
         {
             *obj = (void*)0;
@@ -62,12 +96,23 @@ internal static unsafe partial class LibVst
 
         private static bool TryMatchQueryInterface<TNative, TUser>(Guid* iid, ComObject comObject, void** pInterface) where TNative : unmanaged, INativeGuid, INativeVtbl
         {
+            bool result = false;
             if (comObject.Target is TUser)
             {
                 *pInterface = (void*)comObject.QueryInterface<TNative>();
-                return true;
+                result = true;
             }
-            return false;
+            // Log which interface is implemented
+            if (InteropHelper.IsTracerEnabled)
+            {
+                if (!MapGuidToName.TryGetValue(*iid, out var name))
+                {
+                    name = string.Empty;
+                }
+                InteropHelper.Tracer?.OnQueryInterfaceFromHost(*iid, name, result);
+            }
+
+            return result;
         }
 
         private static partial uint addRef_ToManaged(FUnknown* self)

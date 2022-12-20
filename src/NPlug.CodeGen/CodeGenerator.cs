@@ -123,6 +123,7 @@ public class CodeGenerator
         var csFile = new CSharpGeneratedFile("/LibVst.generated.cs");
         csFile.Members.Add(new CSharpFreeMember() { Text = "#pragma warning disable CS0649" });
         csFile.Members.Add(new CSharpNamespace("NPlug.Interop") { IsFileScoped = true });
+        csFile.Members.Add(new CSharpUsingDeclaration("System.Collections.Generic"));
         csFile.Members.Add(new CSharpUsingDeclaration("System.Diagnostics.CodeAnalysis"));
         csFile.Members.Add(new CSharpUsingDeclaration("System.Runtime.CompilerServices"));
         csFile.Members.Add(new CSharpUsingDeclaration("System.Runtime.InteropServices"));
@@ -218,6 +219,7 @@ public class CodeGenerator
         }
 
         GenerateComObjectManager();
+        GenerateGuidToName();
     }
 
     private void GenerateComObjectManager()
@@ -243,6 +245,32 @@ public class CodeGenerator
         };
         _container!.Members.Add(comObjectManager);
     }
+
+    private void GenerateGuidToName()
+    {
+        // public sealed unsafe partial class ComObjectManager : IDisposable
+        var staticMethod = new CSharpMethod()
+        {
+            Name = "GetMapGuidToName",
+            ReturnType = new CSharpFreeType("Dictionary<Guid, string>"),
+            Modifiers = CSharpModifiers.Static,
+            Visibility = CSharpVisibility.Private,
+        };
+        _container!.Members.Add(staticMethod);
+
+        staticMethod.Body = (writer, element) =>
+        {
+            writer.WriteLine("return new Dictionary<Guid, string>()");
+            writer.OpenBraceBlock();
+            foreach (var type in _cppTypeToCSharpType.Values.OfType<CSharpStructExtended>().Where(x => x.IsComObject).OrderBy(x => x.Name))
+            {
+                writer.WriteLine($"{{ {type.Name}.IId, nameof({type.Name}) }},");
+            }
+            writer.UnIndent();
+            writer.WriteLine("};");
+        };
+    }
+
 
     private static string GetParentNamespace(CppNamespace ns)
     {
@@ -718,6 +746,7 @@ public class CodeGenerator
             }
 
             csStruct.BaseTypes.Add(new CSharpFreeType("INativeGuid"));
+            csStruct.IsComObject = true;
             csStruct.Members.Add(
                 new CSharpProperty("NativeGuid")
                 {
@@ -772,6 +801,10 @@ public class CodeGenerator
                 {
                     var csMethod = CreateMethodRcw(cppMethod, csStruct, virtualMethodIndex);
                     rcwMethods.Add(csMethod);
+                    if (!csStruct.BaseTypes.Any(x => x is CSharpFreeType freeType && freeType.Text == "INativeUnknown"))
+                    {
+                        csStruct.BaseTypes.Add(new CSharpFreeType("INativeUnknown"));
+                    }
                 }
 
                 if ((kind & InterfaceKind.Plugin) != 0)
@@ -1308,6 +1341,8 @@ public class CodeGenerator
         public int BaseComMethodIndex { get; set; }
 
         public int ComMethodCount { get; set; }
+
+        public bool IsComObject { get; set; }
 
         public bool IsFixedArray { get; set; }
     }

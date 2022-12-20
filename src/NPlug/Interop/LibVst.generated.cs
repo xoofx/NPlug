@@ -14,6 +14,8 @@ using System;
 namespace NPlug.Interop;
 
 
+using System.Collections.Generic;
+
 using System.Diagnostics.CodeAnalysis;
 
 using System.Runtime.CompilerServices;
@@ -39,7 +41,7 @@ internal static partial class LibVst
     /// If no more references exist, the object is destroyed in memory.Interfaces are identified by 16 byte Globally Unique Identifiers.
     /// The SDK provides a class called FUID for this purpose.@ref howtoClass
     /// </remarks>
-    public unsafe partial struct FUnknown : INativeGuid, INativeVtbl
+    public unsafe partial struct FUnknown : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -277,7 +279,7 @@ internal static partial class LibVst
     ///  pluginBase- read/write binary data from/to stream
     /// - get/set stream read-write position (read and write position is the same)
     /// </remarks>
-    public unsafe partial struct IBStream : INativeGuid
+    public unsafe partial struct IBStream : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -464,7 +466,7 @@ internal static partial class LibVst
     /// For a more convenient usage of this interface, you should use the functions defined
     /// in namespace PAttributes (public.sdk/source/common/pattributes.h+cpp) !! frameworkHostClasses
     /// </remarks>
-    public unsafe partial struct IAttributes : INativeGuid
+    public unsafe partial struct IAttributes : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -818,7 +820,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  frameworkHostClasses
     /// </remarks>
-    public unsafe partial struct IAttributes2 : INativeGuid
+    public unsafe partial struct IAttributes2 : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -1780,7 +1782,7 @@ internal static partial class LibVst
     /// - [host imp] or [plug imp]
     /// - [released: SX 4]
     /// </summary>
-    public unsafe partial struct IStringResult : INativeGuid
+    public unsafe partial struct IStringResult : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -1871,7 +1873,7 @@ internal static partial class LibVst
     /// - [released: 3.0.0]
     /// - [mandatory]Enables a plug-in to resize the view and cause the host to resize the window.
     /// </remarks>
-    public unsafe partial struct IPlugFrame : INativeGuid
+    public unsafe partial struct IPlugFrame : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -2541,7 +2543,7 @@ internal static partial class LibVst
     /// IPlugView::getSize() afterwards you return the size of your view for that new scale factor.It is recommended to implement this interface on Microsoft Windows to let the host know that the
     /// plug-in is able to render in different scalings.
     /// </remarks>
-    public unsafe partial struct IPlugViewContentScaleSupport : INativeGuid, INativeVtbl
+    public unsafe partial struct IPlugViewContentScaleSupport : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -3038,7 +3040,7 @@ internal static partial class LibVst
     /// - [released: 3.0.0]
     /// - [mandatory]An attribute list associates values with a key (id: some predefined keys can be found in @ref presetAttributes).
     /// </remarks>
-    public unsafe partial struct IAttributeList : INativeGuid
+    public unsafe partial struct IAttributeList : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -3329,7 +3331,7 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IStreamAttributes : INativeGuid
+    public unsafe partial struct IStreamAttributes : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -3956,7 +3958,7 @@ internal static partial class LibVst
     /// - [mandatory]
     /// </remarks>
     /// <seealso cref="ProcessData, Event"/>
-    public unsafe partial struct IEventList : INativeGuid
+    public unsafe partial struct IEventList : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -4578,7 +4580,7 @@ internal static partial class LibVst
     /// well as automation. They are transmitted as a list of queues (@ref IParamValueQueue)containing only queues for parameters that actually did change.
     /// See @ref IParamValueQueue, @ref ProcessData
     /// </remarks>
-    public unsafe partial struct IParameterChanges : INativeGuid
+    public unsafe partial struct IParameterChanges : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -4744,7 +4746,7 @@ internal static partial class LibVst
     /// @endcode@b Jumps: @n A jump in the automation curve has to be transmitted as two points: one with the
     /// old value and one with the new value at the next sample position. html "automation.jpg"See @ref IParameterChanges, @ref ProcessData
     /// </remarks>
-    public unsafe partial struct IParamValueQueue : INativeGuid
+    public unsafe partial struct IParamValueQueue : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -6372,7 +6374,7 @@ internal static partial class LibVst
     /// With IContextMenu the plug-in can retrieve a Item, add a Item, remove a Item and pop-up the menu.
     /// </remarks>
     /// <seealso cref="IComponentHandler3 for more information."/>
-    public unsafe partial struct IContextMenu : INativeGuid
+    public unsafe partial struct IContextMenu : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -6608,7 +6610,7 @@ internal static partial class LibVst
     /// this menu item.
     /// </remarks>
     /// <seealso cref="IComponentHandler3 for more information."/>
-    public unsafe partial struct IContextMenuTarget : INativeGuid, INativeVtbl
+    public unsafe partial struct IContextMenuTarget : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -6819,7 +6821,7 @@ internal static partial class LibVst
     /// </remarks>
     /// <seealso cref="IContextMenu"/>
     /// <seealso cref="IContextMenuTarget"/>
-    public unsafe partial struct IComponentHandler3 : INativeGuid
+    public unsafe partial struct IComponentHandler3 : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -6916,7 +6918,7 @@ internal static partial class LibVst
     /// Cause the host to react on configuration changes (restartComponent).
     /// </remarks>
     /// <seealso cref="IEditController"/>
-    public unsafe partial struct IComponentHandler : INativeGuid
+    public unsafe partial struct IComponentHandler : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -7117,7 +7119,7 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IEditControllerIComponentHandler,"/>
-    public unsafe partial struct IComponentHandler2 : INativeGuid
+    public unsafe partial struct IComponentHandler2 : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -7287,7 +7289,7 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IComponentHandler"/>
-    public unsafe partial struct IComponentHandlerBusActivation : INativeGuid
+    public unsafe partial struct IComponentHandlerBusActivation : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -7407,7 +7409,7 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IComponentHandler"/>
-    public unsafe partial struct IProgress : INativeGuid
+    public unsafe partial struct IProgress : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -9126,7 +9128,7 @@ internal static partial class LibVst
     /// - [mandatory]Messages are sent from a VST controller component to a VST editor component and vice versa.
     /// </remarks>
     /// <seealso cref="vst3CommunicationIAttributeList, IConnectionPoint, "/>
-    public unsafe partial struct IMessage : INativeGuid
+    public unsafe partial struct IMessage : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -9260,7 +9262,7 @@ internal static partial class LibVst
     /// Note that some hosts will place a proxy object between the components so that they are not directly connected.
     /// </remarks>
     /// <seealso cref="vst3Communication"/>
-    public unsafe partial struct IConnectionPoint : INativeGuid, INativeVtbl
+    public unsafe partial struct IConnectionPoint : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -9524,7 +9526,7 @@ internal static partial class LibVst
     /// - [released: 3.0.0]
     /// - [mandatory]Basic VST host application interface.
     /// </remarks>
-    public unsafe partial struct IHostApplication : INativeGuid
+    public unsafe partial struct IHostApplication : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -9728,7 +9730,7 @@ internal static partial class LibVst
     /// will be one and the memberEndChannel will be 14.As MPE is a subset of the VST3 Note Expression feature, mapping from the three MPE expressions is
     /// handled via the INoteExpressionPhysicalUIMapping interface.
     /// </remarks>
-    public unsafe partial struct IVst3WrapperMPESupport : INativeGuid
+    public unsafe partial struct IVst3WrapperMPESupport : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -10044,7 +10046,7 @@ internal static partial class LibVst
     /// - [released: 3.6.0]
     /// - [optional]Implemented by the InterAppAudio Wrapper.
     /// </remarks>
-    public unsafe partial struct IInterAppAudioHost : INativeGuid
+    public unsafe partial struct IInterAppAudioHost : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -10762,7 +10764,7 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IPluginBase"/>
-    public unsafe partial struct IPlugInterfaceSupport : INativeGuid
+    public unsafe partial struct IPlugInterfaceSupport : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -11231,7 +11233,7 @@ internal static partial class LibVst
     /// test (see ITest).
     /// You get this interface as the context argument in the ITestFactory::createTests method.------------------------------------------------------------------------
     /// </remarks>
-    public unsafe partial struct ITestPlugProvider : INativeGuid, INativeVtbl
+    public unsafe partial struct ITestPlugProvider : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -11665,7 +11667,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  TestClass
     /// </remarks>
-    public unsafe partial struct ITestPlugProvider2 : INativeGuid, INativeVtbl
+    public unsafe partial struct ITestPlugProvider2 : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -11876,7 +11878,7 @@ internal static partial class LibVst
     /// Retrieve via queryInterface from IComponentHandler.
     /// </remarks>
     /// <seealso cref="IUnitInfovst3Units,"/>
-    public unsafe partial struct IUnitHandler : INativeGuid
+    public unsafe partial struct IUnitHandler : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -12004,7 +12006,7 @@ internal static partial class LibVst
     /// to get the new relations between busses and unit.
     /// </remarks>
     /// <seealso cref="IUnitHandlervst3Units,"/>
-    public unsafe partial struct IUnitHandler2 : INativeGuid
+    public unsafe partial struct IUnitHandler2 : INativeGuid, INativeUnknown
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
@@ -18558,5 +18560,68 @@ internal static partial class LibVst
             Register<IUnitData>();
             Register<IInfoListener>();
         }
+    }
+    
+    private static Dictionary<Guid, string> GetMapGuidToName()
+    {
+        return new Dictionary<Guid, string>()
+        {
+            { FUnknown.IId, nameof(FUnknown) },
+            { IAttributeList.IId, nameof(IAttributeList) },
+            { IAttributes.IId, nameof(IAttributes) },
+            { IAttributes2.IId, nameof(IAttributes2) },
+            { IAudioPresentationLatency.IId, nameof(IAudioPresentationLatency) },
+            { IAudioProcessor.IId, nameof(IAudioProcessor) },
+            { IAutomationState.IId, nameof(IAutomationState) },
+            { IBStream.IId, nameof(IBStream) },
+            { IComponent.IId, nameof(IComponent) },
+            { IComponentHandler.IId, nameof(IComponentHandler) },
+            { IComponentHandler2.IId, nameof(IComponentHandler2) },
+            { IComponentHandler3.IId, nameof(IComponentHandler3) },
+            { IComponentHandlerBusActivation.IId, nameof(IComponentHandlerBusActivation) },
+            { IConnectionPoint.IId, nameof(IConnectionPoint) },
+            { IContextMenu.IId, nameof(IContextMenu) },
+            { IContextMenuTarget.IId, nameof(IContextMenuTarget) },
+            { IEditController.IId, nameof(IEditController) },
+            { IEditController2.IId, nameof(IEditController2) },
+            { IEditControllerHostEditing.IId, nameof(IEditControllerHostEditing) },
+            { IEventList.IId, nameof(IEventList) },
+            { IHostApplication.IId, nameof(IHostApplication) },
+            { IInfoListener.IId, nameof(IInfoListener) },
+            { IInterAppAudioHost.IId, nameof(IInterAppAudioHost) },
+            { IInterAppAudioPresetManager.IId, nameof(IInterAppAudioPresetManager) },
+            { IKeyswitchController.IId, nameof(IKeyswitchController) },
+            { IMessage.IId, nameof(IMessage) },
+            { IMidiLearn.IId, nameof(IMidiLearn) },
+            { IMidiMapping.IId, nameof(IMidiMapping) },
+            { INoteExpressionController.IId, nameof(INoteExpressionController) },
+            { INoteExpressionPhysicalUIMapping.IId, nameof(INoteExpressionPhysicalUIMapping) },
+            { IParameterChanges.IId, nameof(IParameterChanges) },
+            { IParameterFinder.IId, nameof(IParameterFinder) },
+            { IParameterFunctionName.IId, nameof(IParameterFunctionName) },
+            { IParamValueQueue.IId, nameof(IParamValueQueue) },
+            { IPlugFrame.IId, nameof(IPlugFrame) },
+            { IPluginBase.IId, nameof(IPluginBase) },
+            { IPluginFactory.IId, nameof(IPluginFactory) },
+            { IPluginFactory2.IId, nameof(IPluginFactory2) },
+            { IPluginFactory3.IId, nameof(IPluginFactory3) },
+            { IPlugInterfaceSupport.IId, nameof(IPlugInterfaceSupport) },
+            { IPlugView.IId, nameof(IPlugView) },
+            { IPlugViewContentScaleSupport.IId, nameof(IPlugViewContentScaleSupport) },
+            { IPrefetchableSupport.IId, nameof(IPrefetchableSupport) },
+            { IProcessContextRequirements.IId, nameof(IProcessContextRequirements) },
+            { IProgramListData.IId, nameof(IProgramListData) },
+            { IProgress.IId, nameof(IProgress) },
+            { IStreamAttributes.IId, nameof(IStreamAttributes) },
+            { IStringResult.IId, nameof(IStringResult) },
+            { ITestPlugProvider.IId, nameof(ITestPlugProvider) },
+            { ITestPlugProvider2.IId, nameof(ITestPlugProvider2) },
+            { IUnitData.IId, nameof(IUnitData) },
+            { IUnitHandler.IId, nameof(IUnitHandler) },
+            { IUnitHandler2.IId, nameof(IUnitHandler2) },
+            { IUnitInfo.IId, nameof(IUnitInfo) },
+            { IVst3WrapperMPESupport.IId, nameof(IVst3WrapperMPESupport) },
+            { IXmlRepresentationController.IId, nameof(IXmlRepresentationController) },
+        };
     }
 }

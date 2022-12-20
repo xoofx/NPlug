@@ -14,9 +14,8 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult initialize_ToManaged(IPluginBase* self, LibVst.FUnknown* context)
         {
-            IHostApplication* hostApplication;
-            var result = context->queryInterface(IHostApplication.NativeGuid, (void**)&hostApplication);
-            if (result.IsSuccess)
+            var hostApplication = QueryInterface<FUnknown, IHostApplication>(context);
+            if (hostApplication != null)
             {
                 String128 name = default;
                 _ = hostApplication->getName(&name);
@@ -24,7 +23,6 @@ internal static unsafe partial class LibVst
             }
             else
             {
-                // TODO Free self->Handle
                 return false;
             }
         }

@@ -127,7 +127,7 @@ public abstract partial class AudioController<TAudioControllerModel> : AudioPlug
         Handler = controllerHandler;
     }
 
-    IAudioPluginView? IAudioController.CreateView(string name)
+    IAudioPluginView? IAudioController.CreateView()
     {
         return CreateView();
     }

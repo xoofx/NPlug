@@ -27,7 +27,7 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
     private nuint _allParameterSizeInBytes;
     private unsafe double* _pointerToBuffer;
     
-    protected AudioProcessorModel(string unitName, AudioProgramListBuilder? programListBuilder = null, int id = 0) : base(unitName, programListBuilder, id)
+    protected AudioProcessorModel(string unitName = "Root", AudioProgramListBuilder? programListBuilder = null, int id = 0) : base(unitName, programListBuilder, id)
     {
         _allParameters = new List<AudioParameter>();
         _parameterIdToIndex = new Dictionary<AudioParameterId, int>();

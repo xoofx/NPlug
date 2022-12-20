@@ -103,5 +103,5 @@ public interface IAudioController : IAudioPluginComponent
     /// </summary>
     /// <param name="name">The name of the view (`editor` is only supported)</param>
     /// <returns>The plugin view.</returns>
-    IAudioPluginView? CreateView(string name);
+    IAudioPluginView? CreateView();
 }

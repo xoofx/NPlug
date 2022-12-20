@@ -99,8 +99,7 @@ internal static unsafe partial class LibVst
         private static partial IPlugView* createView_ToManaged(IEditController* self, FIDString name)
         {
             var audioProcessor = Get(self);
-            var host = (AudioHostApplicationClient)audioProcessor.Host!;
-            var view = Get(self).CreateView(host.GetOrCreateString(name.Value));
+            var view = Get(self).CreateView();
             if (view is null)
             {
                 return null;

@@ -92,7 +92,7 @@ internal static unsafe partial class LibVst
         private static bool TryGetPlatform(FIDString type, out AudioPluginViewPlatform platform)
         {
             var span = new ReadOnlySpan<byte>(type.Value, int.MaxValue);
-            span.Slice(0, span.IndexOf((byte)0));
+            span = span.Slice(0, span.IndexOf((byte)0));
             platform = default;
             if (span.SequenceEqual("HWND"u8))
             {

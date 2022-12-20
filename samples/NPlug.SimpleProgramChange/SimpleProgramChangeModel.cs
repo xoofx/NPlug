@@ -22,7 +22,7 @@ public class SimpleProgramChangeModel : AudioProcessorModel
     private static AudioProgramListBuilder GenerateProgramListBuilder()
     {
         var builder = new AudioProgramListBuilder<SimpleProgramChangeModel>("Bank");
-        const int programCount = 100;
+        const int programCount = 10; // Display only 10 programs
         for (int i = 0; i < programCount; i++)
         {
             int programIndex = i;

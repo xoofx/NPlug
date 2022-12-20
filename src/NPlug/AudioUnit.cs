@@ -14,7 +14,7 @@ public class AudioUnit
     private readonly List<AudioUnit> _children;
     private AudioUnitId _id;
 
-    public AudioUnit(string unitName, int id = 0, AudioProgramListBuilder? programListBuilder = null)
+    public AudioUnit(string unitName, AudioProgramListBuilder? programListBuilder = null, int id = 0)
     {
         Name = unitName;
         _id = id;
@@ -117,7 +117,7 @@ public class AudioUnit
         {
             foreach (var parameter in _parameters)
             {
-                parameter.NormalizedValue = reader.ReadFloat64();
+                parameter.RawNormalizedValue = reader.ReadFloat64();
             }
         }
         else
@@ -125,7 +125,7 @@ public class AudioUnit
             foreach (var parameter in _parameters)
             {
                 if (parameter.IsProgramChange) continue;
-                parameter.NormalizedValue = reader.ReadFloat64();
+                parameter.RawNormalizedValue = reader.ReadFloat64();
             }
         }
 

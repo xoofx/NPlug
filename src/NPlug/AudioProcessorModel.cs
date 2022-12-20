@@ -27,7 +27,7 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
     private nuint _allParameterSizeInBytes;
     private unsafe double* _pointerToBuffer;
     
-    protected AudioProcessorModel(string unitName, AudioProgramListBuilder? programListBuilder = null) : base(unitName, 0, programListBuilder)
+    protected AudioProcessorModel(string unitName, AudioProgramListBuilder? programListBuilder = null, int id = 0) : base(unitName, programListBuilder, id)
     {
         _allParameters = new List<AudioParameter>();
         _parameterIdToIndex = new Dictionary<AudioParameterId, int>();
@@ -90,13 +90,14 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
 
         InitializeParameters();
 
-        InitializeProgramLists();
-
-        // Mark all unit initialized
+        // Mark all unit initialized before we initialize the program lists
+        // to make sure that we can't add any parameters or units after this point
         foreach (var unit in _allUnits)
         {
             unit.Initialized = true;
         }
+
+        InitializeProgramLists();
     }
 
     public bool TryGetParameterById(AudioParameterId id, [NotNullWhen(true)] out AudioParameter? parameter)
@@ -133,7 +134,7 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
             return ref _pointerToBuffer[parameterIndex];
         }
 
-        return ref _allParameters[parameterIndex].LocalNormalizedValue;
+        return ref _allParameters[parameterIndex].NormalizedValueInternal;
     }
 
     public bool TryGetUnitById(AudioUnitId id, [NotNullWhen(true)] out AudioUnit? unit)
@@ -194,7 +195,7 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         {
             foreach (var parameter in _allParameters)
             {
-                parameter.LocalNormalizedValue = reader.ReadFloat64();
+                parameter.NormalizedValueInternal = reader.ReadFloat64();
             }
         }
     }
@@ -233,7 +234,7 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         {
             foreach (var parameter in _allParameters)
             {
-                writer.WriteFloat64(parameter.LocalNormalizedValue);
+                writer.WriteFloat64(parameter.NormalizedValueInternal);
             }
         }
     }

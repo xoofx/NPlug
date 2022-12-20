@@ -14,7 +14,7 @@ public class AudioParameter
     /// This value is only used temporarily until the <see cref="AudioProcessorModel"/> is initialized.
     /// Then it is the <see cref="PointerToNormalizedValueInSharedBuffer"/> that is used.
     /// </summary>
-    internal double LocalNormalizedValue;
+    internal double NormalizedValueInternal;
 
     /// <summary>
     /// This pointer is setup by <see cref="AudioProcessorModel"/> in InitializeBuffers.
@@ -141,7 +141,7 @@ public class AudioParameter
             }
             else
             {
-                return ref LocalNormalizedValue;
+                return ref NormalizedValueInternal;
             }
         }
     }

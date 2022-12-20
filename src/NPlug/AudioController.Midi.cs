@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using NPlug.Interop;
 
 namespace NPlug;
 
@@ -19,14 +20,24 @@ public abstract partial class AudioController<TAudioControllerModel>
 
     protected virtual bool TryGetMidiControllerAssignment(int busIndex, int channel, AudioMidiControllerNumber midiControllerNumber, out AudioParameterId id)
     {
+        var result = false;
         if (MapMidiCCToAudioParameter.TryGetValue(midiControllerNumber, out var parameter))
         {
             id = parameter.Id;
-            return true;
+            result = true;
+        }
+        else
+        {
+            id = default;
         }
 
-        id = default;
-        return false;
+        // Log more detailed information
+        if (InteropHelper.IsTracerEnabled)
+        {
+            InteropHelper.Tracer?.LogInfo($"{nameof(busIndex)}: {busIndex}, {nameof(channel)}: {channel}, midiCC = {midiControllerNumber.ToText()}{(result ? $" => Parameter Id: {parameter!.Id} Name: {parameter!.Title})": "")}");
+        }
+
+        return result;
     }
 
     // IMidiMapping

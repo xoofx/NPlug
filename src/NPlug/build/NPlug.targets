@@ -21,7 +21,7 @@
     <IlcGenerateStackTraceData Condition="'$(IlcGenerateStackTraceData)' == ''">true</IlcGenerateStackTraceData>
     <IlcOptimizationPreference Condition="'$(IlcOptimizationPreference)' == ''">Speed</IlcOptimizationPreference>
     <IlcFoldIdenticalMethodBodies Condition="'$(IlcFoldIdenticalMethodBodies)' == ''">true</IlcFoldIdenticalMethodBodies>
-    <IlcDisableReflection Condition="'$(IlcDisableReflection)' == ''">true</IlcDisableReflection>
+    <IlcDisableReflection Condition="'$(IlcDisableReflection)' == ''">false</IlcDisableReflection>
     <InvariantGlobalization Condition="'$(InvariantGlobalization)' == ''">true</InvariantGlobalization>
 
     <!--NPlug prefers AOT by default, use it only if we are publishing-->

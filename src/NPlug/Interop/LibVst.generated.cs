@@ -296,7 +296,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IBStream, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -310,7 +309,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IBStream, FUnknown>(ref this).addRef();
@@ -321,7 +319,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IBStream, FUnknown>(ref this).release();
@@ -483,7 +480,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IAttributes, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -497,7 +493,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IAttributes, FUnknown>(ref this).addRef();
@@ -508,7 +503,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IAttributes, FUnknown>(ref this).release();
@@ -837,7 +831,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IAttributes2, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -851,7 +844,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IAttributes2, FUnknown>(ref this).addRef();
@@ -862,7 +854,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IAttributes2, FUnknown>(ref this).release();
@@ -882,7 +873,6 @@ internal static partial class LibVst
         /// When using the PAttributes functions, this is done through a function parameter.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult set(LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).set(attrID, data);
@@ -894,7 +884,6 @@ internal static partial class LibVst
         /// of subattributes or other objects that implement the IPersistent interface.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queue(LibVst.IAttrID listID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).queue(listID, data);
@@ -907,7 +896,6 @@ internal static partial class LibVst
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).setBinaryData(attrID, data, bytes, copyBytes);
@@ -919,7 +907,6 @@ internal static partial class LibVst
         /// Get data previously stored to the archive.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult get(LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).get(attrID, data);
@@ -932,7 +919,6 @@ internal static partial class LibVst
         /// </summary>
         /// <seealso cref="IAttributes::resetQueue "/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult unqueue(LibVst.IAttrID listID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).unqueue(listID, data);
@@ -942,7 +928,6 @@ internal static partial class LibVst
         /// Get the amount of items in a queue.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public int getQueueItemCount(LibVst.IAttrID arg)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getQueueItemCount(arg);
@@ -952,7 +937,6 @@ internal static partial class LibVst
         /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult resetQueue(LibVst.IAttrID attrID)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).resetQueue(attrID);
@@ -962,7 +946,6 @@ internal static partial class LibVst
         /// Reset all queues in the archive.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult resetAllQueues()
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).resetAllQueues();
@@ -973,7 +956,6 @@ internal static partial class LibVst
         /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult getBinaryData(LibVst.IAttrID attrID, void* data, uint bytes)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getBinaryData(attrID, data, bytes);
@@ -983,7 +965,6 @@ internal static partial class LibVst
         /// Get the size in bytes of binary data in the archive.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint getBinaryDataSize(LibVst.IAttrID attrID)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getBinaryDataSize(attrID);
@@ -1799,7 +1780,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IStringResult, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -1813,7 +1793,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IStringResult, FUnknown>(ref this).addRef();
@@ -1824,7 +1803,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IStringResult, FUnknown>(ref this).release();
@@ -1890,7 +1868,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IPlugFrame, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -1904,7 +1881,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IPlugFrame, FUnknown>(ref this).addRef();
@@ -1915,7 +1891,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IPlugFrame, FUnknown>(ref this).release();
@@ -2569,7 +2544,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IPlugViewContentScaleSupport, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -2583,7 +2557,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IPlugViewContentScaleSupport, FUnknown>(ref this).addRef();
@@ -2594,7 +2567,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IPlugViewContentScaleSupport, FUnknown>(ref this).release();
@@ -3057,7 +3029,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IAttributeList, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -3071,7 +3042,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IAttributeList, FUnknown>(ref this).addRef();
@@ -3082,7 +3052,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IAttributeList, FUnknown>(ref this).release();
@@ -3348,7 +3317,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IStreamAttributes, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -3362,7 +3330,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IStreamAttributes, FUnknown>(ref this).addRef();
@@ -3373,7 +3340,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IStreamAttributes, FUnknown>(ref this).release();
@@ -3975,7 +3941,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IEventList, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -3989,7 +3954,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IEventList, FUnknown>(ref this).addRef();
@@ -4000,7 +3964,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IEventList, FUnknown>(ref this).release();
@@ -4597,7 +4560,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IParameterChanges, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -4611,7 +4573,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IParameterChanges, FUnknown>(ref this).addRef();
@@ -4622,7 +4583,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IParameterChanges, FUnknown>(ref this).release();
@@ -4763,7 +4723,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IParamValueQueue, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -4777,7 +4736,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IParamValueQueue, FUnknown>(ref this).addRef();
@@ -4788,7 +4746,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IParamValueQueue, FUnknown>(ref this).release();
@@ -6391,7 +6348,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IContextMenu, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -6405,7 +6361,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IContextMenu, FUnknown>(ref this).addRef();
@@ -6416,7 +6371,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IContextMenu, FUnknown>(ref this).release();
@@ -6636,7 +6590,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IContextMenuTarget, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -6650,7 +6603,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IContextMenuTarget, FUnknown>(ref this).addRef();
@@ -6661,7 +6613,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IContextMenuTarget, FUnknown>(ref this).release();
@@ -6838,7 +6789,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IComponentHandler3, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -6852,7 +6802,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IComponentHandler3, FUnknown>(ref this).addRef();
@@ -6863,7 +6812,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IComponentHandler3, FUnknown>(ref this).release();
@@ -6935,7 +6883,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IComponentHandler, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -6949,7 +6896,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IComponentHandler, FUnknown>(ref this).addRef();
@@ -6960,7 +6906,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IComponentHandler, FUnknown>(ref this).release();
@@ -7136,7 +7081,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IComponentHandler2, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -7150,7 +7094,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IComponentHandler2, FUnknown>(ref this).addRef();
@@ -7161,7 +7104,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IComponentHandler2, FUnknown>(ref this).release();
@@ -7306,7 +7248,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IComponentHandlerBusActivation, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -7320,7 +7261,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IComponentHandlerBusActivation, FUnknown>(ref this).addRef();
@@ -7331,7 +7271,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IComponentHandlerBusActivation, FUnknown>(ref this).release();
@@ -7426,7 +7365,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IProgress, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -7440,7 +7378,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IProgress, FUnknown>(ref this).addRef();
@@ -7451,7 +7388,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IProgress, FUnknown>(ref this).release();
@@ -9145,7 +9081,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IMessage, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -9159,7 +9094,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IMessage, FUnknown>(ref this).addRef();
@@ -9170,7 +9104,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IMessage, FUnknown>(ref this).release();
@@ -9290,7 +9223,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IConnectionPoint, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -9304,7 +9236,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IConnectionPoint, FUnknown>(ref this).addRef();
@@ -9315,7 +9246,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IConnectionPoint, FUnknown>(ref this).release();
@@ -9543,7 +9473,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IHostApplication, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -9557,7 +9486,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IHostApplication, FUnknown>(ref this).addRef();
@@ -9568,7 +9496,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IHostApplication, FUnknown>(ref this).release();
@@ -9747,7 +9674,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IVst3WrapperMPESupport, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -9761,7 +9687,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IVst3WrapperMPESupport, FUnknown>(ref this).addRef();
@@ -9772,7 +9697,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IVst3WrapperMPESupport, FUnknown>(ref this).release();
@@ -10063,7 +9987,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IInterAppAudioHost, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -10077,7 +10000,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IInterAppAudioHost, FUnknown>(ref this).addRef();
@@ -10088,7 +10010,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IInterAppAudioHost, FUnknown>(ref this).release();
@@ -10781,7 +10702,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IPlugInterfaceSupport, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -10795,7 +10715,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IPlugInterfaceSupport, FUnknown>(ref this).addRef();
@@ -10806,7 +10725,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IPlugInterfaceSupport, FUnknown>(ref this).release();
@@ -11263,7 +11181,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<ITestPlugProvider, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -11277,7 +11194,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<ITestPlugProvider, FUnknown>(ref this).addRef();
@@ -11288,7 +11204,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<ITestPlugProvider, FUnknown>(ref this).release();
@@ -11693,7 +11608,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<ITestPlugProvider2, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -11707,7 +11621,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<ITestPlugProvider2, FUnknown>(ref this).addRef();
@@ -11718,7 +11631,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<ITestPlugProvider2, FUnknown>(ref this).release();
@@ -11732,7 +11644,6 @@ internal static partial class LibVst
         /// releasePlugIn when done with the component.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public LibVst.IComponent* getComponent()
         {
             return Unsafe.As<ITestPlugProvider2, ITestPlugProvider>(ref this).getComponent();
@@ -11746,7 +11657,6 @@ internal static partial class LibVst
         /// releasePlugIn when done with the controller.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public LibVst.IEditController* getController()
         {
             return Unsafe.As<ITestPlugProvider2, ITestPlugProvider>(ref this).getController();
@@ -11756,7 +11666,6 @@ internal static partial class LibVst
         /// release the component and/or controller
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult releasePlugIn(LibVst.IComponent* component, LibVst.IEditController* controller)
         {
             return Unsafe.As<ITestPlugProvider2, ITestPlugProvider>(ref this).releasePlugIn(component, controller);
@@ -11766,7 +11675,6 @@ internal static partial class LibVst
         /// get the sub categories of the plug-in
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult getSubCategories(LibVst.IStringResult* result)
         {
             return Unsafe.As<ITestPlugProvider2, ITestPlugProvider>(ref this).getSubCategories(result);
@@ -11776,7 +11684,6 @@ internal static partial class LibVst
         /// get the component UID of the plug-in
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult getComponentUID(LibVst.FUID* uid)
         {
             return Unsafe.As<ITestPlugProvider2, ITestPlugProvider>(ref this).getComponentUID(uid);
@@ -11895,7 +11802,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IUnitHandler, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -11909,7 +11815,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IUnitHandler, FUnknown>(ref this).addRef();
@@ -11920,7 +11825,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IUnitHandler, FUnknown>(ref this).release();
@@ -12023,7 +11927,6 @@ internal static partial class LibVst
         /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
         /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public ComResult queryInterface(Guid* _iid, void** obj)
         {
             return Unsafe.As<IUnitHandler2, FUnknown>(ref this).queryInterface(_iid, obj);
@@ -12037,7 +11940,6 @@ internal static partial class LibVst
         /// The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint addRef()
         {
             return Unsafe.As<IUnitHandler2, FUnknown>(ref this).addRef();
@@ -12048,7 +11950,6 @@ internal static partial class LibVst
         /// If the reference count reaches zero, the object will be destroyed in memory.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [UnscopedRef]
         public uint release()
         {
             return Unsafe.As<IUnitHandler2, FUnknown>(ref this).release();

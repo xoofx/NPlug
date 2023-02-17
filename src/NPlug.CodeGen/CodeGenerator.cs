@@ -1119,7 +1119,7 @@ public class CodeGenerator
         csMethod.Attributes.Add(MethodImplAggressiveInliningAttribute);
         if (csBaseClass != null)
         {
-            csMethod.Attributes.Add(new CSharpFreeAttribute("UnscopedRef"));
+            //csMethod.Attributes.Add(new CSharpFreeAttribute("UnscopedRef"));
         }
 
         csMethod.ReturnType = GetCSharpReturnOrParameterType(cppMethod.ReturnType);

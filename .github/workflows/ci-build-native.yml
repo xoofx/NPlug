@@ -1,5 +1,9 @@
-name: ci
+name: ci-build-native
 
+on:
+  workflow_dispatch:
+    branches:
+    - main
 jobs:
   build:
     strategy:

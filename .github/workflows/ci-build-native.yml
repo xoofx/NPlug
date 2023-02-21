@@ -16,11 +16,18 @@ jobs:
       with:
         submodules: true
         fetch-depth: 0
+    - name: Install .NET 7.0
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
     - name: Setup Linux
       if: matrix.os == 'ubuntu-latest'
       run: |
           sudo apt-get install gcc-aarch64-linux-gnu
           sudo apt-get install g++-aarch64-linux-gnu
+    - name: Build
+      run: |
+          dotnet build -c Release ./src
     - name: Build Proxy
       working-directory: ./src/NPlug.Proxy/
       run: |

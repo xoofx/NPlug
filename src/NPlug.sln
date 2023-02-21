@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "general", "general", "{BBC4
 		..\.editorconfig = ..\.editorconfig
 		..\.gitattributes = ..\.gitattributes
 		..\.gitignore = ..\.gitignore
+		..\.github\workflows\ci-build-native.yml = ..\.github\workflows\ci-build-native.yml
 		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
 		dotnet-releaser.toml = dotnet-releaser.toml
 		global.json = global.json
@@ -41,7 +42,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{BEA27D3C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{16297621-0984-4A58-ACEE-46EE65183701}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPlug.SimpleProgramChange", "..\samples\NPlug.SimpleProgramChange\NPlug.SimpleProgramChange.csproj", "{B29DFB8F-EECE-4418-955D-E629C9C2B8C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NPlug.SimpleProgramChange", "..\samples\NPlug.SimpleProgramChange\NPlug.SimpleProgramChange.csproj", "{B29DFB8F-EECE-4418-955D-E629C9C2B8C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

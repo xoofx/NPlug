@@ -88,7 +88,8 @@ function Build-Project {
 }
 
 if (Test-Path "$BuildFolder") {
-    Remove-Item -Path "$BuildFolder" -Recurse
+    Write-Host "Removing folder $BuildFolder"
+    # Remove-Item -Path "$BuildFolder" -Recurse
 }
 
 if ($bit32 -And $IsWindows) {

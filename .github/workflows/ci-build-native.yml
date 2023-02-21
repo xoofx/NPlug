@@ -1,0 +1,37 @@
+name: ci
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 0
+    - name: Setup Linux
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+          sudo apt-get install gcc-aarch64-linux-gnu
+          sudo apt-get install g++-aarch64-linux-gnu
+    - name: Build Proxy
+      working-directory: ./src/NPlug.Proxy/
+      run: |
+          ./build_nplug_proxy.ps1
+    - name: Build Validator
+      working-directory: ./ext/vst
+      run: |
+          ./build_nplug_validator.ps1
+    - name: Artifacts Proxy
+      uses: actions/upload-artifact@v2
+      with:
+        name: nplug-proxy-${{ matrix.os }}
+        path: src/NPlug.Proxy/bin/native/package
+    - name: Artifacts Validator
+      uses: actions/upload-artifact@v2
+      with:
+        name: nplug-validator-${{ matrix.os }}
+        path: ext/vst/build/package

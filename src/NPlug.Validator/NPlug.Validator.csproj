@@ -19,14 +19,14 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.dll" Link="nplug_validator.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.pdb" Link="nplug_validator.pdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.csproj" />

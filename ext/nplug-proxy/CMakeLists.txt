@@ -3,14 +3,10 @@ project(nplug_proxy)
 include_directories(.)
 
 message(STATUS "Variable DOTNET_RID = ${DOTNET_RID}")
-message(STATUS "Variable DOTNET_PACK_FOLDER = ${DOTNET_PACK_FOLDER}")
-message(STATUS "Variable DOTNET_PACK_VERSION = ${DOTNET_PACK_VERSION}")
 
-set(DOTNET_HOST_DIR "${DOTNET_PACK_FOLDER}/Microsoft.NETCore.App.Host.${DOTNET_RID}/${DOTNET_PACK_VERSION}/runtimes/${DOTNET_RID}/native")
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib/${DOTNET_RID})
 
-message(STATUS "Variable DOTNET_HOST_DIR = ${DOTNET_HOST_DIR}")
-include_directories(${DOTNET_HOST_DIR})
-link_directories(${DOTNET_HOST_DIR})
 # Compile nethost as a static library
 add_definitions(-DNETHOST_USE_AS_STATIC)
 

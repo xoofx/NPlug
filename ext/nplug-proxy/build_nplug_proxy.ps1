@@ -14,4 +14,11 @@
 #   osx-x64
 #   osx-arm64
 # -------------------------------------------------------------
-& "$PSScriptRoot/../../scripts/CMake-Build-Platforms.ps1" -bit32 $false -CMakeConfig Release -CMakeRelativeBuildFolder vst3sdk-prefix/src/vst3sdk-build/bin
+$ErrorActionPreference = "Stop"
+
+
+$cmakeConfig = "Release"
+#$cmakeConfig = "RelWithDebInfo"
+#$cmakeConfig = "Debug"
+
+& "$PSScriptRoot/../CMake-Build-Platforms.ps1" -bit32 $false -BuildFolder "build" -CMakeConfig $cmakeConfig

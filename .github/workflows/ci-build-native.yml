@@ -29,20 +29,20 @@ jobs:
       run: |
           dotnet build -c Release ./src
     - name: Build Proxy
-      working-directory: ./src/NPlug.Proxy/
+      working-directory: ./ext/nplug-proxy/
       run: |
           ./build_nplug_proxy.ps1
     - name: Build Validator
-      working-directory: ./ext/vst
+      working-directory: ./ext/nplug-validator
       run: |
           ./build_nplug_validator.ps1
     - name: Artifacts Proxy
       uses: actions/upload-artifact@v2
       with:
         name: nplug-proxy-${{ matrix.os }}
-        path: src/NPlug.Proxy/bin/native/package
+        path: ext/nplug-proxy/build/package
     - name: Artifacts Validator
       uses: actions/upload-artifact@v2
       with:
         name: nplug-validator-${{ matrix.os }}
-        path: ext/vst/build/package
+        path: ext/nplug-validator/build/package

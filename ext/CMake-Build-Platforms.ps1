@@ -104,7 +104,7 @@ if ($IsWindows -Or $IsLinux) {
     if ($bit32) {
         Build-Project arm
     }
-    #Build-Project arm64
+    Build-Project arm64
 }
 
 if ($IsMacOS) {

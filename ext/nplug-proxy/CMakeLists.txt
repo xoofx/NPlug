@@ -16,4 +16,4 @@ if(MSVC)
 endif()
 
 add_library(nplug_proxy SHARED plugin.cpp)
-target_link_libraries(nplug_proxy PRIVATE libnethost)
+target_link_libraries(nplug_proxy PRIVATE nethost)

@@ -15,7 +15,7 @@
 #   osx-arm64
 # -------------------------------------------------------------
 $ErrorActionPreference = "Stop"
-
+$PSNativeCommandArgumentPassing = "Standard"
 
 $cmakeConfig = "Release"
 #$cmakeConfig = "RelWithDebInfo"

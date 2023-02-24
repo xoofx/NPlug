@@ -43,12 +43,12 @@ function Build-Project {
     $NETPlatform = "linux"
     $NETSharedLibExtension = "so"
     $CMakeBuilder = "Unix Makefiles"
-    $CMakeArch = ""
+    $LocalCMakeArgs = $CMakeArgs
     $BuildPlatformSubFolder = $CMakeRelativeBuildFolder
     if ($IsMacOS) {
         $NETPlatform = "osx"
         $NETSharedLibExtension = "dylib"
-        $CMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
+        $LocalCMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
     }
     elseif ($IsWindows) {
         $MsvcArch = $NETArch
@@ -58,35 +58,37 @@ function Build-Project {
         $NETPlatform = "win"
         $NETSharedLibExtension = "dll"
         $CMakeBuilder = "Visual Studio 17 2022"
-        $CMakeArch = "-A$MsvcArch"
+        $LocalCMakeArgs += "-A$MsvcArch"
         $BuildPlatformSubFolder = "$BuildPlatformSubFolder/$CMakeConfig"
     } elseif ($IsLinux) {
-        $CMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
+        $LocalCMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
         if ($NETArch -eq "arm64") {
-            $CMakeArch = "-DCMAKE_TOOLCHAIN_FILE=$PSScriptRoot/toolchains/aarch64-linux-gnu.toolchain.cmake"
+            $LocalCMakeArgs += "-DCMAKE_TOOLCHAIN_FILE=$PSScriptRoot/toolchains/aarch64-linux-gnu.toolchain.cmake"
         }
         elseif ($NETArch -eq "arm") {
-            $CMakeArch = "-DCMAKE_TOOLCHAIN_FILE=$PSScriptRoot/toolchains/arm-linux-gnueabihf.toolchain.cmake"
+            $LocalCMakeArgs += "-DCMAKE_TOOLCHAIN_FILE=$PSScriptRoot/toolchains/arm-linux-gnueabihf.toolchain.cmake"
         }
     }
 
     Write-Host "Building $NETPlatform-$NETArch $CMakeConfig" -ForegroundColor Green
 
     $DotNetRid = "$NETPlatform-$NETArch"
+    $LocalCMakeArgs += "-DDOTNET_RID=$DotNetRid"
     $BuildPlatformFolder = "$BuildFolder/$DotNetRid"
     $PackageFolder = "$BuildFolder/package/$DotNetRid/native/"
 
-    & $CMakeExePath -G $CMakeBuilder -B $BuildPlatformFolder -DDOTNET_RID="$DotNetRid" $CMakeArch @CMakeArgs $CMakeSource
+    #trace-command -PSHOST -Name ParameterBinding { & $CMakeExePath -G $CMakeBuilder -B $BuildPlatformFolder -DDOTNET_RID="$DotNetRid" $CMakeArch @LocalCMakeArgs $CMakeSource  }
+    trace-command -PSHOST -Name ParameterBinding { & $CMakeExePath -G $CMakeBuilder -B $BuildPlatformFolder @LocalCMakeArgs $CMakeSource  }    
     if ($LastExitCode -ne 0) {
         throw "error with cmake"
     }
-    & "$CMakeExePath" --build "$BuildPlatformFolder" --config $CMakeConfig
+    trace-command -PSHOST -Name ParameterBinding { & $CMakeExePath --build $BuildPlatformFolder --config $CMakeConfig }
     if ($LastExitCode -ne 0) {
         throw "error with cmake --build"
     }
 
     New-Item -type Directory -Path "$PackageFolder" -Force
-    Copy-Item "$BuildPlatformFolder/$BuildPlatformSubFolder/*.$NETSharedLibExtension" -Destination "$PackageFolder"
+    Copy-Item "$BuildPlatformFolder/$BuildPlatformSubFolder/*.$NETSharedLibExtension" -Destination $PackageFolder
 }
 
 if (Test-Path "$BuildFolder") {

@@ -14,4 +14,12 @@
 #   osx-x64
 #   osx-arm64
 # -------------------------------------------------------------
-& "$PSScriptRoot/../CMake-Build-Platforms.ps1" -bit32 $false -CMakeConfig Release -CMakeRelativeBuildFolder vst3sdk-prefix/src/vst3sdk-build/bin
+$cmake_relative_build_folder = "vst3sdk-prefix/src/vst3sdk-build"
+if ($IsWindows) {
+    $cmake_relative_build_folder = "$cmake_relative_build_folder/bin"
+}
+else {
+    $cmake_relative_build_folder = "$cmake_relative_build_folder/lib"
+}
+
+& "$PSScriptRoot/../CMake-Build-Platforms.ps1" -bit32 $false -CMakeConfig Release -CMakeRelativeBuildFolder $cmake_relative_build_folder

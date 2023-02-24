@@ -6,7 +6,21 @@ extern void* moduleHandle;
 extern bool InitModule ();
 extern bool DeinitModule ();
 
-typedef void (__cdecl *FunctionOutputCharDelegate)(int);
+#if defined(_MSC_VER)
+    //  Microsoft 
+    #define DLLEXPORT __declspec(dllexport)
+    #define DECL_CDECL __cdecl
+#elif defined(__GNUC__)
+    //  GCC
+    #define DLLEXPORT __attribute__((visibility("default")))
+    #define DECL_CDECL
+#else
+    //  do nothing and hope for the best?
+    #define DLLEXPORT
+    #define DECL_CDECL
+#endif
+
+typedef void (DECL_CDECL *FunctionOutputCharDelegate)(int);
 
 class RedirectBuffer: public std::streambuf
 {
@@ -59,18 +73,18 @@ private:
 };
 
 extern "C" {
-__declspec(dllexport) void nplug_validator_initialize()
+DLLEXPORT DECL_CDECL void nplug_validator_initialize()
 {
 	InitModule ();
 }
 
-__declspec(dllexport) int nplug_validator_validate(int argc, char* argv[], FunctionOutputCharDelegate output, FunctionOutputCharDelegate error)
+DLLEXPORT DECL_CDECL int nplug_validator_validate(int argc, char* argv[], FunctionOutputCharDelegate output, FunctionOutputCharDelegate error)
 {
 	auto result = NPlugValidator(argc, argv, output, error).run();
 	return result;
 }
 
-__declspec(dllexport) void nplug_validator_destroy()
+DLLEXPORT DECL_CDECL void nplug_validator_destroy()
 {
 	DeinitModule ();
 }

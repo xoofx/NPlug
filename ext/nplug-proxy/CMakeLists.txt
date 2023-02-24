@@ -13,7 +13,13 @@ add_definitions(-DNETHOST_USE_AS_STATIC)
 if(MSVC)
     # use static linking with CRT
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    #set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Release>:Relesae>")
 endif()
 
 add_library(nplug_proxy SHARED plugin.cpp)
-target_link_libraries(nplug_proxy PRIVATE nethost)
+
+if(MSVC)
+    target_link_libraries(nplug_proxy PRIVATE libnethost.lib)
+else()
+    target_link_libraries(nplug_proxy PRIVATE nethost)
+endif()

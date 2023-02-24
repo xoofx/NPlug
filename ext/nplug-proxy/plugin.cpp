@@ -28,10 +28,13 @@
 #define CH(c) L ## c
 #define DIR_SEPARATOR L'\\'
 
+#define NPLUG_CDECL __cdecl
+
 #else
 #include <dlfcn.h>
 #include <limits.h>
 
+#define NPLUG_CDECL
 #define STR(s) s
 #define CH(c) c
 #define DIR_SEPARATOR '/'
@@ -158,7 +161,9 @@ void* execute()
     //auto size = ::GetFullPathNameW(argv[0], sizeof(host_path) / sizeof(char_t), host_path, nullptr);
     assert(size != 0);
 #else
-    auto resolved = realpath(argv[0], host_path);
+    Dl_info dl_info;
+    dladdr((void *)execute, &dl_info);
+    auto resolved = realpath(dl_info.dli_fname, host_path);
     assert(resolved != nullptr);
 #endif
 
@@ -215,7 +220,7 @@ void* execute()
 
 extern "C" {
 
-typedef void* (__cdecl *GetPluginFactoryFunction)();
+typedef void* (NPLUG_CDECL *GetPluginFactoryFunction)();
 static GetPluginFactoryFunction _factory;
 
 NPLUG_NATIVE_DLL_EXPORT void nplug_set_plugin_factory(void* factory) {

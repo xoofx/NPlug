@@ -28,6 +28,8 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$PSNativeCommandArgumentPassing = "Standard"
+
 Try {
 
 # Common function used for building x86/x64/arm/arm64
@@ -61,10 +63,10 @@ function Build-Project {
     } elseif ($IsLinux) {
         $CMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
         if ($NETArch -eq "arm64") {
-            $CMakeArch = "-DCMAKE_TOOLCHAIN_FILE=toolchains/aarch64-linux-gnu.toolchain.cmake"
+            $CMakeArch = "-DCMAKE_TOOLCHAIN_FILE=$PSScriptRoot/toolchains/aarch64-linux-gnu.toolchain.cmake"
         }
         elseif ($NETArch -eq "arm") {
-            $CMakeArch = "-DCMAKE_TOOLCHAIN_FILE=toolchains/arm-linux-gnueabihf.toolchain.cmake"
+            $CMakeArch = "-DCMAKE_TOOLCHAIN_FILE=$PSScriptRoot/toolchains/arm-linux-gnueabihf.toolchain.cmake"
         }
     }
 
@@ -74,7 +76,7 @@ function Build-Project {
     $BuildPlatformFolder = "$BuildFolder/$DotNetRid"
     $PackageFolder = "$BuildFolder/package/$DotNetRid/native/"
 
-    & "$CMakeExePath" -G"$CMakeBuilder" $CMakeArch -B"$BuildPlatformFolder" -DDOTNET_RID=$DotNetRid @CMakeArgs "$CMakeSource"
+    & $CMakeExePath -G $CMakeBuilder -B $BuildPlatformFolder -DDOTNET_RID="$DotNetRid" $CMakeArch @CMakeArgs $CMakeSource
     if ($LastExitCode -ne 0) {
         throw "error with cmake"
     }

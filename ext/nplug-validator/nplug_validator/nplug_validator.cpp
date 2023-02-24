@@ -6,8 +6,8 @@ extern void* moduleHandle;
 extern bool InitModule ();
 extern bool DeinitModule ();
 
-#if defined(_MSC_VER)
-    //  Microsoft 
+#ifdef WINDOWS
+    //  Microsoft
     #define DLLEXPORT __declspec(dllexport)
     #define DECL_CDECL __cdecl
 #elif defined(__GNUC__)

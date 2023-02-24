@@ -77,12 +77,13 @@ function Build-Project {
     $BuildPlatformFolder = "$BuildFolder/$DotNetRid"
     $PackageFolder = "$BuildFolder/package/$DotNetRid/native/"
 
-    #trace-command -PSHOST -Name ParameterBinding { & $CMakeExePath -G $CMakeBuilder -B $BuildPlatformFolder -DDOTNET_RID="$DotNetRid" $CMakeArch @LocalCMakeArgs $CMakeSource  }
-    trace-command -PSHOST -Name ParameterBinding { & $CMakeExePath -G $CMakeBuilder -B $BuildPlatformFolder @LocalCMakeArgs $CMakeSource  }    
+    # trace-command -PSHOST -Name ParameterBinding { & $CMakeExePath -G $CMakeBuilder -B $BuildPlatformFolder @LocalCMakeArgs $CMakeSource  }
+    & $CMakeExePath -G $CMakeBuilder -B $BuildPlatformFolder @LocalCMakeArgs $CMakeSource
     if ($LastExitCode -ne 0) {
         throw "error with cmake"
     }
-    trace-command -PSHOST -Name ParameterBinding { & $CMakeExePath --build $BuildPlatformFolder --config $CMakeConfig }
+    # trace-command -PSHOST -Name ParameterBinding { & $CMakeExePath --build $BuildPlatformFolder --config $CMakeConfig }
+    & $CMakeExePath --build $BuildPlatformFolder --config $CMakeConfig
     if ($LastExitCode -ne 0) {
         throw "error with cmake --build"
     }

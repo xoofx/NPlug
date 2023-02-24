@@ -30,12 +30,12 @@ jobs:
       run: |
           ./build_nplug_validator.ps1
     - name: Artifacts Proxy
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: nplug-proxy-${{ matrix.os }}
         path: ext/nplug-proxy/build/package
     - name: Artifacts Validator
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: nplug-validator-${{ matrix.os }}
         path: ext/nplug-validator/build/package

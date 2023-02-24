@@ -74,7 +74,7 @@ function Build-Project {
     $BuildPlatformFolder = "$BuildFolder/$DotNetRid"
     $PackageFolder = "$BuildFolder/package/$DotNetRid/native/"
 
-    & "$CMakeExePath" -G"$CMakeBuilder" "$CMakeArch" -B"$BuildPlatformFolder" "-DDOTNET_RID=$DotNetRid" @CMakeArgs "$CMakeSource"
+    & "$CMakeExePath" -G"$CMakeBuilder" $CMakeArch -B"$BuildPlatformFolder" -DDOTNET_RID=$DotNetRid @CMakeArgs "$CMakeSource"
     if ($LastExitCode -ne 0) {
         throw "error with cmake"
     }

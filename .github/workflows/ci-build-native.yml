@@ -12,15 +12,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: true
         fetch-depth: 0
     - name: Setup Linux
       if: matrix.os == 'ubuntu-latest'
       run: |
-          sudo apt-get install gcc-aarch64-linux-gnu
-          sudo apt-get install g++-aarch64-linux-gnu
+           sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libfreetype6-dev pkg-config libxcb-util-dev libxcb-cursor-dev libxcb-keysyms1-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libxcb1-dev libglib2.0-0 libglib2.0-dev libcairo2-dev libpangocairo-1.0-0 libpango1.0-dev libgtkmm-3.0-dev libsqlite3-dev
     - name: Build Proxy
       working-directory: ./ext/nplug-proxy/
       run: |

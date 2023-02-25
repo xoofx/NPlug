@@ -44,7 +44,7 @@ function Build-Project {
     $NETSharedLibExtension = "so"
     $CMakeBuilder = "Unix Makefiles"
     $LocalCMakeArgs = $CMakeArgs
-    $BuildPlatformSubFolder = $CMakeRelativeBuildFolder
+    $BuildPlatformSubFolder = "$CMakeRelativeBuildFolder/$CMakeConfig"
     if ($IsMacOS) {
         $NETPlatform = "osx"
         $NETSharedLibExtension = "dylib"
@@ -59,7 +59,6 @@ function Build-Project {
         $NETSharedLibExtension = "dll"
         $CMakeBuilder = "Visual Studio 17 2022"
         $LocalCMakeArgs += "-A$MsvcArch"
-        $BuildPlatformSubFolder = "$BuildPlatformSubFolder/$CMakeConfig"
     } elseif ($IsLinux) {
         $LocalCMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
         if ($NETArch -eq "arm64") {

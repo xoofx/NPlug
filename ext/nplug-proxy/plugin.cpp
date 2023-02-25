@@ -233,22 +233,29 @@ NPLUG_NATIVE_DLL_EXPORT void* GetPluginFactory() {
 }
 
 #if defined _WIN32
-NPLUG_NATIVE_DLL_EXPORT void InitDll() {
+NPLUG_NATIVE_DLL_EXPORT bool InitDll() {
+    return true;
 }
 
-NPLUG_NATIVE_DLL_EXPORT void ExitDll() {
+NPLUG_NATIVE_DLL_EXPORT bool ExitDll() {
+    return true;
 }
 #elif __APPLE__
-NPLUG_NATIVE_DLL_EXPORT void BundleEntry() {
+NPLUG_NATIVE_DLL_EXPORT bool BundleEntry() {
+    return true;
 }
 
-NPLUG_NATIVE_DLL_EXPORT void BundleExit() {
+NPLUG_NATIVE_DLL_EXPORT bool BundleExit() {
+    return true;
 }
 #elif __linux__
-NPLUG_NATIVE_DLL_EXPORT void ModuleEntry() {
+
+NPLUG_NATIVE_DLL_EXPORT bool ModuleEntry(void* sharedLibraryHandle) {
+    return true;
 }
 
-NPLUG_NATIVE_DLL_EXPORT void ModuleExit() {
+NPLUG_NATIVE_DLL_EXPORT bool ModuleExit(void* sharedLibraryHandle) {
+    return true;
 }
 #endif
 }

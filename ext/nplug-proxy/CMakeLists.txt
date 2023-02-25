@@ -7,6 +7,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE})
 
 message(STATUS "Variable DOTNET_RID = ${DOTNET_RID}")
 
+if(APPLE)
+  if(${DOTNET_RID} EQUAL "osx-x64")
+    SET(CMAKE_OSX_ARCHITECTURES "x86_64")
+  else()
+    SET(CMAKE_OSX_ARCHITECTURES "arm64")
+  endif()
+endif(APPLE)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib/${DOTNET_RID})
 

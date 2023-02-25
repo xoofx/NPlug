@@ -70,18 +70,19 @@ private:
 };
 
 extern "C" {
-NPLUG_NATIVE_DLL_EXPORT NPLUG_CDECL void nplug_validator_initialize()
+
+NPLUG_NATIVE_DLL_EXPORT void NPLUG_CDECL nplug_validator_initialize()
 {
 	InitModule ();
 }
 
-NPLUG_NATIVE_DLL_EXPORT NPLUG_CDECL int nplug_validator_validate(int argc, char* argv[], FunctionOutputCharDelegate output, FunctionOutputCharDelegate error)
+NPLUG_NATIVE_DLL_EXPORT int NPLUG_CDECL nplug_validator_validate(int argc, char* argv[], FunctionOutputCharDelegate output, FunctionOutputCharDelegate error)
 {
 	auto result = NPlugValidator(argc, argv, output, error).run();
 	return result;
 }
 
-NPLUG_NATIVE_DLL_EXPORT NPLUG_CDECL void nplug_validator_destroy()
+NPLUG_NATIVE_DLL_EXPORT void NPLUG_CDECL nplug_validator_destroy()
 {
 	DeinitModule ();
 }

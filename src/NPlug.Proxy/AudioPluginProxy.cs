@@ -10,7 +10,16 @@ namespace NPlug.Proxy;
 
 public sealed class AudioPluginProxy : IDisposable
 {
-    public const string DefaultFileName = "nplug_proxy";
+    public static string DefaultFileName
+    {
+        get
+        {
+            if (OperatingSystem.IsWindows()) return "nplug_proxy.dll";
+            else if (OperatingSystem.IsMacOS()) return "libnplug_validator.dylib";
+            else if (OperatingSystem.IsLinux()) return "libnplug_proxy.so";
+            else throw new PlatformNotSupportedException();
+        }
+    }
 
     private readonly IntPtr _nativeProxyHandle;
     private readonly bool _ownHandle;
@@ -45,7 +54,7 @@ public sealed class AudioPluginProxy : IDisposable
         _nativeFactory = nativeFactory;
     }
 
-    public static string GetDefaultPath() => Path.Combine(Environment.CurrentDirectory, $"{DefaultFileName}.dll");
+    public static string GetDefaultPath() => Path.Combine(Environment.CurrentDirectory, DefaultFileName);
 
     public static AudioPluginProxy LoadDefault()
     {

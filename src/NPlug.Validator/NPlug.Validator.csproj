@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -7,33 +7,18 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <NPlugProxyLibraryFile>C:\code\NPlug\src\NPlug.Proxy\build\win-x64\native\nplug_proxy.dll</NPlugProxyLibraryFile>
+    <Version>3.7.6</Version>
   </PropertyGroup>
-
-  <Import Project="$(MSBuildThisFileDirectory)../NPlug.Proxy/build/NPlug.Proxy.targets" />
-
-  <ItemGroup>
-    <Content Condition="Exists('$(NPlugProxyLibraryFile)')" Include="$(NPlugProxyLibraryFile)" Link="$(NPlugProxyLibraryLink)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-    </Content>
-  </ItemGroup>
-
-  <!--<ItemGroup>
-    <Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.dll" Link="nplug_validator.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\ext\vst\build\package\win-x64\native\nplug_validator.pdb" Link="nplug_validator.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>-->
 
   <ItemGroup>
     <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.csproj" />
     <ProjectReference Include="..\NPlug\NPlug.csproj" />
   </ItemGroup>
 
-  <Target Name="NPlugTester" BeforeTargets="Build">
-    <Message Importance="high" Text="Link $(NPlugProxyLibraryLink) File $(NPlugProxyLibraryFile)" />
-  </Target>
+  <ItemGroup>
+    <Content Include="build\**\*">
+      <PackagePath>%(Identity)</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
 </Project>

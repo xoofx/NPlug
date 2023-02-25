@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project>
   <PropertyGroup>
     <NPlugProxyVersion>1.0.0</NPlugProxyVersion>
     <NPlugRuntimeIdentifier Condition="'$(NPlugRuntimeIdentifier)' == ''">$(RuntimeIdentifier)</NPlugRuntimeIdentifier>
@@ -12,7 +11,7 @@
     <NPlugNativeLibraryExtension Condition="'$(NPlugNativeLibraryExtension)' == ''">.so</NPlugNativeLibraryExtension>
 
     <NPlugProxyLibraryLink Condition="'$(NPlugProxyLibraryLink)' == ''">$(NPlugNativeLibraryPrefix)nplug_proxy$(NPlugNativeLibraryExtension)</NPlugProxyLibraryLink>
-    <NPlugProxyLibraryFile Condition="'$(NPlugProxyLibraryFile)' == ''">$(MSBuildThisFileDirectory)$(NPlugRuntimeIdentifier)/native/$(NPlugProxyLibraryLink)</NPlugProxyLibraryFile>
+    <NPlugProxyLibraryFile Condition="'$(NPlugProxyLibraryFile)' == ''">$(MSBuildThisFileDirectory)$(NPlugRuntimeIdentifier)\native\$(NPlugProxyLibraryLink)</NPlugProxyLibraryFile>
   </PropertyGroup>
 
 

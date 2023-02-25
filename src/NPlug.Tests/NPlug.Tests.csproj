@@ -29,4 +29,7 @@
   </ItemGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)../NPlug/build/NPlug.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)../NPlug.Proxy/build/NPlug.Proxy.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)../NPlug.Validator/build/NPlug.Validator.targets" />
+
 </Project>

@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <NPlugValidatorLibraryLink Condition="'$(NPlugValidatorLibraryLink)' == ''">$(NPlugNativeLibraryPrefix)nplug_validator$(NPlugNativeLibraryExtension)</NPlugValidatorLibraryLink>
+    <NPlugValidatorLibraryFile Condition="'$(NPlugValidatorLibraryFile)' == ''">$(MSBuildThisFileDirectory)$(NPlugRuntimeIdentifier)\native\$(NPlugValidatorLibraryLink)</NPlugValidatorLibraryFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Condition="'$(NPlugProxyLibraryFile)' != '' AND Exists('$(NPlugProxyLibraryFile)')" Include="$(NPlugProxyLibraryFile)" Link="$(NPlugProxyLibraryLink)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Condition="'$(NPlugValidatorLibraryFile)' != '' AND Exists('$(NPlugValidatorLibraryFile)')" Include="$(NPlugValidatorLibraryFile)" Link="$(NPlugValidatorLibraryLink)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -6,21 +6,18 @@ extern void* moduleHandle;
 extern bool InitModule ();
 extern bool DeinitModule ();
 
-#ifdef WINDOWS
-    //  Microsoft
-    #define DLLEXPORT __declspec(dllexport)
-    #define DECL_CDECL __cdecl
-#elif defined(__GNUC__)
-    //  GCC
-    #define DLLEXPORT __attribute__((visibility("default")))
-    #define DECL_CDECL
+#if defined(__GNUC__) || defined(__clang__)
+    #define NPLUG_NATIVE_DLL_EXPORT __attribute__((__visibility__("default")))
+    #define NPLUG_CDECL __attribute__((cdecl))
+#elif defined(_MSC_VER) || defined(__INTEL_COMPILER)
+    #define NPLUG_NATIVE_DLL_EXPORT __declspec(dllexport)
+    #define NPLUG_CDECL __cdecl
 #else
-    //  do nothing and hope for the best?
-    #define DLLEXPORT
-    #define DECL_CDECL
+    #define NPLUG_NATIVE_DLL_EXPORT
+    #define NPLUG_CDECL
 #endif
 
-typedef void (DECL_CDECL *FunctionOutputCharDelegate)(int);
+typedef void (NPLUG_CDECL *FunctionOutputCharDelegate)(int);
 
 class RedirectBuffer: public std::streambuf
 {
@@ -73,18 +70,18 @@ private:
 };
 
 extern "C" {
-DLLEXPORT DECL_CDECL void nplug_validator_initialize()
+NPLUG_NATIVE_DLL_EXPORT NPLUG_CDECL void nplug_validator_initialize()
 {
 	InitModule ();
 }
 
-DLLEXPORT DECL_CDECL int nplug_validator_validate(int argc, char* argv[], FunctionOutputCharDelegate output, FunctionOutputCharDelegate error)
+NPLUG_NATIVE_DLL_EXPORT NPLUG_CDECL int nplug_validator_validate(int argc, char* argv[], FunctionOutputCharDelegate output, FunctionOutputCharDelegate error)
 {
 	auto result = NPlugValidator(argc, argv, output, error).run();
 	return result;
 }
 
-DLLEXPORT DECL_CDECL void nplug_validator_destroy()
+NPLUG_NATIVE_DLL_EXPORT NPLUG_CDECL void nplug_validator_destroy()
 {
 	DeinitModule ();
 }

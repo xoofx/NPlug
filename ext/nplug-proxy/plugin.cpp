@@ -27,14 +27,9 @@
 #define STR(s) L ## s
 #define CH(c) L ## c
 #define DIR_SEPARATOR L'\\'
-
-#define NPLUG_CDECL __cdecl
-
 #else
 #include <dlfcn.h>
 #include <limits.h>
-
-#define NPLUG_CDECL
 #define STR(s) s
 #define CH(c) c
 #define DIR_SEPARATOR '/'
@@ -42,12 +37,15 @@
 
 #endif
 
-#if HAVE_VISIBILITY
-#define NPLUG_NATIVE_DLL_EXPORT __attribute__((__visibility__("default")))
-#elif (defined WIN32 && !defined __CYGWIN__)
-#define NPLUG_NATIVE_DLL_EXPORT __declspec(dllexport)
+#if defined(__GNUC__) || defined(__clang__)
+    #define NPLUG_NATIVE_DLL_EXPORT __attribute__((__visibility__("default")))
+    #define NPLUG_CDECL __attribute__((cdecl))
+#elif defined(_MSC_VER) || defined(__INTEL_COMPILER)
+    #define NPLUG_NATIVE_DLL_EXPORT __declspec(dllexport)
+    #define NPLUG_CDECL __cdecl
 #else
-#define NPLUG_NATIVE_DLL_EXPORT
+    #define NPLUG_NATIVE_DLL_EXPORT
+    #define NPLUG_CDECL
 #endif
 
 using string_t = std::basic_string<char_t>;

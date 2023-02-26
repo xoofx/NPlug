@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.csproj" />
-    <ProjectReference Include="..\NPlug\NPlug.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,3 @@
-using System.Reflection;
 using NPlug.Proxy;
 using System.Runtime.InteropServices;
 
@@ -18,9 +17,9 @@ public static class AudioPluginValidator
         NativeProxy = AudioPluginProxy.Load(Path.Combine(DefaultPluginPath, "Contents", AudioPluginProxy.GetVstArchitecture(), AudioPluginProxy.GetVstDynamicLibraryName(DefaultPluginName)));
     }
 
-    public static bool Validate(AudioPluginFactory factory, TextWriter outputLog, TextWriter errorLog)
+    public static bool Validate(Func<IntPtr> factory, TextWriter outputLog, TextWriter errorLog)
     {
-        NativeProxy.SetNativeFactory(factory.Export);
+        NativeProxy.SetNativeFactory(factory);
 
         return Validate(2, new string[]
         {

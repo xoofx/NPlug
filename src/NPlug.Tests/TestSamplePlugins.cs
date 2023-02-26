@@ -12,7 +12,7 @@ public class TestSamplePlugins
     {
         //InteropHelper.Tracer = new InteropTracer();
         var factory = SimpleDelayPlugin.GetFactory();
-        AudioPluginValidator.Validate(factory, Console.Out, Console.Error);
+        AudioPluginValidator.Validate(factory.Export, Console.Out, Console.Error);
 
         if (InteropHelper.HasObjectAlive())
         {
@@ -38,7 +38,7 @@ public class TestSamplePlugins
         var factoryInstance = factory();
         var outBuilder = new StringWriter();
         var errorBuilder = new StringWriter();
-        var result = AudioPluginValidator.Validate(factoryInstance, outBuilder, errorBuilder);
+        var result = AudioPluginValidator.Validate(factoryInstance.Export, outBuilder, errorBuilder);
         var textOutput = outBuilder.ToString().Trim().Replace("\r\n", "\n");
         var errorOutput = errorBuilder.ToString().Trim();
 

@@ -241,11 +241,11 @@ NPLUG_NATIVE_DLL_EXPORT bool ExitDll() {
     return true;
 }
 #elif __APPLE__
-NPLUG_NATIVE_DLL_EXPORT bool BundleEntry() {
+NPLUG_NATIVE_DLL_EXPORT bool bundleEntry() {
     return true;
 }
 
-NPLUG_NATIVE_DLL_EXPORT bool BundleExit() {
+NPLUG_NATIVE_DLL_EXPORT bool bundleExit() {
     return true;
 }
 #elif __linux__

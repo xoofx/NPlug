@@ -39,11 +39,24 @@ public class TestSamplePlugins
         var outBuilder = new StringWriter();
         var errorBuilder = new StringWriter();
         var result = AudioPluginValidator.Validate(factoryInstance, outBuilder, errorBuilder);
-        var textOutput = outBuilder.ToString().Trim();
+        var textOutput = outBuilder.ToString().Trim().Replace("\r\n", "\n");
         var errorOutput = errorBuilder.ToString().Trim();
 
         // Replace all nplug_validator_proxy.xxx by nplug_validator_proxy.vst3, as the extension change by platform
         textOutput = Regex.Replace(textOutput, $"{AudioPluginValidator.DefaultPluginName}.\\w+", $"{AudioPluginValidator.DefaultPluginName}.vst3");
+
+        // Fix weird issue on MacOS where this warning is emitted 2 times
+        const string CheckText = "Info:     Not all points have been read via IParameterChanges\n";
+        var indexOf = textOutput.IndexOf(CheckText);
+        if (indexOf > 0)
+        {
+            var newIndexOf = textOutput.IndexOf(CheckText, indexOf + 1);
+            if (newIndexOf > 0 && newIndexOf == indexOf + CheckText.Length)
+            {
+                textOutput = textOutput.Substring(0, newIndexOf) + textOutput.Substring(newIndexOf + CheckText.Length);
+            }
+        }
+        
         if (!string.IsNullOrEmpty(errorOutput))
         {
             textOutput += "\n*******************************************************\nError Output\n*******************************************************\n";

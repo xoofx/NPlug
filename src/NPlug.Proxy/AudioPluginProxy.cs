@@ -90,12 +90,12 @@ public sealed class AudioPluginProxy : IDisposable
 
         if (OperatingSystem.IsMacOS())
         {
-            return $"lib{name}.dylib";
+            return $"{name}.dylib";
         }
 
         if (OperatingSystem.IsLinux())
         {
-            return $"lib{name}.so";
+            return $"{name}.so";
         }
 
         throw new PlatformNotSupportedException();

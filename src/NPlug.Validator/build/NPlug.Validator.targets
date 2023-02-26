@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Condition="'$(NPlugProxyLibraryFile)' != '' AND Exists('$(NPlugProxyLibraryFile)') AND '$(NPlugVstArch)' != ''" Include="$(NPlugProxyLibraryFile)" Link="nplug_validator_proxy.vst3/Contents/$(NPlugVstArch)/$(NPlugNativeLibraryPrefix)nplug_validator_proxy$(NPlugVstNativeLibraryExtension)">
+    <Content Condition="'$(NPlugProxyLibraryFile)' != '' AND Exists('$(NPlugProxyLibraryFile)') AND '$(NPlugVstArch)' != ''" Include="$(NPlugProxyLibraryFile)" Link="nplug_validator_proxy.vst3/Contents/$(NPlugVstArch)/nplug_validator_proxy$(NPlugVstNativeLibraryExtension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>false</Visible>
     </Content>

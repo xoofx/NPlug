@@ -20,12 +20,11 @@ set(nplug_validator_source_files
     ${nplug_validator_source}/nplug_validator.cmake
 )
 
-set(ROOT_BUILD_FOLDER ${CMAKE_CURRENT_BINARY_DIR}/../..)
-set(VST_SDK_FOLDER ${ROOT_BUILD_FOLDER}/vst3sdk-3.7.6)
+set(VST_SDK_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/../vst3sdk)
 
 if(NOT EXISTS ${VST_SDK_FOLDER})
     set(GIT_REPOSITORY https://github.com/steinbergmedia/vst3sdk.git)
-    set(GIT_TAG v3.7.6_build_18)
+    set(GIT_TAG v3.7.7_build_19)
 endif()
 
 ExternalProject_Add(vst3sdk

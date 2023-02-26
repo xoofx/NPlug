@@ -16,7 +16,7 @@ internal static unsafe partial class LibVst
         
         private static partial ComResult getControllerClassId_ToManaged(IComponent* self, Guid* classId)
         {
-            *classId = Get(self).ControllerClassId;
+            *classId = Get(self).ControllerClassId.ConvertToPlatform();
             return true;
         }
 

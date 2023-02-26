@@ -48,7 +48,7 @@ internal static unsafe partial class LibVst
         private static partial ComResult getClassInfo_ToManaged(IPluginFactory* self, int index, PClassInfo* info)
         {
             var pluginClassInfo = Get(self).GetPluginClassInfo(index);
-            info->cid = pluginClassInfo.ClassId;
+            info->cid = pluginClassInfo.ClassId.ConvertToPlatform();
             info->cardinality = pluginClassInfo.Cardinality;
             CopyStringToUTF8(AudioEffectCategory, info->category, 32);
             CopyStringToUTF8(pluginClassInfo.Name, info->name, 64);
@@ -59,7 +59,7 @@ internal static unsafe partial class LibVst
         {
             var comResult = false;
             *obj = null;
-            var pluginComponent = Get(self).CreateInstance(*(Guid*)cid.Value);
+            var pluginComponent = Get(self).CreateInstance((*(Guid*)cid.Value).ConvertToPlatform());
             if (pluginComponent != null)
             {
                 var comObject = ComObjectManager.Instance.GetOrCreateComObject(pluginComponent);

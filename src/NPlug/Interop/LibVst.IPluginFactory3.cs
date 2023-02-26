@@ -17,7 +17,7 @@ internal static unsafe partial class LibVst
         private static partial ComResult getClassInfoUnicode_ToManaged(IPluginFactory3* self, int index, PClassInfoW* info)
         {
             var pluginClassInfo = Get(self).GetPluginClassInfo(index);
-            info->cid = pluginClassInfo.ClassId;
+            info->cid = pluginClassInfo.ClassId.ConvertToPlatform();
             info->cardinality = pluginClassInfo.Cardinality;
             //public fixed byte category[32];
             CopyStringToUTF8(GetPluginCategory(pluginClassInfo), info->category, 32);

@@ -65,7 +65,7 @@ internal static unsafe partial class LibVst
         
         private static partial ComResult getComponentUID_ToManaged(ITestPlugProvider* self, LibVst.FUID* uid)
         {
-            *((Guid*)uid) = Get(self).GetAudioProcessorClassId();
+            *((Guid*)uid) = Get(self).GetAudioProcessorClassId().ConvertToPlatform();
             return true;
         }
     }

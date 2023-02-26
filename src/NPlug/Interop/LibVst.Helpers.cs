@@ -3,6 +3,8 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Buffers.Binary;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -28,6 +30,24 @@ internal static unsafe partial class LibVst
         {
             dest[lengthToCopy] = (char)0;
         }
+    }
+
+    private static Guid ConvertToPlatform(this in Guid guid)
+    {
+        // GUID in VST are identical to the Windows Version
+        if (OperatingSystem.IsWindows() || !BitConverter.IsLittleEndian) return guid;
+
+        // But on non COM Compatible OS, the leading u32, u16, u16, u8[8]
+        // are big endian instead of little endian, so we need to reverse them
+        var newGuid = guid;
+        var pInt0 = (int*)&newGuid;
+        *pInt0 = BinaryPrimitives.ReverseEndianness(*pInt0);
+        var pShort1 = (short*)pInt0 + 2;
+        *pShort1 = BinaryPrimitives.ReverseEndianness(*pShort1);
+        var pShort2 = (short*)pInt0 + 4;
+        *pShort2 = BinaryPrimitives.ReverseEndianness(*pShort2);
+
+        return newGuid;
     }
 
     private static void CopyStringToUTF16(string text, ref String128 str128)

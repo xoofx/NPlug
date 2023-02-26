@@ -1,6 +1,6 @@
 ﻿* Loading module...
 
-	{CurrentDirectory}nplug_proxy.dll
+	{CurrentDirectory}nplug_validator_proxy.vst3
 
 * Scanning classes...
 

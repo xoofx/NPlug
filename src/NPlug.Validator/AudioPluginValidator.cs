@@ -1,3 +1,4 @@
+using System.Reflection;
 using NPlug.Proxy;
 using System.Runtime.InteropServices;
 
@@ -7,10 +8,14 @@ public static class AudioPluginValidator
 {
     private static readonly AudioPluginProxy NativeProxy;
 
+    public const string DefaultPluginName = "nplug_validator_proxy";
+
+    public static string DefaultPluginPath => Path.Combine(AppContext.BaseDirectory, $"{DefaultPluginName}.vst3");
+
     static AudioPluginValidator()
     {
         Initialize();
-        NativeProxy = AudioPluginProxy.LoadDefault();
+        NativeProxy = AudioPluginProxy.Load(Path.Combine(DefaultPluginPath, "Contents", AudioPluginProxy.GetVstArchitecture(), AudioPluginProxy.GetVstDynamicLibraryName(DefaultPluginName)));
     }
 
     public static bool Validate(AudioPluginFactory factory, TextWriter outputLog, TextWriter errorLog)
@@ -20,7 +25,7 @@ public static class AudioPluginValidator
         return Validate(2, new string[]
         {
             nameof(AudioPluginValidator),
-            AudioPluginProxy.GetDefaultPath()
+            DefaultPluginPath
         }, outputLog, errorLog) == 0;
     }
 

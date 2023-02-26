@@ -5,21 +5,35 @@
     <NPlugRuntimeIdentifier Condition="'$(NPlugRuntimeIdentifier)' == ''">$(NETCoreSdkRuntimeIdentifier)</NPlugRuntimeIdentifier>
 
     <NPlugNativeLibraryPrefix Condition="'$(NPlugNativeLibraryPrefix)' == '' and !$(NPlugRuntimeIdentifier.StartsWith('win'))">lib</NPlugNativeLibraryPrefix>
-
     <NPlugNativeLibraryExtension Condition="'$(NPlugNativeLibraryExtension)' == '' and $(NPlugRuntimeIdentifier.StartsWith('win'))">.dll</NPlugNativeLibraryExtension>
     <NPlugNativeLibraryExtension Condition="'$(NPlugNativeLibraryExtension)' == '' and $(NPlugRuntimeIdentifier.StartsWith('osx'))">.dylib</NPlugNativeLibraryExtension>
     <NPlugNativeLibraryExtension Condition="'$(NPlugNativeLibraryExtension)' == ''">.so</NPlugNativeLibraryExtension>
+
+    <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'win-x64'">x86_64-win</NPlugVstArch>
+    <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'win-arm64'">arm_64-win</NPlugVstArch>
+
+    <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'linux-x64'">x86_64-linux</NPlugVstArch>
+    <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'linux-arm64'">aarch64-linux</NPlugVstArch>
+
+    <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'osx-x64'">MacOS</NPlugVstArch>
+    <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'osx-arm64'">MacOS</NPlugVstArch>
+
+    <NPlugVstNativeLibraryExtension Condition="'$(NPlugVstNativeLibraryExtension)' == '' and $(NPlugRuntimeIdentifier.StartsWith('win'))">.vst3</NPlugVstNativeLibraryExtension>
+    <NPlugVstNativeLibraryExtension Condition="'$(NPlugVstNativeLibraryExtension)' == '' and $(NPlugRuntimeIdentifier.StartsWith('osx'))">.dylib</NPlugVstNativeLibraryExtension>
+    <NPlugVstNativeLibraryExtension Condition="'$(NPlugVstNativeLibraryExtension)' == ''">.so</NPlugVstNativeLibraryExtension>
 
     <NPlugProxyLibraryLink Condition="'$(NPlugProxyLibraryLink)' == ''">$(NPlugNativeLibraryPrefix)nplug_proxy$(NPlugNativeLibraryExtension)</NPlugProxyLibraryLink>
     <NPlugProxyLibraryFile Condition="'$(NPlugProxyLibraryFile)' == ''">$(MSBuildThisFileDirectory)$(NPlugRuntimeIdentifier)\native\$(NPlugProxyLibraryLink)</NPlugProxyLibraryFile>
   </PropertyGroup>
 
-
-  <Target Name="TryNPlug" BeforeTargets="Build">
+  <Target Name="VerifyNPlug" BeforeTargets="Build">
+    <Error Condition="'$(NPlugVstArch)' == ''" Text="The .NET Platform RID `$(NPlugRuntimeIdentifier)` is not supported by NPlug."></Error>
     <Message Importance="high" Text="NPlugRuntimeIdentifier: $(NPlugRuntimeIdentifier)"/>
     <Message Importance="high" Text="NPlugNativeLibraryExtension: $(NPlugNativeLibraryExtension)"/>
     <Message Importance="high" Text="NPlugProxyLibraryFile: $(NPlugProxyLibraryFile)"/>
     <Message Importance="high" Text="NPlugProxyLibraryLink: $(NPlugProxyLibraryLink)"/>
+    <Message Importance="high" Text="NPlugVstNativeLibraryExtension: $(NPlugVstNativeLibraryExtension)"/>
+    <Message Importance="high" Text="NPlugVstArch: $(NPlugVstArch)"/>
   </Target>
 
 </Project>

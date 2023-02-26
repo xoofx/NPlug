@@ -10,17 +10,6 @@ namespace NPlug.Proxy;
 
 public sealed class AudioPluginProxy : IDisposable
 {
-    public static string DefaultFileName
-    {
-        get
-        {
-            if (OperatingSystem.IsWindows()) return "nplug_proxy.dll";
-            else if (OperatingSystem.IsMacOS()) return "libnplug_validator.dylib";
-            else if (OperatingSystem.IsLinux()) return "libnplug_proxy.so";
-            else throw new PlatformNotSupportedException();
-        }
-    }
-
     private readonly IntPtr _nativeProxyHandle;
     private readonly bool _ownHandle;
     private Func<IntPtr>? _nativeFactory;
@@ -54,11 +43,62 @@ public sealed class AudioPluginProxy : IDisposable
         _nativeFactory = nativeFactory;
     }
 
-    public static string GetDefaultPath() => Path.Combine(Environment.CurrentDirectory, DefaultFileName);
-
-    public static AudioPluginProxy LoadDefault()
+    public static string GetVstArchitecture()
     {
-        return Load(GetDefaultPath());
+        if (OperatingSystem.IsWindows())
+        {
+            switch (RuntimeInformation.ProcessArchitecture)
+            {
+
+                case Architecture.Arm64:
+                    return "arm_64-win";
+                case Architecture.X64:
+                    return "x86_64-win";
+                default:
+                    throw new PlatformNotSupportedException($"Processor {RuntimeInformation.ProcessArchitecture} not supported for the Windows platform");
+            }
+        }
+
+        if (OperatingSystem.IsMacOS())
+        {
+            return "MacOS";
+        }
+
+        if (OperatingSystem.IsLinux())
+        {
+            switch (RuntimeInformation.ProcessArchitecture)
+            {
+
+                case Architecture.Arm64:
+                    return "arch64-linux";
+                case Architecture.X64:
+                    return "x86_64-linux";
+                default:
+                    throw new PlatformNotSupportedException($"Processor {RuntimeInformation.ProcessArchitecture} not supported for the Linux platform");
+            }
+        }
+
+        throw new PlatformNotSupportedException();
+    }
+
+    public static string GetVstDynamicLibraryName(string name)
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            return $"{name}.vst3";
+        }
+
+        if (OperatingSystem.IsMacOS())
+        {
+            return $"lib{name}.dylib";
+        }
+
+        if (OperatingSystem.IsLinux())
+        {
+            return $"lib{name}.so";
+        }
+
+        throw new PlatformNotSupportedException();
     }
 
     public static AudioPluginProxy Load(string nativeProxyDllFilePath)

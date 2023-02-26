@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using NPlug.Interop;
 using NPlug.SimpleDelay;
 using NPlug.SimpleProgramChange;
@@ -40,6 +41,9 @@ public class TestSamplePlugins
         var result = AudioPluginValidator.Validate(factoryInstance, outBuilder, errorBuilder);
         var textOutput = outBuilder.ToString().Trim();
         var errorOutput = errorBuilder.ToString().Trim();
+
+        // Replace all nplug_validator_proxy.xxx by nplug_validator_proxy.vst3, as the extension change by platform
+        textOutput = Regex.Replace(textOutput, $"{AudioPluginValidator.DefaultPluginName}.\\w+", $"{AudioPluginValidator.DefaultPluginName}.vst3");
         if (!string.IsNullOrEmpty(errorOutput))
         {
             textOutput += "\n*******************************************************\nError Output\n*******************************************************\n";

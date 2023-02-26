@@ -44,7 +44,7 @@ internal static unsafe partial class LibVst
         *pInt0 = BinaryPrimitives.ReverseEndianness(*pInt0);
         var pShort1 = (short*)pInt0 + 2;
         *pShort1 = BinaryPrimitives.ReverseEndianness(*pShort1);
-        var pShort2 = (short*)pInt0 + 4;
+        var pShort2 = (short*)pInt0 + 3;
         *pShort2 = BinaryPrimitives.ReverseEndianness(*pShort2);
 
         return newGuid;

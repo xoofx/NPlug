@@ -14,7 +14,7 @@
 	category = Audio Module Class
 	subCategories = Fx
 	version = 0.0
-	sdkVersion = VST 3.7.6
+	sdkVersion = VST 3.7.7
 	cid = D2D46DF833974ACF9008DF3396B890F2
 
   Class Info 1:
@@ -22,7 +22,7 @@
 	category = Component Controller Class
 	subCategories = 
 	version = 0.0
-	sdkVersion = VST 3.7.6
+	sdkVersion = VST 3.7.7
 	cid = 59C17896478B4AF186D83BA0817149D5
 
 * Checking snapshots...

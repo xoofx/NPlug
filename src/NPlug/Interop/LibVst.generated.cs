@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 
 internal static partial class LibVst
 {
-    public const string SdkVersion = "VST 3.7.6";
+    public const string SdkVersion = "VST 3.7.7";
     
     public const string AudioEffectCategory = "Audio Module Class";
     
@@ -2886,18 +2886,14 @@ internal static partial class LibVst
         KEY_F19,
         
         /// <summary>
-        /// multimedia keys
+        /// Win-Key on Windows, Ctrl-Key on macOS
         /// </summary>
+        KEY_SUPER,
+        
         VKEY_FIRST_CODE = KEY_BACK,
         
-        /// <summary>
-        /// multimedia keys
-        /// </summary>
-        VKEY_LAST_CODE = KEY_F19,
+        VKEY_LAST_CODE = KEY_SUPER,
         
-        /// <summary>
-        /// multimedia keys
-        /// </summary>
         VKEY_FIRST_ASCII = 128,
     }
     
@@ -2907,22 +2903,22 @@ internal static partial class LibVst
     public enum KeyModifier
     {
         /// <summary>
-        /// same on both PC and Mac
+        /// same on Windows and macOS
         /// </summary>
         kShiftKey = 1 << 0,
         
         /// <summary>
-        /// same on both PC and Mac
+        /// same on Windows and macOS
         /// </summary>
         kAlternateKey = 1 << 1,
         
         /// <summary>
-        /// windows ctrl key; mac cmd key (apple button)
+        /// Windows: ctrl key; macOS: cmd key
         /// </summary>
         kCommandKey = 1 << 2,
         
         /// <summary>
-        /// windows: not assigned, mac: ctrl key
+        /// Wndows: win key, macOS: ctrl key
         /// </summary>
         kControlKey = 1 << 3,
     }
@@ -13893,6 +13889,18 @@ internal static partial class LibVst
     /// X11 Window ID. (X11)
     /// </summary>
     public static ReadOnlySpan<byte> kPlatformTypeX11EmbedWindowID_u8 => "X11EmbedWindowID\0"u8;
+    
+    /// <summary>
+    /// @
+    /// }
+    /// </summary>
+    public const string SDKVersionString = "VST 3.7.7";
+    
+    /// <summary>
+    /// @
+    /// }
+    /// </summary>
+    public static ReadOnlySpan<byte> SDKVersionString_u8 => "VST 3.7.7\0"u8;
     
     public static partial class SpeakerArr
     {

@@ -1,4 +1,4 @@
-name: ci-build-native
+name: ci-nplug_validator
 
 on:
   workflow_dispatch:
@@ -20,19 +20,10 @@ jobs:
       if: matrix.os == 'ubuntu-18.04'
       run: |
            sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libfreetype6-dev pkg-config libxcb-util-dev libxcb-cursor-dev libxcb-keysyms1-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libxcb1-dev libglib2.0-0 libglib2.0-dev libcairo2-dev libpangocairo-1.0-0 libpango1.0-dev libgtkmm-3.0-dev libsqlite3-dev
-    - name: Build Proxy
-      working-directory: ./ext/nplug-proxy/
-      run: |
-          ./build_nplug_proxy.ps1
     - name: Build Validator
       working-directory: ./ext/nplug-validator
       run: |
           ./build_nplug_validator.ps1
-    - name: Artifacts Proxy
-      uses: actions/upload-artifact@v3
-      with:
-        name: nplug-proxy-${{ matrix.os }}
-        path: ext/nplug-proxy/build/package
     - name: Artifacts Validator
       uses: actions/upload-artifact@v3
       with:

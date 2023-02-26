@@ -9,6 +9,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>false</Visible>
     </Content>
+
+    <!-- For macOS we need to generate an Info.plist -->
+    <Content Condition="'$(NPlugRuntimeIdentifier)' == 'osx-arm64' OR '$(NPlugRuntimeIdentifier)' == 'osx-x64'" Include="$(MSBuildThisFileDirectory)Info.plist" Link="nplug_validator_proxy.vst3/Contents/Info.plist">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

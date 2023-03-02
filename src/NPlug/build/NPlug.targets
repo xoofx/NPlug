@@ -28,7 +28,11 @@
     <PublishAot Condition="'$(PublishAot)' == '' AND '$(_IsPublishing)' == 'true'">true</PublishAot>
 
     <!--A runtimeconfig.json file is required when not in AOT-->
-    <GenerateRuntimeConfigurationFiles Condition="'$(_IsPublishing)' != 'true'">true</GenerateRuntimeConfigurationFiles>
+    <GenerateRuntimeConfigurationFiles Condition="'$(PublishAot)' != 'true'">true</GenerateRuntimeConfigurationFiles>
+
+    <!--<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>bin\$(Configuration)\$(TargetName).vst3\Contents\$(NPlugVstArch)\</OutputPath>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -59,6 +63,6 @@
 
   <Target Name="NPlugRenameNativeBinaryToVst3" Condition="'$(NPlugFactoryExport)' == 'true' AND '$(PublishAot)' == 'true'" AfterTargets="CopyNativeBinary">
     <!-- Change the native output extension to a vst3 file -->
-    <Move SourceFiles="$(PublishDir)$(TargetName)$(NativeBinaryExt)" DestinationFiles="$(PublishDir)$(TargetName).vst3" />
+    <Move SourceFiles="$(PublishDir)$(TargetName)$(NativeBinaryExt)" DestinationFiles="$(PublishDir)$(TargetName)$(NPlugVstNativeLibraryExtension)" />
   </Target>
 </Project>

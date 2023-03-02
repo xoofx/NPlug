@@ -1,6 +1,5 @@
 <Project>
   <PropertyGroup>
-
   </PropertyGroup>
 
   <!--Simulate the import of these props/targets files as if we were used from a NuGet package-->

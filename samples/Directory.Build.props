@@ -1,20 +1,6 @@
 <Project>
-
   <PropertyGroup>
     <NPlugSampleTargetsFile>$(MSBuildThisFileDirectory)../src/NPlug.samples.targets</NPlugSampleTargetsFile>
     <NPlugSampleInRepo Condition="Exists('$(NPlugSampleTargetsFile)')">true</NPlugSampleInRepo>
-  </PropertyGroup>
-
-  <!--Property used to build all the Plugins to a "build" folder - only from the sample repository directly-->
-  <!--It doesn't work inside the NPlug repository as it won't copy the assemblies coming from the NPlug projects (e.g NPlug.dll)-->
-  <!--because they are not configured with this option.-->
-  <PropertyGroup Condition="'$(NPlugSampleInRepo)' == ''">
-    <CommonOutputDirectory>$(MSBuildThisFileDirectory)build\</CommonOutputDirectory>
-    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-    <OutputPath>$(CommonOutputDirectory)bin\$(Configuration)\</OutputPath>
-    <OutDir>$(OutputPath)</OutDir>
-    <BaseIntermediateOutputPath>$(CommonOutputDirectory)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-    <DefaultItemExcludes>$(DefaultItemExcludes);obj/**</DefaultItemExcludes>
   </PropertyGroup>
 </Project>

@@ -8,6 +8,5 @@
 
   <ItemGroup>
     <ProjectReference Include="$(MSBuildThisFileDirectory)NPlug/NPlug.csproj"/>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)NPlug.Proxy/NPlug.Proxy.csproj"/>
   </ItemGroup>
 </Project>

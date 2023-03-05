@@ -5,11 +5,10 @@
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>NPlug is a library that allow to easily develop VST audio plugin in .NET</Description>
+    <Description>NPlug is a library that allows to easily develop VST3 audio native plugin in .NET using NativeAOT. The associated VST3 version is: $(VstVersion).</Description>
     <Copyright>Alexandre Mutel</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Authors>Alexandre Mutel</Authors>
@@ -43,6 +42,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="MinVer" Version="4.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -50,6 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.csproj" />
+    <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.msbuildproj" />
   </ItemGroup>
 </Project>

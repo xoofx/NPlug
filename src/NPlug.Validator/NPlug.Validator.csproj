@@ -7,17 +7,48 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <Version>3.7.6</Version>
+    <Version>$(VstVersion)</Version>
+    <NPlugAudioPluginProxy>true</NPlugAudioPluginProxy>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>Package providing the official VST3 validator for NPlug. This package is meant to be used from Unit Tests. The associated VST3 version is: $(VstVersion).</Description>
+    <Copyright>Alexandre Mutel</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Authors>Alexandre Mutel</Authors>
+    <PackageTags>audio;sound;vst;vst3</PackageTags>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageIcon>NPlug.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/xoofx/NPlug</PackageProjectUrl>
+    <PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>
+    <!--Add support for sourcelink-->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.csproj" />
+    <None Include="$(MSBuildThisFileDirectory)../../img/NPlug.png" Pack="true" PackagePath="/" />
+    <None Include="readme.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="build\**\*">
+    <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.msbuildproj" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)../NPlug.Proxy/build/NPlug.Proxy.targets" />
+
+  <ItemGroup>
+    <None Include="build\**\*">
       <PackagePath>%(Identity)</PackagePath>
       <Pack>true</Pack>
-    </Content>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

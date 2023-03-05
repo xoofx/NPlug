@@ -1,13 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.Build.NoTargets/3.7.0">
   <PropertyGroup>
-    <OutputType>Library</OutputType>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <IsPackable Condition="'$(IsPackable)' == ''">false</IsPackable>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup>
+    <PackageId>NPlug.Proxy</PackageId>
     <Description>Package providing a native proxy for NPlug. This package is not meant to be used directly.</Description>
     <Copyright>Alexandre Mutel</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -17,10 +15,7 @@
     <PackageIcon>NPlug.png</PackageIcon>
     <PackageProjectUrl>https://github.com/xoofx/NPlug</PackageProjectUrl>
     <PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>
-    <!--Add support for sourcelink-->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,9 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="build\**\*">
+    <None Include="build\**\*">
       <PackagePath>%(Identity)</PackagePath>
       <Pack>true</Pack>
-    </Content>
+    </None>
   </ItemGroup>
 </Project>

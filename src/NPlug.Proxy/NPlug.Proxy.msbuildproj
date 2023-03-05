@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <IsPackable Condition="'$(IsPackable)' == ''">false</IsPackable>
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <PropertyGroup>

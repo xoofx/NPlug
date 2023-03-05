@@ -23,6 +23,15 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
+  <Target Name="OverrideMinVer" AfterTargets="MinVer" Condition="'$(DesignTimeBuild)' != 'true'">
+    <PropertyGroup>
+      <!-- We set the VstVersionCompact as a build number -->
+      <PackageVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch).$(VstVersionCompact)</PackageVersion>
+      <FileVersion>$(PackageVersion)</FileVersion>
+      <Version>$(PackageVersion)</Version>
+    </PropertyGroup>
+  </Target>
+
   <ItemGroup>
     <None Remove="ILLink.Substitutions.xml" />
   </ItemGroup>

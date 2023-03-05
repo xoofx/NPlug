@@ -11,7 +11,8 @@ NPlug is a library that allows to easily develop [VST3](https://steinbergmedia.g
 ## Features
 
 - Purely managed, fast interop, no C++/CLI.
-- Compatible with NET7+ NativeAOT: Build a native VST3 plugin with NPlug!
+- Compatible with NET7+ NativeAOT
+  - Build a native VST3 plugin with NPlug with zero dependencies!
 - Exposes the interfaces from VST3 version `3.7.7`.
 - Provides builtin support for synchronizing automatically the data model between the `AudioProcessor` and `AudioController`.
 - Supports multiple platforms: `win-x64`, `win-arm64`, `osx-x64`, `osx-arm64`, `linux-x64`, `linux-arm64`

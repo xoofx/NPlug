@@ -10,7 +10,7 @@ public class TestSamplePlugins
 {
     public static void Main()
     {
-        //InteropHelper.Tracer = new InteropTracer();
+        // InteropHelper.Tracer = new TempFileInteropTracer();
         var factory = SimpleDelayPlugin.GetFactory();
         AudioPluginValidator.Validate(factory.Export, Console.Out, Console.Error);
 

@@ -1,4 +1,4 @@
-Copyright (c) 2022, Alexandre Mutel
+Copyright (c) 2023, Alexandre Mutel
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification
@@ -21,3 +21,47 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+This software is also published with the following license:
+
+//----------------------------------------------------------------------------
+// LICENSE
+// (c) 2022, Steinberg Media Technologies GmbH, All Rights Reserved
+//----------------------------------------------------------------------------
+This license applies only to files referencing this license,
+for other files of the Software Development Kit therespective embedded license text
+is applicable. The license can be found at: <http://www.steinberg.net/sdklicenses_vst3>
+
+This Software Development Kit is licensed under the terms ofthe Steinberg VST 3 License,
+or alternatively under the terms of the General PublicLicense (GPL) Version 3.
+You may use the Software Development Kit according to eitherof these licenses as it is
+most appropriate for your project on a case-by-case basis(commercial or not).
+
+a) Proprietary Steinberg VST 3 License
+The Software Development Kit may not be distributed in partsor its entirety
+without prior written agreement by Steinberg MediaTechnologies GmbH.
+The SDK must not be used to re-engineer or manipulate anytechnology used
+in any Steinberg or Third-party application or softwaremodule,
+unless permitted by law.
+Neither the name of the Steinberg Media Technologies GmbH northe names of its
+contributors may be used to endorse or promote productsderived from this
+software without specific prior written permission.
+Before publishing a software under the proprietary license, you need to obtain a copy
+of the License Agreement signed by Steinberg MediaTechnologies GmbH.
+The Steinberg VST SDK License Agreement can be found at:
+<http://www.steinberg.net/en/company/developers.html>
+
+THE SDK IS PROVIDED BY STEINBERG MEDIA TECHNOLOGIES GMBH "ASIS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITEDTO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULARPURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL STEINBERG MEDIA TECHNOLOGIES GMBH BE LIABLEFOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIALDAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS ORSERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSEDAND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT(INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THISSOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+
+b) General Public License (GPL) Version 3
+Details of these licenses can be found at: <http://www.gnu.orglicenses/gpl-3.0.html>
+//---------------------------------------------------------------------------------

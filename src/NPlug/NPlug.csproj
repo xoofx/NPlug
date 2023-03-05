@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Description>NPlug is a library that allows to easily develop VST3 audio native plugin in .NET using NativeAOT. The associated VST3 version is: $(VstVersion).</Description>
+    <Description>NPlug is a library that allows to easily develop VST3 audio native plugins in .NET using NativeAOT. The associated VST3 version is: $(VstVersion).</Description>
     <Copyright>Alexandre Mutel</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Authors>Alexandre Mutel</Authors>

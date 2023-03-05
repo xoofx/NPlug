@@ -267,7 +267,42 @@ In this section we are covering some more advanced topics when using NPlug.
 
 ### Mapping between VST3 interfaces and NPlug
 
-TBD
+The following table shows the mapping between the VST3 interface and NPlug.
+
+| VST3 Interface              | NPlug Interface   |
+|----------------------------|------------------|
+| `IAudioPresentationLatency` | `IAudioProcessor` |
+| `IAudioProcessor` | `IAudioProcessor` |
+| `IAutomationState` | `IAudioControllerAutomationState` |
+| `IComponent` | `IAudioProcessor` |
+| `IConnectionPoint` | `IAudioConnectionPoint` |
+| `IContextMenuTarget` | `System.Delegate` |
+| `IEditController` | `IAudioController` |
+| `IEditController2` | `IAudioControllerExtended` |
+| `IEditControllerHostEditing` | `IAudioControllerHostEditing` |
+| `IInfoListener` | `IAudioControllerInfoListener` |
+| `IInterAppAudioPresetManager` | `IAudioControllerInterAppAudioPresetManager` |
+| `IKeyswitchController` | `IAudioControllerKeySwitch` |
+| `IMidiLearn` | `IAudioControllerMidiLearn` |
+| `IMidiMapping` | `IAudioControllerMidiMapping` |
+| `INoteExpressionController` | `IAudioControllerNoteExpression` |
+| `INoteExpressionPhysicalUIMapping` | `IAudioControllerNoteExpressionPhysicalUIMapping` |
+| `IParameterFinder` | `IAudioPluginView` |
+| `IParameterFunctionName` | `IAudioControllerParameterFunctionName` |
+| `IPluginBase` | `IAudioPluginComponent` |
+| `IPluginFactory` | `IAudioPluginFactory` |
+| `IPluginFactory2` | `IAudioPluginFactory` |
+| `IPluginFactory3` | `IAudioPluginFactory` |
+| `IPlugView` | `IAudioPluginView` |
+| `IPlugViewContentScaleSupport` | `IAudioPluginView` |
+| `IPrefetchableSupport` | `IAudioProcessorPrefetchable` |
+| `IProcessContextRequirements` | `IAudioProcessor` |
+| `IProgramListData` | `IAudioProcessorProgramListData` |
+| `ITestPlugProvider` | `IAudioTestProvider` |
+| `ITestPlugProvider2` | `IAudioTestProvider` |
+| `IUnitData` | `IAudioProcessorUnitData` |
+| `IUnitInfo` | `IAudioControllerUnitInfo` |
+| `IXmlRepresentationController` | `IAudioControllerXmlRepresentation` |
 
 ### Parameters
 

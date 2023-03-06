@@ -25,6 +25,10 @@ The official documentation for VST3 is https://steinbergmedia.github.io/vst3_dev
 
 For more details on how to use NPlug, please visit the [user guide](https://github.com/xoofx/NPlug/blob/main/doc/readme.md).
 
+## Samples
+
+You will find VST3 NPlug samples available in the [NPlug.Samples repository](https://github.com/xoofx/NPlug.Samples).
+
 ## License
 
 The core part of this software is released under the [BSD-2-Clause license](https://opensource.org/licenses/BSD-2-Clause) but you have also to follow the following VST3 license:

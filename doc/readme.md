@@ -28,7 +28,7 @@ The `AudioController` and `AudioProcessor` implement some of the core NPlug VST 
 
 In this section, we will port the the C/C++ adelay sample from https://github.com/steinbergmedia/vst3_public_sdk/tree/master/samples/vst/adelay/source
 
-This sample is available in `NPlug.SimpleDelay` in the NPlug sample repository.
+This sample is available in `NPlug.SimpleDelay` in the [NPlug sample repository](https://github.com/xoofx/NPlug.Samples).
 
 > **NOTICE**
 > 

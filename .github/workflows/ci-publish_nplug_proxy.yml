@@ -34,4 +34,4 @@ jobs:
     - name: Publish
       shell: bash
       run: |
-        dotnet nuget push -c Release ./src/NPlug.Proxy/bin/Release/*.nupkg -k ${{secrets.NUGET_TOKEN}} -s https://api.nuget.org/v3/index.json
+        dotnet nuget push ./src/NPlug.Proxy/bin/Release/*.nupkg -k ${{secrets.NUGET_TOKEN}} -s https://api.nuget.org/v3/index.json

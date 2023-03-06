@@ -46,7 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{16297621
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NPlug.SimpleProgramChange", "..\samples\NPlug.SimpleProgramChange\NPlug.SimpleProgramChange.csproj", "{B29DFB8F-EECE-4418-955D-E629C9C2B8C2}"
 EndProject
-Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "NPlug.Proxy", "NPlug.Proxy\NPlug.Proxy.msbuildproj", "{103E615E-DDA9-4EA0-A3CB-318BFC3D844A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NPlug.Proxy", "NPlug.Proxy\NPlug.Proxy.csproj", "{103E615E-DDA9-4EA0-A3CB-318BFC3D844A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

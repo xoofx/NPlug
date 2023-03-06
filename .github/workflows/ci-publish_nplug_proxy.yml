@@ -24,12 +24,12 @@ jobs:
     - name: Build
       shell: bash
       run: |
-        dotnet build -c Release ./src/NPlug.Proxy/NPlug.Proxy.msbuildproj
+        dotnet build -c Release ./src/NPlug.Proxy/NPlug.Proxy.csproj
 
     - name: Package
       shell: bash
       run: |
-        dotnet pack -c Release ./src/NPlug.Proxy/NPlug.Proxy.msbuildproj -p:IsPackable=true
+        dotnet pack -c Release ./src/NPlug.Proxy/NPlug.Proxy.csproj -p:IsPackable=true
 
     - name: Publish
       shell: bash

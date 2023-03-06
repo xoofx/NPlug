@@ -5,7 +5,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
+    <IsPackable Condition="'$(IsPackable)' == ''">false</IsPackable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <Version>1.0.0.$(VstVersionCompact)</Version>
     <NPlugAudioPluginProxy>true</NPlugAudioPluginProxy>
@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.msbuildproj" />
+    <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.csproj" />
   </ItemGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)../NPlug.Proxy/build/NPlug.Proxy.targets" />

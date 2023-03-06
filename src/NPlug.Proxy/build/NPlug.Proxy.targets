@@ -26,12 +26,6 @@
     <NPlugProxyLibraryFile Condition="'$(NPlugProxyLibraryFile)' == ''">$(MSBuildThisFileDirectory)$(NPlugRuntimeIdentifier)\native\$(NPlugProxyLibraryLink)</NPlugProxyLibraryFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Condition="'$(NPlugAudioPluginProxy)' == 'true'" Include="$(MSBuildThisFileDirectory)AudioPluginProxy.cs">
-      <Visible>false</Visible>
-    </Compile>
-  </ItemGroup>
-
   <Target Name="VerifyNPlug" BeforeTargets="Build">
     <Error Condition="'$(NPlugVstArch)' == ''" Text="The .NET Platform RID `$(NPlugRuntimeIdentifier)` is not supported by NPlug."></Error>
     <Message Importance="high" Text="NPlugRuntimeIdentifier: $(NPlugRuntimeIdentifier)"/>

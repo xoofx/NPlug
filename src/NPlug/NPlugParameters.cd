@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="NPlug.AudioParameter" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACCBAAAAAAAAGAEMAAAAAIAAABAEEAAFBIAgAAQkAQ=</HashCode>
+      <FileName>AudioParameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPlug.AudioBoolParameter" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>AudioBoolParameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPlug.AudioRangeParameter" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEgEEAAAAAAAAABAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>AudioRangeParameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NPlug.AudioStringListParameter" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAEEAAAAAAAABBAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>AudioStringListParameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

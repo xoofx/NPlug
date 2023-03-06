@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="NPlug.AudioProcessor&lt;TAudioProcessorModel&gt;" Collapsed="true">
+    <Position X="4.25" Y="2.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IABgIAAiAAkACAAACqIxAJQACAACAAAQQAASWBggAJA=</HashCode>
+      <FileName>AudioProcessor.Buses.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPlug.AudioController&lt;TAudioControllerModel&gt;" Collapsed="true">
+    <Position X="0.5" Y="2.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>CsFCAAYkAABYSwAFJBGINQSICAAgQBKECAgkAEDChgY=</HashCode>
+      <FileName>AudioController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPlug.AudioPluginComponent" Collapsed="true">
+    <Position X="2.5" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAAQAAAAAAAAAgABAAAKAAAAAAAECAAAAACGAAAABAI=</HashCode>
+      <FileName>AudioPluginComponent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPlug.AudioProcessorModel" Collapsed="true">
+    <Position X="2.75" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgMkAAqABwQKACaGQBQAQBCqAAACCAiIAgAJAAQA=</HashCode>
+      <FileName>AudioProcessorModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NPlug.AudioUnit" Collapsed="true">
+    <Position X="2.75" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAASkIAAABAdADAkAgFJEAQCAQAAAQQAIAAAAAAAAAA=</HashCode>
+      <FileName>AudioUnit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

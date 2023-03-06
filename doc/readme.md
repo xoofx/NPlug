@@ -6,7 +6,10 @@ For more information about developing a VST3 plugin, please visit the official d
 
 ## Overview
 
-NPlug is following the recommendation of the VST3 architecture and requires that you develop your plugin by separating 2 components:
+NPlug is following the recommendation of the VST3 architecture and requires that you develop your plugin by separating 2 components
+
+![NPlug Overview](./nplug-overview.drawio.svg)
+
 
 - The `AudioController` component is responsible to manipulate the data model of your VST3 and provides an optional UI. It allows the VST3 host to interact with your VST when automating your plugin parameters. It allows your UI to notify the VST3 host about parameter changes. All this interaction is running on the UI Thread.
 - The `AudioProcessor` component is responsible to generate the audio (whether this is an effect plugin or an instruments) based on the data model. The data model is synchronized through the VST3 host.
@@ -16,7 +19,10 @@ The controller and processor should not share data directly (no static variables
 
 NPlug provides the infrastructure to automatically synchronize the data model between the controller and the processor.
 
-![NPlug Overview](./nplug-overview.drawio.svg)
+The `AudioController` and `AudioProcessor` implement some of the core NPlug VST interfaces:
+
+![NPlug Class Diagram](./nplug-class-diagram.png)
+
 
 ## Getting Started
 
@@ -313,6 +319,8 @@ You might want to use sub classes of this `AudioParameter` to manipulate other t
 - The `AudioBoolParameter` allows to manipulate a boolean parameter. The value `0.0f` will be mapped to `false` while `1.0f` will be mapped to `true`.
 - The `AudioRangeParameter` allows to manipulate a range of float with a min and max value and potential steps or continuous.
 - The `AudioStringListParameter` allows to display a list of string for a parameter. Behind the scene, the selected string is automatically mapped to a float ranging from 0.0f to 1.0f.
+
+![NPlug parameters](./nplug-parameters.png)
 
 ### UI
 

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace NPlug.Proxy;
 
-public sealed class AudioPluginProxy : IDisposable
+internal sealed class AudioPluginProxy : IDisposable
 {
     private readonly IntPtr _nativeProxyHandle;
     private readonly bool _ownHandle;
@@ -126,7 +126,7 @@ public sealed class AudioPluginProxy : IDisposable
             NativeLibrary.Free(_nativeProxyHandle);
         }
     }
-
+    
     private IntPtr InternalGetFactory()
     {
         return _nativeFactory?.Invoke() ?? IntPtr.Zero;

@@ -62,6 +62,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.csproj" />
+    <ProjectReference Include="..\NPlug.Proxy\NPlug.Proxy.msbuildproj" />
   </ItemGroup>
 </Project>

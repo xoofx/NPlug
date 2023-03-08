@@ -46,7 +46,7 @@ Add NPlug to your project:
 
 ```
 cd NPlug.SimpleDelay
-dotnet add package NPlug --version 0.1.0
+dotnet add package NPlug
 ```
 
 ### Step 1: Create your model class

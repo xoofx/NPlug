@@ -16,7 +16,6 @@ namespace NPlug;
 /// - [plug imp]
 /// - [released: 3.0.0]
 /// </remarks>
-/// <seealso cref="platformUITypeIPlugFrame, "/>
 /// <par>
 /// Sizing of a view
 /// Usually, the size of a plug-in view is fixed. But both the host and the plug-in can cause

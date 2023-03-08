@@ -8,12 +8,18 @@ using System.Collections.Generic;
 
 namespace NPlug;
 
+/// <summary>
+/// Defines an audio unit.
+/// </summary>
 public class AudioUnit
 {
     private readonly List<AudioParameter> _parameters;
     private readonly List<AudioUnit> _children;
     private AudioUnitId _id;
 
+    /// <summary>
+    /// Creates a new instance of an audio unit.
+    /// </summary>
     public AudioUnit(string unitName, AudioProgramListBuilder? programListBuilder = null, int id = 0)
     {
         Name = unitName;
@@ -23,6 +29,9 @@ public class AudioUnit
         ProgramListBuilder = programListBuilder;
     }
 
+    /// <summary>
+    /// Gets the unit info,
+    /// </summary>
     public AudioUnitInfo UnitInfo => new (_id)
     {
         Name = Name,
@@ -30,26 +39,47 @@ public class AudioUnit
         ProgramListId = ProgramList?.Id ?? AudioProgramListId.NoPrograms
     };
 
+    /// <summary>
+    /// Gets the id of this unit.
+    /// </summary>
     public AudioUnitId Id
     {
         get => _id;
         internal set => _id = value;
     }
 
+    /// <summary>
+    /// Gets the name of this unit.
+    /// </summary>
     public string Name { get; }
 
+    /// <summary>
+    /// Gets a boolean indicating whether this unit has been initialized.
+    /// </summary>
     public bool Initialized
     {
         get;
         internal set;
     }
 
+    /// <summary>
+    /// Gets or initialized the specified program list builder associated with this unit.
+    /// </summary>
     public AudioProgramListBuilder? ProgramListBuilder { get; init; }
 
+    /// <summary>
+    /// Gets the program list associated with this unit that was built from <see cref="ProgramListBuilder"/>.
+    /// </summary>
     public AudioProgramList? ProgramList { get; internal set; }
 
+    /// <summary>
+    /// Gets the parameter attached to the program list change that was built from <see cref="ProgramListBuilder"/>.
+    /// </summary>
     public AudioStringListParameter? ProgramChangeParameter { get; internal set; }
 
+    /// <summary>
+    /// Gets or sets the index of the selected program if this unit has a program list.
+    /// </summary>
     public int SelectedProgramIndex
     {
         get => ProgramChangeParameter?.SelectedItem ?? 0;
@@ -65,24 +95,41 @@ public class AudioUnit
         }
     }
 
+    /// <summary>
+    /// Gets the number of parameter defined by this unit without including child units.
+    /// </summary>
     public int LocalParameterCount => _parameters.Count;
 
+    /// <summary>
+    /// Gets the parent unit of this unit.
+    /// </summary>
     public AudioUnit? ParentUnit { get; private set; }
 
+    /// <summary>
+    /// Gets the number of child unit.
+    /// </summary>
     public int ChildUnitCount => _children.Count;
 
     /// <summary>
     /// Gets the parameter attached directly to this unit.
     /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
     public AudioParameter GetLocalParameter(int index)
     {
         return _parameters[index];
     }
-    
+
+    /// <summary>
+    /// Gets the child unit at the specified index.
+    /// </summary>
     public AudioUnit GetChildUnit(int index) => _children[index];
 
+    /// <summary>
+    /// Adds the specified unit to this unit.
+    /// </summary>
+    /// <typeparam name="TAudioUnit">Type of the unit.</typeparam>
+    /// <param name="unit">Instance of the unit to add.</param>
+    /// <returns>The unit passed.</returns>
+    /// <exception cref="ArgumentException">If the unit was already attached to another unit.</exception>
     public TAudioUnit AddUnit<TAudioUnit>(TAudioUnit unit) where TAudioUnit : AudioUnit
     {
         AssertNotInitialized();
@@ -95,6 +142,11 @@ public class AudioUnit
         return unit;
     }
 
+    /// <summary>
+    /// Loads the program data for the specified program index.
+    /// </summary>
+    /// <param name="programIndex">The index of the program.</param>
+    /// <exception cref="InvalidOperationException">If the program does not have a <see cref="AudioProgram.GetProgramData"/> attached.</exception>
     public void LoadProgram(int programIndex)
     {
         AssertProgramList();
@@ -108,6 +160,9 @@ public class AudioUnit
         Load(new PortableBinaryReader(stream, false), AudioProcessorModelStorageMode.SkipProgramChangeParameters);
     }
 
+    /// <summary>
+    /// Loads the data of this unit from the specified reader.
+    /// </summary>
     public virtual void Load(PortableBinaryReader reader, AudioProcessorModelStorageMode mode)
     {
         //// Nothing to read
@@ -135,6 +190,9 @@ public class AudioUnit
         }
     }
 
+    /// <summary>
+    /// Saves the data of this unit to the specified writer.
+    /// </summary>
     public virtual void Save(PortableBinaryWriter writer, AudioProcessorModelStorageMode mode)
     {
         if (mode == AudioProcessorModelStorageMode.Default)
@@ -165,6 +223,13 @@ public class AudioUnit
         parameter.Unit = this;
     }
 
+    /// <summary>
+    /// Adds the specified parameter to this unit.
+    /// </summary>
+    /// <typeparam name="TAudioParameter">The type of the parameter</typeparam>
+    /// <param name="parameter">The parameter.</param>
+    /// <returns>The parameter added</returns>
+    /// <exception cref="ArgumentException">If the parameter is already attached to an existing unit.</exception>
     public TAudioParameter AddParameter<TAudioParameter>(TAudioParameter parameter) where TAudioParameter: AudioParameter
     {
         AssertNotInitialized();
@@ -177,6 +242,7 @@ public class AudioUnit
         return parameter;
     }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return $"Unit {UnitInfo.Name}, UnitCount = {ChildUnitCount}, ParameterCount = {LocalParameterCount}";

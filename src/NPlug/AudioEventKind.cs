@@ -4,6 +4,9 @@
 
 namespace NPlug;
 
+/// <summary>
+/// An enum to describe the kind of an <see cref="AudioEvent"/> (note on, note off, data, etc...)
+/// </summary>
 public enum AudioEventKind : ushort
 {
     /// <summary>

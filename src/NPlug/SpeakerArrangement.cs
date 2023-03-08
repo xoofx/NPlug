@@ -4,9 +4,13 @@
 
 using System;
 using System.Numerics;
+#pragma warning disable CS1591
 
 namespace NPlug;
 
+/// <summary>
+/// Defines speaker arrangements.
+/// </summary>
 [Flags]
 public enum SpeakerArrangement : ulong
 {
@@ -315,7 +319,13 @@ public enum SpeakerArrangement : ulong
     Speaker51_5_3 = SpeakerL | SpeakerR | SpeakerC | SpeakerLfe | SpeakerLs | SpeakerRs | SpeakerTfl | SpeakerTfc | SpeakerTfr | SpeakerTrl | SpeakerTrr | SpeakerBfl | SpeakerBfc | SpeakerBfr,
 }
 
+/// <summary>
+/// Extension methods for <see cref="SpeakerArrangement"/>.
+/// </summary>
 public static class SpeakerArrangementExtension
 {
+    /// <summary>
+    /// Gets the channel count of the <see cref="SpeakerArrangement"/>.
+    /// </summary>
     public static int GetChannelCount(this SpeakerArrangement speakerArrangement) => BitOperations.PopCount((ulong)speakerArrangement);
 }

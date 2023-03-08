@@ -9,6 +9,9 @@ namespace NPlug;
 /// </summary>
 public abstract class BusInfo
 {
+    /// <summary>
+    /// Creates a new instance of this class.
+    /// </summary>
     protected BusInfo(string name, BusMediaType mediaType, BusDirection direction, int channelCount, BusType busType, BusFlags flags)
     {
         Name = name;
@@ -67,11 +70,17 @@ public sealed class AudioBusInfo : BusInfo
 {
     private SpeakerArrangement _speakerArrangement;
 
+    /// <summary>
+    /// Creates a new instance of this class.
+    /// </summary>
     public AudioBusInfo(string name, SpeakerArrangement speakerArrangement, BusDirection direction, BusType busType, BusFlags flags) : base(name, BusMediaType.Audio, direction, speakerArrangement.GetChannelCount(), busType, flags)
     {
         SpeakerArrangement = speakerArrangement;
     }
 
+    /// <summary>
+    /// Gets the speaker arrangement.
+    /// </summary>
     public SpeakerArrangement SpeakerArrangement
     {
         get => _speakerArrangement;
@@ -95,6 +104,9 @@ public sealed class AudioBusInfo : BusInfo
 /// </summary>
 public sealed class EventBusInfo : BusInfo
 {
+    /// <summary>
+    /// Creates a new instance of this class.
+    /// </summary>
     public EventBusInfo(string name, int channelCount, BusDirection direction, BusType busType, BusFlags flags) : base(name, BusMediaType.Event, direction, channelCount, busType, flags)
     {
     }

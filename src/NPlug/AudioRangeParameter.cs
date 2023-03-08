@@ -7,12 +7,21 @@ using System.Globalization;
 
 namespace NPlug;
 
+/// <summary>
+/// A base class for audio parameters that are a range of values.
+/// </summary>
 public sealed class AudioRangeParameter : AudioParameter
 {
+    /// <summary>
+    /// Creates a new instance of this class.
+    /// </summary>
     public AudioRangeParameter(AudioParameterInfo info) : base(info)
     {
     }
 
+    /// <summary>
+    /// Creates a new instance of this class.
+    /// </summary>
     public AudioRangeParameter(string title, string? units = null, int id = 0, double minValue = 0.0, double maxValue = 1.0, double defaultPlainValue = 0.0, int stepCount = 0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate, string? shortTitle = null) : base(title, units, id, shortTitle, stepCount, defaultPlainValue, flags)
     {
         if (minValue >= maxValue) throw new ArgumentException($"Invalid minimum, maximum. The minimum value {minValue} must be < to the maximum value {maxValue}");
@@ -22,16 +31,26 @@ public sealed class AudioRangeParameter : AudioParameter
         NormalizedValue = DefaultNormalizedValue;
     }
 
+    /// <summary>
+    /// Gets the minimum value.
+    /// </summary>
     public double MinValue { get; }
 
+    /// <summary>
+    /// Gets the maximum value.
+    /// </summary>
     public double MaxValue { get; }
 
+    /// <summary>
+    /// Gets or sets the current value.
+    /// </summary>
     public double Value
     {
         get => ToPlain(RawNormalizedValue);
         set => RawNormalizedValue = ToNormalized(value);
     }
 
+    /// <inheritdoc />
     public override string ToString(double valueNormalized)
     {
         if (StepCount > 1)
@@ -43,6 +62,7 @@ public sealed class AudioRangeParameter : AudioParameter
         return base.ToString(ToPlain(valueNormalized));
     }
 
+    /// <inheritdoc />
     public override double FromString(string plainValueAsString)
     {
         if (StepCount > 1)
@@ -58,6 +78,7 @@ public sealed class AudioRangeParameter : AudioParameter
         }
     }
 
+    /// <inheritdoc />
     public override double ToPlain(double normalizedValue)
     {
         var stepCount = StepCount;
@@ -69,6 +90,7 @@ public sealed class AudioRangeParameter : AudioParameter
         return normalizedValue * (MaxValue - MinValue) + MinValue;
     }
 
+    /// <inheritdoc />
     public override double ToNormalized(double plainValue)
     {
         var stepCount = StepCount;

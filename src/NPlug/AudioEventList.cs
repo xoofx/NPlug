@@ -8,6 +8,9 @@ using NPlug.Backend;
 
 namespace NPlug;
 
+/// <summary>
+/// A list of audio events.
+/// </summary>
 public readonly ref struct AudioEventList
 {
     private readonly IAudioEventListBackend? _backend;

@@ -109,9 +109,15 @@ public static class AudioEvents
         /// </summary>
         private byte* _bytes;
 
+        /// <summary>
+        /// Gets the associated buffer.
+        /// </summary>
         public Span<byte> Buffer => new(_bytes, _size);
     }
 
+    /// <summary>
+    /// Data event kind.
+    /// </summary>
     public enum AudioDataEventKind : uint
     {
         /// <summary>
@@ -120,6 +126,9 @@ public static class AudioEvents
         MidiSysEx = 0,
     }
 
+    /// <summary>
+    /// Poly pressure event. Used in Event (union)
+    /// </summary>
     public struct PolyPressureEvent
     {
         /// <summary>
@@ -143,6 +152,9 @@ public static class AudioEvents
         public int NoteId;
     }
 
+    /// <summary>
+    /// Note expression value event. Used in Event (union)
+    /// </summary>
     public struct NoteExpressionValueEvent
     {
         /// <summary>
@@ -188,7 +200,6 @@ public static class AudioEvents
         /// </summary>
         private char* _text;
 
-
         /// <summary>
         /// Gets the text associated.
         /// </summary>
@@ -196,6 +207,9 @@ public static class AudioEvents
         public string GetText() => new(*_text, _textLen);
     }
 
+    /// <summary>
+    /// A chord event. Used in Event (union)
+    /// </summary>
     public unsafe struct ChordEvent
     {
         /// <summary>
@@ -231,6 +245,9 @@ public static class AudioEvents
         public string GetText() => new(*_text, _textLen);
     }
 
+    /// <summary>
+    /// A scale event. Used in Event (union)
+    /// </summary>
     public unsafe struct ScaleEvent
     {
         /// <summary>
@@ -261,6 +278,9 @@ public static class AudioEvents
         public string GetText() => new(*_text, _textLen);
     }
 
+    /// <summary>
+    /// A legacy MIDI CC event. Used in Event (union).
+    /// </summary>
     public struct LegacyMIDICCOutEvent
     {
         /// <summary>

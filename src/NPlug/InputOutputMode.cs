@@ -4,6 +4,9 @@
 
 namespace NPlug;
 
+/// <summary>
+/// Defines the input/output mode of a plug-in.
+/// </summary>
 public enum InputOutputMode
 {
     /// <summary>

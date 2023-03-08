@@ -4,9 +4,18 @@
 
 namespace NPlug;
 
+/// <summary>
+/// Defines how a <see cref="AudioProcessorModel"/> is stored.
+/// </summary>
 public enum AudioProcessorModelStorageMode
 {
+    /// <summary>
+    /// Use the optimized storage mode by default.
+    /// </summary>
     Default,
 
+    /// <summary>
+    /// Do not notify of program change parameters when loading the model.
+    /// </summary>
     SkipProgramChangeParameters,
 }

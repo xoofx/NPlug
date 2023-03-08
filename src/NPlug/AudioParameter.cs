@@ -8,6 +8,9 @@ using System.Runtime.CompilerServices;
 
 namespace NPlug;
 
+/// <summary>
+/// Defines an audio parameter.
+/// </summary>
 public class AudioParameter
 {
     /// <summary>
@@ -21,6 +24,10 @@ public class AudioParameter
     /// </summary>
     internal unsafe double* PointerToNormalizedValueInSharedBuffer;
 
+    /// <summary>
+    /// Creates a new instance of a parameter with the specified parameter info.
+    /// </summary>
+    /// <param name="info"></param>
     public AudioParameter(AudioParameterInfo info)
     {
         Id = info.Id;
@@ -34,6 +41,16 @@ public class AudioParameter
         NormalizedValue = DefaultNormalizedValue;
     }
 
+    /// <summary>
+    /// Creates a new instance of a parameter.
+    /// </summary>
+    /// <param name="title">The title of this parameter.</param>
+    /// <param name="units">The unit.</param>
+    /// <param name="id">The integer id of this parameter.</param>
+    /// <param name="shortTitle">A short title. Default is null and will use title.</param>
+    /// <param name="stepCount">The number of steps. Default is 0, so it defines a continuous value.</param>
+    /// <param name="defaultNormalizedValue">The default value, normalized between 0.0 and 1.0.</param>
+    /// <param name="flags">The flags associated with this parameter. Default is can automate.</param>
     public AudioParameter(string title, string? units = null, int id = 0, string? shortTitle = null, int stepCount = 0, double defaultNormalizedValue = 0.0, AudioParameterFlags flags = AudioParameterFlags.CanAutomate)
     {
         Id = id;
@@ -47,6 +64,9 @@ public class AudioParameter
         NormalizedValue = DefaultNormalizedValue;
     }
 
+    /// <summary>
+    /// Is a controller only parameter.
+    /// </summary>
     public bool IsControllerOnly { get; init; }
 
     /// <summary>
@@ -128,7 +148,7 @@ public class AudioParameter
     /// Gets a direct access to the raw normalized value.
     /// </summary>
     /// <remarks>
-    /// Unlike <see cref="NormalizedValue"/>, this doesn't clamp or trigger a <see cref="Changed"/> event.
+    /// Unlike <see cref="NormalizedValue"/>, this doesn't clamp or trigger a <see cref="OnParameterValueChanged"/> event.
     /// </remarks>
     internal unsafe ref double RawNormalizedValue
     {
@@ -146,6 +166,9 @@ public class AudioParameter
         }
     }
 
+    /// <summary>
+    /// Gets or sets the normalized value (between 0.0 and 1.0) of this parameter.
+    /// </summary>
     public double NormalizedValue
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -162,10 +185,13 @@ public class AudioParameter
         }
     }
 
+    /// <summary>
+    /// Gets or sets the precision of this parameter.
+    /// </summary>
     public int Precision { get; set; }
 
     /// <summary>
-    /// Convert a normalized value to a plain value as a string.
+    /// Converts a normalized value to a plain value as a string.
     /// </summary>
     /// <param name="valueNormalized"></param>
     /// <returns></returns>
@@ -179,7 +205,7 @@ public class AudioParameter
     }
 
     /// <summary>
-    /// Convert a plain value as a string to a normalized value.
+    /// Converts a plain value as a string to a normalized value.
     /// </summary>
     /// <param name="plainValueAsString"></param>
     /// <returns></returns>
@@ -193,16 +219,30 @@ public class AudioParameter
         return value;
     }
 
+    /// <summary>
+    /// Converts a normalized value to a plain value.
+    /// </summary>
+    /// <param name="normalizedValue">The normalized value between 0.0 and 1.0.</param>
+    /// <returns>The plain value.</returns>
     public virtual double ToPlain(double normalizedValue)
     {
         return normalizedValue;
     }
 
+    /// <summary>
+    /// Converts a plain value to a normalized value. 
+    /// </summary>
+    /// <param name="plainValue">The plain value.</param>
+    /// <returns>The normalized value between 0.0 and 1.0.</returns>
     public virtual double ToNormalized(double plainValue)
     {
         return plainValue;
     }
 
+    /// <summary>
+    /// Gets a string representation of this parameter.
+    /// </summary>
+    /// <returns></returns>
     public override string ToString()
     {
         return $"[{Id.Value}] {Title} = {ToString(NormalizedValue)} {Units}";

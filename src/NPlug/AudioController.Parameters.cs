@@ -71,7 +71,13 @@ public abstract partial class AudioController<TAudioControllerModel>
     {
         GetHandler().RestartComponent(flags);
     }
-    
+
+    /// <summary>
+    /// This method is called whenever a parameter value is changed in the model. It will replicate the change to the host via the <see cref="Handler"/>.
+    /// </summary>
+    /// <param name="parameter">The audio parameter that changed.</param>
+    /// <param name="parameterValueChangedFromHost"><c>true</c> if the value was changed by the host.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     protected virtual void OnParameterValueChanged(AudioParameter parameter, bool parameterValueChangedFromHost)
     {
         if (parameterValueChangedFromHost)

@@ -4,24 +4,46 @@
 
 namespace NPlug;
 
+/// <summary>
+/// Base class for an audio plugin component.
+/// </summary>
 public abstract class AudioPluginComponent : IAudioPluginComponent, IAudioConnectionPoint
 {
+    /// <inheritdoc />
     public AudioHostApplication? Host { get; private set; }
 
+    /// <summary>
+    /// Gets the connection point associated to this component. The connection point is associated when this component is connected to another component.
+    /// </summary>
     protected IAudioConnectionPoint? ConnectionPoint { get; private set; }
 
+    /// <summary>
+    /// Called when this component is terminated.
+    /// </summary>
     protected virtual void Terminate()
     {
     }
 
+    /// <summary>
+    /// Called when this component receives a message from another component.
+    /// </summary>
+    /// <param name="message"></param>
     protected virtual void OnMessage(AudioMessage message)
     {
     }
 
+    /// <summary>
+    /// Called when this component is connected to another component.
+    /// </summary>
+    /// <param name="connectionPoint"></param>
     protected virtual void OnConnect(IAudioConnectionPoint connectionPoint)
     {
     }
 
+    /// <summary>
+    /// Called when this component is disconnected from another component.
+    /// </summary>
+    /// <param name="connectionPoint"></param>
     protected virtual void OnDisconnect(IAudioConnectionPoint connectionPoint)
     {
     }

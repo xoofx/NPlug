@@ -18,7 +18,7 @@ namespace NPlug;
 /// Note that there is only one NoteExpressionTypeID per given channel of an event bus.
 /// The method getNoteExpressionStringByValue allows conversion from a normalized value to a string representation
 /// and the getNoteExpressionValueByString method from a string to a normalized value.When the note expression state changes (for example when switching presets) the plug-in needs
-/// to inform the host about it via <see cref="AudioControllerHost.RestartComponent"/> (<see cref="AudioRestartFlags.NoteExpressionChanged"/>).
+/// to inform the host about it via <see cref="IAudioControllerHandler.RestartComponent"/> (<see cref="AudioRestartFlags.NoteExpressionChanged"/>).
 /// </remarks>
 public interface IAudioControllerNoteExpression : IAudioController
 {

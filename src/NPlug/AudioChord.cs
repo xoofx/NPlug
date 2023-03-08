@@ -4,6 +4,9 @@
 
 namespace NPlug;
 
+/// <summary>
+/// A chord is described with a key note, a root note and a chord mask
+/// </summary>
 public struct AudioChord
 {
     /// <summary>

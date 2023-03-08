@@ -37,5 +37,8 @@ namespace NPlug;
 /// </remarks>
 public interface IAudioProcessorPrefetchable : IAudioProcessor
 {
+    /// <summary>
+    /// Retrieve the current prefetch support. Use <see cref="IAudioControllerHandler.RestartComponent"/> with <see cref="AudioRestartFlags.PrefetchableSupportChanged"/> to inform the host that this support has changed.
+    /// </summary>
     AudioProcessorPrefetchableSupport PrefetchableSupport { get; }
 }

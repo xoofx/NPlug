@@ -6,6 +6,9 @@ using System.Runtime.InteropServices;
 
 namespace NPlug;
 
+/// <summary>
+/// Describes an audio event.
+/// </summary>
 public struct AudioEvent
 {
     /// <summary>

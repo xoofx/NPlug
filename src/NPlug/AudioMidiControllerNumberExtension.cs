@@ -6,6 +6,9 @@ using System.Globalization;
 
 namespace NPlug;
 
+/// <summary>
+/// Extension methods for <see cref="AudioMidiControllerNumber"/>.
+/// </summary>
 public static class AudioMidiControllerNumberExtension
 {
     /// <summary>

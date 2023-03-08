@@ -26,7 +26,13 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
     private readonly Dictionary<AudioProgramListId, int> _programListIdToIndex;
     private nuint _allParameterSizeInBytes;
     private unsafe double* _pointerToBuffer;
-    
+
+    /// <summary>
+    /// Creates a new instance of this model.
+    /// </summary>
+    /// <param name="unitName">the name of the unit.</param>
+    /// <param name="programListBuilder">The program list builder.</param>
+    /// <param name="id">An associated id. Default is 0 and will be associated automatically.</param>
     protected AudioProcessorModel(string unitName = "Root", AudioProgramListBuilder? programListBuilder = null, int id = 0) : base(unitName, programListBuilder, id)
     {
         _allParameters = new List<AudioParameter>();
@@ -36,25 +42,65 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         _allProgramLists = new List<AudioProgramList>();
         _programListIdToIndex = new Dictionary<AudioProgramListId, int>();
     }
-    
+
+    /// <summary>
+    /// Gets the by-pass parameter. This is optional (and only valid for audio effects, not instruments).
+    /// </summary>
     public AudioBoolParameter? ByPassParameter { get; private set; }
 
+    /// <summary>
+    /// Gets the number of parameters this model contains.
+    /// </summary>
     public int ParameterCount => _allParameters.Count;
 
+    /// <summary>
+    /// Gets the number of unit this model contains.
+    /// </summary>
     public int UnitCount => _allUnits.Count;
 
+    /// <summary>
+    /// Gets the number of program lists this model contains.
+    /// </summary>
     public int ProgramListCount => _allProgramLists.Count;
 
+    /// <summary>
+    /// Check whether this model has program lists.
+    /// </summary>
     public bool HasProgramLists => _allProgramLists.Count > 0;
 
+    /// <summary>
+    /// Check whether this model contains the specified program list.
+    /// </summary>
+    /// <param name="id">The id of the program list.</param>
+    /// <returns><c>true</c> if this model contains this program list.</returns>
     public bool ContainsProgramList(AudioProgramListId id) => _programListIdToIndex.ContainsKey(id);
 
+    /// <summary>
+    /// Gets the parameter at the specified index.
+    /// </summary>
+    /// <param name="index">Index of the parameter.</param>
+    /// <returns>The associated parameter at the specified index.</returns>
     public AudioParameter GetParameterByIndex(int index) => _allParameters[index];
 
+    /// <summary>
+    /// Gets the unit at the specified index.
+    /// </summary>
+    /// <param name="index">Index of the unit.</param>
+    /// <returns>The associated unit at the specified index.</returns>
     public AudioUnit GetUnitByIndex(int index) => _allUnits[index];
 
+    /// <summary>
+    /// Gets the program list at the specified index.
+    /// </summary>
+    /// <param name="index">Index of the program list.</param>
+    /// <returns>The associated program list at the specified index.</returns>
     public AudioProgramList GetProgramListByIndex(int index) => _allProgramLists[index];
 
+    /// <summary>
+    /// Gets the program list with the specified id.
+    /// </summary>
+    /// <param name="id">The id of the program list.</param>
+    /// <returns>The associated program list at the specified index.</returns>
     public AudioProgramList GetProgramListById(AudioProgramListId id) => _allProgramLists[_programListIdToIndex[id]];
 
     /// <summary>
@@ -100,6 +146,12 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         InitializeProgramLists();
     }
 
+    /// <summary>
+    /// Tries to get the parameter with the specified id.
+    /// </summary>
+    /// <param name="id">The id of the parameter.</param>
+    /// <param name="parameter">The output parameter if this method returns true, null otherwise.</param>
+    /// <returns><c>true</c> if the parameter with the specified id was found.</returns>
     public bool TryGetParameterById(AudioParameterId id, [NotNullWhen(true)] out AudioParameter? parameter)
     {
         parameter = null;
@@ -112,6 +164,12 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         return false;
     }
 
+    /// <summary>
+    /// Gets the parameter with the specified id.
+    /// </summary>
+    /// <param name="id">The id of the parameter.</param>
+    /// <returns>The parameter instance.</returns>
+    /// <exception cref="ArgumentException">If the parameter with the specified id was not found.</exception>
     public AudioParameter GetParameterById(AudioParameterId id)
     {
         if (TryGetParameterById(id, out var parameter))
@@ -122,6 +180,12 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         throw new ArgumentException($"Invalid parameter id {id}. No parameter found with this id", nameof(id));
     }
 
+    /// <summary>
+    /// Gets the normalized value of the parameter with the specified id.
+    /// </summary>
+    /// <param name="id">The id of the parameter.</param>
+    /// <returns>The normalized value</returns>
+    /// <exception cref="ArgumentException">If the parameter with the specified id was not found.</exception>
     public unsafe ref double GetNormalizedValueById(AudioParameterId id)
     {
         if (!_parameterIdToIndex.TryGetValue(id, out int parameterIndex))
@@ -137,6 +201,12 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         return ref _allParameters[parameterIndex].NormalizedValueInternal;
     }
 
+    /// <summary>
+    /// Gets the unit with the specified id.
+    /// </summary>
+    /// <param name="id">The id of the unit.</param>
+    /// <param name="unit">The unit if it was found; null otherwise.</param>
+    /// <returns><c>true</c> if the unit was found.</returns>
     public bool TryGetUnitById(AudioUnitId id, [NotNullWhen(true)] out AudioUnit? unit)
     {
         unit = null;
@@ -149,6 +219,12 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         return false;
     }
 
+    /// <summary>
+    /// Gets the unit with the specified id.
+    /// </summary>
+    /// <param name="id">The id of the unit.</param>
+    /// <returns>The unity with the specified id.</returns>
+    /// <exception cref="ArgumentException">If the unit was not found.</exception>
     public AudioUnit GetUnitById(AudioUnitId id)
     {
         if (!TryGetUnitById(id, out var unit))
@@ -159,6 +235,9 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         return unit;
     }
 
+    /// <summary>
+    /// Loads the model/parameter values from the specified reader.
+    /// </summary>
     public override unsafe void Load(PortableBinaryReader reader, AudioProcessorModelStorageMode mode)
     {
         // Don't try to read anything if the stream is empty.
@@ -200,6 +279,9 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         }
     }
 
+    /// <summary>
+    /// Saves the model/parameter values to the specified writer.
+    /// </summary>
     public override unsafe void Save(PortableBinaryWriter writer, AudioProcessorModelStorageMode mode)
     {
         // If the mode to load is not the default one, then we cannot use the optimize one below
@@ -394,6 +476,7 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
 
     private static readonly uint AlignedSize = (uint)(Vector256.IsHardwareAccelerated ? Vector256<byte>.Count : Vector128.IsHardwareAccelerated ? Vector128<byte>.Count : sizeof(double));
 
+    /// <inheritdoc />
     public unsafe void Dispose()
     {
         if (_pointerToBuffer != null)

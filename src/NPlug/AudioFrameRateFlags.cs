@@ -7,12 +7,18 @@ using System;
 namespace NPlug;
 
 /// <summary>
-/// 
+/// Flags for <see cref="AudioFrameRate"/>.
 /// </summary>
 [Flags]
 public enum AudioFrameRateFlags : uint
 {
+    /// <summary>
+    /// The rate should is pull down.
+    /// </summary>
     PullDownRate = 1 << 0,
 
+    /// <summary>
+    /// The rate is dropped.
+    /// </summary>
     DropRate = 1 << 1,
 }

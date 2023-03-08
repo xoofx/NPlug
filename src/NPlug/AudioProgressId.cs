@@ -4,4 +4,8 @@
 
 namespace NPlug;
 
+/// <summary>
+/// Defines the progress id used when calling <see cref="IAudioControllerHandler.StartProgress"/>.
+/// </summary>
+/// <param name="Value">An internal representation of a progress.</param>
 public record struct AudioProgressId(ulong Value);

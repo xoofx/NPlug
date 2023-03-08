@@ -10,6 +10,12 @@
 using System;
 
 #pragma warning disable CS0649
+#pragma warning disable CS1658
+#pragma warning disable CS1570
+#pragma warning disable CS1573
+#pragma warning disable CS1574
+#pragma warning disable CS1584
+
 
 namespace NPlug.Interop;
 

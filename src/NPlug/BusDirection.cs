@@ -4,6 +4,9 @@
 
 namespace NPlug;
 
+/// <summary>
+/// Defines the direction of the bus (input or output).
+/// </summary>
 public enum BusDirection
 {
     /// <summary>

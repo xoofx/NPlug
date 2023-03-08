@@ -9,6 +9,9 @@ namespace NPlug;
 /// </summary>
 public readonly record struct AudioProcessSetupData
 {
+    /// <summary>
+    /// Creates a new instance of this struct.
+    /// </summary>
     public AudioProcessSetupData(AudioProcessMode processMode, AudioSampleSize sampleSize, int maxSamplesPerBlock, double sampleRate)
     {
         ProcessMode = processMode;

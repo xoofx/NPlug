@@ -6,6 +6,9 @@ using System;
 
 namespace NPlug;
 
+/// <summary>
+/// Flags for a menu item.
+/// </summary>
 [Flags]
 public enum AudioContextMenuItemFlags
 {

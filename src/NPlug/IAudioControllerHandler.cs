@@ -4,6 +4,9 @@
 
 namespace NPlug;
 
+/// <summary>
+/// Host callback interface for an edit controller.
+/// </summary>
 public interface IAudioControllerHandler
 {
     /// <summary>

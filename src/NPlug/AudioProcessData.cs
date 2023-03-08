@@ -7,10 +7,16 @@ using System.Runtime.CompilerServices;
 
 namespace NPlug;
 
+/// <summary>
+/// The process data passed to <see cref="IAudioProcessor.Process"/> and <see cref="AudioProcessor{TAudioProcessorModel}.ProcessMain"/>
+/// </summary>
 public readonly ref struct AudioProcessData
 {
     private readonly IntPtr _context;
 
+    /// <summary>
+    /// Creates a new instance of this struct.
+    /// </summary>
     public AudioProcessData(IntPtr context, AudioProcessMode processMode, AudioSampleSize sampleSize, int sampleCount, in AudioBusData input, in AudioBusData output)
     {
         _context = context;

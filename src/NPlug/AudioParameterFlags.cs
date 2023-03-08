@@ -6,6 +6,9 @@ using System;
 
 namespace NPlug;
 
+/// <summary>
+/// Flags associated with a parameter in <see cref="AudioParameter.Flags"/>.
+/// </summary>
 [Flags]
 public enum AudioParameterFlags
 {

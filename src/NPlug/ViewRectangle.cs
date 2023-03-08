@@ -16,7 +16,13 @@ namespace NPlug;
 /// <param name="Bottom"></param>
 public readonly record struct ViewRectangle(int Left, int Top, int Right, int Bottom)
 {
+    /// <summary>
+    /// Gets the location of this rectangle.
+    /// </summary>
     public Point Location => new(Left, Top);
 
+    /// <summary>
+    /// Gets the size of this rectangle.
+    /// </summary>
     public Size Size => new(Right - Left, Bottom - Top);
 }

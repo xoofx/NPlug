@@ -4,6 +4,9 @@
 
 namespace NPlug;
 
+/// <summary>
+/// Gets the kind of processing defined by <see cref="AudioProcessData.ProcessMode"/>.
+/// </summary>
 public enum AudioProcessMode
 {
     /// <summary>

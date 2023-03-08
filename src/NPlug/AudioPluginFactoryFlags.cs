@@ -6,6 +6,9 @@ using System;
 
 namespace NPlug;
 
+/// <summary>
+/// Flags associated with a <see cref="AudioPluginFactoryInfo"/>.
+/// </summary>
 [Flags]
 public enum AudioPluginFactoryFlags
 {

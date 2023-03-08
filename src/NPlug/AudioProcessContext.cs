@@ -6,7 +6,7 @@
 namespace NPlug;
 
 /// <summary>
-/// Available context from <see cref="AudioProcessData.GetContext"/> when processing audio in <see cref="AudioProcessor.Process"/>.
+/// Available context from <see cref="AudioProcessData.GetContext"/> when processing audio in <see cref="IAudioProcessor.Process"/>.
 /// </summary>
 public readonly struct AudioProcessContext
 {

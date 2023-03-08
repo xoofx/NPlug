@@ -12,7 +12,7 @@ using System.Runtime.Intrinsics.X86;
 
 namespace System.IO.Hashing;
 
-/// <summary>Shared implementation of the XXH3 hash algorithm for 64-bit in <see cref="XxHash3"/> and <see cref="XxHash128"/> version.</summary>
+/// <summary>Shared implementation of the XXH3 hash algorithm for 64-bit in <see cref="XxHash3"/>.</summary>
 [SkipLocalsInit]
 internal static unsafe class XxHashShared
 {

@@ -8,11 +8,17 @@ using System.Collections.Generic;
 
 namespace NPlug;
 
+/// <summary>
+/// Defines the factory to declare exported plugins.
+/// </summary>
 public sealed class AudioPluginFactory : IAudioPluginFactory
 {
     private readonly List<AudioPluginClassInfo> _pluginClassInfos;
     private readonly Dictionary<Guid, Func<IAudioPluginObject>> _mapGuidToComponentFactory;
 
+    /// <summary>
+    /// Creates a new instance of this factory.
+    /// </summary>
     public AudioPluginFactory(AudioPluginFactoryInfo factoryInfo)
     {
         FactoryInfo = factoryInfo;
@@ -20,15 +26,32 @@ public sealed class AudioPluginFactory : IAudioPluginFactory
         _mapGuidToComponentFactory = new Dictionary<Guid, Func<IAudioPluginObject>>();
     }
 
+    /// <summary>
+    /// Gets the factory info.
+    /// </summary>
     public AudioPluginFactoryInfo FactoryInfo { get; }
 
+    /// <summary>
+    /// Gets the list of plugin infos.
+    /// </summary>
     public IReadOnlyList<AudioPluginClassInfo> PluginClassInfos => _pluginClassInfos;
 
+    /// <summary>
+    /// Creates a new instance of a plugin from its <see cref="AudioPluginClassInfo.ClassId"/>.
+    /// </summary>
+    /// <param name="pluginId">The id of the plugin.</param>
+    /// <returns>An instance of the associated plugin or null if the id is not associated with a plugin.</returns>
     public IAudioPluginObject? CreateInstance(Guid pluginId)
     {
         return _mapGuidToComponentFactory.TryGetValue(pluginId, out var factory) ? factory() : null;
     }
 
+    /// <summary>
+    /// Registers the specified plugin.
+    /// </summary>
+    /// <typeparam name="TPlugin">Type of the plugin.</typeparam>
+    /// <param name="pluginClassInfo">The information of this plugin.</param>
+    /// <param name="registerTests">A boolean indicating whether to register tests. False by default.</param>
     public void RegisterPlugin<TPlugin>(AudioProcessorClassInfo pluginClassInfo, bool registerTests = false) where TPlugin: class, IAudioProcessor, new()
     {
         RegisterPlugin(pluginClassInfo, static () => new TPlugin());
@@ -42,11 +65,21 @@ public sealed class AudioPluginFactory : IAudioPluginFactory
         }
     }
 
+    /// <summary>
+    /// Registers the specified plugin.
+    /// </summary>
+    /// <typeparam name="TPlugin">Type of the plugin.</typeparam>
+    /// <param name="pluginClassInfo">The information of this plugin.</param>
     public void RegisterPlugin<TPlugin>(AudioControllerClassInfo pluginClassInfo) where TPlugin : class, IAudioController, new()
     {
         RegisterPlugin(pluginClassInfo, static () => new TPlugin());
     }
 
+    /// <summary>
+    /// Registers the specified plugin.
+    /// </summary>
+    /// <param name="pluginClassInfo">The information of this plugin.</param>
+    /// <param name="factory">Factory associated with this plugin to create the plugin.</param>
     public void RegisterPlugin(AudioPluginClassInfo pluginClassInfo, Func<IAudioPluginObject> factory)
     {
         if (_mapGuidToComponentFactory.ContainsKey(pluginClassInfo.ClassId))

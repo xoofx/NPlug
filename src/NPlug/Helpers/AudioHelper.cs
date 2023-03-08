@@ -9,8 +9,18 @@ using System.Runtime.Intrinsics;
 
 namespace NPlug.Helpers;
 
+/// <summary>
+/// Helper class.
+/// </summary>
 public static class AudioHelper
 {
+    /// <summary>
+    /// Checks if the specified buffer is silent.
+    /// </summary>
+    /// <typeparam name="T">The type of the element (usually float or double).</typeparam>
+    /// <param name="buffer">The buffer to check for silence.</param>
+    /// <param name="silenceThreshold">The silence threshold.</param>
+    /// <returns><c>true</c> if the buffer contains only value below the <paramref name="silenceThreshold"/>.</returns>
     public static bool CheckIsSilent<T>(Span<T> buffer, T silenceThreshold) where T : unmanaged, INumber<T>
     {
         bool isChannelSilent = true;

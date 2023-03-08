@@ -11,13 +11,29 @@ namespace NPlug;
 public abstract partial class AudioController<TAudioControllerModel>
     : IAudioControllerMidiMapping
 {
+    /// <summary>
+    /// Gets the Mapping of MIDI CC to audio parameters.
+    /// </summary>
     public Dictionary<AudioMidiControllerNumber, AudioParameter> MapMidiCCToAudioParameter { get; }
 
+    /// <summary>
+    /// Associates a MIDI CC number to an audio parameter.
+    /// </summary>
+    /// <param name="midiControllerNumber">A MIDI CC number.</param>
+    /// <param name="parameter">An audio parameter.</param>
     public void SetMidiCCMapping(AudioMidiControllerNumber midiControllerNumber, AudioParameter parameter)
     {
         MapMidiCCToAudioParameter[midiControllerNumber] = parameter;
     }
 
+    /// <summary>
+    /// Gets an (preferred) associated <see cref="AudioParameterId"/> for a given Input Event Bus index, channel and MIDI Controller.
+    /// </summary>
+    /// <param name="busIndex">The index of the bus.</param>
+    /// <param name="channel">The index of the channel.</param>
+    /// <param name="midiControllerNumber">The MIDI CC number.</param>
+    /// <param name="id">The output parameter id.</param>
+    /// <returns><c>true</c> if the <paramref name="midiControllerNumber"/> is associated with a parameter; <c>false</c> otherwise.</returns>
     protected virtual bool TryGetMidiControllerAssignment(int busIndex, int channel, AudioMidiControllerNumber midiControllerNumber, out AudioParameterId id)
     {
         var result = false;

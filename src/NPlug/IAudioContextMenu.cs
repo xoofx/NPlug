@@ -6,6 +6,9 @@ using System;
 
 namespace NPlug;
 
+/// <summary>
+/// The interface to a context menu definition.
+/// </summary>
 public interface IAudioContextMenu : IDisposable
 {
     /// <summary>

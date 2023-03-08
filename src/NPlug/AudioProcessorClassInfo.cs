@@ -7,7 +7,7 @@ using System;
 namespace NPlug;
 
 /// <summary>
-/// An <see cref="AudioProcessor"/> plugin class info
+/// An <see cref="AudioProcessor{TAudioProcessorModel}"/> plugin class info
 /// </summary>
 public sealed class AudioProcessorClassInfo : AudioPluginClassInfo
 {

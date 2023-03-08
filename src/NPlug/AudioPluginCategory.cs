@@ -9,9 +9,18 @@ namespace NPlug;
 /// </summary>
 public enum AudioPluginCategory
 {
+    /// <summary>
+    /// The plugin is a <see cref="AudioProcessor{TAudioProcessorModel}"/>.
+    /// </summary>
     Processor,
 
+    /// <summary>
+    /// The plugin is a <see cref="AudioController{TAudioControllerModel}"/>
+    /// </summary>
     Controller,
 
+    /// <summary>
+    /// The plugin is a <see cref="IAudioTestProvider"/>
+    /// </summary>
     TestProvider,
 }

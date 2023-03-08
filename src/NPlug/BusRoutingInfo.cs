@@ -4,6 +4,9 @@
 
 namespace NPlug;
 
+/// <summary>
+/// Defines the routing information for a bus.
+/// </summary>
 public struct BusRoutingInfo
 {
     /// <summary>

@@ -83,7 +83,7 @@ public interface IAudioController : IAudioPluginComponent
 
     /// <summary>
     /// Sets the normalized value to the parameter associated to the paramID. The controller must never
-	/// pass this value-change back to the host via the <see cref="AudioControllerHost"/>.
+	/// pass this value-change back to the host via the <see cref="IAudioControllerHandler"/>.
 	/// It should update the according GUI element(s) only.
     /// </summary>
     /// <param name="id">The id of the parameter.</param>
@@ -101,7 +101,6 @@ public interface IAudioController : IAudioPluginComponent
     /// Creates the editor view of the plug-in, currently only "editor" is supported, see \ref ViewType.
     /// The life time of the editor view will never exceed the life time of this controller instance.
     /// </summary>
-    /// <param name="name">The name of the view (`editor` is only supported)</param>
     /// <returns>The plugin view.</returns>
     IAudioPluginView? CreateView();
 }

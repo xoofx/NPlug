@@ -8,6 +8,9 @@ using NPlug.Backend;
 
 namespace NPlug;
 
+/// <summary>
+/// An audio message to send to the host.
+/// </summary>
 public readonly ref struct AudioMessage
 {
     private readonly IAudioMessageBackend? _backend;
@@ -21,14 +24,23 @@ public readonly ref struct AudioMessage
         AttributeList = attributeList;
     }
 
+    /// <summary>
+    /// Gets or sets the id of this message.
+    /// </summary>
     public string Id
     {
         get => GetSafeBackend().GetId(this);
         set => GetSafeBackend().SetId(this, value);
     }
 
+    /// <summary>
+    /// Gets the attributes associated with this message.
+    /// </summary>
     public AudioAttributeList Attributes => AttributeList;
-    
+
+    /// <summary>
+    /// Dispose this message.
+    /// </summary>
     public void Dispose()
     {
         if (_backend is null) return;

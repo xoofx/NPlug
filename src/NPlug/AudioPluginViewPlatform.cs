@@ -4,6 +4,9 @@
 
 namespace NPlug;
 
+/// <summary>
+/// The kind of native view to attach to the plugin view.
+/// </summary>
 public enum AudioPluginViewPlatform
 {
     /// <summary>

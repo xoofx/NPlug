@@ -8,12 +8,15 @@ using System.IO;
 namespace NPlug.Interop;
 
 /// <summary>
-/// Generates a log of all interop events in the temp folder "NPlug.xxxxx.log".
+/// Generates a log of all interop events in the temp folder "NPlug_xxxxx.log".
 /// </summary>
 public class TempFileInteropTracer : IInteropTracer, IDisposable
 {
     private readonly TextWriter _writer;
 
+    /// <summary>
+    /// Creates a new instance of this tracer and generates a log file in the temp folder.
+    /// </summary>
     public TempFileInteropTracer()
     {
         var tempFile = Path.GetTempFileName();
@@ -32,9 +35,13 @@ public class TempFileInteropTracer : IInteropTracer, IDisposable
         }
     }
 
+    /// <summary>
+    /// Gets the full path of the log file.
+    /// </summary>
     public string FilePath { get; }
 
 
+    /// <inheritdoc />
     public void OnQueryInterfaceFromHost(Guid guid, string knownInterfaceName, bool implementedByPlugin)
     {
         lock (_writer)
@@ -51,6 +58,7 @@ public class TempFileInteropTracer : IInteropTracer, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public void OnQueryInterfaceFromPlugin(Guid guid, string knownInterfaceName, bool implementedByHost)
     {
         lock (_writer)
@@ -67,6 +75,7 @@ public class TempFileInteropTracer : IInteropTracer, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public void OnEnter(in NativeToManagedEvent evt)
     {
         lock (_writer)
@@ -83,11 +92,13 @@ public class TempFileInteropTracer : IInteropTracer, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public void OnExit(in NativeToManagedEvent evt)
     {
         // Don't print exit event
     }
 
+    /// <inheritdoc />
     public void OnExitWithError(in NativeToManagedEvent evt)
     {
         lock (_writer)
@@ -105,6 +116,7 @@ public class TempFileInteropTracer : IInteropTracer, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public void OnEnter(in ManagedToNativeEvent evt)
     {
         lock (_writer)
@@ -121,11 +133,13 @@ public class TempFileInteropTracer : IInteropTracer, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public void OnExit(in ManagedToNativeEvent evt)
     {
         // Don't print exit event
     }
 
+    /// <inheritdoc />
     public void OnExitWithError(in ManagedToNativeEvent evt)
     {
         lock (_writer)
@@ -142,6 +156,7 @@ public class TempFileInteropTracer : IInteropTracer, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public void LogInfo(string message)
     {
         lock (_writer)
@@ -160,6 +175,7 @@ public class TempFileInteropTracer : IInteropTracer, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         lock (_writer)

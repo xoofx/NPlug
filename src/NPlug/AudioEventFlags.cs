@@ -6,9 +6,15 @@ using System;
 
 namespace NPlug;
 
+/// <summary>
+/// Describes the flags of an audio event.
+/// </summary>
 [Flags]
 public enum AudioEventFlags : ushort
 {
+    /// <summary>
+    /// Flags is not set.
+    /// </summary>
     None = 0,
 
     /// <summary>

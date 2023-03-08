@@ -8,14 +8,36 @@ namespace NPlug;
 
 public abstract partial class AudioProcessor<TAudioProcessorModel>
 {
+    /// <summary>
+    /// Gets a boolean indicating if this processor is currently processing. This is set by <see cref="IAudioProcessor.SetProcessing"/>.
+    /// </summary>
     public bool IsProcessing { get; private set; }
 
+    /// <summary>
+    /// Gets a boolean indicating if the model specifies that this processor should be bypassed.
+    /// </summary>
     public bool ShouldByPass => Model.ByPassParameter?.Value ?? false;
-    
+
+    /// <summary>
+    /// This method is called before processing the data as part of the <see cref="IAudioProcessor.Process"/>.
+    /// </summary>
+    /// <param name="data">The process data.</param>
     protected virtual void PreProcess(in AudioProcessData data)
     {
     }
 
+    /// <summary>
+    /// This method is called by <see cref="IAudioProcessor.Process"/>.
+    /// </summary>
+    /// <param name="data">The process data</param>
+    /// <remarks>
+    /// The default implementation is calling:
+    /// - <see cref="PreProcess"/>
+    /// - <see cref="ProcessParameterChanges"/>
+    /// - If the parameter changes have been processed, it calls <see cref="ProcessRecalculate"/>.
+    /// - Then it calls <see cref="ProcessEvents"/>
+    /// - If the sample count is greater than 0 and the processor is not bypassed, it calls <see cref="ProcessMain"/> and <see cref="PostProcessCheckSilence"/>
+    /// </remarks>
     protected virtual void Process(in AudioProcessData data)
     {
         PreProcess(data);
@@ -35,14 +57,28 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
         }
     }
 
+    /// <summary>
+    /// Implement this method to generate the main part of the audio processing.
+    /// </summary>
     protected virtual void ProcessMain(in AudioProcessData data)
     {
     }
 
+    /// <summary>
+    /// This method is called before processing the data if the parameter have changed (after calling <see cref="ProcessParameterChanges"/>).
+    /// </summary>
     protected virtual void ProcessRecalculate(in AudioProcessData data)
     {
     }
-    
+
+    /// <summary>
+    /// This method is called before processing the data and process any parameter changes.
+    /// </summary>
+    /// <param name="data">The input data.</param>
+    /// <returns><c>true</c> if some parameters have changed.</returns>
+    /// <remarks>
+    /// The default implementation is taking the last point value of a parameter change.
+    /// </remarks>
     protected virtual bool ProcessParameterChanges(in AudioProcessData data)
     {
         var parameterChanges = data.Input.ParameterChanges;
@@ -66,6 +102,9 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
         return false;
     }
 
+    /// <summary>
+    /// Process any input events
+    /// </summary>
     protected virtual void ProcessEvents(in AudioProcessData data)
     {
         var events = data.Input.Events;
@@ -79,10 +118,20 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
         }
     }
 
+    /// <summary>
+    /// This method is called by <see cref="ProcessEvents"/> to process a single event.
+    /// </summary>
     protected virtual void ProcessEvent(in AudioEvent audioEvent)
     {
     }
 
+    /// <summary>
+    /// This method is called by <see cref="Process"/> if the processor is bypassed.
+    /// </summary>
+    /// <returns><c>true</c> if this method has generated a bypass audio.</returns>
+    /// <remarks>
+    /// The default implementation for the by-pass is to copy the input audio to the output audio.
+    /// </remarks>
     protected virtual bool ProcessByPass(in AudioProcessData data)
     {
         if (!ShouldByPass || data.SampleCount == 0) return false;
@@ -120,6 +169,9 @@ public abstract partial class AudioProcessor<TAudioProcessorModel>
         return true;
     }
 
+    /// <summary>
+    /// This method is called by <see cref="Process"/> after <see cref="ProcessMain"/> to check if the output is silent.
+    /// </summary>
     protected virtual void PostProcessCheckSilence(in AudioProcessData data)
     {
         var inputCount = data.Input.BusCount;

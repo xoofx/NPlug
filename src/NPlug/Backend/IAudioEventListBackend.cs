@@ -6,6 +6,9 @@ using System;
 
 namespace NPlug.Backend;
 
+/// <summary>
+/// Host backend for manipulating events.
+/// </summary>
 public interface IAudioEventListBackend
 {
     /// <summary>

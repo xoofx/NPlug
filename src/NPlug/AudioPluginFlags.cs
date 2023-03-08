@@ -6,6 +6,9 @@ using System;
 
 namespace NPlug;
 
+/// <summary>
+/// Flags associated with a plugin.
+/// </summary>
 [Flags]
 public enum AudioPluginFlags
 {

@@ -8,6 +8,9 @@ using NPlug.Backend;
 
 namespace NPlug;
 
+/// <summary>
+/// A queue of parameter values.
+/// </summary>
 public readonly ref struct AudioParameterValueQueue
 {
     private readonly IAudioParameterValueQueueBackend? _backend;
@@ -19,15 +22,33 @@ public readonly ref struct AudioParameterValueQueue
         NativeContext = nativeContext;
     }
 
+    /// <summary>
+    /// Gets the associated parameter id for this queue.
+    /// </summary>
     public AudioParameterId ParameterId => _backend?.GetParameterId(this) ?? default;
 
+    /// <summary>
+    /// Gets the number of point values.
+    /// </summary>
     public int PointCount => _backend?.GetPointCount(this) ?? 0;
 
+    /// <summary>
+    /// Get a point value at a given index.
+    /// </summary>
+    /// <param name="index">The index of the point.</param>
+    /// <param name="sampleOffset">The output sample offset.</param>
+    /// <returns>The point value at the given index.</returns>
     public double GetPoint(int index, out int sampleOffset)
     {
         return GetSafeBackend().GetPoint(this, index, out sampleOffset);
     }
 
+    /// <summary>
+    /// Adds a point value at a given sample offset.
+    /// </summary>
+    /// <param name="sampleOffset">The sample offset this point value applies.</param>
+    /// <param name="parameterValue">The point value.</param>
+    /// <returns>The index of this point value.</returns>
     public int AddPoint(int sampleOffset, double parameterValue)
     {
         return GetSafeBackend().AddPoint(this, sampleOffset, parameterValue);

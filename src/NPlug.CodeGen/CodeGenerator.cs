@@ -121,7 +121,13 @@ public class CodeGenerator
 
         // Prepare for the C# generated file
         var csFile = new CSharpGeneratedFile("/LibVst.generated.cs");
-        csFile.Members.Add(new CSharpFreeMember() { Text = "#pragma warning disable CS0649" });
+        csFile.Members.Add(new CSharpFreeMember() { Text = @"#pragma warning disable CS0649
+#pragma warning disable CS1658
+#pragma warning disable CS1570
+#pragma warning disable CS1573
+#pragma warning disable CS1574
+#pragma warning disable CS1584
+" });
         csFile.Members.Add(new CSharpNamespace("NPlug.Interop") { IsFileScoped = true });
         csFile.Members.Add(new CSharpUsingDeclaration("System.Collections.Generic"));
         csFile.Members.Add(new CSharpUsingDeclaration("System.Diagnostics.CodeAnalysis"));

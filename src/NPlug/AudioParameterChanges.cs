@@ -8,6 +8,9 @@ using NPlug.Backend;
 
 namespace NPlug;
 
+/// <summary>
+/// Defines parameter changes.
+/// </summary>
 public readonly ref struct AudioParameterChanges
 {
     private readonly IAudioParameterChangesBackend? _backend;
@@ -19,6 +22,9 @@ public readonly ref struct AudioParameterChanges
         NativeContext = nativeContext;
     }
 
+    /// <summary>
+    /// Gets the number of parameter changes.
+    /// </summary>
     public int Count {
         get
         {
@@ -26,12 +32,23 @@ public readonly ref struct AudioParameterChanges
         }
     }
 
+    /// <summary>
+    /// Gets the parameter value queue at the specified index.
+    /// </summary>
+    /// <param name="index">The index of the parameter.</param>
+    /// <returns>The associated queue.</returns>
     [UnscopedRef]
     public AudioParameterValueQueue GetParameterData(int index)
     {
         return GetSafeBackend().GetParameterData(this, index);
     }
 
+    /// <summary>
+    /// Creates a new parameter change change.
+    /// </summary>
+    /// <param name="parameterId">The parameter id.</param>
+    /// <param name="index">The output index of the queue.</param>
+    /// <returns>The parameter value queue.</returns>
     [UnscopedRef]
     public AudioParameterValueQueue AddParameterData(AudioParameterId parameterId, out int index)
     {
@@ -49,15 +66,4 @@ public readonly ref struct AudioParameterChanges
     {
         throw new InvalidOperationException("This parameter changes is not initialized");
     }
-}
-
-public readonly record struct AudioParameterId(int Value)
-{
-    public static implicit operator AudioParameterId(int value) => new(value);
-}
-
-public readonly record struct AudioUnitId(int Value)
-{
-    public static readonly AudioUnitId NoParent = new (-1);
-    public static implicit operator AudioUnitId(int value) => new(value);
 }

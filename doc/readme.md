@@ -352,3 +352,24 @@ In your Plugin factory, setup the `InteropTracer` by logging all calls to a temp
 ```c#
 InteropHelper.Tracer = new TempFileInteropTracer();
 ```
+
+### Validating a plugin with `NPlug.Validator`
+
+NPlug provides a package to validate your plugin. This can be used as part of your tests to make sure that your plugin is working.
+
+The validation is using the validator provided by the VST3 SDK.
+
+In order to use the validator, you need to install the package `dotnet package add NPlug.Validator`.
+
+In C#, you can directly call the validator on your `AudioPluginFactory` instance. Let's take the example of the `SimpleDelayPlugin` that we used in the getting started section:
+
+```c#
+var factory = SimpleDelayPlugin.GetFactory();
+// Call the validator on the plugin
+var result = AudioPluginValidator.Validate(factory.Export, Console.Out, Console.Error);
+if (!result) {
+    // TODO: handle error
+}
+```
+
+You can also validate a native plugin by passing the path to the vst3 plugin (on Windows). For other platforms, it would require to setup the plugin structure correctly (see issue [#1](https://github.com/xoofx/NPlug/issues/1))

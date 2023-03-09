@@ -12,7 +12,7 @@
     <Copyright>Alexandre Mutel</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Authors>Alexandre Mutel</Authors>
-    <PackageTags>audio;sound;vst</PackageTags>
+    <PackageTags>audio;sound;vst;vst3</PackageTags>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageIcon>NPlug.png</PackageIcon>
     <PackageProjectUrl>https://github.com/xoofx/NPlug</PackageProjectUrl>

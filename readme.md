@@ -17,7 +17,8 @@ NPlug is a library that allows to easily develop [VST3](https://steinbergmedia.g
 - Provides builtin support for synchronizing automatically the data model between the `AudioProcessor` and `AudioController`.
 - Supports multiple platforms: `win-x64`, `win-arm64`, `osx-x64`, `osx-arm64`, `linux-x64`, `linux-arm64`
   - Please notice that `osx` full native supports will be only possible with .NET8+
-- Provides the official VST3 Validator to unit test your plugin developed with NPlug via the package NPlug.Validator [![NuGet](https://img.shields.io/nuget/v/NPlug.Validator.svg)](https://www.nuget.org/packages/NPlug.Validator/). Usage documentation [here](https://github.com/xoofx/NPlug/blob/main/doc/readme.md#validating-a-plugin-with-nplugvalidator).
+- Provides the official VST3 Validator to unit test your plugin developed with NPlug via the package [NPlug.Validator](https://www.nuget.org/packages/NPlug.Validator/)([![NuGet](https://img.shields.io/nuget/v/NPlug.Validator.svg)](https://www.nuget.org/packages/NPlug.Validator/)). 
+  - Usage documentation of NPlug.Validator is available [here](https://github.com/xoofx/NPlug/blob/main/doc/readme.md#validating-a-plugin-with-nplugvalidator).
 
 ## User Guide
 

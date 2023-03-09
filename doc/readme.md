@@ -372,4 +372,8 @@ if (!result) {
 }
 ```
 
+You can see the output of the validation for the `SimpleDelayPlugin` [here](https://github.com/xoofx/NPlug/blob/main/src/NPlug.Tests/Snapshots/TestSamplePlugins.TestSimpleDelay.verified.txt).
+
+The project `NPlug.Tests` in this repository is leveraging the validator to validate the plugins from the samples and the output is verified with a snapshot via [Verify](https://github.com/VerifyTests/Verify).
+
 You can also validate a native plugin by passing the path to the vst3 plugin (on Windows). For other platforms, it would require to setup the plugin structure correctly (see issue [#1](https://github.com/xoofx/NPlug/issues/1))

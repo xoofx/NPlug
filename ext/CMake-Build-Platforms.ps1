@@ -49,6 +49,13 @@ function Build-Project {
         $NETPlatform = "osx"
         $NETSharedLibExtension = "dylib"
         $LocalCMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
+        $LocalCMakeArgs += "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.10"
+        if ($NETArch -eq "arm64") {
+            $LocalCMakeArgs += "-DCMAKE_OSX_ARCHITECTURES=arm64"
+        }
+        elseif ($NETArch -eq "x64") {
+            $LocalCMakeArgs += "-DCMAKE_OSX_ARCHITECTURES=x86_64"
+        }
     }
     elseif ($IsWindows) {
         $MsvcArch = $NETArch

@@ -8,7 +8,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-18.04, windows-latest, macos-11]
+        os: [ubuntu-20.04, windows-latest, macos-11]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
@@ -17,7 +17,7 @@ jobs:
         submodules: true
         fetch-depth: 0
     - name: Setup Linux
-      if: matrix.os == 'ubuntu-18.04'
+      if: matrix.os == 'ubuntu-20.04'
       run: |
            sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libfreetype6-dev pkg-config libxcb-util-dev libxcb-cursor-dev libxcb-keysyms1-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libxcb1-dev libglib2.0-0 libglib2.0-dev libcairo2-dev libpangocairo-1.0-0 libpango1.0-dev libgtkmm-3.0-dev libsqlite3-dev
     - name: Build Validator

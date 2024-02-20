@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <IsPackable Condition="'$(IsPackable)' == ''">false</IsPackable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <Version>1.3.0.$(VstVersionCompact)</Version>
+    <Version>1.3.1.$(VstVersionCompact)</Version>
     <NPlugAudioPluginProxy>true</NPlugAudioPluginProxy>
   </PropertyGroup>
 

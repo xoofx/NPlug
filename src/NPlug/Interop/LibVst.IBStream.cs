@@ -9,6 +9,35 @@ namespace NPlug.Interop;
 
 internal static unsafe partial class LibVst
 {
+    public partial struct IBStream
+    {
+        /// <summary>
+        /// Reads binary data from stream.
+        /// </summary>
+        /// <param name="buffer">: destination buffer</param>
+        /// <param name="numBytes">: amount of bytes to be read</param>
+        /// <param name="numBytesRead">: result - how many bytes have been read from stream (set to 0 if this is of no interest)</param>
+        private static partial ComResult read_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesRead)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static partial ComResult write_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesWritten)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static partial ComResult seek_ToManaged(IBStream* self, long pos, int mode, long* result)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static partial ComResult tell_ToManaged(IBStream* self, long* pos)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     /// <summary>
     /// Proxy implementation to connect a <see cref="Stream"/> to an <see cref="IBStream"/>.
     /// </summary>

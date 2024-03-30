@@ -285,11 +285,23 @@ internal static partial class LibVst
     ///  pluginBase- read/write binary data from/to stream
     /// - get/set stream read-write position (read and write position is the same)
     /// </remarks>
-    public unsafe partial struct IBStream : INativeGuid, INativeUnknown
+    public unsafe partial struct IBStream : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 7;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IBStream*, void*, int, int*, int>)&read_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IBStream*, void*, int, int*, int>)&write_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IBStream*, long, int, long*, int>)&seek_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IBStream*, long*, int>)&tell_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -424,6 +436,171 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Reads binary data from stream.
+        /// </summary>
+        /// <param name="buffer">: destination buffer</param>
+        /// <param name="numBytes">: amount of bytes to be read</param>
+        /// <param name="numBytesRead">: result - how many bytes have been read from stream (set to 0 if this is of no interest)</param>
+        private static partial ComResult read_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesRead);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int read_Wrapper(IBStream* self, void* buffer, int numBytes, int* numBytesRead)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "read");
+                try
+                {
+                    return read_ToManaged(self, buffer, numBytes, numBytesRead);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return read_ToManaged(self, buffer, numBytes, numBytesRead);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Writes binary data to stream.
+        /// </summary>
+        /// <param name="buffer">: source buffer</param>
+        /// <param name="numBytes">: amount of bytes to write</param>
+        /// <param name="numBytesWritten">: result - how many bytes have been written to stream (set to 0 if this is of no interest)</param>
+        private static partial ComResult write_ToManaged(IBStream* self, void* buffer, int numBytes, int* numBytesWritten);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int write_Wrapper(IBStream* self, void* buffer, int numBytes, int* numBytesWritten)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "write");
+                try
+                {
+                    return write_ToManaged(self, buffer, numBytes, numBytesWritten);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return write_ToManaged(self, buffer, numBytes, numBytesWritten);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Sets stream read-write position.
+        /// </summary>
+        /// <param name="pos">: new stream position (dependent on mode)</param>
+        /// <param name="mode">: value of enum IStreamSeekMode</param>
+        /// <param name="result">: new seek position (set to 0 if this is of no interest)</param>
+        private static partial ComResult seek_ToManaged(IBStream* self, long pos, int mode, long* result);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int seek_Wrapper(IBStream* self, long pos, int mode, long* result)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "seek");
+                try
+                {
+                    return seek_ToManaged(self, pos, mode, result);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return seek_ToManaged(self, pos, mode, result);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets current stream read-write position.
+        /// </summary>
+        /// <param name="pos">: is assigned the current position if function succeeds</param>
+        private static partial ComResult tell_ToManaged(IBStream* self, long* pos);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int tell_Wrapper(IBStream* self, long* pos)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IBStream), "tell");
+                try
+                {
+                    return tell_ToManaged(self, pos);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return tell_ToManaged(self, pos);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         public enum IStreamSeekMode
         {
             /// <summary>
@@ -469,11 +646,29 @@ internal static partial class LibVst
     /// For a more convenient usage of this interface, you should use the functions defined
     /// in namespace PAttributes (public.sdk/source/common/pattributes.h+cpp) !! frameworkHostClasses
     /// </remarks>
-    public unsafe partial struct IAttributes : INativeGuid, INativeUnknown
+    public unsafe partial struct IAttributes : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 13;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, LibVst.FVariant*, int>)&set_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, LibVst.FVariant*, int>)&queue_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, void*, uint, byte, int>)&setBinaryData_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, LibVst.FVariant*, int>)&get_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, LibVst.FVariant*, int>)&unqueue_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, int>)&getQueueItemCount_Wrapper;
+            vtbl[9] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, int>)&resetQueue_Wrapper;
+            vtbl[10] = (delegate*unmanaged[MemberFunction]<IAttributes*, int>)&resetAllQueues_Wrapper;
+            vtbl[11] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, void*, uint, int>)&getBinaryData_Wrapper;
+            vtbl[12] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, uint>)&getBinaryDataSize_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -528,20 +723,20 @@ internal static partial class LibVst
         /// When using the PAttributes functions, this is done through a function parameter.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult set(LibVst.IAttrID attrID, LibVst.FVariant* data)
+        public ComResult set(byte* attrID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "set");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[3])(__self__, attrID, data);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[3])(__self__, attrID, data);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[3])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[3])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
             }
         }
         
@@ -551,20 +746,20 @@ internal static partial class LibVst
         /// of subattributes or other objects that implement the IPersistent interface.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queue(LibVst.IAttrID listID, LibVst.FVariant* data)
+        public ComResult queue(byte* listID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "queue");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[4])(__self__, listID, data);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[4])(__self__, listID, data);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[4])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[4])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
             }
         }
         
@@ -575,20 +770,20 @@ internal static partial class LibVst
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
+        public ComResult setBinaryData(byte* attrID, void* data, uint bytes, byte copyBytes)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "setBinaryData");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, byte, int>)Vtbl[5])(__self__, attrID, data, bytes, copyBytes);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, void*, uint, byte, int>)Vtbl[5])(__self__, attrID, data, bytes, copyBytes);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, byte, int>)Vtbl[5])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, void*, uint, byte, int>)Vtbl[5])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
             }
         }
         
@@ -598,20 +793,20 @@ internal static partial class LibVst
         /// Get data previously stored to the archive.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult get(LibVst.IAttrID attrID, LibVst.FVariant* data)
+        public ComResult get(byte* attrID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "get");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[6])(__self__, attrID, data);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[6])(__self__, attrID, data);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[6])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[6])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
             }
         }
         
@@ -622,20 +817,20 @@ internal static partial class LibVst
         /// </summary>
         /// <seealso cref="IAttributes::resetQueue "/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult unqueue(LibVst.IAttrID listID, LibVst.FVariant* data)
+        public ComResult unqueue(byte* listID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "unqueue");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[7])(__self__, listID, data);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[7])(__self__, listID, data);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[7])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[7])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
             }
         }
         
@@ -643,19 +838,19 @@ internal static partial class LibVst
         /// Get the amount of items in a queue.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int getQueueItemCount(LibVst.IAttrID arg)
+        public int getQueueItemCount(byte* arg)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getQueueItemCount");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])(__self__, arg);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, int>)Vtbl[8])(__self__, arg);
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), arg);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, int>)Vtbl[8])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), arg);
             }
         }
         
@@ -663,20 +858,20 @@ internal static partial class LibVst
         /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult resetQueue(LibVst.IAttrID attrID)
+        public ComResult resetQueue(byte* attrID)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "resetQueue");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[9])(__self__, attrID);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, int>)Vtbl[9])(__self__, attrID);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[9])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, int>)Vtbl[9])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
             }
         }
         
@@ -706,20 +901,20 @@ internal static partial class LibVst
         /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult getBinaryData(LibVst.IAttrID attrID, void* data, uint bytes)
+        public ComResult getBinaryData(byte* attrID, void* data, uint bytes)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getBinaryData");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, int>)Vtbl[11])(__self__, attrID, data, bytes);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, void*, uint, int>)Vtbl[11])(__self__, attrID, data, bytes);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, int>)Vtbl[11])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, void*, uint, int>)Vtbl[11])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes);
             }
         }
         
@@ -727,19 +922,423 @@ internal static partial class LibVst
         /// Get the size in bytes of binary data in the archive.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public uint getBinaryDataSize(LibVst.IAttrID attrID)
+        public uint getBinaryDataSize(byte* attrID)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getBinaryDataSize");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, uint>)Vtbl[12])(__self__, attrID);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, uint>)Vtbl[12])(__self__, attrID);
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, uint>)Vtbl[12])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, uint>)Vtbl[12])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        ///  Methods to write attributes*******************************************************************************************************@
+        /// {
+        /// Store any data in the archive. It is even possible to store sub-attributes by creating
+        /// a new IAttributes instance via the IHostClasses interface and pass it to the parent in the
+        /// FVariant. In this case the archive must take the ownership of the newly created object, which
+        /// is true for all objects that have been created only for storing. You tell the archive to take
+        /// ownership by adding the FVariant::kOwner flag to the FVariant::type member (data.type |= FVariant::kOwner).
+        /// When using the PAttributes functions, this is done through a function parameter.
+        /// </remarks>
+        private static partial ComResult set_ToManaged(IAttributes* self, byte* attrID, LibVst.FVariant* data);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int set_Wrapper(IAttributes* self, byte* attrID, LibVst.FVariant* data)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes), "set");
+                try
+                {
+                    return set_ToManaged(self, attrID, data);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return set_ToManaged(self, attrID, data);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Store a list of data in the archive. Please note that the type of data is not mixable! So
+        /// you can only store a list of integers or a list of doubles/strings/etc. You can also store a list
+        /// of subattributes or other objects that implement the IPersistent interface.
+        /// </summary>
+        private static partial ComResult queue_ToManaged(IAttributes* self, byte* listID, LibVst.FVariant* data);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int queue_Wrapper(IAttributes* self, byte* listID, LibVst.FVariant* data)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes), "queue");
+                try
+                {
+                    return queue_ToManaged(self, listID, data);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return queue_ToManaged(self, listID, data);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Store binary data in the archive. Parameter 'copyBytes' specifies if the passed data should be copied.
+        /// The archive cannot take the ownership of binary data. Either it just references a buffer in order
+        /// to write it to a file (copyBytes = false) or it copies the data to its own buffers (copyBytes = true).
+        /// When binary data should be stored in the default pool for example, you must always copy it!
+        /// </summary>
+        private static partial ComResult setBinaryData_ToManaged(IAttributes* self, byte* attrID, void* data, uint bytes, byte copyBytes);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setBinaryData_Wrapper(IAttributes* self, byte* attrID, void* data, uint bytes, byte copyBytes)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes), "setBinaryData");
+                try
+                {
+                    return setBinaryData_ToManaged(self, attrID, data, bytes, copyBytes);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return setBinaryData_ToManaged(self, attrID, data, bytes, copyBytes);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <remarks>
+        ///  Methods to read attributes*******************************************************************************************************@
+        /// {
+        /// Get data previously stored to the archive.
+        /// </remarks>
+        private static partial ComResult get_ToManaged(IAttributes* self, byte* attrID, LibVst.FVariant* data);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int get_Wrapper(IAttributes* self, byte* attrID, LibVst.FVariant* data)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes), "get");
+                try
+                {
+                    return get_ToManaged(self, attrID, data);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return get_ToManaged(self, attrID, data);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Get list of data previously stored to the archive. As long as there are queue members the method
+        /// will return kResultTrue. When the queue is empty, the methods returns kResultFalse. All lists except from
+        /// object lists can be reset which means that the items can be read once again.
+        /// </summary>
+        /// <seealso cref="IAttributes::resetQueue "/>
+        private static partial ComResult unqueue_ToManaged(IAttributes* self, byte* listID, LibVst.FVariant* data);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int unqueue_Wrapper(IAttributes* self, byte* listID, LibVst.FVariant* data)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes), "unqueue");
+                try
+                {
+                    return unqueue_ToManaged(self, listID, data);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return unqueue_ToManaged(self, listID, data);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Get the amount of items in a queue.
+        /// </summary>
+        private static partial int getQueueItemCount_ToManaged(IAttributes* self, byte* arg);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getQueueItemCount_Wrapper(IAttributes* self, byte* arg)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes), "getQueueItemCount");
+                try
+                {
+                    return getQueueItemCount_ToManaged(self, arg);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getQueueItemCount_ToManaged(self, arg);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
+        /// </summary>
+        private static partial ComResult resetQueue_ToManaged(IAttributes* self, byte* attrID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int resetQueue_Wrapper(IAttributes* self, byte* attrID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes), "resetQueue");
+                try
+                {
+                    return resetQueue_ToManaged(self, attrID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return resetQueue_ToManaged(self, attrID);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Reset all queues in the archive.
+        /// </summary>
+        private static partial ComResult resetAllQueues_ToManaged(IAttributes* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int resetAllQueues_Wrapper(IAttributes* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes), "resetAllQueues");
+                try
+                {
+                    return resetAllQueues_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return resetAllQueues_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Read binary data from the archive. The data is copied into the passed buffer. The size of that buffer
+        /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
+        /// </summary>
+        private static partial ComResult getBinaryData_ToManaged(IAttributes* self, byte* attrID, void* data, uint bytes);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getBinaryData_Wrapper(IAttributes* self, byte* attrID, void* data, uint bytes)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes), "getBinaryData");
+                try
+                {
+                    return getBinaryData_ToManaged(self, attrID, data, bytes);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getBinaryData_ToManaged(self, attrID, data, bytes);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Get the size in bytes of binary data in the archive.
+        /// </summary>
+        private static partial uint getBinaryDataSize_ToManaged(IAttributes* self, byte* attrID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static uint getBinaryDataSize_Wrapper(IAttributes* self, byte* attrID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes), "getBinaryDataSize");
+                try
+                {
+                    return getBinaryDataSize_ToManaged(self, attrID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getBinaryDataSize_ToManaged(self, attrID);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -757,22 +1356,6 @@ internal static partial class LibVst
                     )));
             }
         }
-    }
-    
-    public unsafe partial struct FIDString
-    {
-        public byte* Value;
-        
-        public static implicit operator byte*(FIDString value) => value.Value;
-        
-        public static implicit operator FIDString(byte* value) => new FIDString() { Value = value };
-    }
-    
-    public partial record struct IAttrID(LibVst.FIDString Value)
-    {
-        public static implicit operator LibVst.FIDString(IAttrID value) => value.Value;
-        
-        public static implicit operator IAttrID(LibVst.FIDString value) => new(value);
     }
     
     /// <summary>
@@ -810,6 +1393,26 @@ internal static partial class LibVst
         }
         
         public LibVst.FVariant.Union union;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public enum fvariant
+        {
+            kEmpty = 0,
+            
+            kInteger = 1 << 0,
+            
+            kFloat = 1 << 1,
+            
+            kString8 = 1 << 2,
+            
+            kObject = 1 << 3,
+            
+            kOwner = 1 << 4,
+            
+            kString16 = 1 << 5,
+        }
     }
     
     /// <summary>
@@ -820,11 +1423,21 @@ internal static partial class LibVst
     /// <remarks>
     ///  frameworkHostClasses
     /// </remarks>
-    public unsafe partial struct IAttributes2 : INativeGuid, INativeUnknown
+    public unsafe partial struct IAttributes2 : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 15;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            IAttributes.InitializeVtbl(vtbl);
+            vtbl[13] = (delegate*unmanaged[MemberFunction]<IAttributes2*, int>)&countAttributes_Wrapper;
+            vtbl[14] = (delegate*unmanaged[MemberFunction]<IAttributes2*, int, LibVst.FIDString>)&getAttributeID_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -879,7 +1492,7 @@ internal static partial class LibVst
         /// When using the PAttributes functions, this is done through a function parameter.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult set(LibVst.IAttrID attrID, LibVst.FVariant* data)
+        public ComResult set(byte* attrID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).set(attrID, data);
         }
@@ -890,7 +1503,7 @@ internal static partial class LibVst
         /// of subattributes or other objects that implement the IPersistent interface.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queue(LibVst.IAttrID listID, LibVst.FVariant* data)
+        public ComResult queue(byte* listID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).queue(listID, data);
         }
@@ -902,7 +1515,7 @@ internal static partial class LibVst
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
+        public ComResult setBinaryData(byte* attrID, void* data, uint bytes, byte copyBytes)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).setBinaryData(attrID, data, bytes, copyBytes);
         }
@@ -913,7 +1526,7 @@ internal static partial class LibVst
         /// Get data previously stored to the archive.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult get(LibVst.IAttrID attrID, LibVst.FVariant* data)
+        public ComResult get(byte* attrID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).get(attrID, data);
         }
@@ -925,7 +1538,7 @@ internal static partial class LibVst
         /// </summary>
         /// <seealso cref="IAttributes::resetQueue "/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult unqueue(LibVst.IAttrID listID, LibVst.FVariant* data)
+        public ComResult unqueue(byte* listID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).unqueue(listID, data);
         }
@@ -934,7 +1547,7 @@ internal static partial class LibVst
         /// Get the amount of items in a queue.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int getQueueItemCount(LibVst.IAttrID arg)
+        public int getQueueItemCount(byte* arg)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getQueueItemCount(arg);
         }
@@ -943,7 +1556,7 @@ internal static partial class LibVst
         /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult resetQueue(LibVst.IAttrID attrID)
+        public ComResult resetQueue(byte* attrID)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).resetQueue(attrID);
         }
@@ -962,7 +1575,7 @@ internal static partial class LibVst
         /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult getBinaryData(LibVst.IAttrID attrID, void* data, uint bytes)
+        public ComResult getBinaryData(byte* attrID, void* data, uint bytes)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getBinaryData(attrID, data, bytes);
         }
@@ -971,7 +1584,7 @@ internal static partial class LibVst
         /// Get the size in bytes of binary data in the archive.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public uint getBinaryDataSize(LibVst.IAttrID attrID)
+        public uint getBinaryDataSize(byte* attrID)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getBinaryDataSize(attrID);
         }
@@ -1016,6 +1629,85 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Returns the number of existing attributes.
+        /// </summary>
+        private static partial int countAttributes_ToManaged(IAttributes2* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int countAttributes_Wrapper(IAttributes2* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes2), "countAttributes");
+                try
+                {
+                    return countAttributes_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return countAttributes_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Returns the attribute's ID for the given index.
+        /// </summary>
+        private static partial LibVst.IAttrID getAttributeID_ToManaged(IAttributes2* self, int index);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static LibVst.FIDString getAttributeID_Wrapper(IAttributes2* self, int index)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes2), "getAttributeID");
+                try
+                {
+                    return getAttributeID_ToManaged(self, index);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getAttributeID_ToManaged(self, index);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IAttributes2, 0x1382126A, 0xFECA4871, 0x97D52A45, 0xB042AE99)
         /// </summary>
@@ -1032,6 +1724,22 @@ internal static partial class LibVst
         }
     }
     
+    public unsafe partial struct FIDString
+    {
+        public byte* Value;
+        
+        public static implicit operator byte*(FIDString value) => value.Value;
+        
+        public static implicit operator FIDString(byte* value) => new FIDString() { Value = value };
+    }
+    
+    public partial record struct IAttrID(LibVst.FIDString Value)
+    {
+        public static implicit operator LibVst.FIDString(IAttrID value) => value.Value;
+        
+        public static implicit operator IAttrID(LibVst.FIDString value) => new(value);
+    }
+    
     /// <summary>
     /// Basic interface to a plug-in component: IPluginBase
     /// </summary>
@@ -1043,9 +1751,11 @@ internal static partial class LibVst
     /// A list of supported host context interfaces should be included in the documentation
     /// of a specific category.
     /// </remarks>
-    public unsafe partial struct IPluginBase : INativeGuid, INativeVtbl
+    public unsafe partial struct IPluginBase : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 5;
         
@@ -1055,6 +1765,94 @@ internal static partial class LibVst
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IPluginBase*, LibVst.FUnknown*, int>)&initialize_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IPluginBase*, int>)&terminate_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IPluginBase, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IPluginBase, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IPluginBase, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// The host passes a number of interfaces as context to initialize the plug-in class.
+        /// </summary>
+        /// <param name="context,">passed by the host, is mandatory and should implement IHostApplication</param>
+        /// <note>
+        /// Extensive memory allocations etc. should be performed in this method rather than in
+        /// the class' constructor! If the method does NOT return kResultOk, the object is released
+        /// immediately. In this case terminate is not called!
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult initialize(LibVst.FUnknown* context)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginBase*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginBase), "initialize");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPluginBase*, LibVst.FUnknown*, int>)Vtbl[3])(__self__, context);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPluginBase*, LibVst.FUnknown*, int>)Vtbl[3])((LibVst.IPluginBase*)Unsafe.AsPointer(ref this), context);
+            }
+        }
+        
+        /// <summary>
+        /// This function is called before the plug-in is unloaded and can be used for
+        /// cleanups. You have to release all references to any host application interfaces.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult terminate()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginBase*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginBase), "terminate");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPluginBase*, int>)Vtbl[4])(__self__);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPluginBase*, int>)Vtbl[4])((LibVst.IPluginBase*)Unsafe.AsPointer(ref this));
+            }
         }
         
         // --------------------------------------------------------------
@@ -1170,9 +1968,11 @@ internal static partial class LibVst
     /// mechanism to create instances of these classes (that usually define the IPluginBase interface).&lt;b&gt;An implementation is provided in public.sdk/source/common/pluginfactory.cpp &lt;/b&gt;
     /// </remarks>
     /// <seealso cref="GetPluginFactory"/>
-    public unsafe partial struct IPluginFactory : INativeGuid, INativeVtbl
+    public unsafe partial struct IPluginFactory : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 7;
         
@@ -1184,6 +1984,130 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, int>)&countClasses_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, int, LibVst.PClassInfo*, int>)&getClassInfo_Wrapper;
             vtbl[6] = (delegate*unmanaged[MemberFunction]<IPluginFactory*, byte*, byte*, void**, int>)&createInstance_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IPluginFactory, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IPluginFactory, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IPluginFactory, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Fill a PFactoryInfo structure with information about the plug-in vendor.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getFactoryInfo(LibVst.PFactoryInfo* info)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory), "getFactoryInfo");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory*, LibVst.PFactoryInfo*, int>)Vtbl[3])(__self__, info);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory*, LibVst.PFactoryInfo*, int>)Vtbl[3])((LibVst.IPluginFactory*)Unsafe.AsPointer(ref this), info);
+            }
+        }
+        
+        /// <summary>
+        /// Returns the number of exported classes by this factory. If you are using the CPluginFactory
+        /// implementation provided by the SDK, it returns the number of classes you registered with
+        /// CPluginFactory::registerClass.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int countClasses()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory), "countClasses");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory*, int>)Vtbl[4])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory*, int>)Vtbl[4])((LibVst.IPluginFactory*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// Fill a PClassInfo structure with information about the class at the specified index.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getClassInfo(int index, LibVst.PClassInfo* info)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory), "getClassInfo");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory*, int, LibVst.PClassInfo*, int>)Vtbl[5])(__self__, index, info);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory*, int, LibVst.PClassInfo*, int>)Vtbl[5])((LibVst.IPluginFactory*)Unsafe.AsPointer(ref this), index, info);
+            }
+        }
+        
+        /// <summary>
+        /// Create a new class instance.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult createInstance(LibVst.FIDString cid, LibVst.FIDString _iid, void** obj)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory), "createInstance");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory*, LibVst.FIDString, LibVst.FIDString, void**, int>)Vtbl[6])(__self__, cid, _iid, obj);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory*, LibVst.FIDString, LibVst.FIDString, void**, int>)Vtbl[6])((LibVst.IPluginFactory*)Unsafe.AsPointer(ref this), cid, _iid, obj);
+            }
         }
         
         // --------------------------------------------------------------
@@ -1421,6 +2345,15 @@ internal static partial class LibVst
             /// </summary>
             kUnicode = 1 << 4,
         }
+        
+        public enum ipluginbase
+        {
+            kURLSize = 256,
+            
+            kEmailSize = 128,
+            
+            kNameSize = 64,
+        }
     }
     
     /// <summary>
@@ -1459,6 +2392,13 @@ internal static partial class LibVst
         {
             kManyInstances = 0x7FFFFFFF,
         }
+        
+        public enum ipluginbase
+        {
+            kCategorySize = 32,
+            
+            kNameSize = 64,
+        }
     }
     
     /// <summary>
@@ -1468,9 +2408,11 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase@copydoc IPluginFactory
     /// </remarks>
-    public unsafe partial struct IPluginFactory2 : INativeGuid, INativeVtbl
+    public unsafe partial struct IPluginFactory2 : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 8;
         
@@ -1479,6 +2421,104 @@ internal static partial class LibVst
         {
             IPluginFactory.InitializeVtbl(vtbl);
             vtbl[7] = (delegate*unmanaged[MemberFunction]<IPluginFactory2*, int, LibVst.PClassInfo2*, int>)&getClassInfo2_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IPluginFactory2, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IPluginFactory2, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IPluginFactory2, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Fill a PFactoryInfo structure with information about the plug-in vendor.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getFactoryInfo(LibVst.PFactoryInfo* info)
+        {
+            return Unsafe.As<IPluginFactory2, IPluginFactory>(ref this).getFactoryInfo(info);
+        }
+        
+        /// <summary>
+        /// Returns the number of exported classes by this factory. If you are using the CPluginFactory
+        /// implementation provided by the SDK, it returns the number of classes you registered with
+        /// CPluginFactory::registerClass.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int countClasses()
+        {
+            return Unsafe.As<IPluginFactory2, IPluginFactory>(ref this).countClasses();
+        }
+        
+        /// <summary>
+        /// Fill a PClassInfo structure with information about the class at the specified index.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getClassInfo(int index, LibVst.PClassInfo* info)
+        {
+            return Unsafe.As<IPluginFactory2, IPluginFactory>(ref this).getClassInfo(index, info);
+        }
+        
+        /// <summary>
+        /// Create a new class instance.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult createInstance(LibVst.FIDString cid, LibVst.FIDString _iid, void** obj)
+        {
+            return Unsafe.As<IPluginFactory2, IPluginFactory>(ref this).createInstance(cid, _iid, obj);
+        }
+        
+        /// <summary>
+        /// Returns the class info (version 2) for a given index.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getClassInfo2(int index, LibVst.PClassInfo2* info)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory2), "getClassInfo2");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory2*, int, LibVst.PClassInfo2*, int>)Vtbl[7])(__self__, index, info);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory2*, int, LibVst.PClassInfo2*, int>)Vtbl[7])((LibVst.IPluginFactory2*)Unsafe.AsPointer(ref this), index, info);
+            }
         }
         
         // --------------------------------------------------------------
@@ -1591,6 +2631,15 @@ internal static partial class LibVst
         /// SDK version used to build this class (e.g. "VST 3.0")
         /// </summary>
         public fixed byte sdkVersion[64];
+        
+        public enum ipluginbase
+        {
+            kVendorSize = 64,
+            
+            kVersionSize = 64,
+            
+            kSubCategoriesSize = 128,
+        }
     }
     
     /// <summary>
@@ -1600,9 +2649,11 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase@copydoc IPluginFactory
     /// </remarks>
-    public unsafe partial struct IPluginFactory3 : INativeGuid, INativeVtbl
+    public unsafe partial struct IPluginFactory3 : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 10;
         
@@ -1612,6 +2663,134 @@ internal static partial class LibVst
             IPluginFactory2.InitializeVtbl(vtbl);
             vtbl[8] = (delegate*unmanaged[MemberFunction]<IPluginFactory3*, int, LibVst.PClassInfoW*, int>)&getClassInfoUnicode_Wrapper;
             vtbl[9] = (delegate*unmanaged[MemberFunction]<IPluginFactory3*, LibVst.FUnknown*, int>)&setHostContext_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IPluginFactory3, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IPluginFactory3, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IPluginFactory3, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Fill a PFactoryInfo structure with information about the plug-in vendor.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getFactoryInfo(LibVst.PFactoryInfo* info)
+        {
+            return Unsafe.As<IPluginFactory3, IPluginFactory>(ref this).getFactoryInfo(info);
+        }
+        
+        /// <summary>
+        /// Returns the number of exported classes by this factory. If you are using the CPluginFactory
+        /// implementation provided by the SDK, it returns the number of classes you registered with
+        /// CPluginFactory::registerClass.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int countClasses()
+        {
+            return Unsafe.As<IPluginFactory3, IPluginFactory>(ref this).countClasses();
+        }
+        
+        /// <summary>
+        /// Fill a PClassInfo structure with information about the class at the specified index.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getClassInfo(int index, LibVst.PClassInfo* info)
+        {
+            return Unsafe.As<IPluginFactory3, IPluginFactory>(ref this).getClassInfo(index, info);
+        }
+        
+        /// <summary>
+        /// Create a new class instance.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult createInstance(LibVst.FIDString cid, LibVst.FIDString _iid, void** obj)
+        {
+            return Unsafe.As<IPluginFactory3, IPluginFactory>(ref this).createInstance(cid, _iid, obj);
+        }
+        
+        /// <summary>
+        /// Returns the class info (version 2) for a given index.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getClassInfo2(int index, LibVst.PClassInfo2* info)
+        {
+            return Unsafe.As<IPluginFactory3, IPluginFactory2>(ref this).getClassInfo2(index, info);
+        }
+        
+        /// <summary>
+        /// Returns the unicode class info for a given index.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getClassInfoUnicode(int index, LibVst.PClassInfoW* info)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "getClassInfoUnicode");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory3*, int, LibVst.PClassInfoW*, int>)Vtbl[8])(__self__, index, info);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory3*, int, LibVst.PClassInfoW*, int>)Vtbl[8])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this), index, info);
+            }
+        }
+        
+        /// <summary>
+        /// Receives information about host
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setHostContext(LibVst.FUnknown* context)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPluginFactory3), "setHostContext");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory3*, LibVst.FUnknown*, int>)Vtbl[9])(__self__, context);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPluginFactory3*, LibVst.FUnknown*, int>)Vtbl[9])((LibVst.IPluginFactory3*)Unsafe.AsPointer(ref this), context);
+            }
         }
         
         // --------------------------------------------------------------
@@ -1759,6 +2938,15 @@ internal static partial class LibVst
         /// SDK version used to build this class (e.g. "VST 3.0")
         /// </summary>
         public fixed char sdkVersion[64];
+        
+        public enum ipluginbase
+        {
+            kVendorSize = 64,
+            
+            kVersionSize = 64,
+            
+            kSubCategoriesSize = 128,
+        }
     }
     
     /// <summary>
@@ -1769,11 +2957,20 @@ internal static partial class LibVst
     /// - [host imp] or [plug imp]
     /// - [released: SX 4]
     /// </summary>
-    public unsafe partial struct IStringResult : INativeGuid, INativeUnknown
+    public unsafe partial struct IStringResult : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IStringResult*, byte*, void>)&setText_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -1833,6 +3030,45 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        private static partial void setText_ToManaged(IStringResult* self, byte* text);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void setText_Wrapper(IStringResult* self, byte* text)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IStringResult), "setText");
+                try
+                {
+                    setText_ToManaged(self, text);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    setText_ToManaged(self, text);
+                }
+                catch
+                {
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IStringResult, 0x550798BC, 0x872049DB, 0x84920A15, 0x3B50B7A8)
         /// </summary>
@@ -1857,11 +3093,20 @@ internal static partial class LibVst
     /// - [released: 3.0.0]
     /// - [mandatory]Enables a plug-in to resize the view and cause the host to resize the window.
     /// </remarks>
-    public unsafe partial struct IPlugFrame : INativeGuid, INativeUnknown
+    public unsafe partial struct IPlugFrame : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPlugFrame*, LibVst.IPlugView*, LibVst.ViewRect*, int>)&resizeView_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -1924,6 +3169,48 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Called to inform the host about the resize of a given view.
+        /// Afterwards the host has to call IPlugView::onSize ().
+        /// </summary>
+        private static partial ComResult resizeView_ToManaged(IPlugFrame* self, LibVst.IPlugView* view, LibVst.ViewRect* newSize);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int resizeView_Wrapper(IPlugFrame* self, LibVst.IPlugView* view, LibVst.ViewRect* newSize)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugFrame), "resizeView");
+                try
+                {
+                    return resizeView_ToManaged(self, view, newSize);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return resizeView_ToManaged(self, view, newSize);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPlugFrame, 0x367FAF01, 0xAFA94693, 0x8D4DA2A0, 0xED0882A3)
         /// </summary>
@@ -1970,9 +3257,11 @@ internal static partial class LibVst
     /// depends on a proper return value when IPlugView::onKeyDown is called, otherwise the plug-in view may
     /// cause a malfunction of the host's key command handling.
     /// </par>
-    public unsafe partial struct IPlugView : INativeGuid, INativeVtbl
+    public unsafe partial struct IPlugView : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 15;
         
@@ -1992,6 +3281,316 @@ internal static partial class LibVst
             vtbl[12] = (delegate*unmanaged[MemberFunction]<IPlugView*, LibVst.IPlugFrame*, int>)&setFrame_Wrapper;
             vtbl[13] = (delegate*unmanaged[MemberFunction]<IPlugView*, int>)&canResize_Wrapper;
             vtbl[14] = (delegate*unmanaged[MemberFunction]<IPlugView*, LibVst.ViewRect*, int>)&checkSizeConstraint_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IPlugView, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IPlugView, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IPlugView, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Is Platform UI Type supported
+        /// </summary>
+        /// <param name="type">: IDString of @ref platformUIType</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult isPlatformTypeSupported(LibVst.FIDString type)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "isPlatformTypeSupported");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, LibVst.FIDString, int>)Vtbl[3])(__self__, type);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, LibVst.FIDString, int>)Vtbl[3])((LibVst.IPlugView*)Unsafe.AsPointer(ref this), type);
+            }
+        }
+        
+        /// <summary>
+        /// The parent window of the view has been created, the (platform) representation of the view
+        /// should now be created as well.
+        /// Note that the parent is owned by the caller and you are not allowed to alter it in any way
+        /// other than adding your own views.
+        /// Note that in this call the plug-in could call a IPlugFrame::resizeView ()!
+        /// </summary>
+        /// <param name="type">: @ref platformUIType which should be created</param>
+        /// <param name="parent">: platform handle of the parent window or view</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult attached(void* parent, LibVst.FIDString type)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "attached");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, void*, LibVst.FIDString, int>)Vtbl[4])(__self__, parent, type);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, void*, LibVst.FIDString, int>)Vtbl[4])((LibVst.IPlugView*)Unsafe.AsPointer(ref this), parent, type);
+            }
+        }
+        
+        /// <summary>
+        /// The parent window of the view is about to be destroyed.
+        /// You have to remove all your own views from the parent window or view.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult removed()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "removed");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, int>)Vtbl[5])(__self__);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, int>)Vtbl[5])((LibVst.IPlugView*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// Handling of mouse wheel.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult onWheel(float distance)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "onWheel");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, float, int>)Vtbl[6])(__self__, distance);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, float, int>)Vtbl[6])((LibVst.IPlugView*)Unsafe.AsPointer(ref this), distance);
+            }
+        }
+        
+        /// <summary>
+        /// Handling of keyboard events : Key Down.
+        /// </summary>
+        /// <param name="key">: unicode code of key</param>
+        /// <param name="keyCode">: virtual keycode for non ascii keys - see @ref VirtualKeyCodes in keycodes.h</param>
+        /// <param name="modifiers">: any combination of modifiers - see @ref KeyModifier in keycodes.h</param>
+        /// <returns>kResultTrue if the key is handled, otherwise kResultFalse. @n &lt;b&gt;Please note that kResultTrue must only be returned if the key has really been
+        /// handled. &lt;/b&gt;Otherwise key command handling of the host might be blocked!</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult onKeyDown(ushort key, short keyCode, short modifiers)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "onKeyDown");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, ushort, short, short, int>)Vtbl[7])(__self__, key, keyCode, modifiers);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, ushort, short, short, int>)Vtbl[7])((LibVst.IPlugView*)Unsafe.AsPointer(ref this), key, keyCode, modifiers);
+            }
+        }
+        
+        /// <summary>
+        /// Handling of keyboard events : Key Up.
+        /// </summary>
+        /// <param name="key">: unicode code of key</param>
+        /// <param name="keyCode">: virtual keycode for non ascii keys - see @ref VirtualKeyCodes in keycodes.h</param>
+        /// <param name="modifiers">: any combination of KeyModifier - see @ref KeyModifier in keycodes.h</param>
+        /// <returns>kResultTrue if the key is handled, otherwise return kResultFalse.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult onKeyUp(ushort key, short keyCode, short modifiers)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "onKeyUp");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, ushort, short, short, int>)Vtbl[8])(__self__, key, keyCode, modifiers);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, ushort, short, short, int>)Vtbl[8])((LibVst.IPlugView*)Unsafe.AsPointer(ref this), key, keyCode, modifiers);
+            }
+        }
+        
+        /// <summary>
+        /// Returns the size of the platform representation of the view.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getSize(LibVst.ViewRect* size)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "getSize");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, LibVst.ViewRect*, int>)Vtbl[9])(__self__, size);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, LibVst.ViewRect*, int>)Vtbl[9])((LibVst.IPlugView*)Unsafe.AsPointer(ref this), size);
+            }
+        }
+        
+        /// <summary>
+        /// Resizes the platform representation of the view to the given rect. Note that if the plug-in
+        /// requests a resize (IPlugFrame::resizeView ()) onSize has to be called afterward.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult onSize(LibVst.ViewRect* newSize)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "onSize");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, LibVst.ViewRect*, int>)Vtbl[10])(__self__, newSize);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, LibVst.ViewRect*, int>)Vtbl[10])((LibVst.IPlugView*)Unsafe.AsPointer(ref this), newSize);
+            }
+        }
+        
+        /// <summary>
+        /// Focus changed message.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult onFocus(byte state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "onFocus");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, byte, int>)Vtbl[11])(__self__, state);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, byte, int>)Vtbl[11])((LibVst.IPlugView*)Unsafe.AsPointer(ref this), state);
+            }
+        }
+        
+        /// <summary>
+        /// Sets IPlugFrame object to allow the plug-in to inform the host about resizing.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setFrame(LibVst.IPlugFrame* frame)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "setFrame");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, LibVst.IPlugFrame*, int>)Vtbl[12])(__self__, frame);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, LibVst.IPlugFrame*, int>)Vtbl[12])((LibVst.IPlugView*)Unsafe.AsPointer(ref this), frame);
+            }
+        }
+        
+        /// <summary>
+        /// Is view sizable by user.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult canResize()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "canResize");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, int>)Vtbl[13])(__self__);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, int>)Vtbl[13])((LibVst.IPlugView*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// On live resize this is called to check if the view can be resized to the given rect, if not
+        /// adjust the rect to the allowed size.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult checkSizeConstraint(LibVst.ViewRect* rect)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPlugView*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugView), "checkSizeConstraint");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, LibVst.ViewRect*, int>)Vtbl[14])(__self__, rect);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugView*, LibVst.ViewRect*, int>)Vtbl[14])((LibVst.IPlugView*)Unsafe.AsPointer(ref this), rect);
+            }
         }
         
         // --------------------------------------------------------------
@@ -3014,11 +4613,27 @@ internal static partial class LibVst
     /// - [released: 3.0.0]
     /// - [mandatory]An attribute list associates values with a key (id: some predefined keys can be found in @ref presetAttributes).
     /// </remarks>
-    public unsafe partial struct IAttributeList : INativeGuid, INativeUnknown
+    public unsafe partial struct IAttributeList : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 11;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IAttributeList*, byte*, long, int>)&setInt_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IAttributeList*, byte*, long*, int>)&getInt_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IAttributeList*, byte*, double, int>)&setFloat_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IAttributeList*, byte*, double*, int>)&getFloat_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IAttributeList*, byte*, char*, int>)&setString_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IAttributeList*, byte*, char*, uint, int>)&getString_Wrapper;
+            vtbl[9] = (delegate*unmanaged[MemberFunction]<IAttributeList*, byte*, void*, uint, int>)&setBinary_Wrapper;
+            vtbl[10] = (delegate*unmanaged[MemberFunction]<IAttributeList*, byte*, void**, uint*, int>)&getBinary_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -3228,6 +4843,314 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Sets integer value.
+        /// </summary>
+        private static partial ComResult setInt_ToManaged(IAttributeList* self, LibVst.AttrID id, long value);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setInt_Wrapper(IAttributeList* self, byte* id, long value)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributeList), "setInt");
+                try
+                {
+                    return setInt_ToManaged(self, id, value);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return setInt_ToManaged(self, id, value);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets integer value.
+        /// </summary>
+        private static partial ComResult getInt_ToManaged(IAttributeList* self, LibVst.AttrID id, long* value);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getInt_Wrapper(IAttributeList* self, byte* id, long* value)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributeList), "getInt");
+                try
+                {
+                    return getInt_ToManaged(self, id, value);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getInt_ToManaged(self, id, value);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Sets float value.
+        /// </summary>
+        private static partial ComResult setFloat_ToManaged(IAttributeList* self, LibVst.AttrID id, double value);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setFloat_Wrapper(IAttributeList* self, byte* id, double value)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributeList), "setFloat");
+                try
+                {
+                    return setFloat_ToManaged(self, id, value);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return setFloat_ToManaged(self, id, value);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets float value.
+        /// </summary>
+        private static partial ComResult getFloat_ToManaged(IAttributeList* self, LibVst.AttrID id, double* value);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getFloat_Wrapper(IAttributeList* self, byte* id, double* value)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributeList), "getFloat");
+                try
+                {
+                    return getFloat_ToManaged(self, id, value);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getFloat_ToManaged(self, id, value);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Sets string value (UTF16) (must be null-terminated!).
+        /// </summary>
+        private static partial ComResult setString_ToManaged(IAttributeList* self, LibVst.AttrID id, char* @string);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setString_Wrapper(IAttributeList* self, byte* id, char* @string)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributeList), "setString");
+                try
+                {
+                    return setString_ToManaged(self, id, @string);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return setString_ToManaged(self, id, @string);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets string value (UTF16). Note that Size is in Byte, not the string Length!
+        /// Do not forget to multiply the length by sizeof (TChar)!
+        /// </summary>
+        private static partial ComResult getString_ToManaged(IAttributeList* self, LibVst.AttrID id, char* @string, uint sizeInBytes);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getString_Wrapper(IAttributeList* self, byte* id, char* @string, uint sizeInBytes)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributeList), "getString");
+                try
+                {
+                    return getString_ToManaged(self, id, @string, sizeInBytes);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getString_ToManaged(self, id, @string, sizeInBytes);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Sets binary data.
+        /// </summary>
+        private static partial ComResult setBinary_ToManaged(IAttributeList* self, LibVst.AttrID id, void* data, uint sizeInBytes);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setBinary_Wrapper(IAttributeList* self, byte* id, void* data, uint sizeInBytes)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributeList), "setBinary");
+                try
+                {
+                    return setBinary_ToManaged(self, id, data, sizeInBytes);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return setBinary_ToManaged(self, id, data, sizeInBytes);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets binary data.
+        /// </summary>
+        private static partial ComResult getBinary_ToManaged(IAttributeList* self, LibVst.AttrID id, void** data, uint* sizeInBytes);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getBinary_Wrapper(IAttributeList* self, byte* id, void** data, uint* sizeInBytes)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributeList), "getBinary");
+                try
+                {
+                    return getBinary_ToManaged(self, id, data, sizeInBytes);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getBinary_ToManaged(self, id, data, sizeInBytes);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IAttributeList, 0x1E5F0AEB, 0xCC7F4533, 0xA2544011, 0x38AD5EE4)
         /// </summary>
@@ -3302,11 +5225,21 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IStreamAttributes : INativeGuid, INativeUnknown
+    public unsafe partial struct IStreamAttributes : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 5;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IStreamAttributes*, LibVst.String128*, int>)&getFileName_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IStreamAttributes*, LibVst.IAttributeList*>)&getAttributes_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -3388,6 +5321,85 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Gets filename (without file extension) of the stream.
+        /// </summary>
+        private static partial ComResult getFileName_ToManaged(IStreamAttributes* self, LibVst.String128* name);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getFileName_Wrapper(IStreamAttributes* self, LibVst.String128* name)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IStreamAttributes), "getFileName");
+                try
+                {
+                    return getFileName_ToManaged(self, name);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getFileName_ToManaged(self, name);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets meta information list.
+        /// </summary>
+        private static partial LibVst.IAttributeList* getAttributes_ToManaged(IStreamAttributes* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static LibVst.IAttributeList* getAttributes_Wrapper(IStreamAttributes* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IStreamAttributes), "getAttributes");
+                try
+                {
+                    return getAttributes_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getAttributes_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IStreamAttributes, 0xD6CE2FFC, 0xEFAF4B8C, 0x9E74F1BB, 0x12DA44B4)
         /// </summary>
@@ -3422,9 +5434,11 @@ internal static partial class LibVst
     /// component must provide both the specific interface and IComponent.
     /// </remarks>
     /// <seealso cref="IPluginBase"/>
-    public unsafe partial struct IComponent : INativeGuid, INativeVtbl
+    public unsafe partial struct IComponent : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 14;
         
@@ -3441,6 +5455,262 @@ internal static partial class LibVst
             vtbl[11] = (delegate*unmanaged[MemberFunction]<IComponent*, byte, int>)&setActive_Wrapper;
             vtbl[12] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.IBStream*, int>)&setState_Wrapper;
             vtbl[13] = (delegate*unmanaged[MemberFunction]<IComponent*, LibVst.IBStream*, int>)&getState_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IComponent, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IComponent, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IComponent, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// The host passes a number of interfaces as context to initialize the plug-in class.
+        /// </summary>
+        /// <param name="context,">passed by the host, is mandatory and should implement IHostApplication</param>
+        /// <note>
+        /// Extensive memory allocations etc. should be performed in this method rather than in
+        /// the class' constructor! If the method does NOT return kResultOk, the object is released
+        /// immediately. In this case terminate is not called!
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult initialize(LibVst.FUnknown* context)
+        {
+            return Unsafe.As<IComponent, IPluginBase>(ref this).initialize(context);
+        }
+        
+        /// <summary>
+        /// This function is called before the plug-in is unloaded and can be used for
+        /// cleanups. You have to release all references to any host application interfaces.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult terminate()
+        {
+            return Unsafe.As<IComponent, IPluginBase>(ref this).terminate();
+        }
+        
+        /// <summary>
+        /// Called before initializing the component to get information about the controller class.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getControllerClassId(Guid* classId)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponent*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponent), "getControllerClassId");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, Guid*, int>)Vtbl[5])(__self__, classId);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, Guid*, int>)Vtbl[5])((LibVst.IComponent*)Unsafe.AsPointer(ref this), classId);
+            }
+        }
+        
+        /// <summary>
+        /// Called before 'initialize' to set the component usage (optional). See @ref IoModes
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setIoMode(LibVst.IoMode mode)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponent*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponent), "setIoMode");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.IoMode, int>)Vtbl[6])(__self__, mode);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.IoMode, int>)Vtbl[6])((LibVst.IComponent*)Unsafe.AsPointer(ref this), mode);
+            }
+        }
+        
+        /// <summary>
+        /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int getBusCount(LibVst.MediaType type, LibVst.BusDirection dir)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponent*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponent), "getBusCount");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.MediaType, LibVst.BusDirection, int>)Vtbl[7])(__self__, type, dir);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.MediaType, LibVst.BusDirection, int>)Vtbl[7])((LibVst.IComponent*)Unsafe.AsPointer(ref this), type, dir);
+            }
+        }
+        
+        /// <summary>
+        /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getBusInfo(LibVst.MediaType type, LibVst.BusDirection dir, int index, LibVst.BusInfo* bus)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponent*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponent), "getBusInfo");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.MediaType, LibVst.BusDirection, int, LibVst.BusInfo*, int>)Vtbl[8])(__self__, type, dir, index, bus);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.MediaType, LibVst.BusDirection, int, LibVst.BusInfo*, int>)Vtbl[8])((LibVst.IComponent*)Unsafe.AsPointer(ref this), type, dir, index, bus);
+            }
+        }
+        
+        /// <summary>
+        /// Retrieves routing information (to be implemented when more than one regular input or output bus exists).
+        /// The inInfo always refers to an input bus while the returned outInfo must refer to an output bus!
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getRoutingInfo(LibVst.RoutingInfo* inInfo, LibVst.RoutingInfo* outInfo)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponent*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponent), "getRoutingInfo");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.RoutingInfo*, LibVst.RoutingInfo*, int>)Vtbl[9])(__self__, inInfo, outInfo);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.RoutingInfo*, LibVst.RoutingInfo*, int>)Vtbl[9])((LibVst.IComponent*)Unsafe.AsPointer(ref this), inInfo, outInfo);
+            }
+        }
+        
+        /// <summary>
+        /// Called upon (de-)activating a bus in the host application. The plug-in should only processed
+        /// an activated bus, the host could provide less see @ref AudioBusBuffers in the process call
+        /// (see @ref IAudioProcessor::process) if last busses are not activated. An already activated bus 
+        /// does not need to be reactivated after a IAudioProcessor::setBusArrangements call.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult activateBus(LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponent*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponent), "activateBus");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.MediaType, LibVst.BusDirection, int, byte, int>)Vtbl[10])(__self__, type, dir, index, state);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.MediaType, LibVst.BusDirection, int, byte, int>)Vtbl[10])((LibVst.IComponent*)Unsafe.AsPointer(ref this), type, dir, index, state);
+            }
+        }
+        
+        /// <summary>
+        /// Activates / deactivates the component.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setActive(byte state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponent*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponent), "setActive");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, byte, int>)Vtbl[11])(__self__, state);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, byte, int>)Vtbl[11])((LibVst.IComponent*)Unsafe.AsPointer(ref this), state);
+            }
+        }
+        
+        /// <summary>
+        /// Sets complete state of component.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setState(LibVst.IBStream* state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponent*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponent), "setState");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.IBStream*, int>)Vtbl[12])(__self__, state);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.IBStream*, int>)Vtbl[12])((LibVst.IComponent*)Unsafe.AsPointer(ref this), state);
+            }
+        }
+        
+        /// <summary>
+        /// Retrieves complete state of component.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getState(LibVst.IBStream* state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponent*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponent), "getState");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.IBStream*, int>)Vtbl[13])(__self__, state);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponent*, LibVst.IBStream*, int>)Vtbl[13])((LibVst.IComponent*)Unsafe.AsPointer(ref this), state);
+            }
         }
         
         // --------------------------------------------------------------
@@ -3926,11 +6196,22 @@ internal static partial class LibVst
     /// - [mandatory]
     /// </remarks>
     /// <seealso cref="ProcessData, Event"/>
-    public unsafe partial struct IEventList : INativeGuid, INativeUnknown
+    public unsafe partial struct IEventList : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 6;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IEventList*, int>)&getEventCount_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IEventList*, int, LibVst.Event*, int>)&getEvent_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IEventList*, LibVst.Event*, int>)&addEvent_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -4030,6 +6311,123 @@ internal static partial class LibVst
             else
             {
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IEventList*, LibVst.Event*, int>)Vtbl[5])((LibVst.IEventList*)Unsafe.AsPointer(ref this), e);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Returns the count of events.
+        /// </summary>
+        private static partial int getEventCount_ToManaged(IEventList* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getEventCount_Wrapper(IEventList* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEventList), "getEventCount");
+                try
+                {
+                    return getEventCount_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getEventCount_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets parameter by index.
+        /// </summary>
+        private static partial ComResult getEvent_ToManaged(IEventList* self, int index, LibVst.Event* e);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getEvent_Wrapper(IEventList* self, int index, LibVst.Event* e)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEventList), "getEvent");
+                try
+                {
+                    return getEvent_ToManaged(self, index, e);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getEvent_ToManaged(self, index, e);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Adds a new event.
+        /// </summary>
+        private static partial ComResult addEvent_ToManaged(IEventList* self, LibVst.Event* e);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int addEvent_Wrapper(IEventList* self, LibVst.Event* e)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEventList), "addEvent");
+                try
+                {
+                    return addEvent_ToManaged(self, e);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return addEvent_ToManaged(self, e);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
             }
         }
         
@@ -4379,7 +6777,7 @@ internal static partial class LibVst
         /// <summary>
         /// see @ref NoteExpressionTypeID
         /// </summary>
-        public LibVst.NoteExpressionTypeID typeId;
+        public uint typeId;
         
         /// <summary>
         /// associated note identifier to apply the change
@@ -4389,21 +6787,7 @@ internal static partial class LibVst
         /// <summary>
         /// normalized value [0.0, 1.0].
         /// </summary>
-        public LibVst.NoteExpressionValue value;
-    }
-    
-    public partial record struct NoteExpressionTypeID(uint Value)
-    {
-        public static implicit operator uint(NoteExpressionTypeID value) => value.Value;
-        
-        public static implicit operator NoteExpressionTypeID(uint value) => new(value);
-    }
-    
-    public partial record struct NoteExpressionValue(double Value)
-    {
-        public static implicit operator double(NoteExpressionValue value) => value.Value;
-        
-        public static implicit operator NoteExpressionValue(double value) => new(value);
+        public double value;
     }
     
     /// <summary>
@@ -4418,7 +6802,7 @@ internal static partial class LibVst
         /// <summary>
         /// see @ref NoteExpressionTypeID (kTextTypeID or kPhoneticTypeID)
         /// </summary>
-        public LibVst.NoteExpressionTypeID typeId;
+        public uint typeId;
         
         /// <summary>
         /// associated note identifier to apply the change
@@ -4545,11 +6929,22 @@ internal static partial class LibVst
     /// well as automation. They are transmitted as a list of queues (@ref IParamValueQueue)containing only queues for parameters that actually did change.
     /// See @ref IParamValueQueue, @ref ProcessData
     /// </remarks>
-    public unsafe partial struct IParameterChanges : INativeGuid, INativeUnknown
+    public unsafe partial struct IParameterChanges : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 6;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IParameterChanges*, int>)&getParameterCount_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IParameterChanges*, int, LibVst.IParamValueQueue*>)&getParameterData_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IParameterChanges*, LibVst.ParamID*, int*, LibVst.IParamValueQueue*>)&addParameterData_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -4651,6 +7046,124 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Returns count of Parameter changes in the list.
+        /// </summary>
+        private static partial int getParameterCount_ToManaged(IParameterChanges* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getParameterCount_Wrapper(IParameterChanges* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParameterChanges), "getParameterCount");
+                try
+                {
+                    return getParameterCount_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getParameterCount_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Returns the queue at a given index.
+        /// </summary>
+        private static partial LibVst.IParamValueQueue* getParameterData_ToManaged(IParameterChanges* self, int index);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static LibVst.IParamValueQueue* getParameterData_Wrapper(IParameterChanges* self, int index)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParameterChanges), "getParameterData");
+                try
+                {
+                    return getParameterData_ToManaged(self, index);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getParameterData_ToManaged(self, index);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Adds a new parameter queue with a given ID at the end of the list,
+        /// returns it and its index in the parameter changes list.
+        /// </summary>
+        private static partial LibVst.IParamValueQueue* addParameterData_ToManaged(IParameterChanges* self, LibVst.ParamID* id, int* index);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static LibVst.IParamValueQueue* addParameterData_Wrapper(IParameterChanges* self, LibVst.ParamID* id, int* index)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParameterChanges), "addParameterData");
+                try
+                {
+                    return addParameterData_ToManaged(self, id, index);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return addParameterData_ToManaged(self, id, index);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IParameterChanges, 0xA4779663, 0x0BB64A56, 0xB44384A8, 0x466FEB9D)
         /// </summary>
@@ -4708,11 +7221,23 @@ internal static partial class LibVst
     /// @endcode@b Jumps: @n A jump in the automation curve has to be transmitted as two points: one with the
     /// old value and one with the new value at the next sample position. html "automation.jpg"See @ref IParameterChanges, @ref ProcessData
     /// </remarks>
-    public unsafe partial struct IParamValueQueue : INativeGuid, INativeUnknown
+    public unsafe partial struct IParamValueQueue : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 7;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IParamValueQueue*, uint>)&getParameterId_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IParamValueQueue*, int>)&getPointCount_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IParamValueQueue*, int, int*, LibVst.ParamValue*, int>)&getPoint_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IParamValueQueue*, int, double, int*, int>)&addPoint_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -4835,6 +7360,161 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Returns its associated ID.
+        /// </summary>
+        private static partial LibVst.ParamID getParameterId_ToManaged(IParamValueQueue* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static uint getParameterId_Wrapper(IParamValueQueue* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParamValueQueue), "getParameterId");
+                try
+                {
+                    return getParameterId_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getParameterId_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Returns count of points in the queue.
+        /// </summary>
+        private static partial int getPointCount_ToManaged(IParamValueQueue* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getPointCount_Wrapper(IParamValueQueue* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParamValueQueue), "getPointCount");
+                try
+                {
+                    return getPointCount_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getPointCount_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets the value and offset at a given index.
+        /// </summary>
+        private static partial ComResult getPoint_ToManaged(IParamValueQueue* self, int index, int* sampleOffset, LibVst.ParamValue* value);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getPoint_Wrapper(IParamValueQueue* self, int index, int* sampleOffset, LibVst.ParamValue* value)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParamValueQueue), "getPoint");
+                try
+                {
+                    return getPoint_ToManaged(self, index, sampleOffset, value);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getPoint_ToManaged(self, index, sampleOffset, value);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Adds a new value at the end of the queue, its index is returned.
+        /// </summary>
+        private static partial ComResult addPoint_ToManaged(IParamValueQueue* self, int sampleOffset, LibVst.ParamValue value, int* index);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int addPoint_Wrapper(IParamValueQueue* self, int sampleOffset, double value, int* index)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IParamValueQueue), "addPoint");
+                try
+                {
+                    return addPoint_ToManaged(self, sampleOffset, value, index);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return addPoint_ToManaged(self, sampleOffset, value, index);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IParamValueQueue, 0x01263A18, 0xED074F6F, 0x98C9D356, 0x4686F9BA)
         /// </summary>
@@ -4874,9 +7554,11 @@ internal static partial class LibVst
     /// - [released: 3.0.0]
     /// - [mandatory]This interface must always be supported by audio processing plug-ins.
     /// </remarks>
-    public unsafe partial struct IAudioProcessor : INativeGuid, INativeVtbl
+    public unsafe partial struct IAudioProcessor : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 11;
         
@@ -4892,6 +7574,251 @@ internal static partial class LibVst
             vtbl[8] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, byte, int>)&setProcessing_Wrapper;
             vtbl[9] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, LibVst.ProcessData*, int>)&process_Wrapper;
             vtbl[10] = (delegate*unmanaged[MemberFunction]<IAudioProcessor*, uint>)&getTailSamples_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IAudioProcessor, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IAudioProcessor, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IAudioProcessor, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Try to set (host =&gt; plug-in) a wanted arrangement for inputs and outputs.
+        /// The host should always deliver the same number of input and output busses than the plug-in
+        /// needs (see @ref IComponent::getBusCount). The plug-in has 3 possibilities to react on this
+        /// setBusArrangements call:@n 1. The plug-in accepts these arrangements, then it should modify, if needed, its busses to match 
+        /// these new arrangements (later on asked by the host with IComponent::getBusInfo () or
+        /// IAudioProcessor::getBusArrangement ()) and then should return kResultTrue.@n 2. The plug-in does not accept or support these requested arrangements for all
+        /// inputs/outputs or just for some or only one bus, but the plug-in can try to adapt its current
+        /// arrangements according to the requested ones (requested arrangements for kMain busses should be
+        /// handled with more priority than the ones for kAux busses), then it should modify its busses arrangements
+        /// and should return kResultFalse.@n 3. Same than the point 2 above the plug-in does not support these requested arrangements 
+        /// but the plug-in cannot find corresponding arrangements, the plug-in could keep its current arrangement
+        /// or fall back to a default arrangement by modifying its busses arrangements and should return kResultFalse.@n
+        /// </summary>
+        /// <param name="inputs">pointer to an array of /ref SpeakerArrangement</param>
+        /// <param name="numIns">number of /ref SpeakerArrangement in inputs array</param>
+        /// <param name="outputs">pointer to an array of /ref SpeakerArrangement</param>
+        /// <param name="numOuts">number of /ref SpeakerArrangement in outputs array 
+        /// Returns kResultTrue when Arrangements is supported and is the current one, else returns kResultFalse.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setBusArrangements(LibVst.SpeakerArrangement* inputs, int numIns, LibVst.SpeakerArrangement* outputs, int numOuts)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAudioProcessor), "setBusArrangements");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, LibVst.SpeakerArrangement*, int, LibVst.SpeakerArrangement*, int, int>)Vtbl[3])(__self__, inputs, numIns, outputs, numOuts);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, LibVst.SpeakerArrangement*, int, LibVst.SpeakerArrangement*, int, int>)Vtbl[3])((LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this), inputs, numIns, outputs, numOuts);
+            }
+        }
+        
+        /// <summary>
+        /// Gets the bus arrangement for a given direction (input/output) and index.
+        /// Note: IComponent::getBusInfo () and IAudioProcessor::getBusArrangement () should be always return the same 
+        /// information about the busses arrangements.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getBusArrangement(LibVst.BusDirection dir, int index, LibVst.SpeakerArrangement* arr)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAudioProcessor), "getBusArrangement");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, LibVst.BusDirection, int, LibVst.SpeakerArrangement*, int>)Vtbl[4])(__self__, dir, index, arr);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, LibVst.BusDirection, int, LibVst.SpeakerArrangement*, int>)Vtbl[4])((LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this), dir, index, arr);
+            }
+        }
+        
+        /// <summary>
+        /// Asks if a given sample size is supported see @ref SymbolicSampleSizes.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult canProcessSampleSize(int symbolicSampleSize)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAudioProcessor), "canProcessSampleSize");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, int, int>)Vtbl[5])(__self__, symbolicSampleSize);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, int, int>)Vtbl[5])((LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this), symbolicSampleSize);
+            }
+        }
+        
+        /// <summary>
+        /// Gets the current Latency in samples.
+        /// The returned value defines the group delay or the latency of the plug-in. For example, if the plug-in internally needs
+        /// to look in advance (like compressors) 512 samples then this plug-in should report 512 as latency.
+        /// If during the use of the plug-in this latency change, the plug-in has to inform the host by
+        /// using IComponentHandler::restartComponent (kLatencyChanged), this could lead to audio playback interruption
+        /// because the host has to recompute its internal mixer delay compensation.
+        /// Note that for player live recording this latency should be zero or small.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint getLatencySamples()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAudioProcessor), "getLatencySamples");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, uint>)Vtbl[6])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, uint>)Vtbl[6])((LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// Called in disable state (setActive not called with true) before setProcessing is called and processing will begin.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setupProcessing(LibVst.ProcessSetup* setup)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAudioProcessor), "setupProcessing");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, LibVst.ProcessSetup*, int>)Vtbl[7])(__self__, setup);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, LibVst.ProcessSetup*, int>)Vtbl[7])((LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this), setup);
+            }
+        }
+        
+        /// <summary>
+        /// Informs the plug-in about the processing state. This will be called before any process calls
+        /// start with true and after with false.
+        /// Note that setProcessing (false) may be called after setProcessing (true) without any process
+        /// calls.
+        /// Note this function could be called in the UI or in Processing Thread, thats why the plug-in
+        /// should only light operation (no memory allocation or big setup reconfiguration), 
+        /// this could be used to reset some buffers (like Delay line or Reverb).
+        /// The host has to be sure that it is called only when the plug-in is enable (setActive (true)
+        /// was called).
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setProcessing(byte state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAudioProcessor), "setProcessing");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, byte, int>)Vtbl[8])(__self__, state);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, byte, int>)Vtbl[8])((LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this), state);
+            }
+        }
+        
+        /// <summary>
+        /// The Process call, where all information (parameter changes, event, audio buffer) are passed.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult process(LibVst.ProcessData* data)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAudioProcessor), "process");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, LibVst.ProcessData*, int>)Vtbl[9])(__self__, data);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, LibVst.ProcessData*, int>)Vtbl[9])((LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this), data);
+            }
+        }
+        
+        /// <summary>
+        /// Gets tail size in samples. For example, if the plug-in is a Reverb plug-in and it knows that
+        /// the maximum length of the Reverb is 2sec, then it has to return in getTailSamples() 
+        /// (in VST2 it was getGetTailSize ()): 2*sampleRate.
+        /// This information could be used by host for offline processing, process optimization and 
+        /// downmix (avoiding signal cut (clicks)).
+        /// It should return:
+        /// - kNoTail when no tail
+        /// - x * sampleRate when x Sec tail.
+        /// - kInfiniteTail when infinite tail.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint getTailSamples()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAudioProcessor), "getTailSamples");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, uint>)Vtbl[10])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAudioProcessor*, uint>)Vtbl[10])((LibVst.IAudioProcessor*)Unsafe.AsPointer(ref this));
+            }
         }
         
         // --------------------------------------------------------------
@@ -6006,9 +8933,11 @@ internal static partial class LibVst
     /// </remarks>
     /// <seealso cref="IAudioProcessor"/>
     /// <seealso cref="IComponent"/>
-    public unsafe partial struct IAudioPresentationLatency : INativeGuid, INativeVtbl
+    public unsafe partial struct IAudioPresentationLatency : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 4;
         
@@ -6017,6 +8946,66 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IAudioPresentationLatency*, int, int, uint, int>)&setAudioPresentationLatencySamples_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IAudioPresentationLatency, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IAudioPresentationLatency, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IAudioPresentationLatency, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Informs the plug-in about the Audio Presentation Latency in samples for a given direction (kInput/kOutput) and bus index.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setAudioPresentationLatencySamples(LibVst.BusDirection dir, int busIndex, uint latencyInSamples)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAudioPresentationLatency*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAudioPresentationLatency), "setAudioPresentationLatencySamples");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAudioPresentationLatency*, LibVst.BusDirection, int, uint, int>)Vtbl[3])(__self__, dir, busIndex, latencyInSamples);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAudioPresentationLatency*, LibVst.BusDirection, int, uint, int>)Vtbl[3])((LibVst.IAudioPresentationLatency*)Unsafe.AsPointer(ref this), dir, busIndex, latencyInSamples);
+            }
         }
         
         // --------------------------------------------------------------
@@ -6091,9 +9080,11 @@ internal static partial class LibVst
     /// 3.7) will still get the old information, but the information
     /// may not be as accurate as when using this interface.
     /// </remarks>
-    public unsafe partial struct IProcessContextRequirements : INativeGuid, INativeVtbl
+    public unsafe partial struct IProcessContextRequirements : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 4;
         
@@ -6102,6 +9093,62 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IProcessContextRequirements*, uint>)&getProcessContextRequirements_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IProcessContextRequirements, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IProcessContextRequirements, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IProcessContextRequirements, FUnknown>(ref this).release();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint getProcessContextRequirements()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IProcessContextRequirements*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProcessContextRequirements), "getProcessContextRequirements");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IProcessContextRequirements*, uint>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IProcessContextRequirements*, uint>)Vtbl[3])((LibVst.IProcessContextRequirements*)Unsafe.AsPointer(ref this));
+            }
         }
         
         // --------------------------------------------------------------
@@ -6225,9 +9272,11 @@ internal static partial class LibVst
     /// - [released: 3.6.5]
     /// - [optional]Hosts can inform the plug-in about its current automation state (Read/Write/Nothing).
     /// </remarks>
-    public unsafe partial struct IAutomationState : INativeGuid, INativeVtbl
+    public unsafe partial struct IAutomationState : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 4;
         
@@ -6236,6 +9285,66 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IAutomationState*, int, int>)&setAutomationState_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IAutomationState, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IAutomationState, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IAutomationState, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Sets the current Automation state.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setAutomationState(int state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IAutomationState*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAutomationState), "setAutomationState");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAutomationState*, int, int>)Vtbl[3])(__self__, state);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAutomationState*, int, int>)Vtbl[3])((LibVst.IAutomationState*)Unsafe.AsPointer(ref this), state);
+            }
         }
         
         // --------------------------------------------------------------
@@ -6333,11 +9442,24 @@ internal static partial class LibVst
     /// With IContextMenu the plug-in can retrieve a Item, add a Item, remove a Item and pop-up the menu.
     /// </remarks>
     /// <seealso cref="IComponentHandler3 for more information."/>
-    public unsafe partial struct IContextMenu : INativeGuid, INativeUnknown
+    public unsafe partial struct IContextMenu : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 8;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IContextMenu*, int>)&getItemCount_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IContextMenu*, int, LibVst.Item*, LibVst.IContextMenuTarget**, int>)&getItem_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IContextMenu*, LibVst.Item*, LibVst.IContextMenuTarget*, int>)&addItem_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IContextMenu*, LibVst.Item*, LibVst.IContextMenuTarget*, int>)&removeItem_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IContextMenu*, int, int, int>)&popup_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -6479,6 +9601,199 @@ internal static partial class LibVst
             else
             {
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IContextMenu*, LibVst.UCoord, LibVst.UCoord, int>)Vtbl[7])((LibVst.IContextMenu*)Unsafe.AsPointer(ref this), x, y);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Gets the number of menu items.
+        /// </summary>
+        private static partial int getItemCount_ToManaged(IContextMenu* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getItemCount_Wrapper(IContextMenu* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IContextMenu), "getItemCount");
+                try
+                {
+                    return getItemCount_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getItemCount_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets a menu item and its target (target could be not assigned).
+        /// </summary>
+        private static partial ComResult getItem_ToManaged(IContextMenu* self, int index, LibVst.Item* item, LibVst.IContextMenuTarget** target);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getItem_Wrapper(IContextMenu* self, int index, LibVst.Item* item, LibVst.IContextMenuTarget** target)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IContextMenu), "getItem");
+                try
+                {
+                    return getItem_ToManaged(self, index, item, target);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getItem_ToManaged(self, index, item, target);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Adds a menu item and its target.
+        /// </summary>
+        private static partial ComResult addItem_ToManaged(IContextMenu* self, LibVst.Item* item, LibVst.IContextMenuTarget* target);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int addItem_Wrapper(IContextMenu* self, LibVst.Item* item, LibVst.IContextMenuTarget* target)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IContextMenu), "addItem");
+                try
+                {
+                    return addItem_ToManaged(self, item, target);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return addItem_ToManaged(self, item, target);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Removes a menu item.
+        /// </summary>
+        private static partial ComResult removeItem_ToManaged(IContextMenu* self, LibVst.Item* item, LibVst.IContextMenuTarget* target);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int removeItem_Wrapper(IContextMenu* self, LibVst.Item* item, LibVst.IContextMenuTarget* target)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IContextMenu), "removeItem");
+                try
+                {
+                    return removeItem_ToManaged(self, item, target);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return removeItem_ToManaged(self, item, target);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Pop-ups the menu. Coordinates are relative to the top-left position of the plug-ins view.
+        /// </summary>
+        private static partial ComResult popup_ToManaged(IContextMenu* self, LibVst.UCoord x, LibVst.UCoord y);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int popup_Wrapper(IContextMenu* self, int x, int y)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IContextMenu), "popup");
+                try
+                {
+                    return popup_ToManaged(self, x, y);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return popup_ToManaged(self, x, y);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
             }
         }
         
@@ -6774,11 +10089,20 @@ internal static partial class LibVst
     /// </remarks>
     /// <seealso cref="IContextMenu"/>
     /// <seealso cref="IContextMenuTarget"/>
-    public unsafe partial struct IComponentHandler3 : INativeGuid, INativeUnknown
+    public unsafe partial struct IComponentHandler3 : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IComponentHandler3*, LibVst.IPlugView*, LibVst.ParamID*, LibVst.IContextMenu*>)&createContextMenu_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -6842,6 +10166,50 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Creates a host context menu for a plug-in:
+        /// - If paramID is zero, the host may create a generic context menu.
+        /// - The IPlugView object must be valid.
+        /// - The return IContextMenu object needs to be released afterwards by the plug-in.
+        /// </summary>
+        private static partial LibVst.IContextMenu* createContextMenu_ToManaged(IComponentHandler3* self, LibVst.IPlugView* plugView, LibVst.ParamID* paramID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static LibVst.IContextMenu* createContextMenu_Wrapper(IComponentHandler3* self, LibVst.IPlugView* plugView, LibVst.ParamID* paramID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandler3), "createContextMenu");
+                try
+                {
+                    return createContextMenu_ToManaged(self, plugView, paramID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return createContextMenu_ToManaged(self, plugView, paramID);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IComponentHandler3, 0x69F11617, 0xD26B400D, 0xA4B6B964, 0x7B6EBBAB)
         /// </summary>
@@ -6868,11 +10236,23 @@ internal static partial class LibVst
     /// Cause the host to react on configuration changes (restartComponent).
     /// </remarks>
     /// <seealso cref="IEditController"/>
-    public unsafe partial struct IComponentHandler : INativeGuid, INativeUnknown
+    public unsafe partial struct IComponentHandler : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 7;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IComponentHandler*, uint, int>)&beginEdit_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IComponentHandler*, uint, double, int>)&performEdit_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IComponentHandler*, uint, int>)&endEdit_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IComponentHandler*, int, int>)&restartComponent_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -7001,6 +10381,165 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// To be called before calling a performEdit (e.g. on mouse-click-down event).
+        /// This must be called in the UI-Thread context!
+        /// </summary>
+        private static partial ComResult beginEdit_ToManaged(IComponentHandler* self, LibVst.ParamID id);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int beginEdit_Wrapper(IComponentHandler* self, uint id)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandler), "beginEdit");
+                try
+                {
+                    return beginEdit_ToManaged(self, id);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return beginEdit_ToManaged(self, id);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Called between beginEdit and endEdit to inform the handler that a given parameter has a new
+        /// value. This must be called in the UI-Thread context!
+        /// </summary>
+        private static partial ComResult performEdit_ToManaged(IComponentHandler* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int performEdit_Wrapper(IComponentHandler* self, uint id, double valueNormalized)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandler), "performEdit");
+                try
+                {
+                    return performEdit_ToManaged(self, id, valueNormalized);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return performEdit_ToManaged(self, id, valueNormalized);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// To be called after calling a performEdit (e.g. on mouse-click-up event).
+        /// This must be called in the UI-Thread context!
+        /// </summary>
+        private static partial ComResult endEdit_ToManaged(IComponentHandler* self, LibVst.ParamID id);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int endEdit_Wrapper(IComponentHandler* self, uint id)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandler), "endEdit");
+                try
+                {
+                    return endEdit_ToManaged(self, id);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return endEdit_ToManaged(self, id);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Instructs host to restart the component. This must be called in the UI-Thread context!
+        /// </summary>
+        /// <param name="flags">is a combination of RestartFlags</param>
+        private static partial ComResult restartComponent_ToManaged(IComponentHandler* self, int flags);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int restartComponent_Wrapper(IComponentHandler* self, int flags)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandler), "restartComponent");
+                try
+                {
+                    return restartComponent_ToManaged(self, flags);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return restartComponent_ToManaged(self, flags);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IComponentHandler, 0x93A0BEA3, 0x0BD045DB, 0x8E890B0C, 0xC1E46AC6)
         /// </summary>
@@ -7066,11 +10605,23 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IEditControllerIComponentHandler,"/>
-    public unsafe partial struct IComponentHandler2 : INativeGuid, INativeUnknown
+    public unsafe partial struct IComponentHandler2 : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 7;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IComponentHandler2*, byte, int>)&setDirty_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IComponentHandler2*, byte*, int>)&requestOpenEditor_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IComponentHandler2*, int>)&startGroupEdit_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IComponentHandler2*, int>)&finishGroupEdit_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -7197,6 +10748,163 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Tells host that the plug-in is dirty (something besides parameters has changed since last save),
+        /// if true the host should apply a save before quitting.
+        /// </summary>
+        private static partial ComResult setDirty_ToManaged(IComponentHandler2* self, byte state);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setDirty_Wrapper(IComponentHandler2* self, byte state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandler2), "setDirty");
+                try
+                {
+                    return setDirty_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return setDirty_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Tells host that it should open the plug-in editor the next time it's possible.
+        /// You should use this instead of showing an alert and blocking the program flow (especially on loading projects).
+        /// </summary>
+        private static partial ComResult requestOpenEditor_ToManaged(IComponentHandler2* self, LibVst.FIDString name);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int requestOpenEditor_Wrapper(IComponentHandler2* self, byte* name)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandler2), "requestOpenEditor");
+                try
+                {
+                    return requestOpenEditor_ToManaged(self, name);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return requestOpenEditor_ToManaged(self, name);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Starts the group editing (call before a @ref IComponentHandler::beginEdit), the host will keep the current timestamp at this call and will use it for all @ref IComponentHandler::beginEdit / @ref IComponentHandler::performEdit / @ref IComponentHandler::endEdit calls until a @ref finishGroupEdit ().
+        /// </summary>
+        private static partial ComResult startGroupEdit_ToManaged(IComponentHandler2* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int startGroupEdit_Wrapper(IComponentHandler2* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandler2), "startGroupEdit");
+                try
+                {
+                    return startGroupEdit_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return startGroupEdit_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Finishes the group editing started by a @ref startGroupEdit (call after a @ref IComponentHandler::endEdit).
+        /// </summary>
+        private static partial ComResult finishGroupEdit_ToManaged(IComponentHandler2* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int finishGroupEdit_Wrapper(IComponentHandler2* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandler2), "finishGroupEdit");
+                try
+                {
+                    return finishGroupEdit_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return finishGroupEdit_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IComponentHandler2, 0xF040B4B3, 0xA36045EC, 0xABCDC045, 0xB4D5A2CC)
         /// </summary>
@@ -7233,11 +10941,20 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IComponentHandler"/>
-    public unsafe partial struct IComponentHandlerBusActivation : INativeGuid, INativeUnknown
+    public unsafe partial struct IComponentHandlerBusActivation : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IComponentHandlerBusActivation*, int, int, int, byte, int>)&requestBusActivation_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -7299,6 +11016,47 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// request the host to activate or deactivate a specific bus.
+        /// </summary>
+        private static partial ComResult requestBusActivation_ToManaged(IComponentHandlerBusActivation* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int requestBusActivation_Wrapper(IComponentHandlerBusActivation* self, int type, int dir, int index, byte state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandlerBusActivation), "requestBusActivation");
+                try
+                {
+                    return requestBusActivation_ToManaged(self, type, dir, index, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return requestBusActivation_ToManaged(self, type, dir, index, state);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IComponentHandlerBusActivation, 0x067D02C1, 0x5B4E274D, 0xA92D90FD, 0x6EAF7240)
         /// </summary>
@@ -7350,11 +11108,22 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IComponentHandler"/>
-    public unsafe partial struct IProgress : INativeGuid, INativeUnknown
+    public unsafe partial struct IProgress : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 6;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IProgress*, ProgressType, char*, LibVst.ID*, int>)&start_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IProgress*, ulong, double, int>)&update_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IProgress*, ulong, int>)&finish_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -7459,6 +11228,124 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Start a new progress of a given type and optional Description. outID is as ID created by the
+        /// host to identify this newly created progress (for update and finish method)
+        /// </summary>
+        private static partial ComResult start_ToManaged(IProgress* self, ProgressType type, char* optionalDescription, LibVst.ID* outID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int start_Wrapper(IProgress* self, ProgressType type, char* optionalDescription, LibVst.ID* outID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgress), "start");
+                try
+                {
+                    return start_ToManaged(self, type, optionalDescription, outID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return start_ToManaged(self, type, optionalDescription, outID);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Update the progress value (normValue between [0, 1]) associated to the given id
+        /// </summary>
+        private static partial ComResult update_ToManaged(IProgress* self, LibVst.ID id, LibVst.ParamValue normValue);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int update_Wrapper(IProgress* self, ulong id, double normValue)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgress), "update");
+                try
+                {
+                    return update_ToManaged(self, id, normValue);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return update_ToManaged(self, id, normValue);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Finish the progress associated to the given id
+        /// </summary>
+        private static partial ComResult finish_ToManaged(IProgress* self, LibVst.ID id);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int finish_Wrapper(IProgress* self, ulong id)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IProgress), "finish");
+                try
+                {
+                    return finish_ToManaged(self, id);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return finish_ToManaged(self, id);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// 
         /// </summary>
@@ -7507,9 +11394,11 @@ internal static partial class LibVst
     /// - [mandatory]The controller part of an effect or instrument with parameter handling (export, definition, conversion...).
     /// </remarks>
     /// <seealso cref="IMidiMappingIComponent::getControllerClassId,"/>
-    public unsafe partial struct IEditController : INativeGuid, INativeVtbl
+    public unsafe partial struct IEditController : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 18;
         
@@ -7530,6 +11419,345 @@ internal static partial class LibVst
             vtbl[15] = (delegate*unmanaged[MemberFunction]<IEditController*, uint, double, int>)&setParamNormalized_Wrapper;
             vtbl[16] = (delegate*unmanaged[MemberFunction]<IEditController*, LibVst.IComponentHandler*, int>)&setComponentHandler_Wrapper;
             vtbl[17] = (delegate*unmanaged[MemberFunction]<IEditController*, byte*, LibVst.IPlugView*>)&createView_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IEditController, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IEditController, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IEditController, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// The host passes a number of interfaces as context to initialize the plug-in class.
+        /// </summary>
+        /// <param name="context,">passed by the host, is mandatory and should implement IHostApplication</param>
+        /// <note>
+        /// Extensive memory allocations etc. should be performed in this method rather than in
+        /// the class' constructor! If the method does NOT return kResultOk, the object is released
+        /// immediately. In this case terminate is not called!
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult initialize(LibVst.FUnknown* context)
+        {
+            return Unsafe.As<IEditController, IPluginBase>(ref this).initialize(context);
+        }
+        
+        /// <summary>
+        /// This function is called before the plug-in is unloaded and can be used for
+        /// cleanups. You have to release all references to any host application interfaces.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult terminate()
+        {
+            return Unsafe.As<IEditController, IPluginBase>(ref this).terminate();
+        }
+        
+        /// <summary>
+        /// Receives the component state.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setComponentState(LibVst.IBStream* state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "setComponentState");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.IBStream*, int>)Vtbl[5])(__self__, state);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.IBStream*, int>)Vtbl[5])((LibVst.IEditController*)Unsafe.AsPointer(ref this), state);
+            }
+        }
+        
+        /// <summary>
+        /// Sets the controller state.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setState(LibVst.IBStream* state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "setState");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.IBStream*, int>)Vtbl[6])(__self__, state);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.IBStream*, int>)Vtbl[6])((LibVst.IEditController*)Unsafe.AsPointer(ref this), state);
+            }
+        }
+        
+        /// <summary>
+        /// Gets the controller state.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getState(LibVst.IBStream* state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "getState");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.IBStream*, int>)Vtbl[7])(__self__, state);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.IBStream*, int>)Vtbl[7])((LibVst.IEditController*)Unsafe.AsPointer(ref this), state);
+            }
+        }
+        
+        /// <summary>
+        /// parameters -------------------------
+        /// Returns the number of parameters exported.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int getParameterCount()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "getParameterCount");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, int>)Vtbl[8])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, int>)Vtbl[8])((LibVst.IEditController*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// Gets for a given index the parameter information.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getParameterInfo(int paramIndex, LibVst.ParameterInfo* info)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "getParameterInfo");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, int, LibVst.ParameterInfo*, int>)Vtbl[9])(__self__, paramIndex, info);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, int, LibVst.ParameterInfo*, int>)Vtbl[9])((LibVst.IEditController*)Unsafe.AsPointer(ref this), paramIndex, info);
+            }
+        }
+        
+        /// <summary>
+        /// Gets for a given paramID and normalized value its associated string representation.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getParamStringByValue(LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "getParamStringByValue");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128*, int>)Vtbl[10])(__self__, id, valueNormalized, @string);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128*, int>)Vtbl[10])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, valueNormalized, @string);
+            }
+        }
+        
+        /// <summary>
+        /// Gets for a given paramID and string its normalized value.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getParamValueByString(LibVst.ParamID id, char* @string, LibVst.ParamValue* valueNormalized)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "getParamValueByString");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, char*, LibVst.ParamValue*, int>)Vtbl[11])(__self__, id, @string, valueNormalized);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, char*, LibVst.ParamValue*, int>)Vtbl[11])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, @string, valueNormalized);
+            }
+        }
+        
+        /// <summary>
+        /// Returns for a given paramID and a normalized value its plain representation
+        /// (for example -6 for -6dB - see @ref vst3AutomationIntro).
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double normalizedParamToPlain(LibVst.ParamID id, LibVst.ParamValue valueNormalized)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "normalizedParamToPlain");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)Vtbl[12])(__self__, id, valueNormalized);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)Vtbl[12])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, valueNormalized);
+            }
+        }
+        
+        /// <summary>
+        /// Returns for a given paramID and a plain value its normalized value. (see @ref vst3AutomationIntro)
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double plainParamToNormalized(LibVst.ParamID id, LibVst.ParamValue plainValue)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "plainParamToNormalized");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)Vtbl[13])(__self__, id, plainValue);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)Vtbl[13])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, plainValue);
+            }
+        }
+        
+        /// <summary>
+        /// Returns the normalized value of the parameter associated to the paramID.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double getParamNormalized(LibVst.ParamID id)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "getParamNormalized");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, double>)Vtbl[14])(__self__, id);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, double>)Vtbl[14])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id);
+            }
+        }
+        
+        /// <summary>
+        /// Sets the normalized value to the parameter associated to the paramID. The controller must never
+        /// pass this value-change back to the host via the IComponentHandler. It should update the according
+        /// GUI element(s) only!
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setParamNormalized(LibVst.ParamID id, LibVst.ParamValue value)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "setParamNormalized");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, int>)Vtbl[15])(__self__, id, value);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, int>)Vtbl[15])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, value);
+            }
+        }
+        
+        /// <summary>
+        /// handler ----------------------------
+        /// Gets from host a handler which allows the Plugin-in to communicate with the host.
+        /// Note: This is mandatory if the host is using the IEditController!
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setComponentHandler(LibVst.IComponentHandler* handler)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "setComponentHandler");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.IComponentHandler*, int>)Vtbl[16])(__self__, handler);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.IComponentHandler*, int>)Vtbl[16])((LibVst.IEditController*)Unsafe.AsPointer(ref this), handler);
+            }
+        }
+        
+        /// <summary>
+        /// view -------------------------------
+        /// Creates the editor view of the plug-in, currently only "editor" is supported, see @ref ViewType. The life time of the editor view will never exceed the life time of this controller instance.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LibVst.IPlugView* createView(LibVst.FIDString name)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "createView");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.FIDString, LibVst.IPlugView*>)Vtbl[17])(__self__, name);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.FIDString, LibVst.IPlugView*>)Vtbl[17])((LibVst.IEditController*)Unsafe.AsPointer(ref this), name);
+            }
         }
         
         // --------------------------------------------------------------
@@ -8166,9 +12394,11 @@ internal static partial class LibVst
     /// and to open the plug-in about box or help documentation.
     /// </remarks>
     /// <seealso cref="EditControllerIEditController,"/>
-    public unsafe partial struct IEditController2 : INativeGuid, INativeVtbl
+    public unsafe partial struct IEditController2 : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 6;
         
@@ -8179,6 +12409,113 @@ internal static partial class LibVst
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IEditController2*, int, int>)&setKnobMode_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IEditController2*, byte, int>)&openHelp_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IEditController2*, byte, int>)&openAboutBox_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IEditController2, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IEditController2, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IEditController2, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Host could set the Knob Mode for the plug-in. Return kResultFalse means not supported mode.
+        /// </summary>
+        /// <seealso cref="KnobModes. "/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setKnobMode(LibVst.KnobMode mode)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController2), "setKnobMode");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController2*, LibVst.KnobMode, int>)Vtbl[3])(__self__, mode);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController2*, LibVst.KnobMode, int>)Vtbl[3])((LibVst.IEditController2*)Unsafe.AsPointer(ref this), mode);
+            }
+        }
+        
+        /// <summary>
+        /// Host could ask to open the plug-in help (could be: opening a PDF document or link to a web page).
+        /// The host could call it with onlyCheck set to true for testing support of open Help. 
+        /// Return kResultFalse means not supported function.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult openHelp(byte onlyCheck)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController2), "openHelp");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController2*, byte, int>)Vtbl[4])(__self__, onlyCheck);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController2*, byte, int>)Vtbl[4])((LibVst.IEditController2*)Unsafe.AsPointer(ref this), onlyCheck);
+            }
+        }
+        
+        /// <summary>
+        /// Host could ask to open the plug-in about box.
+        /// The host could call it with onlyCheck set to true for testing support of open AboutBox. 
+        /// Return kResultFalse means not supported function.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult openAboutBox(byte onlyCheck)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditController2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController2), "openAboutBox");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController2*, byte, int>)Vtbl[5])(__self__, onlyCheck);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController2*, byte, int>)Vtbl[5])((LibVst.IEditController2*)Unsafe.AsPointer(ref this), onlyCheck);
+            }
         }
         
         // --------------------------------------------------------------
@@ -8371,9 +12708,11 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IMidiMapping : INativeGuid, INativeVtbl
+    public unsafe partial struct IMidiMapping : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 4;
         
@@ -8382,6 +12721,70 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiMapping*, int, short, short, LibVst.ParamID*, int>)&getMidiControllerAssignment_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IMidiMapping, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IMidiMapping, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IMidiMapping, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Gets an (preferred) associated ParamID for a given Input Event Bus index, channel and MIDI Controller.
+        /// </summary>
+        /// <param name="busIndex">- index of Input Event Bus</param>
+        /// <param name="channel">- channel of the bus</param>
+        /// <param name="midiControllerNumber">- see @ref ControllerNumbers for expected values (could be bigger than 127)</param>
+        /// <param name="id">- return the associated ParamID to the given midiControllerNumber</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getMidiControllerAssignment(int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMidiMapping*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMidiMapping), "getMidiControllerAssignment");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IMidiMapping*, int, short, LibVst.CtrlNumber, LibVst.ParamID*, int>)Vtbl[3])(__self__, busIndex, channel, midiControllerNumber, id);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IMidiMapping*, int, short, LibVst.CtrlNumber, LibVst.ParamID*, int>)Vtbl[3])((LibVst.IMidiMapping*)Unsafe.AsPointer(ref this), busIndex, channel, midiControllerNumber, id);
+            }
         }
         
         // --------------------------------------------------------------
@@ -8472,9 +12875,11 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IEditController"/>
-    public unsafe partial struct IEditControllerHostEditing : INativeGuid, INativeVtbl
+    public unsafe partial struct IEditControllerHostEditing : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 5;
         
@@ -8484,6 +12889,87 @@ internal static partial class LibVst
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IEditControllerHostEditing*, uint, int>)&beginEditFromHost_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IEditControllerHostEditing*, uint, int>)&endEditFromHost_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IEditControllerHostEditing, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IEditControllerHostEditing, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IEditControllerHostEditing, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Called before a setParamNormalized sequence, a endEditFromHost will be call at the end of the editing action.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult beginEditFromHost(LibVst.ParamID paramID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditControllerHostEditing*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditControllerHostEditing), "beginEditFromHost");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditControllerHostEditing*, LibVst.ParamID, int>)Vtbl[3])(__self__, paramID);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditControllerHostEditing*, LibVst.ParamID, int>)Vtbl[3])((LibVst.IEditControllerHostEditing*)Unsafe.AsPointer(ref this), paramID);
+            }
+        }
+        
+        /// <summary>
+        /// Called after a beginEditFromHost and a sequence of setParamNormalized.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult endEditFromHost(LibVst.ParamID paramID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEditControllerHostEditing*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditControllerHostEditing), "endEditFromHost");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditControllerHostEditing*, LibVst.ParamID, int>)Vtbl[4])(__self__, paramID);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditControllerHostEditing*, LibVst.ParamID, int>)Vtbl[4])((LibVst.IEditControllerHostEditing*)Unsafe.AsPointer(ref this), paramID);
+            }
         }
         
         // --------------------------------------------------------------
@@ -8593,9 +13079,11 @@ internal static partial class LibVst
     /// and the getNoteExpressionValueByString method from a string to a normalized value.When the note expression state changes (for example when switching presets) the plug-in needs
     /// to inform the host about it via @ref IComponentHandler::restartComponent (kNoteExpressionChanged).
     /// </remarks>
-    public unsafe partial struct INoteExpressionController : INativeGuid, INativeVtbl
+    public unsafe partial struct INoteExpressionController : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 7;
         
@@ -8607,6 +13095,128 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, int, LibVst.NoteExpressionTypeInfo*, int>)&getNoteExpressionInfo_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, uint, double, LibVst.String128*, int>)&getNoteExpressionStringByValue_Wrapper;
             vtbl[6] = (delegate*unmanaged[MemberFunction]<INoteExpressionController*, int, short, uint, char*, LibVst.NoteExpressionValue*, int>)&getNoteExpressionValueByString_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<INoteExpressionController, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<INoteExpressionController, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<INoteExpressionController, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Returns number of supported note change types for event bus index and channel.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int getNoteExpressionCount(int busIndex, short channel)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.INoteExpressionController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(INoteExpressionController), "getNoteExpressionCount");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, int>)Vtbl[3])(__self__, busIndex, channel);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, int>)Vtbl[3])((LibVst.INoteExpressionController*)Unsafe.AsPointer(ref this), busIndex, channel);
+            }
+        }
+        
+        /// <summary>
+        /// Returns note change type info.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getNoteExpressionInfo(int busIndex, short channel, int noteExpressionIndex, LibVst.NoteExpressionTypeInfo* info)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.INoteExpressionController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(INoteExpressionController), "getNoteExpressionInfo");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, int, LibVst.NoteExpressionTypeInfo*, int>)Vtbl[4])(__self__, busIndex, channel, noteExpressionIndex, info);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, int, LibVst.NoteExpressionTypeInfo*, int>)Vtbl[4])((LibVst.INoteExpressionController*)Unsafe.AsPointer(ref this), busIndex, channel, noteExpressionIndex, info);
+            }
+        }
+        
+        /// <summary>
+        /// Gets a user readable representation of the normalized note change value.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getNoteExpressionStringByValue(int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.INoteExpressionController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(INoteExpressionController), "getNoteExpressionStringByValue");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128*, int>)Vtbl[5])(__self__, busIndex, channel, id, valueNormalized, @string);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128*, int>)Vtbl[5])((LibVst.INoteExpressionController*)Unsafe.AsPointer(ref this), busIndex, channel, id, valueNormalized, @string);
+            }
+        }
+        
+        /// <summary>
+        /// Converts the user readable representation to the normalized note change value.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getNoteExpressionValueByString(int busIndex, short channel, LibVst.NoteExpressionTypeID id, char* @string, LibVst.NoteExpressionValue* valueNormalized)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.INoteExpressionController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(INoteExpressionController), "getNoteExpressionValueByString");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, char*, LibVst.NoteExpressionValue*, int>)Vtbl[6])(__self__, busIndex, channel, id, @string, valueNormalized);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, char*, LibVst.NoteExpressionValue*, int>)Vtbl[6])((LibVst.INoteExpressionController*)Unsafe.AsPointer(ref this), busIndex, channel, id, @string, valueNormalized);
+            }
         }
         
         // --------------------------------------------------------------
@@ -8852,6 +13462,13 @@ internal static partial class LibVst
         }
     }
     
+    public partial record struct NoteExpressionTypeID(uint Value)
+    {
+        public static implicit operator uint(NoteExpressionTypeID value) => value.Value;
+        
+        public static implicit operator NoteExpressionTypeID(uint value) => new(value);
+    }
+    
     /// <summary>
     /// Description of a Note Expression Type
     /// This structure is part of the NoteExpressionTypeInfo structure, it describes for given NoteExpressionTypeID its default value
@@ -8883,6 +13500,13 @@ internal static partial class LibVst
         public int stepCount;
     }
     
+    public partial record struct NoteExpressionValue(double Value)
+    {
+        public static implicit operator double(NoteExpressionValue value) => value.Value;
+        
+        public static implicit operator NoteExpressionValue(double value) => new(value);
+    }
+    
     /// <summary>
     /// Extended plug-in interface IEditController for key switches support: Vst::IKeyswitchController
     /// </summary>
@@ -8894,9 +13518,11 @@ internal static partial class LibVst
     /// of used key switches (megatrig/articulation) for a given channel of a event bus and then automatically use them (like in Cubase 6) to
     /// create VST Expression Map (allowing to associated symbol to a given articulation / key switch).
     /// </remarks>
-    public unsafe partial struct IKeyswitchController : INativeGuid, INativeVtbl
+    public unsafe partial struct IKeyswitchController : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 5;
         
@@ -8906,6 +13532,86 @@ internal static partial class LibVst
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IKeyswitchController*, int, short, int>)&getKeyswitchCount_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IKeyswitchController*, int, short, int, LibVst.KeyswitchInfo*, int>)&getKeyswitchInfo_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IKeyswitchController, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IKeyswitchController, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IKeyswitchController, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Returns number of supported key switches for event bus index and channel.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int getKeyswitchCount(int busIndex, short channel)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IKeyswitchController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IKeyswitchController), "getKeyswitchCount");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IKeyswitchController*, int, short, int>)Vtbl[3])(__self__, busIndex, channel);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IKeyswitchController*, int, short, int>)Vtbl[3])((LibVst.IKeyswitchController*)Unsafe.AsPointer(ref this), busIndex, channel);
+            }
+        }
+        
+        /// <summary>
+        /// Returns key switch info.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getKeyswitchInfo(int busIndex, short channel, int keySwitchIndex, LibVst.KeyswitchInfo* info)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IKeyswitchController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IKeyswitchController), "getKeyswitchInfo");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IKeyswitchController*, int, short, int, LibVst.KeyswitchInfo*, int>)Vtbl[4])(__self__, busIndex, channel, keySwitchIndex, info);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IKeyswitchController*, int, short, int, LibVst.KeyswitchInfo*, int>)Vtbl[4])((LibVst.IKeyswitchController*)Unsafe.AsPointer(ref this), busIndex, channel, keySwitchIndex, info);
+            }
         }
         
         // --------------------------------------------------------------
@@ -9066,11 +13772,22 @@ internal static partial class LibVst
     /// - [mandatory]Messages are sent from a VST controller component to a VST editor component and vice versa.
     /// </remarks>
     /// <seealso cref="vst3CommunicationIAttributeList, IConnectionPoint, "/>
-    public unsafe partial struct IMessage : INativeGuid, INativeUnknown
+    public unsafe partial struct IMessage : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 6;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IMessage*, byte*>)&getMessageID_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IMessage*, byte*, void>)&setMessageID_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IMessage*, LibVst.IAttributeList*>)&getAttributes_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -9167,6 +13884,121 @@ internal static partial class LibVst
             else
             {
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IMessage*, LibVst.IAttributeList*>)Vtbl[5])((LibVst.IMessage*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Returns the message ID (for example "TextMessage").
+        /// </summary>
+        private static partial LibVst.FIDString getMessageID_ToManaged(IMessage* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static byte* getMessageID_Wrapper(IMessage* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMessage), "getMessageID");
+                try
+                {
+                    return getMessageID_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getMessageID_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Sets a message ID (for example "TextMessage").
+        /// </summary>
+        private static partial void setMessageID_ToManaged(IMessage* self, LibVst.FIDString id);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void setMessageID_Wrapper(IMessage* self, byte* id)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMessage), "setMessageID");
+                try
+                {
+                    setMessageID_ToManaged(self, id);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    setMessageID_ToManaged(self, id);
+                }
+                catch
+                {
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Returns the attribute list associated to the message.
+        /// </summary>
+        private static partial LibVst.IAttributeList* getAttributes_ToManaged(IMessage* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static LibVst.IAttributeList* getAttributes_Wrapper(IMessage* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMessage), "getAttributes");
+                try
+                {
+                    return getAttributes_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getAttributes_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
             }
         }
         
@@ -9458,11 +14290,21 @@ internal static partial class LibVst
     /// - [released: 3.0.0]
     /// - [mandatory]Basic VST host application interface.
     /// </remarks>
-    public unsafe partial struct IHostApplication : INativeGuid, INativeUnknown
+    public unsafe partial struct IHostApplication : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 5;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IHostApplication*, LibVst.String128*, int>)&getName_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IHostApplication*, Guid*, Guid*, void**, int>)&createInstance_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -9542,6 +14384,85 @@ internal static partial class LibVst
             else
             {
                 return ((delegate*unmanaged[MemberFunction]<LibVst.IHostApplication*, Guid*, Guid*, void**, int>)Vtbl[4])((LibVst.IHostApplication*)Unsafe.AsPointer(ref this), cid, _iid, obj);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Gets host application name.
+        /// </summary>
+        private static partial ComResult getName_ToManaged(IHostApplication* self, LibVst.String128* name);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getName_Wrapper(IHostApplication* self, LibVst.String128* name)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IHostApplication), "getName");
+                try
+                {
+                    return getName_ToManaged(self, name);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getName_ToManaged(self, name);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Creates host object (e.g. Vst::IMessage).
+        /// </summary>
+        private static partial ComResult createInstance_ToManaged(IHostApplication* self, Guid* cid, Guid* _iid, void** obj);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int createInstance_Wrapper(IHostApplication* self, Guid* cid, Guid* _iid, void** obj)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IHostApplication), "createInstance");
+                try
+                {
+                    return createInstance_ToManaged(self, cid, _iid, obj);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return createInstance_ToManaged(self, cid, _iid, obj);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
             }
         }
         
@@ -9659,11 +14580,21 @@ internal static partial class LibVst
     /// will be one and the memberEndChannel will be 14.As MPE is a subset of the VST3 Note Expression feature, mapping from the three MPE expressions is
     /// handled via the INoteExpressionPhysicalUIMapping interface.
     /// </remarks>
-    public unsafe partial struct IVst3WrapperMPESupport : INativeGuid, INativeUnknown
+    public unsafe partial struct IVst3WrapperMPESupport : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 5;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IVst3WrapperMPESupport*, byte, int>)&enableMPEInputProcessing_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IVst3WrapperMPESupport*, int, int, int, int>)&setMPEInputDeviceSettings_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -9752,6 +14683,91 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// enable or disable MPE processing
+        /// </summary>
+        /// <param name="state">true to enable, false to disable MPE processing</param>
+        /// <returns>kResultTrue on success</returns>
+        private static partial ComResult enableMPEInputProcessing_ToManaged(IVst3WrapperMPESupport* self, byte state);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int enableMPEInputProcessing_Wrapper(IVst3WrapperMPESupport* self, byte state)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IVst3WrapperMPESupport), "enableMPEInputProcessing");
+                try
+                {
+                    return enableMPEInputProcessing_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return enableMPEInputProcessing_ToManaged(self, state);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// setup the MPE processing
+        /// </summary>
+        /// <param name="masterChannel">MPE master channel (zero based)</param>
+        /// <param name="memberBeginChannel">MPE member begin channel (zero based)</param>
+        /// <param name="memberEndChannel">MPE member end channel (zero based)</param>
+        /// <returns>kResultTrue on success</returns>
+        private static partial ComResult setMPEInputDeviceSettings_ToManaged(IVst3WrapperMPESupport* self, int masterChannel, int memberBeginChannel, int memberEndChannel);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int setMPEInputDeviceSettings_Wrapper(IVst3WrapperMPESupport* self, int masterChannel, int memberBeginChannel, int memberEndChannel)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IVst3WrapperMPESupport), "setMPEInputDeviceSettings");
+                try
+                {
+                    return setMPEInputDeviceSettings_ToManaged(self, masterChannel, memberBeginChannel, memberEndChannel);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return setMPEInputDeviceSettings_ToManaged(self, masterChannel, memberBeginChannel, memberEndChannel);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IVst3WrapperMPESupport, 0x44149067, 0x42CF4BF9, 0x8800B750, 0xF7359FE3)
         /// </summary>
@@ -9776,9 +14792,11 @@ internal static partial class LibVst
     /// - [extends IEditController]
     /// - [released: 3.6.0]
     /// </remarks>
-    public unsafe partial struct IInterAppAudioPresetManager : INativeGuid, INativeVtbl
+    public unsafe partial struct IInterAppAudioPresetManager : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 7;
         
@@ -9790,6 +14808,129 @@ internal static partial class LibVst
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IInterAppAudioPresetManager*, int>)&runSavePresetBrowser_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IInterAppAudioPresetManager*, int>)&loadNextPreset_Wrapper;
             vtbl[6] = (delegate*unmanaged[MemberFunction]<IInterAppAudioPresetManager*, int>)&loadPreviousPreset_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IInterAppAudioPresetManager, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IInterAppAudioPresetManager, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IInterAppAudioPresetManager, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Open the Preset Browser in order to load a preset
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult runLoadPresetBrowser()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioPresetManager*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioPresetManager), "runLoadPresetBrowser");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioPresetManager*, int>)Vtbl[3])(__self__);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioPresetManager*, int>)Vtbl[3])((LibVst.IInterAppAudioPresetManager*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// Open the Preset Browser in order to save a preset
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult runSavePresetBrowser()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioPresetManager*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioPresetManager), "runSavePresetBrowser");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioPresetManager*, int>)Vtbl[4])(__self__);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioPresetManager*, int>)Vtbl[4])((LibVst.IInterAppAudioPresetManager*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// Load the next available preset
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult loadNextPreset()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioPresetManager*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioPresetManager), "loadNextPreset");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioPresetManager*, int>)Vtbl[5])(__self__);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioPresetManager*, int>)Vtbl[5])((LibVst.IInterAppAudioPresetManager*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// Load the previous available preset
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult loadPreviousPreset()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInterAppAudioPresetManager*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInterAppAudioPresetManager), "loadPreviousPreset");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioPresetManager*, int>)Vtbl[6])(__self__);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IInterAppAudioPresetManager*, int>)Vtbl[6])((LibVst.IInterAppAudioPresetManager*)Unsafe.AsPointer(ref this));
+            }
         }
         
         // --------------------------------------------------------------
@@ -9972,11 +15113,27 @@ internal static partial class LibVst
     /// - [released: 3.6.0]
     /// - [optional]Implemented by the InterAppAudio Wrapper.
     /// </remarks>
-    public unsafe partial struct IInterAppAudioHost : INativeGuid, INativeUnknown
+    public unsafe partial struct IInterAppAudioHost : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 11;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IInterAppAudioHost*, LibVst.ViewRect*, float*, int>)&getScreenSize_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IInterAppAudioHost*, int>)&connectedToHost_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IInterAppAudioHost*, int>)&switchToHost_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IInterAppAudioHost*, uint, int>)&sendRemoteControlEvent_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IInterAppAudioHost*, void**, int>)&getHostIcon_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IInterAppAudioHost*, LibVst.Event*, int>)&scheduleEventFromUI_Wrapper;
+            vtbl[9] = (delegate*unmanaged[MemberFunction]<IInterAppAudioHost*, Guid*, LibVst.IInterAppAudioPresetManager*>)&createPresetManager_Wrapper;
+            vtbl[10] = (delegate*unmanaged[MemberFunction]<IInterAppAudioHost*, int>)&showSettingsView_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -10199,6 +15356,328 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// get the size of the screen
+        /// </summary>
+        /// <param name="size">size of the screen</param>
+        /// <param name="scale">scale of the screen</param>
+        /// <returns>kResultTrue on success</returns>
+        private static partial ComResult getScreenSize_ToManaged(IInterAppAudioHost* self, LibVst.ViewRect* size, float* scale);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getScreenSize_Wrapper(IInterAppAudioHost* self, LibVst.ViewRect* size, float* scale)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioHost), "getScreenSize");
+                try
+                {
+                    return getScreenSize_ToManaged(self, size, scale);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getScreenSize_ToManaged(self, size, scale);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// get status of connection
+        /// </summary>
+        /// <returns>kResultTrue if an Inter-App Audio connection is established</returns>
+        private static partial ComResult connectedToHost_ToManaged(IInterAppAudioHost* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int connectedToHost_Wrapper(IInterAppAudioHost* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioHost), "connectedToHost");
+                try
+                {
+                    return connectedToHost_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return connectedToHost_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// switch to the host.
+        /// </summary>
+        /// <returns>kResultTrue on success</returns>
+        private static partial ComResult switchToHost_ToManaged(IInterAppAudioHost* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int switchToHost_Wrapper(IInterAppAudioHost* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioHost), "switchToHost");
+                try
+                {
+                    return switchToHost_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return switchToHost_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// send a remote control event to the host
+        /// </summary>
+        /// <param name="event">event type, see AudioUnitRemoteControlEvent in the iOS SDK documentation for possible types</param>
+        /// <returns>kResultTrue on success</returns>
+        private static partial ComResult sendRemoteControlEvent_ToManaged(IInterAppAudioHost* self, uint @event);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int sendRemoteControlEvent_Wrapper(IInterAppAudioHost* self, uint @event)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioHost), "sendRemoteControlEvent");
+                try
+                {
+                    return sendRemoteControlEvent_ToManaged(self, @event);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return sendRemoteControlEvent_ToManaged(self, @event);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// ask for the host icon.
+        /// </summary>
+        /// <param name="icon">pointer to a CGImageRef</param>
+        /// <returns>kResultTrue on success</returns>
+        private static partial ComResult getHostIcon_ToManaged(IInterAppAudioHost* self, void** icon);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getHostIcon_Wrapper(IInterAppAudioHost* self, void** icon)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioHost), "getHostIcon");
+                try
+                {
+                    return getHostIcon_ToManaged(self, icon);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getHostIcon_ToManaged(self, icon);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// schedule an event from the user interface thread
+        /// </summary>
+        /// <param name="event">the event to schedule</param>
+        /// <returns>kResultTrue on success</returns>
+        private static partial ComResult scheduleEventFromUI_ToManaged(IInterAppAudioHost* self, LibVst.Event* @event);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int scheduleEventFromUI_Wrapper(IInterAppAudioHost* self, LibVst.Event* @event)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioHost), "scheduleEventFromUI");
+                try
+                {
+                    return scheduleEventFromUI_ToManaged(self, @event);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return scheduleEventFromUI_ToManaged(self, @event);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// get the preset manager
+        /// </summary>
+        /// <param name="cid">class ID to use by the preset manager</param>
+        /// <returns>the preset manager. Needs to be released by called.</returns>
+        private static partial LibVst.IInterAppAudioPresetManager* createPresetManager_ToManaged(IInterAppAudioHost* self, Guid* cid);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static LibVst.IInterAppAudioPresetManager* createPresetManager_Wrapper(IInterAppAudioHost* self, Guid* cid)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioHost), "createPresetManager");
+                try
+                {
+                    return createPresetManager_ToManaged(self, cid);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return createPresetManager_ToManaged(self, cid);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// show the settings view
+        /// currently includes MIDI settings and Tempo setting
+        /// </summary>
+        /// <returns>kResultTrue on success</returns>
+        private static partial ComResult showSettingsView_ToManaged(IInterAppAudioHost* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int showSettingsView_Wrapper(IInterAppAudioHost* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInterAppAudioHost), "showSettingsView");
+                try
+                {
+                    return showSettingsView_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return showSettingsView_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IInterAppAudioHost, 0x0CE5743D, 0x68DF415E, 0xAE285BD4, 0xE2CDC8FD)
         /// </summary>
@@ -10276,9 +15755,11 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IMidiLearn : INativeGuid, INativeVtbl
+    public unsafe partial struct IMidiLearn : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 4;
         
@@ -10287,6 +15768,66 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiLearn*, int, short, short, int>)&onLiveMIDIControllerInput_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IMidiLearn, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IMidiLearn, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IMidiLearn, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Called on live input MIDI-CC change associated to a given bus index and MIDI channel
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult onLiveMIDIControllerInput(int busIndex, short channel, LibVst.CtrlNumber midiCC)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMidiLearn*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMidiLearn), "onLiveMIDIControllerInput");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IMidiLearn*, int, short, LibVst.CtrlNumber, int>)Vtbl[3])(__self__, busIndex, channel, midiCC);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IMidiLearn*, int, short, LibVst.CtrlNumber, int>)Vtbl[3])((LibVst.IMidiLearn*)Unsafe.AsPointer(ref this), busIndex, channel, midiCC);
+            }
         }
         
         // --------------------------------------------------------------
@@ -10417,9 +15958,11 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IParameterFunctionName : INativeGuid, INativeVtbl
+    public unsafe partial struct IParameterFunctionName : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 4;
         
@@ -10428,6 +15971,67 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IParameterFunctionName*, int, byte*, LibVst.ParamID*, int>)&getParameterIDFromFunctionName_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IParameterFunctionName, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IParameterFunctionName, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IParameterFunctionName, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Gets for the given unitID the associated paramID to a function Name.
+        /// Returns kResultFalse when no found parameter (paramID is set to kNoParamId in this case).
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getParameterIDFromFunctionName(LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParameterFunctionName*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterFunctionName), "getParameterIDFromFunctionName");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IParameterFunctionName*, LibVst.UnitID, LibVst.FIDString, LibVst.ParamID*, int>)Vtbl[3])(__self__, unitID, functionName, paramID);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IParameterFunctionName*, LibVst.UnitID, LibVst.FIDString, LibVst.ParamID*, int>)Vtbl[3])((LibVst.IParameterFunctionName*)Unsafe.AsPointer(ref this), unitID, functionName, paramID);
+            }
         }
         
         // --------------------------------------------------------------
@@ -10546,9 +16150,11 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct INoteExpressionPhysicalUIMapping : INativeGuid, INativeVtbl
+    public unsafe partial struct INoteExpressionPhysicalUIMapping : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 4;
         
@@ -10557,6 +16163,67 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<INoteExpressionPhysicalUIMapping*, int, short, LibVst.PhysicalUIMapList*, int>)&getPhysicalUIMapping_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<INoteExpressionPhysicalUIMapping, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<INoteExpressionPhysicalUIMapping, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<INoteExpressionPhysicalUIMapping, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Fills the list of mapped [physical UI (in) - note expression (out)] for a given bus index
+        /// and channel.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getPhysicalUIMapping(int busIndex, short channel, LibVst.PhysicalUIMapList* list)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.INoteExpressionPhysicalUIMapping*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(INoteExpressionPhysicalUIMapping), "getPhysicalUIMapping");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionPhysicalUIMapping*, int, short, LibVst.PhysicalUIMapList*, int>)Vtbl[3])(__self__, busIndex, channel, list);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionPhysicalUIMapping*, int, short, LibVst.PhysicalUIMapList*, int>)Vtbl[3])((LibVst.INoteExpressionPhysicalUIMapping*)Unsafe.AsPointer(ref this), busIndex, channel, list);
+            }
         }
         
         // --------------------------------------------------------------
@@ -10687,11 +16354,20 @@ internal static partial class LibVst
     /// @endcode
     /// </remarks>
     /// <seealso cref="IPluginBase"/>
-    public unsafe partial struct IPlugInterfaceSupport : INativeGuid, INativeUnknown
+    public unsafe partial struct IPlugInterfaceSupport : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IPlugInterfaceSupport*, Guid*, int>)&isPlugInterfaceSupported_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -10753,6 +16429,47 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Returns kResultTrue if the associated interface to the given _iid is supported/used by the host.
+        /// </summary>
+        private static partial ComResult isPlugInterfaceSupported_ToManaged(IPlugInterfaceSupport* self, Guid* _iid);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int isPlugInterfaceSupported_Wrapper(IPlugInterfaceSupport* self, Guid* _iid)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugInterfaceSupport), "isPlugInterfaceSupported");
+                try
+                {
+                    return isPlugInterfaceSupported_ToManaged(self, _iid);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return isPlugInterfaceSupported_ToManaged(self, _iid);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IPlugInterfaceSupport, 0x4FB58B9E, 0x9EAA4E0F, 0xAB361C1C, 0xCCB56FEA)
         /// </summary>
@@ -10780,9 +16497,11 @@ internal static partial class LibVst
     /// - [optional]It is highly recommended to implement this interface.
     /// A host can implement important functionality when a plug-in supports this interface.For example, all Steinberg hosts require this interface in order to support the "AI Knob".
     /// </remarks>
-    public unsafe partial struct IParameterFinder : INativeGuid, INativeVtbl
+    public unsafe partial struct IParameterFinder : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 4;
         
@@ -10791,6 +16510,66 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IParameterFinder*, int, int, LibVst.ParamID*, int>)&findParameter_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IParameterFinder, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IParameterFinder, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IParameterFinder, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Find out which parameter in plug-in view is at given position (relative to plug-in view).
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult findParameter(int xPos, int yPos, LibVst.ParamID* resultTag)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IParameterFinder*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParameterFinder), "findParameter");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IParameterFinder*, int, int, LibVst.ParamID*, int>)Vtbl[3])(__self__, xPos, yPos, resultTag);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IParameterFinder*, int, int, LibVst.ParamID*, int>)Vtbl[3])((LibVst.IParameterFinder*)Unsafe.AsPointer(ref this), xPos, yPos, resultTag);
+            }
         }
         
         // --------------------------------------------------------------
@@ -10876,9 +16655,11 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IPrefetchableSupport : INativeGuid, INativeVtbl
+    public unsafe partial struct IPrefetchableSupport : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 4;
         
@@ -10887,6 +16668,67 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IPrefetchableSupport*, LibVst.PrefetchableSupport*, int>)&getPrefetchableSupport_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IPrefetchableSupport, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IPrefetchableSupport, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IPrefetchableSupport, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// retrieve the current prefetch support. Use IComponentHandler::restartComponent
+        /// (kPrefetchableSupportChanged) to inform the host that this support has changed.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getPrefetchableSupport(LibVst.PrefetchableSupport* prefetchable)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IPrefetchableSupport*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPrefetchableSupport), "getPrefetchableSupport");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPrefetchableSupport*, LibVst.PrefetchableSupport*, int>)Vtbl[3])(__self__, prefetchable);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPrefetchableSupport*, LibVst.PrefetchableSupport*, int>)Vtbl[3])((LibVst.IPrefetchableSupport*)Unsafe.AsPointer(ref this), prefetchable);
+            }
         }
         
         // --------------------------------------------------------------
@@ -11045,9 +16887,11 @@ internal static partial class LibVst
     /// &lt;/vstXML&gt;
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IXmlRepresentationController : INativeGuid, INativeVtbl
+    public unsafe partial struct IXmlRepresentationController : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 4;
         
@@ -11056,6 +16900,66 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IXmlRepresentationController*, LibVst.RepresentationInfo*, LibVst.IBStream*, int>)&getXmlRepresentationStream_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IXmlRepresentationController, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IXmlRepresentationController, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IXmlRepresentationController, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Retrieves a stream containing a XmlRepresentation for a wanted representation info
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getXmlRepresentationStream(LibVst.RepresentationInfo* info, LibVst.IBStream* stream)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IXmlRepresentationController*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IXmlRepresentationController), "getXmlRepresentationStream");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IXmlRepresentationController*, LibVst.RepresentationInfo*, LibVst.IBStream*, int>)Vtbl[3])(__self__, info, stream);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IXmlRepresentationController*, LibVst.RepresentationInfo*, LibVst.IBStream*, int>)Vtbl[3])((LibVst.IXmlRepresentationController*)Unsafe.AsPointer(ref this), info, stream);
+            }
         }
         
         // --------------------------------------------------------------
@@ -11143,6 +17047,11 @@ internal static partial class LibVst
         /// Optional: used if the representation is for a given host only (eg. "Nuendo").
         /// </summary>
         public fixed byte host[64];
+        
+        public enum ivstrepresentation
+        {
+            kNameSize = 64,
+        }
     }
     
     /// <summary>
@@ -11787,11 +17696,21 @@ internal static partial class LibVst
     /// Retrieve via queryInterface from IComponentHandler.
     /// </remarks>
     /// <seealso cref="IUnitInfovst3Units,"/>
-    public unsafe partial struct IUnitHandler : INativeGuid, INativeUnknown
+    public unsafe partial struct IUnitHandler : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 5;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IUnitHandler*, int, int>)&notifyUnitSelection_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IUnitHandler*, int, int, int>)&notifyProgramListChange_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -11876,6 +17795,87 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Notify host when a module is selected in plug-in GUI.
+        /// </summary>
+        private static partial ComResult notifyUnitSelection_ToManaged(IUnitHandler* self, LibVst.UnitID unitId);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int notifyUnitSelection_Wrapper(IUnitHandler* self, int unitId)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitHandler), "notifyUnitSelection");
+                try
+                {
+                    return notifyUnitSelection_ToManaged(self, unitId);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return notifyUnitSelection_ToManaged(self, unitId);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Tell host that the plug-in controller changed a program list (rename, load, PitchName changes).
+        /// </summary>
+        /// <param name="programIndex">: when kAllProgramInvalid, all program information is invalid, otherwise only the program of given index.</param>
+        /// <param name="listId">is the specified program list ID to inform.</param>
+        private static partial ComResult notifyProgramListChange_ToManaged(IUnitHandler* self, LibVst.ProgramListID listId, int programIndex);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int notifyProgramListChange_Wrapper(IUnitHandler* self, int listId, int programIndex)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitHandler), "notifyProgramListChange");
+                try
+                {
+                    return notifyProgramListChange_ToManaged(self, listId, programIndex);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return notifyProgramListChange_ToManaged(self, listId, programIndex);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IUnitHandler, 0x4B5147F8, 0x4654486B, 0x8DAB30BA, 0x163A3C56)
         /// </summary>
@@ -11912,11 +17912,20 @@ internal static partial class LibVst
     /// to get the new relations between busses and unit.
     /// </remarks>
     /// <seealso cref="IUnitHandlervst3Units,"/>
-    public unsafe partial struct IUnitHandler2 : INativeGuid, INativeUnknown
+    public unsafe partial struct IUnitHandler2 : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
         
         public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IUnitHandler2*, int>)&notifyUnitByBusChange_Wrapper;
+        }
         
         // --------------------------------------------------------------
         // RCW methods
@@ -11978,6 +17987,47 @@ internal static partial class LibVst
             }
         }
         
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Tell host that assignment Unit-Bus defined by IUnitInfo::getUnitByBus has changed.
+        /// </summary>
+        private static partial ComResult notifyUnitByBusChange_ToManaged(IUnitHandler2* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int notifyUnitByBusChange_Wrapper(IUnitHandler2* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IUnitHandler2), "notifyUnitByBusChange");
+                try
+                {
+                    return notifyUnitByBusChange_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return notifyUnitByBusChange_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
         /// <summary>
         /// DECLARE_CLASS_IID (IUnitHandler2, 0xF89F8CDF, 0x699E4BA5, 0x96AAC9A4, 0x81452B01)
         /// </summary>
@@ -12008,9 +18058,11 @@ internal static partial class LibVst
     /// - Each unit, using a program list, references one program of the list.
     /// </remarks>
     /// <seealso cref="IUnitHandlervst3Units,"/>
-    public unsafe partial struct IUnitInfo : INativeGuid, INativeVtbl
+    public unsafe partial struct IUnitInfo : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 15;
         
@@ -12030,6 +18082,306 @@ internal static partial class LibVst
             vtbl[12] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int>)&selectUnit_Wrapper;
             vtbl[13] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int, int, int, LibVst.UnitID*, int>)&getUnitByBus_Wrapper;
             vtbl[14] = (delegate*unmanaged[MemberFunction]<IUnitInfo*, int, int, LibVst.IBStream*, int>)&setUnitProgramData_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IUnitInfo, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IUnitInfo, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IUnitInfo, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Returns the flat count of units.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int getUnitCount()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "getUnitCount");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int>)Vtbl[3])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// Gets UnitInfo for a given index in the flat list of unit.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getUnitInfo(int unitIndex, LibVst.UnitInfo* info)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "getUnitInfo");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int, LibVst.UnitInfo*, int>)Vtbl[4])(__self__, unitIndex, info);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int, LibVst.UnitInfo*, int>)Vtbl[4])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this), unitIndex, info);
+            }
+        }
+        
+        /// <summary>
+        /// Component intern program structure.
+        /// </summary>
+        /// <remarks>
+        /// Gets the count of Program List.
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int getProgramListCount()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "getProgramListCount");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int>)Vtbl[5])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int>)Vtbl[5])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// Gets for a given index the Program List Info.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getProgramListInfo(int listIndex, LibVst.ProgramListInfo* info)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "getProgramListInfo");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int, LibVst.ProgramListInfo*, int>)Vtbl[6])(__self__, listIndex, info);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int, LibVst.ProgramListInfo*, int>)Vtbl[6])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this), listIndex, info);
+            }
+        }
+        
+        /// <summary>
+        /// Gets for a given program list ID and program index its program name.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getProgramName(LibVst.ProgramListID listId, int programIndex, LibVst.String128* name)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "getProgramName");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.ProgramListID, int, LibVst.String128*, int>)Vtbl[7])(__self__, listId, programIndex, name);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.ProgramListID, int, LibVst.String128*, int>)Vtbl[7])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this), listId, programIndex, name);
+            }
+        }
+        
+        /// <summary>
+        /// Gets for a given program list ID, program index and attributeId the associated attribute value.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getProgramInfo(LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "getProgramInfo");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.ProgramListID, int, LibVst.CString, LibVst.String128*, int>)Vtbl[8])(__self__, listId, programIndex, attributeId, attributeValue);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.ProgramListID, int, LibVst.CString, LibVst.String128*, int>)Vtbl[8])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this), listId, programIndex, attributeId, attributeValue);
+            }
+        }
+        
+        /// <summary>
+        /// Returns kResultTrue if the given program index of a given program list ID supports PitchNames.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult hasProgramPitchNames(LibVst.ProgramListID listId, int programIndex)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "hasProgramPitchNames");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.ProgramListID, int, int>)Vtbl[9])(__self__, listId, programIndex);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.ProgramListID, int, int>)Vtbl[9])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this), listId, programIndex);
+            }
+        }
+        
+        /// <summary>
+        /// Gets the PitchName for a given program list ID, program index and pitch.
+        /// If PitchNames are changed the plug-in should inform the host with IUnitHandler::notifyProgramListChange.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getProgramPitchName(LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "getProgramPitchName");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.ProgramListID, int, short, LibVst.String128*, int>)Vtbl[10])(__self__, listId, programIndex, midiPitch, name);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.ProgramListID, int, short, LibVst.String128*, int>)Vtbl[10])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this), listId, programIndex, midiPitch, name);
+            }
+        }
+        
+        /// <summary>
+        /// units selection --------------------
+        /// Gets the current selected unit.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int getSelectedUnit()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "getSelectedUnit");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int>)Vtbl[11])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int>)Vtbl[11])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// Sets a new selected unit.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult selectUnit(LibVst.UnitID unitId)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "selectUnit");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.UnitID, int>)Vtbl[12])(__self__, unitId);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.UnitID, int>)Vtbl[12])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this), unitId);
+            }
+        }
+        
+        /// <summary>
+        /// Gets the according unit if there is an unambiguous relation between a channel or a bus and a unit.
+        /// This method mainly is intended to find out which unit is related to a given MIDI input channel.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getUnitByBus(LibVst.MediaType type, LibVst.BusDirection dir, int busIndex, int channel, LibVst.UnitID* unitId)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "getUnitByBus");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.MediaType, LibVst.BusDirection, int, int, LibVst.UnitID*, int>)Vtbl[13])(__self__, type, dir, busIndex, channel, unitId);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, LibVst.MediaType, LibVst.BusDirection, int, int, LibVst.UnitID*, int>)Vtbl[13])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this), type, dir, busIndex, channel, unitId);
+            }
+        }
+        
+        /// <summary>
+        /// Receives a preset data stream.
+        /// - If the component supports program list data (IProgramListData), the destination of the data
+        /// stream is the program specified by list-Id and program index (first and second parameter)
+        /// - If the component supports unit data (IUnitData), the destination is the unit specified by the first
+        /// parameter - in this case parameter programIndex is 
+        /// &lt;
+        /// 0).
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setUnitProgramData(int listOrUnitId, int programIndex, LibVst.IBStream* data)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitInfo), "setUnitProgramData");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int, int, LibVst.IBStream*, int>)Vtbl[14])(__self__, listOrUnitId, programIndex, data);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitInfo*, int, int, LibVst.IBStream*, int>)Vtbl[14])((LibVst.IUnitInfo*)Unsafe.AsPointer(ref this), listOrUnitId, programIndex, data);
+            }
         }
         
         // --------------------------------------------------------------
@@ -12590,9 +18942,11 @@ internal static partial class LibVst
     /// unit preset data (IUnitData).
     /// </remarks>
     /// <seealso cref="vst3MultitimbralProgramsIUnitData, "/>
-    public unsafe partial struct IProgramListData : INativeGuid, INativeVtbl
+    public unsafe partial struct IProgramListData : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 6;
         
@@ -12603,6 +18957,108 @@ internal static partial class LibVst
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IProgramListData*, int, int>)&programDataSupported_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IProgramListData*, int, int, LibVst.IBStream*, int>)&getProgramData_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IProgramListData*, int, int, LibVst.IBStream*, int>)&setProgramData_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IProgramListData, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IProgramListData, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IProgramListData, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Returns kResultTrue if the given Program List ID supports Program Data.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult programDataSupported(LibVst.ProgramListID listId)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IProgramListData*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgramListData), "programDataSupported");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IProgramListData*, LibVst.ProgramListID, int>)Vtbl[3])(__self__, listId);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IProgramListData*, LibVst.ProgramListID, int>)Vtbl[3])((LibVst.IProgramListData*)Unsafe.AsPointer(ref this), listId);
+            }
+        }
+        
+        /// <summary>
+        /// Gets for a given program list ID and program index the program Data.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getProgramData(LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IProgramListData*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgramListData), "getProgramData");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, int>)Vtbl[4])(__self__, listId, programIndex, data);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, int>)Vtbl[4])((LibVst.IProgramListData*)Unsafe.AsPointer(ref this), listId, programIndex, data);
+            }
+        }
+        
+        /// <summary>
+        /// Sets for a given program list ID and program index a program Data.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setProgramData(LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IProgramListData*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgramListData), "setProgramData");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, int>)Vtbl[5])(__self__, listId, programIndex, data);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IProgramListData*, LibVst.ProgramListID, int, LibVst.IBStream*, int>)Vtbl[5])((LibVst.IProgramListData*)Unsafe.AsPointer(ref this), listId, programIndex, data);
+            }
         }
         
         // --------------------------------------------------------------
@@ -12749,9 +19205,11 @@ internal static partial class LibVst
     /// program list data (IProgramListData).
     /// </remarks>
     /// <seealso cref="vst3ProgramLists"/>
-    public unsafe partial struct IUnitData : INativeGuid, INativeVtbl
+    public unsafe partial struct IUnitData : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 6;
         
@@ -12762,6 +19220,108 @@ internal static partial class LibVst
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IUnitData*, int, int>)&unitDataSupported_Wrapper;
             vtbl[4] = (delegate*unmanaged[MemberFunction]<IUnitData*, int, LibVst.IBStream*, int>)&getUnitData_Wrapper;
             vtbl[5] = (delegate*unmanaged[MemberFunction]<IUnitData*, int, LibVst.IBStream*, int>)&setUnitData_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IUnitData, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IUnitData, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IUnitData, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Returns kResultTrue if the specified unit supports export and import of preset data.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult unitDataSupported(LibVst.UnitID unitID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitData*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitData), "unitDataSupported");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitData*, LibVst.UnitID, int>)Vtbl[3])(__self__, unitID);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitData*, LibVst.UnitID, int>)Vtbl[3])((LibVst.IUnitData*)Unsafe.AsPointer(ref this), unitID);
+            }
+        }
+        
+        /// <summary>
+        /// Gets the preset data for the specified unit.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getUnitData(LibVst.UnitID unitId, LibVst.IBStream* data)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitData*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitData), "getUnitData");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitData*, LibVst.UnitID, LibVst.IBStream*, int>)Vtbl[4])(__self__, unitId, data);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitData*, LibVst.UnitID, LibVst.IBStream*, int>)Vtbl[4])((LibVst.IUnitData*)Unsafe.AsPointer(ref this), unitId, data);
+            }
+        }
+        
+        /// <summary>
+        /// Sets the preset data for the specified unit.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setUnitData(LibVst.UnitID unitId, LibVst.IBStream* data)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IUnitData*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IUnitData), "setUnitData");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IUnitData*, LibVst.UnitID, LibVst.IBStream*, int>)Vtbl[5])(__self__, unitId, data);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IUnitData*, LibVst.UnitID, LibVst.IBStream*, int>)Vtbl[5])((LibVst.IUnitData*)Unsafe.AsPointer(ref this), unitId, data);
+            }
         }
         
         // --------------------------------------------------------------
@@ -13748,9 +20308,11 @@ internal static partial class LibVst
     /// }
     /// @endcode
     /// </remarks>
-    public unsafe partial struct IInfoListener : INativeGuid, INativeVtbl
+    public unsafe partial struct IInfoListener : INativeGuid, INativeUnknown, INativeVtbl
     {
         public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
         
         public static int VtblCount => 4;
         
@@ -13759,6 +20321,66 @@ internal static partial class LibVst
         {
             FUnknown.InitializeVtbl(vtbl);
             vtbl[3] = (delegate*unmanaged[MemberFunction]<IInfoListener*, LibVst.IAttributeList*, int>)&setChannelContextInfos_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IInfoListener, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IInfoListener, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IInfoListener, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Receive the channel context infos from host.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult setChannelContextInfos(LibVst.IAttributeList* list)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInfoListener*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInfoListener), "setChannelContextInfos");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IInfoListener*, LibVst.IAttributeList*, int>)Vtbl[3])(__self__, list);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IInfoListener*, LibVst.IAttributeList*, int>)Vtbl[3])((LibVst.IInfoListener*)Unsafe.AsPointer(ref this), list);
+            }
         }
         
         // --------------------------------------------------------------
@@ -13828,6 +20450,51 @@ internal static partial class LibVst
         kPostVolumeFader,
         
         kUsedAsPanner,
+    }
+    
+    public enum ivstrepresentation
+    {
+        /// <summary>
+        /// a knob (encoder or not)
+        /// </summary>
+        kKnob = 0,
+        
+        /// <summary>
+        /// a knob which is used by pressing and turning
+        /// </summary>
+        kPressedKnob,
+        
+        /// <summary>
+        /// knob could be pressed to simulate a switch
+        /// </summary>
+        kSwitchKnob,
+        
+        /// <summary>
+        /// a "on/off" button
+        /// </summary>
+        kSwitch,
+        
+        /// <summary>
+        /// LED like VU-meter or display around a knob
+        /// </summary>
+        kLED,
+        
+        /// <summary>
+        /// indicates that this layer is a folder linked to an another INode (page)
+        /// </summary>
+        kLink,
+        
+        /// <summary>
+        /// only for text display (not really a control)
+        /// </summary>
+        kDisplay,
+        
+        /// <summary>
+        /// a fader
+        /// </summary>
+        kFader,
+        
+        kEndOfLayerType,
     }
     
     public const string kPlatformStringWin = "WIN";
@@ -18442,34 +25109,57 @@ internal static partial class LibVst
         private static void RegisterAllInterfaces()
         {
             Register<FUnknown>();
+            Register<IBStream>();
+            Register<IAttributes>();
+            Register<IAttributes2>();
             Register<IPluginBase>();
             Register<IPluginFactory>();
             Register<IPluginFactory2>();
             Register<IPluginFactory3>();
+            Register<IStringResult>();
             Register<IPlugView>();
+            Register<IPlugFrame>();
             Register<IPlugViewContentScaleSupport>();
+            Register<IAttributeList>();
+            Register<IStreamAttributes>();
             Register<IComponent>();
+            Register<IEventList>();
+            Register<IParameterChanges>();
+            Register<IParamValueQueue>();
             Register<IAudioProcessor>();
             Register<IAudioPresentationLatency>();
             Register<IProcessContextRequirements>();
             Register<IAutomationState>();
+            Register<IContextMenu>();
             Register<IContextMenuTarget>();
+            Register<IComponentHandler3>();
+            Register<IComponentHandler>();
+            Register<IComponentHandler2>();
+            Register<IComponentHandlerBusActivation>();
+            Register<IProgress>();
             Register<IEditController>();
             Register<IEditController2>();
             Register<IMidiMapping>();
             Register<IEditControllerHostEditing>();
             Register<INoteExpressionController>();
             Register<IKeyswitchController>();
+            Register<IMessage>();
             Register<IConnectionPoint>();
+            Register<IHostApplication>();
+            Register<IVst3WrapperMPESupport>();
             Register<IInterAppAudioPresetManager>();
+            Register<IInterAppAudioHost>();
             Register<IMidiLearn>();
             Register<IParameterFunctionName>();
             Register<INoteExpressionPhysicalUIMapping>();
+            Register<IPlugInterfaceSupport>();
             Register<IParameterFinder>();
             Register<IPrefetchableSupport>();
             Register<IXmlRepresentationController>();
             Register<ITestPlugProvider>();
             Register<ITestPlugProvider2>();
+            Register<IUnitHandler>();
+            Register<IUnitHandler2>();
             Register<IUnitInfo>();
             Register<IProgramListData>();
             Register<IUnitData>();

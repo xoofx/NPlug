@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 // Based on the XXH3 implementation from https://github.com/Cyan4973/xxHash.
-#if NET7_0
+#if NET7_0_OR_GREATER
 using System.Buffers.Binary;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;

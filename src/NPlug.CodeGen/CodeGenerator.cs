@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -72,6 +73,7 @@ public class CodeGenerator
             "ISizeableStream",
             "IString",
             "IUpdateHandler",
+            "funknown"
         };
         _nameToIID = new Dictionary<string, Uuid>();
         _generatedCSharpElements = new Dictionary<string, CSharpElement>();
@@ -429,10 +431,18 @@ public class CodeGenerator
     {
         if (string.IsNullOrEmpty(cppEnum.Name)) return null;
 
+        if (cppEnum.Name.StartsWith("(unnamed"))
+        {
+            cppEnum.Name = Path.GetFileNameWithoutExtension(cppEnum.SourceFile);
+        }
+
+        if (_typesToExclude.Contains(cppEnum.Name)) return null;
+
         var csEnum = new CSharpEnum(cppEnum.Name)
         {
             CppElement = cppEnum
         };
+        
         bool isSigned = cppEnum.IntegerType.Equals(CppPrimitiveType.Int) ||
                         cppEnum.IntegerType.Equals(CppPrimitiveType.Short) ||
                         cppEnum.IntegerType.Equals(CppPrimitiveType.Char);
@@ -517,6 +527,7 @@ public class CodeGenerator
             case "TUID": return new CSharpFreeType("Guid");
             case "float": return CSharpPrimitiveType.Float();
             case "double": return CSharpPrimitiveType.Double();
+            case "unsigned int": return CSharpPrimitiveType.UInt();
             //case "short": return CSharpPrimitiveType.Short();
             //case "unsigned short": return CSharpPrimitiveType.UShort();
             case "tresult": return new CSharpFreeType("ComResult");
@@ -741,16 +752,7 @@ public class CodeGenerator
                 }
             }
 
-            var comment = cppClass.Comment.ToString();
-            var kind = InterfaceKind.None;
-            if (comment != null)
-            {
-                var isPluginOnly = comment.Contains("[plug imp]");
-                var isHostOnly = comment.Contains("[host imp]");
-                if (isPluginOnly) kind |= InterfaceKind.Plugin;
-                if (isHostOnly) kind |= InterfaceKind.Host;
-            }
-
+            var kind = InterfaceKind.Both;
             csStruct.BaseTypes.Add(new CSharpFreeType("INativeGuid"));
             csStruct.IsComObject = true;
             csStruct.Members.Add(
@@ -762,20 +764,6 @@ public class CodeGenerator
                     GetBodyInlined = "(Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId))"
                 }
             );
-
-            if (_hostOnly.Contains(name))
-            {
-                kind = InterfaceKind.Host;
-            }
-            else if (_pluginOnly.Contains(name))
-            {
-                kind = InterfaceKind.Plugin;
-            }
-
-            if (kind == InterfaceKind.None)
-            {
-                kind = InterfaceKind.Both;
-            }
 
             CSharpMethod? initializeVtbl = null;
             CSharpProperty? vtblCount = null;

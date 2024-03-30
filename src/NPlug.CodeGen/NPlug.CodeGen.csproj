@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
@@ -10,10 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CppAst" Version="0.10.0" />
+    <PackageReference Include="CppAst" Version="0.15.0" />
     <PackageReference Include="CppAst.CodeGen" Version="0.11.3" />
     <!--<PackageReference Include="ClangSharp" Version="15.0.2" />-->
-    <PackageReference Include="Zio" Version="0.16.2" />
+    <PackageReference Include="Zio" Version="0.17.0" />
   </ItemGroup>
 
   <!--<ItemGroup>

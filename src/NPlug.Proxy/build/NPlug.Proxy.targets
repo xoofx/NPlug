@@ -18,6 +18,10 @@
     <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'osx-x64'">MacOS</NPlugVstArch>
     <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'osx-arm64'">MacOS</NPlugVstArch>
 
+    <NPlugIsWindows Condition="'$(NPlugIsWindows)' == '' and $(NPlugRuntimeIdentifier.StartsWith('win'))">true</NPlugIsWindows>
+    <NPlugIsMacOS Condition="'$(NPlugIsMacOS)' == '' and $(NPlugRuntimeIdentifier.StartsWith('osx'))">true</NPlugIsMacOS>
+    <NPlugIsLinux Condition="'$(NPlugIsLinux)' == '' and $(NPlugRuntimeIdentifier.StartsWith('linux'))">true</NPlugIsLinux>
+
     <NPlugVstNativeLibraryExtension Condition="'$(NPlugVstNativeLibraryExtension)' == '' and $(NPlugRuntimeIdentifier.StartsWith('win'))">.vst3</NPlugVstNativeLibraryExtension>
     <NPlugVstNativeLibraryExtension Condition="'$(NPlugVstNativeLibraryExtension)' == '' and $(NPlugRuntimeIdentifier.StartsWith('osx'))">.dylib</NPlugVstNativeLibraryExtension>
     <NPlugVstNativeLibraryExtension Condition="'$(NPlugVstNativeLibraryExtension)' == ''">.so</NPlugVstNativeLibraryExtension>

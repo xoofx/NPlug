@@ -18,4 +18,22 @@ internal static class NPlugFactoryExport
         if (factory == null) return nint.Zero;
         return factory.Export();
     }
+
+    #if NPlugIsMacOS
+    [UnmanagedCallersOnly(EntryPoint = nameof(bundleEntry))]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Exported function required by VST3 API")]
+    // ReSharper disable once InconsistentNaming
+    private static bool bundleEntry(nint bundlePointer)
+    {
+        return true;
+    }
+
+    [UnmanagedCallersOnly(EntryPoint = nameof(bundleExit))]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Exported function required by VST3 API")]
+    // ReSharper disable once InconsistentNaming
+    private static bool bundleExit(nint bundlePointer)
+    {
+        return true;
+    }
+    #endif
 }

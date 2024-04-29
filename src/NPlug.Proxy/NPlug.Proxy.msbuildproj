@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.Build.NoTargets/3.7.0">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <IsPackable Condition="'$(IsPackable)' == ''">false</IsPackable>
     <Version>2.0.1</Version>
   </PropertyGroup>

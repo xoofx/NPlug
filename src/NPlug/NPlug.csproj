@@ -22,6 +22,9 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+
+    <!--Do not warn about lower-cased ascii character names, they are from the VST SDK -->
+    <NoWarn>$(NoWarn);CS8981</NoWarn>
   </PropertyGroup>
 
   <Target Name="OverrideMinVer" AfterTargets="MinVer" Condition="'$(DesignTimeBuild)' != 'true'">

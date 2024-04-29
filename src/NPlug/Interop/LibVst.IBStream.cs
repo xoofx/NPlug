@@ -14,6 +14,7 @@ internal static unsafe partial class LibVst
         /// <summary>
         /// Reads binary data from stream.
         /// </summary>
+        /// <param name="self"></param>
         /// <param name="buffer">: destination buffer</param>
         /// <param name="numBytes">: amount of bytes to be read</param>
         /// <param name="numBytesRead">: result - how many bytes have been read from stream (set to 0 if this is of no interest)</param>
@@ -58,7 +59,7 @@ internal static unsafe partial class LibVst
         }
 
         public IBStream* NativeStream { get; set; }
-        
+
         public override void Flush()
         {
         }

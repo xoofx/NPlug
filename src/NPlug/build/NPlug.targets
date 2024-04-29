@@ -9,6 +9,15 @@
     <NPlugFactoryExport Condition="'$(NPlugFactoryExport)' == ''">true</NPlugFactoryExport>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <NPlugRuntimeIdentifier Condition="'$(NPlugRuntimeIdentifier)' == ''">$(RuntimeIdentifier)</NPlugRuntimeIdentifier>
+    <NPlugRuntimeIdentifier Condition="'$(NPlugRuntimeIdentifier)' == ''">$(NETCoreSdkRuntimeIdentifier)</NPlugRuntimeIdentifier>
+
+    <NPlugIsWindows Condition="'$(NPlugIsWindows)' == '' and $(NPlugRuntimeIdentifier.StartsWith('win'))">true</NPlugIsWindows>
+    <NPlugIsMacOS Condition="'$(NPlugIsMacOS)' == '' and $(NPlugRuntimeIdentifier.StartsWith('osx'))">true</NPlugIsMacOS>
+    <NPlugIsLinux Condition="'$(NPlugIsLinux)' == '' and $(NPlugRuntimeIdentifier.StartsWith('linux'))">true</NPlugIsLinux>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(NPlugFactoryExport)' == 'true'">
     <!--Disable a warning for the usage of `ModuleInitializer` in a library, as we can use it for a plugin that is exported natively-->
     <!-- https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2255 -->
@@ -45,11 +54,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)NPlugFactoryExport.cs">
       <Visible>false</Visible>
     </Compile>
+    <Compile Condition="'$(NPlugIsMacOS)' == 'true'" Include="$(MSBuildThisFileDirectory)NPlugFactoryExportMacOS.cs">
+      <Visible>false</Visible>
+    </Compile>
   </ItemGroup>
 
   <!--If AOT is disabled, we are using the proxy to load the managed DLL-->
   <ItemGroup Condition="'$(PublishAot)' != 'true'">
-    <!--Copy the proxy with the name name than the target library--> 
+    <!--Copy the proxy with the name name than the target library-->
     <Content Condition="Exists('$(NPlugProxyLibraryFile)')" Include="$(NPlugProxyLibraryFile)" Link="$(TargetName).vst3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>false</Visible>

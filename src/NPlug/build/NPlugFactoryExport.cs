@@ -9,7 +9,7 @@ namespace NPlug.Interop;
 /// <summary>
 /// This class is responsible for exporting the current registered factory in <see cref="AudioPluginFactoryExporter.Instance"/>.
 /// </summary>
-internal static class NPlugFactoryExport
+internal static partial class NPlugFactoryExport
 {
     [UnmanagedCallersOnly(EntryPoint = nameof(GetPluginFactory))]
     private static nint GetPluginFactory()

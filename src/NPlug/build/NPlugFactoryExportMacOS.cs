@@ -12,13 +12,13 @@ namespace NPlug.Interop;
 /// </summary>
 internal static partial class NPlugFactoryExport
 {
-    static readonly List<nint> BundleRefs = [];
+    private static readonly List<nint> BundleRefs = [];
 
-    [LibraryImport("/System/Library/Frameworks/CoreFoundation.framework/Versions/Current/Resources/BridgeSupport/CoreFoundation.dylib")]
-    private static partial nint CFRetain(nint theArrayRef);
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/Versions/Current/Resources/BridgeSupport/CoreFoundation.dylib")]
+    private static extern nint CFRetain(nint theArrayRef);
 
-    [LibraryImport("/System/Library/Frameworks/CoreFoundation.framework/Versions/Current/Resources/BridgeSupport/CoreFoundation.dylib")]
-    private static partial void CFRelease(nint theArrayRef);
+    [DllImport("/System/Library/Frameworks/CoreFoundation.framework/Versions/Current/Resources/BridgeSupport/CoreFoundation.dylib")]
+    private static extern void CFRelease(nint theArrayRef);
 
     [UnmanagedCallersOnly(EntryPoint = nameof(bundleEntry))]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Exported function required by VST3 API")]

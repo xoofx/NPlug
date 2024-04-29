@@ -50,7 +50,7 @@ internal static unsafe partial class LibVst
             var pluginClassInfo = Get(self).GetPluginClassInfo(index);
             info->cid = pluginClassInfo.ClassId.ConvertToPlatform();
             info->cardinality = pluginClassInfo.Cardinality;
-            CopyStringToUTF8(AudioEffectCategory, info->category, 32);
+            CopyStringToUTF8(GetPluginCategory(pluginClassInfo), info->category, 32);
             CopyStringToUTF8(pluginClassInfo.Name, info->name, 64);
             return true;
         }

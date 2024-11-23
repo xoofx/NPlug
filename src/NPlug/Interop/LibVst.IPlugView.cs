@@ -84,7 +84,7 @@ internal static unsafe partial class LibVst
             return Get(self).CanResize();
         }
 
-        private static partial ComResult checkSizeConstraint_ToManaged(IPlugView* self, ref ViewRect* rect)
+        private static partial ComResult checkSizeConstraint_ToManaged(IPlugView* self, ViewRect* rect)
         {
             return Get(self).CheckSizeConstraint(ref *(ViewRectangle*)rect);
         }

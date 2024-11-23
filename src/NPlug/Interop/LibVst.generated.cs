@@ -4036,7 +4036,7 @@ internal static partial class LibVst
         /// On live resize this is called to check if the view can be resized to the given rect, if not
         /// adjust the rect to the allowed size.
         /// </summary>
-        private static partial ComResult checkSizeConstraint_ToManaged(IPlugView* self,ref LibVst.ViewRect* rect);
+        private static partial ComResult checkSizeConstraint_ToManaged(IPlugView* self, LibVst.ViewRect* rect);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
         private static int checkSizeConstraint_Wrapper(IPlugView* self, LibVst.ViewRect* rect)
@@ -4046,7 +4046,7 @@ internal static partial class LibVst
                 var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IPlugView), "checkSizeConstraint");
                 try
                 {
-                    return checkSizeConstraint_ToManaged(self, ref rect);
+                    return checkSizeConstraint_ToManaged(self, rect);
                 }
                 catch (Exception ex)
                 {
@@ -4062,7 +4062,7 @@ internal static partial class LibVst
             {
                 try
                 {
-                    return checkSizeConstraint_ToManaged(self, ref rect);
+                    return checkSizeConstraint_ToManaged(self, rect);
                 }
                 catch (Exception ex)
                 {

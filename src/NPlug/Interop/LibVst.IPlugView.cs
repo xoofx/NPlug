@@ -86,7 +86,7 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult checkSizeConstraint_ToManaged(IPlugView* self, ViewRect* rect)
         {
-            return Get(self).CheckSizeConstraint(*(ViewRectangle*)rect);
+            return Get(self).CheckSizeConstraint(ref *(ViewRectangle*)rect);
         }
 
         private static bool TryGetPlatform(FIDString type, out AudioPluginViewPlatform platform)

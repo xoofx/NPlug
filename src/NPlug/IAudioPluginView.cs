@@ -2,10 +2,6 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
-using NPlug.Interop;
-using System.Runtime.InteropServices;
-using static NPlug.Interop.LibVst;
-
 namespace NPlug;
 
 /// <summary>
@@ -67,7 +63,7 @@ public interface IAudioPluginView
     /// Handling of mouse wheel.
     /// </summary>
     void OnWheel(float distance);
-    
+
     /// <summary>
     /// Handling of keyboard events : Key Down.
     /// </summary>
@@ -97,7 +93,7 @@ public interface IAudioPluginView
     /// requests a resize (IPlugFrame::resizeView ()) onSize has to be called afterward.
     /// </summary>
     void OnSize(ViewRectangle newSize);
-    
+
     /// <summary>
     /// Focus changed message.
     /// </summary>
@@ -117,7 +113,7 @@ public interface IAudioPluginView
     /// On live resize this is called to check if the view can be resized to the given rect, if not
     /// adjust the rect to the allowed size.
     /// </summary>
-    bool CheckSizeConstraint(ViewRectangle rect);
+    bool CheckSizeConstraint(ref ViewRectangle rect);
 
     /// <summary>
     /// This interface communicates the content scale factor from the host to the plug-in view on

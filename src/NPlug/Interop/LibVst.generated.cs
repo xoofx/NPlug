@@ -30,7 +30,7 @@ using System.Runtime.InteropServices;
 
 internal static partial class LibVst
 {
-    public const string SdkVersion = "VST 3.7.7";
+    public const string SdkVersion = "VST 3.7.12";
     
     public const string AudioEffectCategory = "Audio Module Class";
     
@@ -4491,6 +4491,31 @@ internal static partial class LibVst
         KEY_F19,
         
         /// <summary>
+        /// multimedia keys
+        /// </summary>
+        KEY_F20,
+        
+        /// <summary>
+        /// multimedia keys
+        /// </summary>
+        KEY_F21,
+        
+        /// <summary>
+        /// multimedia keys
+        /// </summary>
+        KEY_F22,
+        
+        /// <summary>
+        /// multimedia keys
+        /// </summary>
+        KEY_F23,
+        
+        /// <summary>
+        /// multimedia keys
+        /// </summary>
+        KEY_F24,
+        
+        /// <summary>
         /// Win-Key on Windows, Ctrl-Key on macOS
         /// </summary>
         KEY_SUPER,
@@ -4523,7 +4548,7 @@ internal static partial class LibVst
         kCommandKey = 1 << 2,
         
         /// <summary>
-        /// Wndows: win key, macOS: ctrl key
+        /// Windows: win key, macOS: ctrl key
         /// </summary>
         kControlKey = 1 << 3,
     }
@@ -4603,6 +4628,14 @@ internal static partial class LibVst
         kGray = kGray50,
         
         kDkGray = kGray70,
+    }
+    
+    /// <summary>
+    /// A base class which hides the FUnknown::iid static var
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct HideIIDBase
+    {
     }
     
     /// <summary>
@@ -5205,7 +5238,7 @@ internal static partial class LibVst
     /// 				UString128 tmp (string);
     /// 				char ascii[128];
     /// 				tmp.toAscii (ascii, 128);
-    /// 				if (!strncmp (ascii, StateType::kProject, strlen (StateType::kProject)))
+    /// 				if (strncmp (ascii, StateType::kProject, strlen (StateType::kProject)) == 0)
     /// 				{
     /// 					// we are in project loading context...
     /// 				}
@@ -8264,6 +8297,24 @@ internal static partial class LibVst
         
         kSpeakerACN15 = 1UL << 49,
         
+        kSpeakerACN16 = 1UL << 50,
+        
+        kSpeakerACN17 = 1UL << 51,
+        
+        kSpeakerACN18 = 1UL << 52,
+        
+        kSpeakerACN19 = 1UL << 53,
+        
+        kSpeakerACN20 = 1UL << 54,
+        
+        kSpeakerACN21 = 1UL << 55,
+        
+        kSpeakerACN22 = 1UL << 56,
+        
+        kSpeakerACN23 = 1UL << 57,
+        
+        kSpeakerACN24 = 1UL << 58,
+        
         kSpeakerTsl = 1UL << 24,
         
         kSpeakerTsr = 1UL << 25,
@@ -8292,11 +8343,17 @@ internal static partial class LibVst
         
         kSpeakerBrr = 1UL << 37,
         
+        kSpeakerLw = 1UL << 59,
+        
+        kSpeakerRw = 1UL << 60,
+        
         kEmpty = 0,
         
         kMono = kSpeakerM,
         
         kStereo = kSpeakerL | kSpeakerR,
+        
+        kStereoWide = kSpeakerLw | kSpeakerRw,
         
         kStereoSurround = kSpeakerLs | kSpeakerRs,
         
@@ -8318,41 +8375,41 @@ internal static partial class LibVst
         
         k30Cine = kSpeakerL | kSpeakerR | kSpeakerC,
         
-        k31Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe,
+        k31Cine = k30Cine | kSpeakerLfe,
         
         k30Music = kSpeakerL | kSpeakerR | kSpeakerCs,
         
-        k31Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerCs,
+        k31Music = k30Music | kSpeakerLfe,
         
         k40Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerCs,
         
-        k41Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerCs,
+        k41Cine = k40Cine | kSpeakerLfe,
         
         k40Music = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs,
         
-        k41Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs,
+        k41Music = k40Music | kSpeakerLfe,
         
         k50 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs,
         
-        k51 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs,
+        k51 = k50 | kSpeakerLfe,
         
         k60Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerCs,
         
-        k61Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs,
+        k61Cine = k60Cine | kSpeakerLfe,
         
         k60Music = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
         
-        k61Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
+        k61Music = k60Music | kSpeakerLfe,
         
         k70Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc,
         
-        k71Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc,
+        k71Cine = k70Cine | kSpeakerLfe,
         
         k71CineFullFront = k71Cine,
         
         k70Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
         
-        k71Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
+        k71Music = k70Music | kSpeakerLfe,
         
         k71CineFullRear = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLcs | kSpeakerRcs,
         
@@ -8362,25 +8419,33 @@ internal static partial class LibVst
         
         k80Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs,
         
-        k81Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs,
+        k81Cine = k80Cine | kSpeakerLfe,
         
         k80Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerSl | kSpeakerSr,
         
-        k81Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerSl | kSpeakerSr,
+        k81Music = k80Music | kSpeakerLfe,
         
         k90Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr,
         
-        k91Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr,
+        k91Cine = k90Cine | kSpeakerLfe,
         
         k100Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr,
         
-        k101Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr,
+        k101Cine = k100Cine | kSpeakerLfe,
         
         kAmbi1stOrderACN = kSpeakerACN0 | kSpeakerACN1 | kSpeakerACN2 | kSpeakerACN3,
         
         kAmbi2cdOrderACN = kAmbi1stOrderACN | kSpeakerACN4 | kSpeakerACN5 | kSpeakerACN6 | kSpeakerACN7 | kSpeakerACN8,
         
         kAmbi3rdOrderACN = kAmbi2cdOrderACN | kSpeakerACN9 | kSpeakerACN10 | kSpeakerACN11 | kSpeakerACN12 | kSpeakerACN13 | kSpeakerACN14 | kSpeakerACN15,
+        
+        kAmbi4thOrderACN = kAmbi3rdOrderACN | kSpeakerACN16 | kSpeakerACN17 | kSpeakerACN18 | kSpeakerACN19 | kSpeakerACN20 | kSpeakerACN21 | kSpeakerACN22 | kSpeakerACN23 | kSpeakerACN24,
+        
+        kAmbi5thOrderACN = 0x000FFFFFFFFF,
+        
+        kAmbi6thOrderACN = 0x0001FFFFFFFFFFFF,
+        
+        kAmbi7thOrderACN = 0xFFFFFFFFFFFFFFFF,
         
         k80Cube = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
         
@@ -8396,13 +8461,19 @@ internal static partial class LibVst
         
         k50_2 = k70CineFrontHigh,
         
-        k71CineFrontHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr,
+        k71CineFrontHigh = k70CineFrontHigh | kSpeakerLfe,
         
         k71MPEG3D = k71CineFrontHigh,
         
         k51_2 = k71CineFrontHigh,
         
-        k71CineSideHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTsl | kSpeakerTsr,
+        k70CineSideHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTsl | kSpeakerTsr,
+        
+        k50_2_TS = k70CineSideHigh,
+        
+        k71CineSideHigh = k70CineSideHigh | kSpeakerLfe,
+        
+        k51_2_TS = k71CineSideHigh,
         
         k81MPEG3D = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerBfc,
         
@@ -8412,47 +8483,59 @@ internal static partial class LibVst
         
         k50_4 = k90,
         
-        k91 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k91 = k90 | kSpeakerLfe,
         
         k51_4 = k91,
         
-        k50_4_1 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfc,
+        k50_4_1 = k50_4 | kSpeakerBfc,
         
-        k51_4_1 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfc,
+        k51_4_1 = k50_4_1 | kSpeakerLfe,
         
         k70_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTsl | kSpeakerTsr,
         
-        k71_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTsl | kSpeakerTsr,
+        k71_2 = k70_2 | kSpeakerLfe,
         
         k91Atmos = k71_2,
         
-        k70_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrc,
+        k70_2_TF = k70Music | kSpeakerTfl | kSpeakerTfr,
         
-        k72_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrc | kSpeakerLfe2,
+        k71_2_TF = k70_2_TF | kSpeakerLfe,
         
-        k70_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k70_3 = k70_2_TF | kSpeakerTrc,
         
-        k71_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k72_3 = k70_3 | kSpeakerLfe | kSpeakerLfe2,
+        
+        k70_4 = k70_2_TF | kSpeakerTrl | kSpeakerTrr,
+        
+        k71_4 = k70_4 | kSpeakerLfe,
         
         k111MPEG3D = k71_4,
         
         k70_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
         
-        k71_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
+        k71_6 = k70_6 | kSpeakerLfe,
         
         k90_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
         
-        k91_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k91_4 = k90_4 | kSpeakerLfe,
         
         k90_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
         
-        k91_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
+        k91_6 = k90_6 | kSpeakerLfe,
+        
+        k90_4_W = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLw | kSpeakerRw | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k91_4_W = k90_4_W | kSpeakerLfe,
+        
+        k90_6_W = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLw | kSpeakerRw | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
+        
+        k91_6_W = k90_6_W | kSpeakerLfe,
         
         k100 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
         
         k50_5 = k100,
         
-        k101 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k101 = k50_5 | kSpeakerLfe,
         
         k101MPEG3D = k101,
         
@@ -8466,7 +8549,7 @@ internal static partial class LibVst
         
         k50_6 = k110,
         
-        k111 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k111 = k110 | kSpeakerLfe,
         
         k51_6 = k111,
         
@@ -8476,7 +8559,7 @@ internal static partial class LibVst
         
         k130 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
         
-        k131 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k131 = k130 | kSpeakerLfe,
         
         k140 = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr | kSpeakerBrl | kSpeakerBrr,
         
@@ -8492,7 +8575,27 @@ internal static partial class LibVst
         
         k50_5_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
         
-        k51_5_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
+        k51_5_3 = k50_5_3 | kSpeakerLfe,
+        
+        k50_2_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTsl | kSpeakerTsr | kSpeakerBfl | kSpeakerBfr,
+        
+        k50_4_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr,
+        
+        k70_4_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr,
+        
+        k50_5_Sony = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k40_2_2 = kSpeakerC | kSpeakerSl | kSpeakerSr | kSpeakerCs | kSpeakerTsl | kSpeakerTsr | kSpeakerBsl | kSpeakerBsr,
+        
+        k40_4_2 = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr,
+        
+        k50_3_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerBfl | kSpeakerBfr,
+        
+        k30_5_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr,
+        
+        k40_4_4 = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr | kSpeakerBrl | kSpeakerBrr,
+        
+        k50_4_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr | kSpeakerBrl | kSpeakerBrr,
     }
     
     /// <summary>
@@ -10227,6 +10330,749 @@ internal static partial class LibVst
     }
     
     /// <summary>
+    /// Host Data Exchange handler interface: Vst::IDataExchangeHandler
+    /// </summary>
+    /// <remarks>
+    ///  vstHost vst379- [host imp]
+    /// - [context interface]
+    /// - [released: 3.7.9]
+    /// - [optional]The IDataExchangeHandler implements a direct and thread-safe connection from the realtime
+    /// audio context of the audio processor to the non-realtime audio context of the edit controller.
+    /// This should be used when the edit controller needs continuous data from the audio process for
+    /// visualization or other use-cases. To circumvent the bottleneck on the main thread it is possible
+    /// to configure the connection in a way that the calls to the edit controller will happen on a
+    /// background thread.Opening a queue:
+    /// The main operation for a plug-in is to open a queue via the handler before the plug-in is activated
+    /// (but it must be connected to the edit controller via the IConnectionPoint when the plug-in is using
+    /// the recommended separation of edit controller and audio processor). The best place to do this is in
+    /// the IAudioProcessor::setupProcessing method as this is also the place where the plug-in knows the
+    /// sample rate and maximum block size which the plug-in may need to calculate the queue block size.
+    /// When a queue is opened the edit controller gets a notification about it and the controller can
+    /// decide if it wishes to receive the data on the main thread or the background thread.Sending data:
+    /// In the IAudioProcessor::process call the plug-in can now lock a block from the handler, fill it and
+    /// when done free the block via the handler which then sends the block to the edit controller. The edit
+    /// controller then receives the block either on the main thread or on a background thread depending on
+    /// the setup of the queue.
+    /// The host guarantees that all blocks are send before the plug-in is deactivated.Closing a queue:
+    /// The audio processor must close an opened queue and this has to be done after the processor was
+    /// deactivated and before it is disconnected from the edit controller (see IConnectionPoint).What to do when the queue is full and no block can be locked?
+    /// The plug-in needs to be prepared for this situation as constraints in the overall system may cause
+    /// the queue to get full. If you need to get this information to the controller you can declare a
+    /// hidden parameter which you set to a special value and send this parameter change in your audio
+    /// process method.
+    /// </remarks>
+    public unsafe partial struct IDataExchangeHandler : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 7;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IDataExchangeHandler*, LibVst.IAudioProcessor*, uint, uint, uint, uint, LibVst.DataExchangeQueueID*, int>)&openQueue_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IDataExchangeHandler*, uint, int>)&closeQueue_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IDataExchangeHandler*, uint, LibVst.DataExchangeBlock*, int>)&lockBlock_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IDataExchangeHandler*, uint, uint, byte, int>)&freeBlock_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IDataExchangeHandler, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IDataExchangeHandler, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IDataExchangeHandler, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// open a new queue
+        /// </summary>
+        /// <param name="processor">the processor who wants to open the queue</param>
+        /// <param name="blockSize">size of one block</param>
+        /// <param name="numBlocks">number of blocks in the queue</param>
+        /// <param name="alignment">data alignment, if zero will use the platform default alignment if any</param>
+        /// <param name="userContextID">an identifier internal to the processor</param>
+        /// <param name="outID">on return the ID of the queue</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// only allowed to be called from the main thread when the component is not active but
+        /// initialized and connected (see IConnectionPoint)
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult openQueue(LibVst.IAudioProcessor* processor, uint blockSize, uint numBlocks, uint alignment, LibVst.DataExchangeUserContextID userContextID, LibVst.DataExchangeQueueID* outID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeHandler), "openQueue");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.IAudioProcessor*, uint, uint, uint, LibVst.DataExchangeUserContextID, LibVst.DataExchangeQueueID*, int>)Vtbl[3])(__self__, processor, blockSize, numBlocks, alignment, userContextID, outID);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.IAudioProcessor*, uint, uint, uint, LibVst.DataExchangeUserContextID, LibVst.DataExchangeQueueID*, int>)Vtbl[3])((LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this), processor, blockSize, numBlocks, alignment, userContextID, outID);
+            }
+        }
+        
+        /// <summary>
+        /// close a queue
+        /// </summary>
+        /// <param name="queueID">the ID of the queue to close</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// closes and frees all memory of a previously opened queue
+        /// if there are locked blocks in the queue, they are freed and made invalidonly allowed to be called from the main thread when the component is not active but
+        /// initialized and connected
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult closeQueue(LibVst.DataExchangeQueueID queueID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeHandler), "closeQueue");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, int>)Vtbl[4])(__self__, queueID);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, int>)Vtbl[4])((LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this), queueID);
+            }
+        }
+        
+        /// <summary>
+        /// lock a block if available
+        /// </summary>
+        /// <param name="queueID">the ID of the queue</param>
+        /// <param name="block">on return will contain the data pointer and size of the block</param>
+        /// <returns>kResultTrue if a free block was found and kOutOfMemory if all blocks are locked</returns>
+        /// <remarks>
+        /// only allowed to be called from within the IAudioProcessor::process call
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult lockBlock(LibVst.DataExchangeQueueID queueId, LibVst.DataExchangeBlock* block)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeHandler), "lockBlock");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, LibVst.DataExchangeBlock*, int>)Vtbl[5])(__self__, queueId, block);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, LibVst.DataExchangeBlock*, int>)Vtbl[5])((LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this), queueId, block);
+            }
+        }
+        
+        /// <summary>
+        /// free a previously locked block
+        /// </summary>
+        /// <param name="queueID">the ID of the queue</param>
+        /// <param name="blockID">the ID of the block</param>
+        /// <param name="sendToController">if true the block data will be send to the IEditController otherwise
+        /// it will be discarded</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// only allowed to be called from within the IAudioProcessor::process call
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult freeBlock(LibVst.DataExchangeQueueID queueId, LibVst.DataExchangeBlockID blockID, byte sendToController)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeHandler), "freeBlock");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, LibVst.DataExchangeBlockID, byte, int>)Vtbl[6])(__self__, queueId, blockID, sendToController);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, LibVst.DataExchangeBlockID, byte, int>)Vtbl[6])((LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this), queueId, blockID, sendToController);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// open a new queue
+        /// </summary>
+        /// <param name="processor">the processor who wants to open the queue</param>
+        /// <param name="blockSize">size of one block</param>
+        /// <param name="numBlocks">number of blocks in the queue</param>
+        /// <param name="alignment">data alignment, if zero will use the platform default alignment if any</param>
+        /// <param name="userContextID">an identifier internal to the processor</param>
+        /// <param name="outID">on return the ID of the queue</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// only allowed to be called from the main thread when the component is not active but
+        /// initialized and connected (see IConnectionPoint)
+        /// </remarks>
+        private static partial ComResult openQueue_ToManaged(IDataExchangeHandler* self, LibVst.IAudioProcessor* processor, uint blockSize, uint numBlocks, uint alignment, LibVst.DataExchangeUserContextID userContextID, LibVst.DataExchangeQueueID* outID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int openQueue_Wrapper(IDataExchangeHandler* self, LibVst.IAudioProcessor* processor, uint blockSize, uint numBlocks, uint alignment, uint userContextID, LibVst.DataExchangeQueueID* outID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeHandler), "openQueue");
+                try
+                {
+                    return openQueue_ToManaged(self, processor, blockSize, numBlocks, alignment, userContextID, outID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return openQueue_ToManaged(self, processor, blockSize, numBlocks, alignment, userContextID, outID);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// close a queue
+        /// </summary>
+        /// <param name="queueID">the ID of the queue to close</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// closes and frees all memory of a previously opened queue
+        /// if there are locked blocks in the queue, they are freed and made invalidonly allowed to be called from the main thread when the component is not active but
+        /// initialized and connected
+        /// </remarks>
+        private static partial ComResult closeQueue_ToManaged(IDataExchangeHandler* self, LibVst.DataExchangeQueueID queueID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int closeQueue_Wrapper(IDataExchangeHandler* self, uint queueID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeHandler), "closeQueue");
+                try
+                {
+                    return closeQueue_ToManaged(self, queueID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return closeQueue_ToManaged(self, queueID);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// lock a block if available
+        /// </summary>
+        /// <param name="queueID">the ID of the queue</param>
+        /// <param name="block">on return will contain the data pointer and size of the block</param>
+        /// <returns>kResultTrue if a free block was found and kOutOfMemory if all blocks are locked</returns>
+        /// <remarks>
+        /// only allowed to be called from within the IAudioProcessor::process call
+        /// </remarks>
+        private static partial ComResult lockBlock_ToManaged(IDataExchangeHandler* self, LibVst.DataExchangeQueueID queueId, LibVst.DataExchangeBlock* block);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int lockBlock_Wrapper(IDataExchangeHandler* self, uint queueId, LibVst.DataExchangeBlock* block)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeHandler), "lockBlock");
+                try
+                {
+                    return lockBlock_ToManaged(self, queueId, block);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return lockBlock_ToManaged(self, queueId, block);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// free a previously locked block
+        /// </summary>
+        /// <param name="queueID">the ID of the queue</param>
+        /// <param name="blockID">the ID of the block</param>
+        /// <param name="sendToController">if true the block data will be send to the IEditController otherwise
+        /// it will be discarded</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// only allowed to be called from within the IAudioProcessor::process call
+        /// </remarks>
+        private static partial ComResult freeBlock_ToManaged(IDataExchangeHandler* self, LibVst.DataExchangeQueueID queueId, LibVst.DataExchangeBlockID blockID, byte sendToController);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int freeBlock_Wrapper(IDataExchangeHandler* self, uint queueId, uint blockID, byte sendToController)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeHandler), "freeBlock");
+                try
+                {
+                    return freeBlock_ToManaged(self, queueId, blockID, sendToController);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return freeBlock_ToManaged(self, queueId, blockID, sendToController);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IDataExchangeHandler, 0x36D551BD, 0x6FF54F08, 0xB48E830D, 0x8BD5A03B)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xbd, 0x51, 0xd5, 0x36, 0xf5, 0x6f, 0x08, 0x4f, 0xb4, 0x8e, 0x83, 0x0d, 0x8b, 0xd5, 0xa0, 0x3b })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x36, 0xd5, 0x51, 0xbd, 0x6f, 0xf5, 0x4f, 0x08, 0xb4, 0x8e, 0x83, 0x0d, 0x8b, 0xd5, 0xa0, 0x3b })
+                    )));
+            }
+        }
+    }
+    
+    public partial record struct DataExchangeUserContextID(uint Value)
+    {
+        public static implicit operator uint(DataExchangeUserContextID value) => value.Value;
+        
+        public static implicit operator DataExchangeUserContextID(uint value) => new(value);
+    }
+    
+    public partial record struct DataExchangeQueueID(uint Value)
+    {
+        public static implicit operator uint(DataExchangeQueueID value) => value.Value;
+        
+        public static implicit operator DataExchangeQueueID(uint value) => new(value);
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct DataExchangeBlock
+    {
+        /// <summary>
+        /// pointer to the memory buffer
+        /// </summary>
+        public void* data;
+        
+        /// <summary>
+        /// size of the memory buffer
+        /// </summary>
+        public uint size;
+        
+        /// <summary>
+        /// block identifier
+        /// </summary>
+        public LibVst.DataExchangeBlockID blockID;
+    }
+    
+    public partial record struct DataExchangeBlockID(uint Value)
+    {
+        public static implicit operator uint(DataExchangeBlockID value) => value.Value;
+        
+        public static implicit operator DataExchangeBlockID(uint value) => new(value);
+    }
+    
+    /// <summary>
+    /// Data Exchange Receiver interface: Vst::IDataExchangeReceiver
+    /// </summary>
+    /// <remarks>
+    ///  vstPlug vst379- [plug imp]
+    /// - [released: 3.7.9
+    /// - [optional]The receiver interface is required to receive data from the realtime audio process via the
+    /// IDataExchangeHandler.
+    /// </remarks>
+    /// <seealso cref="IDataExchangeHandler"/>
+    public unsafe partial struct IDataExchangeReceiver : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 6;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IDataExchangeReceiver*, uint, uint, byte*, void>)&queueOpened_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IDataExchangeReceiver*, uint, void>)&queueClosed_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IDataExchangeReceiver*, uint, uint, LibVst.DataExchangeBlock*, byte, void>)&onDataExchangeBlocksReceived_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IDataExchangeReceiver, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IDataExchangeReceiver, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IDataExchangeReceiver, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// queue opened notification
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <param name="blockSize">the size of one block of the queue</param>
+        /// <param name="dispatchedOnBackgroundThread">if true on output the blocks are dispatched on a
+        /// background thread [defaults to false in which case the
+        /// blocks are dispatched on the main thread]</param>
+        /// <remarks>
+        /// called on the main thread when the processor has opened a queue
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void queueOpened(LibVst.DataExchangeUserContextID userContextID, uint blockSize, byte* dispatchOnBackgroundThread)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeReceiver), "queueOpened");
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, uint, byte*, void>)Vtbl[3])(__self__, userContextID, blockSize, dispatchOnBackgroundThread);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, uint, byte*, void>)Vtbl[3])((LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this), userContextID, blockSize, dispatchOnBackgroundThread);
+            }
+        }
+        
+        /// <summary>
+        /// queue closed notification
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <remarks>
+        /// called on the main thread when the processor has closed a queue
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void queueClosed(LibVst.DataExchangeUserContextID userContextID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeReceiver), "queueClosed");
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, void>)Vtbl[4])(__self__, userContextID);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, void>)Vtbl[4])((LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this), userContextID);
+            }
+        }
+        
+        /// <summary>
+        /// one or more blocks were received
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <param name="numBlocks">number of blocks</param>
+        /// <param name="blocks">the blocks</param>
+        /// <param name="onBackgroundThread">true if the call is done on a background thread</param>
+        /// <remarks>
+        /// called either on the main thread or a background thread depending on the
+        /// dispatchOnBackgroundThread value in the queueOpened call.the data of the blocks are only valid inside this call and the blocks only become available
+        /// to the queue afterwards.
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void onDataExchangeBlocksReceived(LibVst.DataExchangeUserContextID userContextID, uint numBlocks, LibVst.DataExchangeBlock* blocks, byte onBackgroundThread)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeReceiver), "onDataExchangeBlocksReceived");
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, uint, LibVst.DataExchangeBlock*, byte, void>)Vtbl[5])(__self__, userContextID, numBlocks, blocks, onBackgroundThread);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, uint, LibVst.DataExchangeBlock*, byte, void>)Vtbl[5])((LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this), userContextID, numBlocks, blocks, onBackgroundThread);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// queue opened notification
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <param name="blockSize">the size of one block of the queue</param>
+        /// <param name="dispatchedOnBackgroundThread">if true on output the blocks are dispatched on a
+        /// background thread [defaults to false in which case the
+        /// blocks are dispatched on the main thread]</param>
+        /// <remarks>
+        /// called on the main thread when the processor has opened a queue
+        /// </remarks>
+        private static partial void queueOpened_ToManaged(IDataExchangeReceiver* self, LibVst.DataExchangeUserContextID userContextID, uint blockSize, byte* dispatchOnBackgroundThread);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void queueOpened_Wrapper(IDataExchangeReceiver* self, uint userContextID, uint blockSize, byte* dispatchOnBackgroundThread)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeReceiver), "queueOpened");
+                try
+                {
+                    queueOpened_ToManaged(self, userContextID, blockSize, dispatchOnBackgroundThread);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    queueOpened_ToManaged(self, userContextID, blockSize, dispatchOnBackgroundThread);
+                }
+                catch
+                {
+                }
+            }
+        }
+        
+        /// <summary>
+        /// queue closed notification
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <remarks>
+        /// called on the main thread when the processor has closed a queue
+        /// </remarks>
+        private static partial void queueClosed_ToManaged(IDataExchangeReceiver* self, LibVst.DataExchangeUserContextID userContextID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void queueClosed_Wrapper(IDataExchangeReceiver* self, uint userContextID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeReceiver), "queueClosed");
+                try
+                {
+                    queueClosed_ToManaged(self, userContextID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    queueClosed_ToManaged(self, userContextID);
+                }
+                catch
+                {
+                }
+            }
+        }
+        
+        /// <summary>
+        /// one or more blocks were received
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <param name="numBlocks">number of blocks</param>
+        /// <param name="blocks">the blocks</param>
+        /// <param name="onBackgroundThread">true if the call is done on a background thread</param>
+        /// <remarks>
+        /// called either on the main thread or a background thread depending on the
+        /// dispatchOnBackgroundThread value in the queueOpened call.the data of the blocks are only valid inside this call and the blocks only become available
+        /// to the queue afterwards.
+        /// </remarks>
+        private static partial void onDataExchangeBlocksReceived_ToManaged(IDataExchangeReceiver* self, LibVst.DataExchangeUserContextID userContextID, uint numBlocks, LibVst.DataExchangeBlock* blocks, byte onBackgroundThread);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void onDataExchangeBlocksReceived_Wrapper(IDataExchangeReceiver* self, uint userContextID, uint numBlocks, LibVst.DataExchangeBlock* blocks, byte onBackgroundThread)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeReceiver), "onDataExchangeBlocksReceived");
+                try
+                {
+                    onDataExchangeBlocksReceived_ToManaged(self, userContextID, numBlocks, blocks, onBackgroundThread);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    onDataExchangeBlocksReceived_ToManaged(self, userContextID, numBlocks, blocks, onBackgroundThread);
+                }
+                catch
+                {
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IDataExchangeReceiver, 0x45A759DC, 0x84FA4907, 0xABCB6175, 0x2FC786B6)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xdc, 0x59, 0xa7, 0x45, 0xfa, 0x84, 0x07, 0x49, 0xab, 0xcb, 0x61, 0x75, 0x2f, 0xc7, 0x86, 0xb6 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x45, 0xa7, 0x59, 0xdc, 0x84, 0xfa, 0x49, 0x07, 0xab, 0xcb, 0x61, 0x75, 0x2f, 0xc7, 0x86, 0xb6 })
+                    )));
+            }
+        }
+    }
+    
+    /// <summary>
     /// Host callback interface for an edit controller: Vst::IComponentHandler
     /// </summary>
     /// <remarks>
@@ -10565,8 +11411,9 @@ internal static partial class LibVst
     /// - [released: 3.1.0]
     /// - [optional]One part handles:
     /// - Setting dirty state of the plug-in
-    /// - Requesting the host to open the editorThe other part handles parameter group editing from the plug-in UI. It wraps a set of @ref IComponentHandler::beginEdit /@ref Steinberg::Vst::IComponentHandler::performEdit / @ref Steinberg::Vst::IComponentHandler::endEdit functions (see @ref IComponentHandler)which should use the same timestamp in the host when writing automation.
-    /// This allows for better synchronizing of multiple parameter changes at once. IComponentHandler2Example Examples of different use cases@code {.cpp}
+    /// - Requesting the host to open the editorThe other part handles parameter group editing from the plug-in UI. It wraps a set of @ref IComponentHandler::beginEdit / @ref Steinberg::Vst::IComponentHandler::performEdit / @ref Steinberg::Vst::IComponentHandler::endEdit functions (see @ref IComponentHandler) which should use
+    /// the same timestamp in the host when writing automation. This allows for better synchronizing of
+    /// multiple parameter changes at once. IComponentHandler2Example Examples of different use cases@code {.cpp}
     /// //--------------------------------------
     /// // we are in the editcontroller...
     /// // in case of multiple switch buttons (with associated ParamID 1 and 3)
@@ -10663,8 +11510,8 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Tells host that the plug-in is dirty (something besides parameters has changed since last save),
-        /// if true the host should apply a save before quitting.
+        /// Tells host that the plug-in is dirty (something besides parameters has changed since last
+        /// save), if true the host should apply a save before quitting.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setDirty(byte state)
@@ -10685,8 +11532,9 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Tells host that it should open the plug-in editor the next time it's possible.
-        /// You should use this instead of showing an alert and blocking the program flow (especially on loading projects).
+        /// Tells host that it should open the plug-in editor the next time it's possible. You should
+        /// use this instead of showing an alert and blocking the program flow (especially on loading
+        /// projects).
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult requestOpenEditor(LibVst.FIDString name)
@@ -10707,7 +11555,8 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Starts the group editing (call before a @ref IComponentHandler::beginEdit), the host will keep the current timestamp at this call and will use it for all @ref IComponentHandler::beginEdit / @ref IComponentHandler::performEdit / @ref IComponentHandler::endEdit calls until a @ref finishGroupEdit ().
+        /// Starts the group editing (call before a @ref IComponentHandler::beginEdit), the host will keep the current timestamp at this call and will use it for all
+        /// @ref IComponentHandler::beginEdit, @ref IComponentHandler::performEdit, @ref IComponentHandler::endEdit calls until a @ref finishGroupEdit ().
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult startGroupEdit()
@@ -10752,8 +11601,8 @@ internal static partial class LibVst
         // CCW methods
         // --------------------------------------------------------------
         /// <summary>
-        /// Tells host that the plug-in is dirty (something besides parameters has changed since last save),
-        /// if true the host should apply a save before quitting.
+        /// Tells host that the plug-in is dirty (something besides parameters has changed since last
+        /// save), if true the host should apply a save before quitting.
         /// </summary>
         private static partial ComResult setDirty_ToManaged(IComponentHandler2* self, byte state);
         
@@ -10791,8 +11640,9 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Tells host that it should open the plug-in editor the next time it's possible.
-        /// You should use this instead of showing an alert and blocking the program flow (especially on loading projects).
+        /// Tells host that it should open the plug-in editor the next time it's possible. You should
+        /// use this instead of showing an alert and blocking the program flow (especially on loading
+        /// projects).
         /// </summary>
         private static partial ComResult requestOpenEditor_ToManaged(IComponentHandler2* self, LibVst.FIDString name);
         
@@ -10830,7 +11680,8 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Starts the group editing (call before a @ref IComponentHandler::beginEdit), the host will keep the current timestamp at this call and will use it for all @ref IComponentHandler::beginEdit / @ref IComponentHandler::performEdit / @ref IComponentHandler::endEdit calls until a @ref finishGroupEdit ().
+        /// Starts the group editing (call before a @ref IComponentHandler::beginEdit), the host will keep the current timestamp at this call and will use it for all
+        /// @ref IComponentHandler::beginEdit, @ref IComponentHandler::performEdit, @ref IComponentHandler::endEdit calls until a @ref finishGroupEdit ().
         /// </summary>
         private static partial ComResult startGroupEdit_ToManaged(IComponentHandler2* self);
         
@@ -11083,28 +11934,29 @@ internal static partial class LibVst
     /// - [optional]Allows the plug-in to request the host to create a progress for some specific tasks which take
     /// some time. The host can visualize the progress as read-only UI elements. For example,
     /// after loading a project where a plug-in needs to load extra
-    /// data (e.g. samples) in a background thread, this enables the host to get and visualize the current status of the loading
-    /// progress and to inform the user when the loading is finished.
-    /// Note: During the progress, the host can unload the plug-in at any time. Make sure that the plug-in 
-    /// supports this use case. IProgressExample Example@code {.cpp}
+    /// data (e.g. samples) in a background thread, this enables the host to get and visualize the current
+    /// status of the loading progress and to inform the user when the loading is finished. Note: During the
+    /// progress, the host can unload the plug-in at any time. Make sure that the plug-in supports this use
+    /// case. IProgressExample Example@code {.cpp}
     /// //--------------------------------------
     /// // we are in the editcontroller:
     /// // as member: IProgress::ID mProgressID;
     /// 
     /// FUnknownPtr&lt;IProgress&gt; progress (componentHandler);
     /// if (progress)
-    /// 	progress-&gt;start (IProgress::ProgressType::UIBackgroundTask, STR ("Load Samples..."), mProgressID);
+    ///     progress-&gt;start (IProgress::ProgressType::UIBackgroundTask, STR ("Load Samples..."),
+    /// 					 mProgressID);
     /// 
     /// // ...
     /// myProgressValue += incProgressStep;
     /// FUnknownPtr&lt;IProgress&gt; progress (componentHandler);
     /// if (progress)
-    /// 	progress-&gt;update (mProgressID, myProgressValue);
+    ///     progress-&gt;update (mProgressID, myProgressValue);
     /// 
     /// // ...
     /// FUnknownPtr&lt;IProgress&gt; progress (componentHandler);
     /// if (progress)
-    /// 	progress-&gt;finish (mProgressID);
+    ///     progress-&gt;finish (mProgressID);
     /// @endcode
     /// </remarks>
     /// <seealso cref="IComponentHandler"/>
@@ -11391,7 +12243,8 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstIPlug vst300- [plug imp]
     /// - [released: 3.0.0]
-    /// - [mandatory]The controller part of an effect or instrument with parameter handling (export, definition, conversion...).
+    /// - [mandatory]The controller part of an effect or instrument with parameter handling (export, definition,
+    /// conversion, ...).
     /// </remarks>
     /// <seealso cref="IMidiMappingIComponent::getControllerClassId,"/>
     public unsafe partial struct IEditController : INativeGuid, INativeUnknown, INativeVtbl
@@ -11654,7 +12507,7 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Returns for a given paramID and a plain value its normalized value. (see @ref vst3AutomationIntro)
+        /// Returns for a given paramID and a plain value its normalized value. (see @ref vst3AutomationIntro).
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double plainParamToNormalized(LibVst.ParamID id, LibVst.ParamValue plainValue)
@@ -11694,9 +12547,9 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Sets the normalized value to the parameter associated to the paramID. The controller must never
-        /// pass this value-change back to the host via the IComponentHandler. It should update the according
-        /// GUI element(s) only!
+        /// Sets the normalized value to the parameter associated to the paramID. The controller must
+        /// never pass this value-change back to the host via the IComponentHandler.
+        /// It should update the according GUI element(s) only!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setParamNormalized(LibVst.ParamID id, LibVst.ParamValue value)
@@ -11741,7 +12594,8 @@ internal static partial class LibVst
         
         /// <summary>
         /// view -------------------------------
-        /// Creates the editor view of the plug-in, currently only "editor" is supported, see @ref ViewType. The life time of the editor view will never exceed the life time of this controller instance.
+        /// Creates the editor view of the plug-in, currently only "editor" is supported, see @ref ViewType. The life time of the editor view will never exceed the life time of this controller
+        /// instance.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IPlugView* createView(LibVst.FIDString name)
@@ -12070,7 +12924,7 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Returns for a given paramID and a plain value its normalized value. (see @ref vst3AutomationIntro)
+        /// Returns for a given paramID and a plain value its normalized value. (see @ref vst3AutomationIntro).
         /// </summary>
         private static partial LibVst.ParamValue plainParamToNormalized_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue plainValue);
         
@@ -12146,9 +13000,9 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Sets the normalized value to the parameter associated to the paramID. The controller must never
-        /// pass this value-change back to the host via the IComponentHandler. It should update the according
-        /// GUI element(s) only!
+        /// Sets the normalized value to the parameter associated to the paramID. The controller must
+        /// never pass this value-change back to the host via the IComponentHandler.
+        /// It should update the according GUI element(s) only!
         /// </summary>
         private static partial ComResult setParamNormalized_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue value);
         
@@ -12227,7 +13081,8 @@ internal static partial class LibVst
         
         /// <summary>
         /// view -------------------------------
-        /// Creates the editor view of the plug-in, currently only "editor" is supported, see @ref ViewType. The life time of the editor view will never exceed the life time of this controller instance.
+        /// Creates the editor view of the plug-in, currently only "editor" is supported, see @ref ViewType. The life time of the editor view will never exceed the life time of this controller
+        /// instance.
         /// </summary>
         private static partial LibVst.IPlugView* createView_ToManaged(IEditController* self, LibVst.FIDString name);
         
@@ -12309,13 +13164,12 @@ internal static partial class LibVst
         public LibVst.String128 units;
         
         /// <summary>
-        /// number of discrete steps (0: continuous, 1: toggle, discrete value otherwise 
-        /// (corresponding to max - min, for example: 127 for a min = 0 and a max = 127) - see @ref vst3ParameterIntro)
+        /// number of discrete steps (0: continuous, 1: toggle, discrete value
         /// </summary>
         public int stepCount;
         
         /// <summary>
-        /// default normalized value [0,1] (in case of discrete value: defaultNormalizedValue = defDiscreteValue / stepCount)
+        /// default normalized value [0,1]
         /// </summary>
         public LibVst.ParamValue defaultNormalizedValue;
         
@@ -12329,48 +13183,55 @@ internal static partial class LibVst
         /// </summary>
         public int flags;
         
-        public enum ParameterFlags
+        public enum ParameterFlags : int
         {
             /// <summary>
-            /// no flags wanted
+            /// No flags wanted.
+            /// [SDK 3.0.0]
             /// </summary>
             kNoFlags = 0,
             
             /// <summary>
-            /// parameter can be automated
+            /// Parameter can be automated.
+            /// [SDK 3.0.0]
             /// </summary>
             kCanAutomate = 1 << 0,
             
             /// <summary>
-            /// parameter cannot be changed from outside the plug-in (implies that kCanAutomate is NOT set)
+            /// Parameter cannot be changed from outside the plug-in
+            /// (implies that kCanAutomate is NOT set).
+            /// [SDK 3.0.0]
             /// </summary>
             kIsReadOnly = 1 << 1,
             
             /// <summary>
-            /// attempts to set the parameter value out of the limits will result in a wrap around [SDK 3.0.2]
+            /// Attempts to set the parameter value out of the limits will result in a wrap around.
+            /// [SDK 3.0.2]
             /// </summary>
             kIsWrapAround = 1 << 2,
             
             /// <summary>
-            /// parameter should be displayed as list in generic editor or automation editing [SDK 3.1.0]
+            /// Parameter should be displayed as list in generic editor or automation editing.
+            /// [SDK 3.1.0]
             /// </summary>
             kIsList = 1 << 3,
             
             /// <summary>
-            /// parameter should be NOT displayed and cannot be changed from outside the plug-in 
-            /// (implies that kCanAutomate is NOT set and kIsReadOnly is set) [SDK 3.7.0]
+            /// Parameter should be NOT displayed and cannot be changed from outside the plug-in.
+            /// It implies that kCanAutomate is NOT set and kIsReadOnly is set.
+            /// [SDK 3.7.0]
             /// </summary>
             kIsHidden = 1 << 4,
             
             /// <summary>
-            /// parameter is a program change (unitId gives info about associated unit 
-            /// - see @ref vst3ProgramLists)
+            /// Parameter is a program change (unitId gives info about associated unit - see @ref vst3ProgramLists). [SDK 3.0.0]
             /// </summary>
             kIsProgramChange = 1 << 15,
             
             /// <summary>
-            /// special bypass parameter (only one allowed): plug-in can handle bypass
-            /// (highly recommended to export a bypass parameter for effect plug-in)
+            /// Special bypass parameter (only one allowed): plug-in can handle bypass.
+            /// Highly recommended to export a bypass parameter for effect plug-in.
+            /// [SDK 3.0.0]
             /// </summary>
             kIsBypass = 1 << 16,
         }
@@ -12473,8 +13334,8 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Host could ask to open the plug-in help (could be: opening a PDF document or link to a web page).
-        /// The host could call it with onlyCheck set to true for testing support of open Help. 
+        /// Host could ask to open the plug-in help (could be: opening a PDF document or link to a web
+        /// page). The host could call it with onlyCheck set to true for testing support of open Help.
         /// Return kResultFalse means not supported function.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -12497,7 +13358,7 @@ internal static partial class LibVst
         
         /// <summary>
         /// Host could ask to open the plug-in about box.
-        /// The host could call it with onlyCheck set to true for testing support of open AboutBox. 
+        /// The host could call it with onlyCheck set to true for testing support of open AboutBox.
         /// Return kResultFalse means not supported function.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -12561,8 +13422,8 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Host could ask to open the plug-in help (could be: opening a PDF document or link to a web page).
-        /// The host could call it with onlyCheck set to true for testing support of open Help. 
+        /// Host could ask to open the plug-in help (could be: opening a PDF document or link to a web
+        /// page). The host could call it with onlyCheck set to true for testing support of open Help.
         /// Return kResultFalse means not supported function.
         /// </summary>
         private static partial ComResult openHelp_ToManaged(IEditController2* self, byte onlyCheck);
@@ -12602,7 +13463,7 @@ internal static partial class LibVst
         
         /// <summary>
         /// Host could ask to open the plug-in about box.
-        /// The host could call it with onlyCheck set to true for testing support of open AboutBox. 
+        /// The host could call it with onlyCheck set to true for testing support of open AboutBox.
         /// Return kResultFalse means not supported function.
         /// </summary>
         private static partial ComResult openAboutBox_ToManaged(IEditController2* self, byte onlyCheck);
@@ -12673,38 +13534,44 @@ internal static partial class LibVst
     /// - [optional]MIDI controllers are not transmitted directly to a VST component. MIDI as hardware protocol has
     /// restrictions that can be avoided in software. Controller data in particular come along with unclear
     /// and often ignored semantics. On top of this they can interfere with regular parameter automation and
-    /// the host is unaware of what happens in the plug-in when passing MIDI controllers directly.So any functionality that is to be controlled by MIDI controllers must be exported as regular parameter.
-    /// The host will transform incoming MIDI controller data using this interface and transmit them as regular
-    /// parameter change. This allows the host to automate them in the same way as other parameters.
-    /// CtrlNumber can be a typical MIDI controller value extended to some others values like pitchbend or
-    /// aftertouch (see @ref ControllerNumbers).If the mapping has changed, the plug-in must call IComponentHandler::restartComponent (kMidiCCAssignmentChanged)
-    /// to inform the host about this change. IMidiMappingExample Example@code {.cpp}
+    /// the host is unaware of what happens in the plug-in when passing MIDI controllers directly.So any functionality that is to be controlled by MIDI controllers must be exported as regular
+    /// parameter. The host will transform incoming MIDI controller data using this interface and transmit
+    /// them as regular parameter change. This allows the host to automate them in the same way as other
+    /// parameters. CtrlNumber can be a typical MIDI controller value extended to some others values like
+    /// pitchbend or aftertouch (see @ref ControllerNumbers). If the mapping has changed, the plug-in must
+    /// call IComponentHandler::restartComponent (kMidiCCAssignmentChanged) to inform the host about this
+    /// change. IMidiMappingExample Example@code {.cpp}
     /// //--------------------------------------
     /// // in myeditcontroller.h
     /// class MyEditController: public EditControllerEx1, public IMidiMapping
     /// {
-    /// 	//...
-    /// 	//---IMidiMapping---------------------------
-    /// 	tresult PLUGIN_API getMidiControllerAssignment (int32 busIndex, int16 channel, CtrlNumber midiControllerNumber, ParamID&amp; id) SMTG_OVERRIDE;
-    /// 	//---Interface---------
-    /// 	OBJ_METHODS (MyEditController, EditControllerEx1)
-    /// 	DEFINE_INTERFACES
-    /// 		DEF_INTERFACE (IMidiMapping)
-    /// 	END_DEFINE_INTERFACES (MyEditController)
-    /// 	REFCOUNT_METHODS (MyEditController)
+    ///     //...
+    ///     //---IMidiMapping---------------------------
+    ///     tresult PLUGIN_API getMidiControllerAssignment (int32 busIndex, int16 channel,
+    /// 													CtrlNumber midiControllerNumber,
+    /// 													ParamID&amp; id) override;
+    ///     //---Interface---------
+    ///     OBJ_METHODS (MyEditController, EditControllerEx1)
+    ///     DEFINE_INTERFACES
+    ///         DEF_INTERFACE (IMidiMapping)
+    ///     END_DEFINE_INTERFACES (MyEditController)
+    ///     REFCOUNT_METHODS (MyEditController)
     /// };
     /// 
     /// //--------------------------------------
     /// // in myeditcontroller.cpp
-    /// tresult PLUGIN_API MyEditController::getMidiControllerAssignment (int32 busIndex, int16 midiChannel, CtrlNumber midiControllerNumber, ParamID&amp; tag)
+    /// tresult PLUGIN_API MyEditController::getMidiControllerAssignment (int32 busIndex,
+    /// 														          int16 midiChannel,
+    ///                                                                   CtrlNumber midiControllerNumber,
+    /// 																  ParamID&amp; tag)
     /// {
-    /// 	// for my first Event bus and for MIDI channel 0 and for MIDI CC Volume only
-    /// 	if (busIndex == 0 &amp;&amp; midiChannel == 0 &amp;&amp; midiControllerNumber == kCtrlVolume)
-    /// 	{
-    /// 		tag = kGainId;
-    /// 		return kResultTrue;
-    /// 	}
-    /// 	return kResultFalse;
+    ///     // for my first Event bus and for MIDI channel 0 and for MIDI CC Volume only
+    ///     if (busIndex == 0 &amp;&amp; midiChannel == 0 &amp;&amp; midiControllerNumber == kCtrlVolume)
+    ///     {
+    ///         tag = kGainId;
+    ///         return kResultTrue;
+    ///     }
+    ///     return kResultFalse;
     /// }
     /// @endcode
     /// </remarks>
@@ -12763,11 +13630,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Gets an (preferred) associated ParamID for a given Input Event Bus index, channel and MIDI Controller.
+        /// Gets an (preferred) associated ParamID for a given Input Event Bus index, channel and MIDI
+        /// Controller.
         /// </summary>
         /// <param name="busIndex">- index of Input Event Bus</param>
         /// <param name="channel">- channel of the bus</param>
-        /// <param name="midiControllerNumber">- see @ref ControllerNumbers for expected values (could be bigger than 127)</param>
+        /// <param name="midiControllerNumber">- see @ref ControllerNumbers for expected values (could be
+        /// bigger than 127)</param>
         /// <param name="id">- return the associated ParamID to the given midiControllerNumber</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getMidiControllerAssignment(int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id)
@@ -12791,11 +13660,13 @@ internal static partial class LibVst
         // CCW methods
         // --------------------------------------------------------------
         /// <summary>
-        /// Gets an (preferred) associated ParamID for a given Input Event Bus index, channel and MIDI Controller.
+        /// Gets an (preferred) associated ParamID for a given Input Event Bus index, channel and MIDI
+        /// Controller.
         /// </summary>
         /// <param name="busIndex">- index of Input Event Bus</param>
         /// <param name="channel">- channel of the bus</param>
-        /// <param name="midiControllerNumber">- see @ref ControllerNumbers for expected values (could be bigger than 127)</param>
+        /// <param name="midiControllerNumber">- see @ref ControllerNumbers for expected values (could be
+        /// bigger than 127)</param>
         /// <param name="id">- return the associated ParamID to the given midiControllerNumber</param>
         private static partial ComResult getMidiControllerAssignment_ToManaged(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id);
         
@@ -12863,9 +13734,9 @@ internal static partial class LibVst
     /// - [extends IEditController]
     /// - [released: 3.5.0]
     /// - [optional]If this interface is implemented by the edit controller, and when performing edits from outside
-    /// the plug-in (host / remote) of a not automatable and not read-only, and not hidden flagged parameter (kind of helper parameter),
-    /// the host will start with a beginEditFromHost before calling setParamNormalized and end with an endEditFromHost.
-    /// Here the sequence that the host will call: IEditControllerExample Example@code {.cpp}
+    /// the plug-in (host / remote) of a not automatable and not read-only, and not hidden flagged parameter
+    /// (kind of helper parameter), the host will start with a beginEditFromHost before calling
+    /// setParamNormalized and end with an endEditFromHost. Here the sequence that the host will call: IEditControllerExample Example@code {.cpp}
     /// //------------------------------------------------------------------------
     /// plugEditController-&gt;beginEditFromHost (id);
     /// plugEditController-&gt;setParamNormalized (id, value);
@@ -12931,7 +13802,8 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Called before a setParamNormalized sequence, a endEditFromHost will be call at the end of the editing action.
+        /// Called before a setParamNormalized sequence, a endEditFromHost will be call at the end of
+        /// the editing action.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult beginEditFromHost(LibVst.ParamID paramID)
@@ -12976,7 +13848,8 @@ internal static partial class LibVst
         // CCW methods
         // --------------------------------------------------------------
         /// <summary>
-        /// Called before a setParamNormalized sequence, a endEditFromHost will be call at the end of the editing action.
+        /// Called before a setParamNormalized sequence, a endEditFromHost will be call at the end of
+        /// the editing action.
         /// </summary>
         private static partial ComResult beginEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID);
         
@@ -13062,6 +13935,147 @@ internal static partial class LibVst
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x08, 0x12, 0x27, 0xc1, 0x59, 0x70, 0x98, 0x40, 0xb9, 0xdd, 0x34, 0xb3, 0x6b, 0xb0, 0x19, 0x5e })
                         : new ReadOnlySpan<byte>(new byte[] { 0xc1, 0x27, 0x12, 0x08, 0x70, 0x59, 0x40, 0x98, 0xb9, 0xdd, 0x34, 0xb3, 0x6b, 0xb0, 0x19, 0x5e })
+                    )));
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Extended plug-in interface IComponentHandler for an edit controller
+    /// </summary>
+    /// <remarks>
+    ///  vstIHost vst379- [host imp]
+    /// - [extends IComponentHandler]
+    /// - [released: 3.7.9]
+    /// - [optional]------------------------------------------------------------------------
+    /// </remarks>
+    public unsafe partial struct IComponentHandlerSystemTime : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IComponentHandlerSystemTime*, long*, int>)&getSystemTime_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IComponentHandlerSystemTime, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IComponentHandlerSystemTime, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IComponentHandlerSystemTime, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// get the current systemTime (the same as the one used in ProcessContext::systemTime).
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getSystemTime(long* systemTime)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandlerSystemTime*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandlerSystemTime), "getSystemTime");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandlerSystemTime*, long*, int>)Vtbl[3])(__self__, systemTime);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandlerSystemTime*, long*, int>)Vtbl[3])((LibVst.IComponentHandlerSystemTime*)Unsafe.AsPointer(ref this), systemTime);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// get the current systemTime (the same as the one used in ProcessContext::systemTime).
+        /// </summary>
+        private static partial ComResult getSystemTime_ToManaged(IComponentHandlerSystemTime* self, long* systemTime);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getSystemTime_Wrapper(IComponentHandlerSystemTime* self, long* systemTime)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandlerSystemTime), "getSystemTime");
+                try
+                {
+                    return getSystemTime_ToManaged(self, systemTime);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getSystemTime_ToManaged(self, systemTime);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IComponentHandlerSystemTime, 0xF9E53056, 0xD1554CD5, 0xB7695E1B, 0x7B0F7745)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x56, 0x30, 0xe5, 0xf9, 0x55, 0xd1, 0xd5, 0x4c, 0xb7, 0x69, 0x5e, 0x1b, 0x7b, 0x0f, 0x77, 0x45 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf9, 0xe5, 0x30, 0x56, 0xd1, 0x55, 0x4c, 0xd5, 0xb7, 0x69, 0x5e, 0x1b, 0x7b, 0x0f, 0x77, 0x45 })
                     )));
             }
         }
@@ -16797,6 +17811,169 @@ internal static partial class LibVst
     }
     
     /// <summary>
+    /// Extended IEditController interface for a component.
+    /// </summary>
+    /// <remarks>
+    ///  vstIPlug vst3711- [plug imp]
+    /// - [extends IEditController]
+    /// - [released: 3.7.11]
+    /// - [optional]When replacing one plug-in with another, the host can ask the new plug-in for remapping paramIDs to
+    /// new ones.@n
+    /// </remarks>
+    /// <seealso cref="Moduleinfo"/>
+    /// <seealso cref="IPluginCompatibility"/>
+    /// <seealso cref="IEditController"/>
+    public unsafe partial struct IRemapParamID : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IRemapParamID*, Guid*, uint, LibVst.ParamID*, int>)&getCompatibleParamID_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IRemapParamID, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks:
+        /// The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IRemapParamID, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IRemapParamID, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Retrieve the appropriate paramID for a specific plug-in UID and paramID (or index for VST 2
+        /// plug-ins).
+        /// The retrieved paramID should match the one it replaces, maintaining the same
+        /// behavior during automation playback. Called in UI-Thread context.
+        /// </summary>
+        /// <param name="pluginToReplaceUID">- TUID of plug-in (processor) that will be replaced</param>
+        /// <param name="oldParamID">- paramID (or index for VST 2 plug-ins) to be replaced</param>
+        /// <param name="newParamID">- contains the associated paramID to be used</param>
+        /// <returns>kResultTrue if a compatible parameter is available (newParamID has the appropriate
+        /// value, it could be the same than oldParamID), or kResultFalse if no compatible parameter is
+        /// available (newParamID is undefined)</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getCompatibleParamID(Guid* pluginToReplaceUID, LibVst.ParamID oldParamID, LibVst.ParamID* newParamID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IRemapParamID*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IRemapParamID), "getCompatibleParamID");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IRemapParamID*, Guid*, LibVst.ParamID, LibVst.ParamID*, int>)Vtbl[3])(__self__, pluginToReplaceUID, oldParamID, newParamID);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IRemapParamID*, Guid*, LibVst.ParamID, LibVst.ParamID*, int>)Vtbl[3])((LibVst.IRemapParamID*)Unsafe.AsPointer(ref this), pluginToReplaceUID, oldParamID, newParamID);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Retrieve the appropriate paramID for a specific plug-in UID and paramID (or index for VST 2
+        /// plug-ins).
+        /// The retrieved paramID should match the one it replaces, maintaining the same
+        /// behavior during automation playback. Called in UI-Thread context.
+        /// </summary>
+        /// <param name="pluginToReplaceUID">- TUID of plug-in (processor) that will be replaced</param>
+        /// <param name="oldParamID">- paramID (or index for VST 2 plug-ins) to be replaced</param>
+        /// <param name="newParamID">- contains the associated paramID to be used</param>
+        /// <returns>kResultTrue if a compatible parameter is available (newParamID has the appropriate
+        /// value, it could be the same than oldParamID), or kResultFalse if no compatible parameter is
+        /// available (newParamID is undefined)</returns>
+        private static partial ComResult getCompatibleParamID_ToManaged(IRemapParamID* self, Guid* pluginToReplaceUID, LibVst.ParamID oldParamID, LibVst.ParamID* newParamID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getCompatibleParamID_Wrapper(IRemapParamID* self, Guid* pluginToReplaceUID, uint oldParamID, LibVst.ParamID* newParamID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IRemapParamID), "getCompatibleParamID");
+                try
+                {
+                    return getCompatibleParamID_ToManaged(self, pluginToReplaceUID, oldParamID, newParamID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getCompatibleParamID_ToManaged(self, pluginToReplaceUID, oldParamID, newParamID);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IRemapParamID, 0x2B88021E, 0x6286B646, 0xB49DF76A, 0x5663061C)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x1e, 0x02, 0x88, 0x2b, 0x86, 0x62, 0x46, 0xb6, 0xb4, 0x9d, 0xf7, 0x6a, 0x56, 0x63, 0x06, 0x1c })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x2b, 0x88, 0x02, 0x1e, 0x62, 0x86, 0xb6, 0x46, 0xb4, 0x9d, 0xf7, 0x6a, 0x56, 0x63, 0x06, 0x1c })
+                    )));
+            }
+        }
+    }
+    
+    /// <summary>
     /// Extended plug-in interface IEditController for a component: Vst::IXmlRepresentationController
     /// </summary>
     /// <remarks>
@@ -19604,27 +20781,28 @@ internal static partial class LibVst
     /// <summary>
     /// Flags used for IComponentHandler::restartComponent
     /// </summary>
-    public enum RestartFlags
+    public enum RestartFlags : int
     {
         /// <summary>
         /// The Component should be reloaded
-        /// The host has to unload completely the plug-in (controller/processor) and reload it. 
+        /// The host has to unload completely the plug-in (controller/processor) and reload it.
         /// [SDK 3.0.0]
         /// </summary>
         kReloadComponent = 1 << 0,
         
         /// <summary>
-        /// Input / Output Bus configuration has changed
+        /// Input/Output Bus configuration has changed
         /// The plug-in informs the host that either the bus configuration or the bus count has changed.
-        /// The host has to deactivate the plug-in, asks the plug-in for its wanted new bus configurations,
-        /// adapts its processing graph and reactivate the plug-in.
+        /// The host has to deactivate the plug-in, asks the plug-in for its wanted new bus
+        /// configurations, adapts its processing graph and reactivate the plug-in.
         /// [SDK 3.0.0]
         /// </summary>
         kIoChanged = 1 << 1,
         
         /// <summary>
         /// Multiple parameter values have changed  (as result of a program change for example)
-        /// The host invalidates all caches of parameter values and asks the edit controller for the current values.
+        /// The host invalidates all caches of parameter values and asks the edit controller for the
+        /// current values.
         /// [SDK 3.0.0]
         /// </summary>
         kParamValuesChanged = 1 << 2,
@@ -19633,14 +20811,15 @@ internal static partial class LibVst
         /// Latency has changed
         /// The plug informs the host that its latency has changed, getLatencySamples should return the new latency after setActive (true) was called
         /// The host has to deactivate and reactivate the plug-in, then afterwards the host could ask for the current latency (getLatencySamples)
-        /// see IAudioProcessor::getLatencySamples
+        /// See IAudioProcessor::getLatencySamples
         /// [SDK 3.0.0]
         /// </summary>
         kLatencyChanged = 1 << 3,
         
         /// <summary>
-        /// Parameter titles, default values or flags (ParameterFlags) have changed
-        /// The host invalidates all caches of parameter infos and asks the edit controller for the current infos.
+        /// Parameter titles (title, shortTitle and units), default values, stepCount or flags (ParameterFlags) have changed
+        /// The host invalidates all caches of parameter infos and asks the edit controller for the
+        /// current infos.
         /// [SDK 3.0.0]
         /// </summary>
         kParamTitlesChanged = 1 << 4,
@@ -19674,16 +20853,18 @@ internal static partial class LibVst
         /// <summary>
         /// Prefetch support has changed
         /// The plug-in informs the host that its PrefetchSupport has changed
-        /// The host has to deactivate the plug-in, calls IPrefetchableSupport::getPrefetchableSupport and reactivate the plug-in
-        /// see IPrefetchableSupport
+        /// The host has to deactivate the plug-in, calls IPrefetchableSupport::getPrefetchableSupport 
+        /// and reactivate the plug-in.
+        /// See IPrefetchableSupport
         /// [SDK 3.6.1]
         /// </summary>
         kPrefetchableSupportChanged = 1 << 8,
         
         /// <summary>
         /// RoutingInfo has changed
-        /// The plug-in informs the host that its internal routing (relation of an event-input-channel to an audio-output-bus) has changed
-        /// The host ask the plug-in for the new routing with IComponent::getRoutingInfo, @ref vst3Routing see IComponent
+        /// The plug-in informs the host that its internal routing (relation of an event-input-channel to
+        /// an audio-output-bus) has changed. The host asks the plug-in for the new routing with 
+        /// IComponent::getRoutingInfo, @ref vst3Routing See IComponent
         /// [SDK 3.6.6]
         /// </summary>
         kRoutingInfoChanged = 1 << 9,
@@ -19691,17 +20872,31 @@ internal static partial class LibVst
         /// <summary>
         /// Key switches has changed (info, count)
         /// Either the Key switches info, the count of Key switches has changed.
-        /// The host invalidates all caches of Key switches infos and asks the edit controller (IKeyswitchController) for the current ones.
+        /// The host invalidates all caches of Key switches infos and asks the edit controller
+        /// (IKeyswitchController) for the current ones.
         /// See IKeyswitchController
         /// [SDK 3.7.3]
         /// </summary>
         kKeyswitchChanged = 1 << 10,
+        
+        /// <summary>
+        /// Mapping of ParamID has changed
+        /// The Plug-in informs the host that its parameters ID has changed. This has to be called by the
+        /// edit controller in the method setComponentState or setState (during projects loading) when the
+        /// plug-in detects that the given state was associated to an older version of the plug-in, or to a
+        /// plug-in to replace (for ex. migrating VST2 =&gt; VST3), with a different set of parameter IDs, then
+        /// the host could remap any used parameters like automation by asking the IRemapParamID interface
+        /// (which extends IEditController).
+        /// See IRemapParamID
+        /// [SDK 3.7.11]
+        /// </summary>
+        kParamIDMappingChanged = 1 << 11,
     }
     
     /// <summary>
     /// Knob Mode
     /// </summary>
-    public enum KnobModes
+    public enum KnobModes 
     {
         /// <summary>
         /// Circular with jump to clicked position
@@ -20567,13 +21762,13 @@ internal static partial class LibVst
     /// @
     /// }
     /// </summary>
-    public const string SDKVersionString = "VST 3.7.7";
+    public const string SDKVersionString = "VST 3.7.12";
     
     /// <summary>
     /// @
     /// }
     /// </summary>
-    public static ReadOnlySpan<byte> SDKVersionString_u8 => "VST 3.7.7\0"u8;
+    public static ReadOnlySpan<byte> SDKVersionString_u8 => "VST 3.7.12\0"u8;
     
     public static partial class SpeakerArr
     {
@@ -20608,6 +21803,13 @@ internal static partial class LibVst
         public const string kStringStereo = "Stereo";
         
         public static ReadOnlySpan<byte> kStringStereo_u8 => "Stereo\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringStereoWide = "Stereo (Lw Rw)";
+        
+        public static ReadOnlySpan<byte> kStringStereoWide_u8 => "Stereo (Lw Rw)\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -20843,30 +22045,37 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString71CineFrontHigh = "7.1 Cine Front High";
-        
-        public static ReadOnlySpan<byte> kString71CineFrontHigh_u8 => "7.1 Cine Front High\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
-        public const string kString70CineFrontHigh = "7.0 Cine Front High";
-        
-        public static ReadOnlySpan<byte> kString70CineFrontHigh_u8 => "7.0 Cine Front High\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
-        public const string kString71CineSideHigh = "7.1 Cine Side High";
-        
-        public static ReadOnlySpan<byte> kString71CineSideHigh_u8 => "7.1 Cine Side High\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
         public const string kString71CineFullRear = "7.1 Cine Full Rear";
         
         public static ReadOnlySpan<byte> kString71CineFullRear_u8 => "7.1 Cine Full Rear\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_2 = "5.1.2";
+        
+        public static ReadOnlySpan<byte> kString51_2_u8 => "5.1.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_2 = "5.0.2";
+        
+        public static ReadOnlySpan<byte> kString50_2_u8 => "5.0.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_2TopSide = "5.0.2 Top Side";
+        
+        public static ReadOnlySpan<byte> kString50_2TopSide_u8 => "5.0.2 Top Side\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_2TopSide = "5.1.2 Top Side";
+        
+        public static ReadOnlySpan<byte> kString51_2TopSide_u8 => "5.1.2 Top Side\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -20892,9 +22101,9 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString80Cube = "8.0 Cube";
+        public const string kString40_4 = "8.0 Cube";
         
-        public static ReadOnlySpan<byte> kString80Cube_u8 => "8.0 Cube\0"u8;
+        public static ReadOnlySpan<byte> kString40_4_u8 => "8.0 Cube\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -20941,16 +22150,16 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString102 = "10.2 Experimental";
+        public const string kString52_5 = "5.2.5";
         
-        public static ReadOnlySpan<byte> kString102_u8 => "10.2 Experimental\0"u8;
+        public static ReadOnlySpan<byte> kString52_5_u8 => "5.2.5\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString122 = "12.2";
+        public const string kString72_5 = "12.2";
         
-        public static ReadOnlySpan<byte> kString122_u8 => "12.2\0"u8;
+        public static ReadOnlySpan<byte> kString72_5_u8 => "12.2\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -20997,6 +22206,20 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
+        public const string kString70_2_TF = "7.0.2 Top Front";
+        
+        public static ReadOnlySpan<byte> kString70_2_TF_u8 => "7.0.2 Top Front\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString71_2_TF = "7.1.2 Top Front";
+        
+        public static ReadOnlySpan<byte> kString71_2_TF_u8 => "7.1.2 Top Front\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_3 = "7.0.3";
         
         public static ReadOnlySpan<byte> kString70_3_u8 => "7.0.3\0"u8;
@@ -21039,58 +22262,86 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString90_4 = "9.0.4";
+        public const string kString90_4 = "9.0.4 ITU";
         
-        public static ReadOnlySpan<byte> kString90_4_u8 => "9.0.4\0"u8;
+        public static ReadOnlySpan<byte> kString90_4_u8 => "9.0.4 ITU\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString91_4 = "9.1.4";
+        public const string kString91_4 = "9.1.4 ITU";
         
-        public static ReadOnlySpan<byte> kString91_4_u8 => "9.1.4\0"u8;
+        public static ReadOnlySpan<byte> kString91_4_u8 => "9.1.4 ITU\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString90_6 = "9.0.6";
+        public const string kString90_6 = "9.0.6 ITU";
         
-        public static ReadOnlySpan<byte> kString90_6_u8 => "9.0.6\0"u8;
+        public static ReadOnlySpan<byte> kString90_6_u8 => "9.0.6 ITU\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString91_6 = "9.1.6";
+        public const string kString91_6 = "9.1.6 ITU";
         
-        public static ReadOnlySpan<byte> kString91_6_u8 => "9.1.6\0"u8;
+        public static ReadOnlySpan<byte> kString91_6_u8 => "9.1.6 ITU\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString100 = "10.0 Auro-3D";
+        public const string kString90_4_W = "9.0.4";
         
-        public static ReadOnlySpan<byte> kString100_u8 => "10.0 Auro-3D\0"u8;
+        public static ReadOnlySpan<byte> kString90_4_W_u8 => "9.0.4\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString101 = "10.1 Auro-3D";
+        public const string kString91_4_W = "9.1.4";
         
-        public static ReadOnlySpan<byte> kString101_u8 => "10.1 Auro-3D\0"u8;
+        public static ReadOnlySpan<byte> kString91_4_W_u8 => "9.1.4\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString110 = "11.0 Auro-3D";
+        public const string kString90_6_W = "9.0.6";
         
-        public static ReadOnlySpan<byte> kString110_u8 => "11.0 Auro-3D\0"u8;
+        public static ReadOnlySpan<byte> kString90_6_W_u8 => "9.0.6\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString111 = "11.1 Auro-3D";
+        public const string kString91_6_W = "9.1.6";
         
-        public static ReadOnlySpan<byte> kString111_u8 => "11.1 Auro-3D\0"u8;
+        public static ReadOnlySpan<byte> kString91_6_W_u8 => "9.1.6\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_5 = "10.0 Auro-3D";
+        
+        public static ReadOnlySpan<byte> kString50_5_u8 => "10.0 Auro-3D\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_5 = "10.1 Auro-3D";
+        
+        public static ReadOnlySpan<byte> kString51_5_u8 => "10.1 Auro-3D\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_6 = "11.0 Auro-3D";
+        
+        public static ReadOnlySpan<byte> kString50_6_u8 => "11.0 Auro-3D\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_6 = "11.1 Auro-3D";
+        
+        public static ReadOnlySpan<byte> kString51_6_u8 => "11.1 Auro-3D\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21109,23 +22360,16 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString81MPEG = "8.1 MPEG";
+        public const string kString41_4_1 = "8.1 MPEG";
         
-        public static ReadOnlySpan<byte> kString81MPEG_u8 => "8.1 MPEG\0"u8;
+        public static ReadOnlySpan<byte> kString41_4_1_u8 => "8.1 MPEG\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString140 = "14.0";
+        public const string kString60_4_4 = "14.0";
         
-        public static ReadOnlySpan<byte> kString140_u8 => "14.0\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
-        public const string kString222 = "22.2";
-        
-        public static ReadOnlySpan<byte> kString222_u8 => "22.2\0"u8;
+        public static ReadOnlySpan<byte> kString60_4_4_u8 => "14.0\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21133,6 +22377,13 @@ internal static partial class LibVst
         public const string kString220 = "22.0";
         
         public static ReadOnlySpan<byte> kString220_u8 => "22.0\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString222 = "22.2";
+        
+        public static ReadOnlySpan<byte> kString222_u8 => "22.2\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21151,23 +22402,121 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kStringAmbi1stOrder = "1st Order Ambisonics";
+        public const string kString50_2_2 = "5.0.2.2";
         
-        public static ReadOnlySpan<byte> kStringAmbi1stOrder_u8 => "1st Order Ambisonics\0"u8;
+        public static ReadOnlySpan<byte> kString50_2_2_u8 => "5.0.2.2\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kStringAmbi2cdOrder = "2nd Order Ambisonics";
+        public const string kString50_4_2 = "5.0.4.2";
         
-        public static ReadOnlySpan<byte> kStringAmbi2cdOrder_u8 => "2nd Order Ambisonics\0"u8;
+        public static ReadOnlySpan<byte> kString50_4_2_u8 => "5.0.4.2\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kStringAmbi3rdOrder = "3rd Order Ambisonics";
+        public const string kString70_4_2 = "7.0.4.2";
         
-        public static ReadOnlySpan<byte> kStringAmbi3rdOrder_u8 => "3rd Order Ambisonics\0"u8;
+        public static ReadOnlySpan<byte> kString70_4_2_u8 => "7.0.4.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_5_Sony = "5.0.5 Sony";
+        
+        public static ReadOnlySpan<byte> kString50_5_Sony_u8 => "5.0.5 Sony\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString40_2_2 = "4.0.3.2";
+        
+        public static ReadOnlySpan<byte> kString40_2_2_u8 => "4.0.3.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString40_4_2 = "4.0.4.2";
+        
+        public static ReadOnlySpan<byte> kString40_4_2_u8 => "4.0.4.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_3_2 = "5.0.3.2";
+        
+        public static ReadOnlySpan<byte> kString50_3_2_u8 => "5.0.3.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString30_5_2 = "3.0.5.2";
+        
+        public static ReadOnlySpan<byte> kString30_5_2_u8 => "3.0.5.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString40_4_4 = "4.0.4.4";
+        
+        public static ReadOnlySpan<byte> kString40_4_4_u8 => "4.0.4.4\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_4_4 = "5.0.4.4";
+        
+        public static ReadOnlySpan<byte> kString50_4_4_u8 => "5.0.4.4\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi1stOrder = "1OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi1stOrder_u8 => "1OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi2cdOrder = "2OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi2cdOrder_u8 => "2OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi3rdOrder = "3OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi3rdOrder_u8 => "3OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi4thOrder = "4OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi4thOrder_u8 => "4OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi5thOrder = "5OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi5thOrder_u8 => "5OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi6thOrder = "6OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi6thOrder_u8 => "6OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi7thOrder = "7OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi7thOrder_u8 => "7OA\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21196,6 +22545,13 @@ internal static partial class LibVst
         public const string kStringStereoS = "L R";
         
         public static ReadOnlySpan<byte> kStringStereoS_u8 => "L R\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringStereoWideS = "Lw Rw";
+        
+        public static ReadOnlySpan<byte> kStringStereoWideS_u8 => "Lw Rw\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21417,9 +22773,9 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString80CubeS = "L R Ls Rs Tfl Tfr Trl Trr";
+        public const string kString40_4S = "L R Ls Rs Tfl Tfr Trl Trr";
         
-        public static ReadOnlySpan<byte> kString80CubeS_u8 => "L R Ls Rs Tfl Tfr Trl Trr\0"u8;
+        public static ReadOnlySpan<byte> kString40_4S_u8 => "L R Ls Rs Tfl Tfr Trl Trr\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21438,30 +22794,37 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString71CineFrontHighS = "L R C LFE Ls Rs Tfl Tfr";
-        
-        public static ReadOnlySpan<byte> kString71CineFrontHighS_u8 => "L R C LFE Ls Rs Tfl Tfr\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
-        public const string kString70CineFrontHighS = "L R C Ls Rs Tfl Tfr";
-        
-        public static ReadOnlySpan<byte> kString70CineFrontHighS_u8 => "L R C Ls Rs Tfl Tfr\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
-        public const string kString71CineSideHighS = "L R C LFE Ls Rs Tsl Tsr";
-        
-        public static ReadOnlySpan<byte> kString71CineSideHighS_u8 => "L R C LFE Ls Rs Tsl Tsr\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
         public const string kString71CineFullRearS = "L R C LFE Ls Rs Lcs Rcs";
         
         public static ReadOnlySpan<byte> kString71CineFullRearS_u8 => "L R C LFE Ls Rs Lcs Rcs\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_2S = "L R C Ls Rs Tfl Tfr";
+        
+        public static ReadOnlySpan<byte> kString50_2S_u8 => "L R C Ls Rs Tfl Tfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_2S = "L R C LFE Ls Rs Tfl Tfr";
+        
+        public static ReadOnlySpan<byte> kString51_2S_u8 => "L R C LFE Ls Rs Tfl Tfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_2TopSideS = "L R C Ls Rs Tsl Tsr";
+        
+        public static ReadOnlySpan<byte> kString50_2TopSideS_u8 => "L R C Ls Rs Tsl Tsr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_2TopSideS = "L R C LFE Ls Rs Tsl Tsr";
+        
+        public static ReadOnlySpan<byte> kString51_2TopSideS_u8 => "L R C LFE Ls Rs Tsl Tsr\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21543,6 +22906,20 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
+        public const string kString70_2_TFS = "L R C Ls Rs Sl Sr Tfl Tfr";
+        
+        public static ReadOnlySpan<byte> kString70_2_TFS_u8 => "L R C Ls Rs Sl Sr Tfl Tfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString71_2_TFS = "L R C LFE Ls Rs Sl Sr Tfl Tfr";
+        
+        public static ReadOnlySpan<byte> kString71_2_TFS_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_3S = "L R C Ls Rs Sl Sr Tfl Tfr Trc";
         
         public static ReadOnlySpan<byte> kString70_3S_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trc\0"u8;
@@ -21613,30 +22990,65 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString100S = "L R C Ls Rs Tc Tfl Tfr Trl Trr";
+        public const string kString90_4_WS = "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Lw Rw";
         
-        public static ReadOnlySpan<byte> kString100S_u8 => "L R C Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
+        public static ReadOnlySpan<byte> kString90_4_WS_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Lw Rw\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString101S = "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr";
+        public const string kString91_4_WS = "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Lw Rw";
         
-        public static ReadOnlySpan<byte> kString101S_u8 => "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
+        public static ReadOnlySpan<byte> kString91_4_WS_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Lw Rw\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString110S = "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr";
+        public const string kString90_6_WS = "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr Lw Rw";
         
-        public static ReadOnlySpan<byte> kString110S_u8 => "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
+        public static ReadOnlySpan<byte> kString90_6_WS_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr Lw Rw\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString111S = "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr";
+        public const string kString91_6_WS = "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr Lw Rw";
         
-        public static ReadOnlySpan<byte> kString111S_u8 => "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
+        public static ReadOnlySpan<byte> kString91_6_WS_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr Lw Rw\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_5S = "L R C Ls Rs Tc Tfl Tfr Trl Trr";
+        
+        public static ReadOnlySpan<byte> kString50_5S_u8 => "L R C Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_5S = "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr";
+        
+        public static ReadOnlySpan<byte> kString51_5S_u8 => "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_5_SonyS = "L R C Ls Rs Tfl Tfc Tfr Trl Trr";
+        
+        public static ReadOnlySpan<byte> kString50_5_SonyS_u8 => "L R C Ls Rs Tfl Tfc Tfr Trl Trr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_6S = "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr";
+        
+        public static ReadOnlySpan<byte> kString50_6S_u8 => "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_6S = "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr";
+        
+        public static ReadOnlySpan<byte> kString51_6S_u8 => "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21655,44 +23067,65 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString102S = "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2";
+        public const string kString52_5S = "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2";
         
-        public static ReadOnlySpan<byte> kString102S_u8 => "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2\0"u8;
+        public static ReadOnlySpan<byte> kString52_5S_u8 => "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString122S = "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2";
+        public const string kString72_5S = "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2";
         
-        public static ReadOnlySpan<byte> kString122S_u8 => "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2\0"u8;
+        public static ReadOnlySpan<byte> kString72_5S_u8 => "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString81MPEGS = "L R LFE Ls Rs Tfl Tfc Tfr Bfc";
+        public const string kString41_4_1S = "L R LFE Ls Rs Tfl Tfc Tfr Bfc";
         
-        public static ReadOnlySpan<byte> kString81MPEGS_u8 => "L R LFE Ls Rs Tfl Tfc Tfr Bfc\0"u8;
+        public static ReadOnlySpan<byte> kString41_4_1S_u8 => "L R LFE Ls Rs Tfl Tfc Tfr Bfc\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString140S = "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr";
+        public const string kString30_5_2S = "L R C Tfl Tfc Tfr Trl Trr Bfl Bfr";
         
-        public static ReadOnlySpan<byte> kString140S_u8 => "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr\0"u8;
+        public static ReadOnlySpan<byte> kString30_5_2S_u8 => "L R C Tfl Tfc Tfr Trl Trr Bfl Bfr\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString222S = "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr";
+        public const string kString40_2_2S = "C Sl Sr Cs Tfc Tsl Tsr Trc";
         
-        public static ReadOnlySpan<byte> kString222S_u8 => "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr\0"u8;
+        public static ReadOnlySpan<byte> kString40_2_2S_u8 => "C Sl Sr Cs Tfc Tsl Tsr Trc\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString220S = "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr";
+        public const string kString40_4_2S = "L R Ls Rs Tfl Tfr Trl Trr Bfl Bfr";
         
-        public static ReadOnlySpan<byte> kString220S_u8 => "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr\0"u8;
+        public static ReadOnlySpan<byte> kString40_4_2S_u8 => "L R Ls Rs Tfl Tfr Trl Trr Bfl Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString40_4_4S = "L R Ls Rs Tfl Tfr Trl Trr Bfl Bfr Brl Brr";
+        
+        public static ReadOnlySpan<byte> kString40_4_4S_u8 => "L R Ls Rs Tfl Tfr Trl Trr Bfl Bfr Brl Brr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_4_4S = "L R C Ls Rs Tfl Tfr Trl Trr Bfl Bfr Brl Brr";
+        
+        public static ReadOnlySpan<byte> kString50_4_4S_u8 => "L R C Ls Rs Tfl Tfr Trl Trr Bfl Bfr Brl Brr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString60_4_4S = "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr";
+        
+        public static ReadOnlySpan<byte> kString60_4_4S_u8 => "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21707,6 +23140,48 @@ internal static partial class LibVst
         public const string kString51_5_3S = "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr";
         
         public static ReadOnlySpan<byte> kString51_5_3S_u8 => "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_2_2S = "L R C Ls Rs Tsl Tsr Bfl Bfr";
+        
+        public static ReadOnlySpan<byte> kString50_2_2S_u8 => "L R C Ls Rs Tsl Tsr Bfl Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_3_2S = "L R C Ls Rs Tfl Tfc Tfr Bfl Bfr";
+        
+        public static ReadOnlySpan<byte> kString50_3_2S_u8 => "L R C Ls Rs Tfl Tfc Tfr Bfl Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_4_2S = "L R C Ls Rs Tfl Tfr Trl Trr Bfl Bfr";
+        
+        public static ReadOnlySpan<byte> kString50_4_2S_u8 => "L R C Ls Rs Tfl Tfr Trl Trr Bfl Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString70_4_2S = "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr";
+        
+        public static ReadOnlySpan<byte> kString70_4_2S_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString222S = "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr";
+        
+        public static ReadOnlySpan<byte> kString222S_u8 => "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString220S = "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr";
+        
+        public static ReadOnlySpan<byte> kString220S_u8 => "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21730,6 +23205,47 @@ internal static partial class LibVst
         public static ReadOnlySpan<byte> kStringAmbi3rdOrderS_u8 => "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15\0"u8;
     }
     
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi4thOrderS = "0..24";
+        
+        public static ReadOnlySpan<byte> kStringAmbi4thOrderS_u8 => "0..24\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi5thOrderS = "0..35";
+        
+        public static ReadOnlySpan<byte> kStringAmbi5thOrderS_u8 => "0..35\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi6thOrderS = "0..48";
+        
+        public static ReadOnlySpan<byte> kStringAmbi6thOrderS_u8 => "0..48\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi7thOrderS = "0..63";
+        
+        public static ReadOnlySpan<byte> kStringAmbi7thOrderS_u8 => "0..63\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// others type (not categorized)
+        /// </summary>
+        public const string kFx = "Fx";
+        
+        /// <summary>
+        /// others type (not categorized)
+        /// </summary>
+        public static ReadOnlySpan<byte> kFx_u8 => "Fx\0"u8;
+    }
+    
     public static partial class PlugType
     {
         /// <summary>
@@ -21741,6 +23257,32 @@ internal static partial class LibVst
         /// Scope, FFT-Display, Loudness Processing...
         /// </summary>
         public static ReadOnlySpan<byte> kFxAnalyzer_u8 => "Fx|Analyzer\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// Tools dedicated to Bass Guitar
+        /// </summary>
+        public const string kFxBass = "Fx|Bass";
+        
+        /// <summary>
+        /// Tools dedicated to Bass Guitar
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxBass_u8 => "Fx|Bass\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// Tools dedicated to Channel Strip
+        /// </summary>
+        public const string kFxChannelStrip = "Fx|Channel Strip";
+        
+        /// <summary>
+        /// Tools dedicated to Channel Strip
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxChannelStrip_u8 => "Fx|Channel Strip\0"u8;
     }
     
     public static partial class PlugType
@@ -21767,6 +23309,19 @@ internal static partial class LibVst
         /// Amp Simulator, Sub-Harmonic, SoftClipper...
         /// </summary>
         public static ReadOnlySpan<byte> kFxDistortion_u8 => "Fx|Distortion\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// Tools dedicated to Drums...
+        /// </summary>
+        public const string kFxDrums = "Fx|Drums";
+        
+        /// <summary>
+        /// Tools dedicated to Drums...
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxDrums_u8 => "Fx|Drums\0"u8;
     }
     
     public static partial class PlugType
@@ -21811,14 +23366,27 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
-        /// others type (not categorized)
+        /// Tone Generator, Noise Generator...
         /// </summary>
-        public const string kFx = "Fx";
+        public const string kFxGenerator = "Fx|Generator";
         
         /// <summary>
-        /// others type (not categorized)
+        /// Tone Generator, Noise Generator...
         /// </summary>
-        public static ReadOnlySpan<byte> kFx_u8 => "Fx\0"u8;
+        public static ReadOnlySpan<byte> kFxGenerator_u8 => "Fx|Generator\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// Tools dedicated to Guitar
+        /// </summary>
+        public const string kFxGuitar = "Fx|Guitar";
+        
+        /// <summary>
+        /// Tools dedicated to Guitar
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxGuitar_u8 => "Fx|Guitar\0"u8;
     }
     
     public static partial class PlugType
@@ -21850,32 +23418,6 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
-        /// MonoToStereo, StereoEnhancer,...
-        /// </summary>
-        public const string kFxSpatial = "Fx|Spatial";
-        
-        /// <summary>
-        /// MonoToStereo, StereoEnhancer,...
-        /// </summary>
-        public static ReadOnlySpan<byte> kFxSpatial_u8 => "Fx|Spatial\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// Tone Generator, Noise Generator...
-        /// </summary>
-        public const string kFxGenerator = "Fx|Generator";
-        
-        /// <summary>
-        /// Tone Generator, Noise Generator...
-        /// </summary>
-        public static ReadOnlySpan<byte> kFxGenerator_u8 => "Fx|Generator\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
         /// Dither, Noise Shaping,...
         /// </summary>
         public const string kFxMastering = "Fx|Mastering";
@@ -21889,6 +23431,19 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
+        /// Tools dedicated to Microphone
+        /// </summary>
+        public const string kFxMicrophone = "Fx|Microphone";
+        
+        /// <summary>
+        /// Tools dedicated to Microphone
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxMicrophone_u8 => "Fx|Microphone\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
         /// Phaser, Flanger, Chorus, Tremolo, Vibrato, AutoPan, Rotary, Cloner...
         /// </summary>
         public const string kFxModulation = "Fx|Modulation";
@@ -21897,6 +23452,19 @@ internal static partial class LibVst
         /// Phaser, Flanger, Chorus, Tremolo, Vibrato, AutoPan, Rotary, Cloner...
         /// </summary>
         public static ReadOnlySpan<byte> kFxModulation_u8 => "Fx|Modulation\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// using Network
+        /// </summary>
+        public const string kFxNetwork = "Fx|Network";
+        
+        /// <summary>
+        /// using Network
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxNetwork_u8 => "Fx|Network\0"u8;
     }
     
     public static partial class PlugType
@@ -21941,6 +23509,19 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
+        /// MonoToStereo, StereoEnhancer,...
+        /// </summary>
+        public const string kFxSpatial = "Fx|Spatial";
+        
+        /// <summary>
+        /// MonoToStereo, StereoEnhancer,...
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxSpatial_u8 => "Fx|Spatial\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
         /// dedicated to surround processing: LFE Splitter, Bass Manager...
         /// </summary>
         public const string kFxSurround = "Fx|Surround";
@@ -21967,14 +23548,14 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
-        /// using Network
+        /// Tools dedicated to Vocals
         /// </summary>
-        public const string kFxNetwork = "Fx|Network";
+        public const string kFxVocals = "Fx|Vocals";
         
         /// <summary>
-        /// using Network
+        /// Tools dedicated to Vocals
         /// </summary>
-        public static ReadOnlySpan<byte> kFxNetwork_u8 => "Fx|Network\0"u8;
+        public static ReadOnlySpan<byte> kFxVocals_u8 => "Fx|Vocals\0"u8;
     }
     
     public static partial class PlugType
@@ -22071,6 +23652,84 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
+        /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
+        /// </summary>
+        public const string kAmbisonics = "Ambisonics";
+        
+        /// <summary>
+        /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
+        /// </summary>
+        public static ReadOnlySpan<byte> kAmbisonics_u8 => "Ambisonics\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// Meter, Scope, FFT-Display, not selectable as insert plug-in
+        /// </summary>
+        public const string kAnalyzer = "Analyzer";
+        
+        /// <summary>
+        /// Meter, Scope, FFT-Display, not selectable as insert plug-in
+        /// </summary>
+        public static ReadOnlySpan<byte> kAnalyzer_u8 => "Analyzer\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
+        /// </summary>
+        public const string kNoOfflineProcess = "NoOfflineProcess";
+        
+        /// <summary>
+        /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
+        /// </summary>
+        public static ReadOnlySpan<byte> kNoOfflineProcess_u8 => "NoOfflineProcess\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
+        /// </summary>
+        public const string kOnlyARA = "OnlyARA";
+        
+        /// <summary>
+        /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
+        /// </summary>
+        public static ReadOnlySpan<byte> kOnlyARA_u8 => "OnlyARA\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// used for plug-in offline processing  (will not work as normal insert plug-in)
+        /// </summary>
+        public const string kOnlyOfflineProcess = "OnlyOfflineProcess";
+        
+        /// <summary>
+        /// used for plug-in offline processing  (will not work as normal insert plug-in)
+        /// </summary>
+        public static ReadOnlySpan<byte> kOnlyOfflineProcess_u8 => "OnlyOfflineProcess\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// indicates that it supports only realtime process call, no processing faster than realtime
+        /// </summary>
+        public const string kOnlyRealTime = "OnlyRT";
+        
+        /// <summary>
+        /// indicates that it supports only realtime process call, no processing faster than realtime
+        /// </summary>
+        public static ReadOnlySpan<byte> kOnlyRealTime_u8 => "OnlyRT\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
         /// used for SurroundPanner
         /// </summary>
         public const string kSpatial = "Spatial";
@@ -22097,58 +23756,6 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
-        /// indicates that it supports only realtime process call, no processing faster than realtime
-        /// </summary>
-        public const string kOnlyRealTime = "OnlyRT";
-        
-        /// <summary>
-        /// indicates that it supports only realtime process call, no processing faster than realtime
-        /// </summary>
-        public static ReadOnlySpan<byte> kOnlyRealTime_u8 => "OnlyRT\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// used for plug-in offline processing  (will not work as normal insert plug-in)
-        /// </summary>
-        public const string kOnlyOfflineProcess = "OnlyOfflineProcess";
-        
-        /// <summary>
-        /// used for plug-in offline processing  (will not work as normal insert plug-in)
-        /// </summary>
-        public static ReadOnlySpan<byte> kOnlyOfflineProcess_u8 => "OnlyOfflineProcess\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
-        /// </summary>
-        public const string kOnlyARA = "OnlyARA";
-        
-        /// <summary>
-        /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
-        /// </summary>
-        public static ReadOnlySpan<byte> kOnlyARA_u8 => "OnlyARA\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
-        /// </summary>
-        public const string kNoOfflineProcess = "NoOfflineProcess";
-        
-        /// <summary>
-        /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
-        /// </summary>
-        public static ReadOnlySpan<byte> kNoOfflineProcess_u8 => "NoOfflineProcess\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
         /// used for Mixconverter/Up-Mixer/Down-Mixer
         /// </summary>
         public const string kUpDownMix = "Up-Downmix";
@@ -22157,32 +23764,6 @@ internal static partial class LibVst
         /// used for Mixconverter/Up-Mixer/Down-Mixer
         /// </summary>
         public static ReadOnlySpan<byte> kUpDownMix_u8 => "Up-Downmix\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// Meter, Scope, FFT-Display, not selectable as insert plug-in
-        /// </summary>
-        public const string kAnalyzer = "Analyzer";
-        
-        /// <summary>
-        /// Meter, Scope, FFT-Display, not selectable as insert plug-in
-        /// </summary>
-        public static ReadOnlySpan<byte> kAnalyzer_u8 => "Analyzer\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
-        /// </summary>
-        public const string kAmbisonics = "Ambisonics";
-        
-        /// <summary>
-        /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
-        /// </summary>
-        public static ReadOnlySpan<byte> kAmbisonics_u8 => "Ambisonics\0"u8;
     }
     
     public static partial class PlugType
@@ -25133,6 +26714,8 @@ internal static partial class LibVst
             Register<IContextMenu>();
             Register<IContextMenuTarget>();
             Register<IComponentHandler3>();
+            Register<IDataExchangeHandler>();
+            Register<IDataExchangeReceiver>();
             Register<IComponentHandler>();
             Register<IComponentHandler2>();
             Register<IComponentHandlerBusActivation>();
@@ -25141,6 +26724,7 @@ internal static partial class LibVst
             Register<IEditController2>();
             Register<IMidiMapping>();
             Register<IEditControllerHostEditing>();
+            Register<IComponentHandlerSystemTime>();
             Register<INoteExpressionController>();
             Register<IKeyswitchController>();
             Register<IMessage>();
@@ -25155,6 +26739,7 @@ internal static partial class LibVst
             Register<IPlugInterfaceSupport>();
             Register<IParameterFinder>();
             Register<IPrefetchableSupport>();
+            Register<IRemapParamID>();
             Register<IXmlRepresentationController>();
             Register<ITestPlugProvider>();
             Register<ITestPlugProvider2>();
@@ -25184,9 +26769,12 @@ internal static partial class LibVst
             { IComponentHandler2.IId, nameof(IComponentHandler2) },
             { IComponentHandler3.IId, nameof(IComponentHandler3) },
             { IComponentHandlerBusActivation.IId, nameof(IComponentHandlerBusActivation) },
+            { IComponentHandlerSystemTime.IId, nameof(IComponentHandlerSystemTime) },
             { IConnectionPoint.IId, nameof(IConnectionPoint) },
             { IContextMenu.IId, nameof(IContextMenu) },
             { IContextMenuTarget.IId, nameof(IContextMenuTarget) },
+            { IDataExchangeHandler.IId, nameof(IDataExchangeHandler) },
+            { IDataExchangeReceiver.IId, nameof(IDataExchangeReceiver) },
             { IEditController.IId, nameof(IEditController) },
             { IEditController2.IId, nameof(IEditController2) },
             { IEditControllerHostEditing.IId, nameof(IEditControllerHostEditing) },
@@ -25217,6 +26805,7 @@ internal static partial class LibVst
             { IProcessContextRequirements.IId, nameof(IProcessContextRequirements) },
             { IProgramListData.IId, nameof(IProgramListData) },
             { IProgress.IId, nameof(IProgress) },
+            { IRemapParamID.IId, nameof(IRemapParamID) },
             { IStreamAttributes.IId, nameof(IStreamAttributes) },
             { IStringResult.IId, nameof(IStringResult) },
             { ITestPlugProvider.IId, nameof(ITestPlugProvider) },

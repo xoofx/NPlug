@@ -1,7 +1,7 @@
 # configuration file for dotnet-releaser
 # Disable default packs - It will only publish NuGet and the Changelog
 [msbuild]
-project = "NPlug.sln"
+project = "NPlug.slnx"
 [github]
 user = "xoofx"
 repo = "NPlug"

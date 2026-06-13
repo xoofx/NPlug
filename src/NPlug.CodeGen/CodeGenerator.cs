@@ -236,9 +236,8 @@ public class CodeGenerator
         var comObjectManager = new CSharpClass("ComObjectManager");
         comObjectManager.Modifiers = CSharpModifiers.Partial;
         comObjectManager.Visibility = CSharpVisibility.Public;
-        var staticMethod = new CSharpMethod()
+        var staticMethod = new CSharpMethod("RegisterAllInterfaces")
         {
-            Name = "RegisterAllInterfaces",
             ReturnType = CSharpPrimitiveType.Void(),
             Modifiers = CSharpModifiers.Static,
             Visibility = CSharpVisibility.Private,
@@ -257,9 +256,8 @@ public class CodeGenerator
     private void GenerateGuidToName()
     {
         // public sealed unsafe partial class ComObjectManager : IDisposable
-        var staticMethod = new CSharpMethod()
+        var staticMethod = new CSharpMethod("GetMapGuidToName")
         {
-            Name = "GetMapGuidToName",
             ReturnType = new CSharpFreeType("Dictionary<Guid, string>"),
             Modifiers = CSharpModifiers.Static,
             Visibility = CSharpVisibility.Private,
@@ -573,7 +571,7 @@ public class CodeGenerator
                                 else
                                 {
                                     csStruct.IsRecord = true;
-                                    csStruct.RecordParameters.Add(new CSharpParameter("Value") { ParameterType = csParameterType });
+                                    csStruct.PrimaryConstructorParameters.Add(new CSharpParameter("Value") { ParameterType = csParameterType });
                                     csStruct.Members.Add(new CSharpFreeMember() { Text = $"public static implicit operator {csParameterType.GetName()}({csStruct.Name} value) => value.Value;" });
                                     csStruct.Members.Add(new CSharpFreeMember() { Text = $"public static implicit operator {csStruct.Name}({csParameterType.GetName()} value) => new(value);" });
 
@@ -816,7 +814,7 @@ public class CodeGenerator
                         };
                         csStruct.Members.Add(vtblCount);
 
-                        initializeVtbl = new CSharpMethod() { Name = "InitializeVtbl", Modifiers = CSharpModifiers.Static };
+                        initializeVtbl = new CSharpMethod("InitializeVtbl") { Modifiers = CSharpModifiers.Static };
                         initializeVtbl.Parameters.Add(new CSharpParameter("vtbl") { ParameterType = voidPtrPtr });
                         initializeVtbl.ReturnType = CSharpPrimitiveType.Void();
                         initializeVtbl.Attributes.Add(MethodImplAggressiveInliningAttribute);
@@ -854,18 +852,16 @@ public class CodeGenerator
                         }
                     }
 
-                    var csMethod = new CSharpMethod
+                    var csMethod = new CSharpMethod($"{cppMethod.Name}_ToManaged")
                     {
-                        Name = $"{cppMethod.Name}_ToManaged",
                         Modifiers = CSharpModifiers.Static | CSharpModifiers.Partial,
                         Visibility = CSharpVisibility.Private,
                         CppElement = cppMethod,
                     };
                     UpdateComment(csMethod);
 
-                    var csMethodWrap = new CSharpMethod
+                    var csMethodWrap = new CSharpMethod($"{cppMethod.Name}_Wrapper")
                     {
-                        Name = $"{cppMethod.Name}_Wrapper",
                         Modifiers = CSharpModifiers.Static,
                         Visibility = CSharpVisibility.Private,
                         CppElement = cppMethod,
@@ -987,9 +983,8 @@ public class CodeGenerator
 
                     if (ccwStructImpl is not null)
                     {
-                        var csMethodImpl = new CSharpMethod
+                        var csMethodImpl = new CSharpMethod($"{cppMethod.Name}_ToManaged")
                         {
-                            Name = $"{cppMethod.Name}_ToManaged",
                             Modifiers = CSharpModifiers.Static | CSharpModifiers.Partial,
                             Visibility = CSharpVisibility.Private,
                             Body = (writer, element) =>
@@ -1103,9 +1098,8 @@ public class CodeGenerator
 
     private CSharpMethod CreateMethodRcw(CppFunction cppMethod, CSharpStruct csClass, int virtualMethodIndex, CSharpStruct? csBaseClass = null)
     {
-        var csMethod = new CSharpMethod
+        var csMethod = new CSharpMethod(cppMethod.Name)
         {
-            Name = cppMethod.Name,
             Visibility = CSharpVisibility.Public,
             CppElement = cppMethod,
         };
@@ -1160,11 +1154,11 @@ public class CodeGenerator
         {
             csMethod.Body = (writer, element) =>
             {
-                var functionPointer = csMethod.ToFunctionPointer();
+                var functionPointer = csMethod.ToFunctionPointer()!;
                 var thisPointer = new CSharpPointerType(csClass);
                 functionPointer.IsUnmanaged = true;
                 functionPointer.UnmanagedCallingConvention.Add("MemberFunction");
-                functionPointer.Parameters.Insert(0, thisPointer);
+                functionPointer.Parameters.Insert(0, new CSharpParameter(thisPointer, "this"));
                 functionPointer.ReturnType = unmanagedReturnType;
                 var builder = new StringBuilder();
 

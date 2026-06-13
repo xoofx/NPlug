@@ -1,0 +1,37 @@
+<Solution>
+  <Folder Name="/general/">
+    <File Path="../.editorconfig" />
+    <File Path="../.gitattributes" />
+    <File Path="../.github/workflows/ci-nplug_proxy.yml" />
+    <File Path="../.github/workflows/ci-nplug_validator.yml" />
+    <File Path="../.github/workflows/ci-publish_nplug_proxy.yml" />
+    <File Path="../.github/workflows/ci-publish_nplug_validator.yml" />
+    <File Path="../.github/workflows/ci.yml" />
+    <File Path="../.gitignore" />
+    <File Path="../AGENTS.md" />
+    <File Path="../license.txt" />
+    <File Path="../readme.md" />
+    <File Path="Directory.Build.props" />
+    <File Path="dotnet-releaser.toml" />
+    <File Path="global.json" />
+    <File Path="NPlug.samples.targets" />
+  </Folder>
+  <Folder Name="/libraries/">
+    <Project Path="NPlug.Proxy/NPlug.Proxy.msbuildproj" Type="13b669be-bb05-4ddf-9536-439f39a36129" />
+    <Project Path="NPlug.Validator/NPlug.Validator.csproj" />
+    <Project Path="NPlug/NPlug.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <File Path="../samples/Directory.Build.props" />
+    <File Path="../samples/Directory.Build.targets" />
+    <File Path="../samples/global.json" />
+    <Project Path="../samples/NPlug.SimpleDelay/NPlug.SimpleDelay.csproj" />
+    <Project Path="../samples/NPlug.SimpleProgramChange/NPlug.SimpleProgramChange.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="NPlug.Tests/NPlug.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="NPlug.CodeGen/NPlug.CodeGen.csproj" />
+  </Folder>
+</Solution>

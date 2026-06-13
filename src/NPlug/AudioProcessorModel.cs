@@ -481,7 +481,7 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
     {
         if (_pointerToBuffer != null)
         {
-            NativeMemory.Free(_pointerToBuffer);
+            NativeMemory.AlignedFree(_pointerToBuffer);
             _pointerToBuffer = null;
             _allParameterSizeInBytes = 0;
         }

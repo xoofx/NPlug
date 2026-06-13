@@ -10,37 +10,37 @@ internal static unsafe partial class LibVst
 {
     public partial struct IAttributes
     {
-        private static partial ComResult set_ToManaged(IAttributes* self, byte* attrID, LibVst.FVariant* data)
+        private static partial ComResult set_ToManaged(IAttributes* self, LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult queue_ToManaged(IAttributes* self, byte* listID, LibVst.FVariant* data)
+        private static partial ComResult queue_ToManaged(IAttributes* self, LibVst.IAttrID listID, LibVst.FVariant* data)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult setBinaryData_ToManaged(IAttributes* self, byte* attrID, void* data, uint bytes, byte copyBytes)
+        private static partial ComResult setBinaryData_ToManaged(IAttributes* self, LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult get_ToManaged(IAttributes* self, byte* attrID, LibVst.FVariant* data)
+        private static partial ComResult get_ToManaged(IAttributes* self, LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult unqueue_ToManaged(IAttributes* self, byte* listID, LibVst.FVariant* data)
+        private static partial ComResult unqueue_ToManaged(IAttributes* self, LibVst.IAttrID listID, LibVst.FVariant* data)
         {
             throw new NotImplementedException();
         }
         
-        private static partial int getQueueItemCount_ToManaged(IAttributes* self, byte* arg)
+        private static partial int getQueueItemCount_ToManaged(IAttributes* self, LibVst.IAttrID arg)
         {
             throw new NotImplementedException();
         }
         
-        private static partial ComResult resetQueue_ToManaged(IAttributes* self, byte* attrID)
+        private static partial ComResult resetQueue_ToManaged(IAttributes* self, LibVst.IAttrID attrID)
         {
             throw new NotImplementedException();
         }
@@ -50,12 +50,12 @@ internal static unsafe partial class LibVst
             throw new NotImplementedException();
         }
         
-        private static partial ComResult getBinaryData_ToManaged(IAttributes* self, byte* attrID, void* data, uint bytes)
+        private static partial ComResult getBinaryData_ToManaged(IAttributes* self, LibVst.IAttrID attrID, void* data, uint bytes)
         {
             throw new NotImplementedException();
         }
         
-        private static partial uint getBinaryDataSize_ToManaged(IAttributes* self, byte* attrID)
+        private static partial uint getBinaryDataSize_ToManaged(IAttributes* self, LibVst.IAttrID attrID)
         {
             throw new NotImplementedException();
         }

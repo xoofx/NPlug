@@ -7,8 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
 
+using System;
+using System.Runtime.InteropServices;
 #pragma warning disable CS0649
 #pragma warning disable CS1658
 #pragma warning disable CS1570
@@ -45,7 +46,7 @@ internal static partial class LibVst
     /// interfaces of the object.
     /// - FUnknown::addRef and FUnknown::release manage the lifetime of the object.
     /// If no more references exist, the object is destroyed in memory.Interfaces are identified by 16 byte Globally Unique Identifiers.
-    /// The SDK provides a class called FUID for this purpose.@ref howtoClass
+    /// The SDK provides a class called FUID for this purpose.howtoClass
     /// </remarks>
     public unsafe partial struct FUnknown : INativeGuid, INativeUnknown, INativeVtbl
     {
@@ -95,8 +96,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -185,8 +185,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         private static partial uint addRef_ToManaged(FUnknown* self);
         
@@ -323,8 +322,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -658,16 +656,16 @@ internal static partial class LibVst
         public static void InitializeVtbl(void** vtbl)
         {
             FUnknown.InitializeVtbl(vtbl);
-            vtbl[3] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, LibVst.FVariant*, int>)&set_Wrapper;
-            vtbl[4] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, LibVst.FVariant*, int>)&queue_Wrapper;
-            vtbl[5] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, void*, uint, byte, int>)&setBinaryData_Wrapper;
-            vtbl[6] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, LibVst.FVariant*, int>)&get_Wrapper;
-            vtbl[7] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, LibVst.FVariant*, int>)&unqueue_Wrapper;
-            vtbl[8] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, int>)&getQueueItemCount_Wrapper;
-            vtbl[9] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, int>)&resetQueue_Wrapper;
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IAttributes*, LibVst.FIDString, LibVst.FVariant*, int>)&set_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IAttributes*, LibVst.FIDString, LibVst.FVariant*, int>)&queue_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IAttributes*, LibVst.FIDString, void*, uint, byte, int>)&setBinaryData_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IAttributes*, LibVst.FIDString, LibVst.FVariant*, int>)&get_Wrapper;
+            vtbl[7] = (delegate*unmanaged[MemberFunction]<IAttributes*, LibVst.FIDString, LibVst.FVariant*, int>)&unqueue_Wrapper;
+            vtbl[8] = (delegate*unmanaged[MemberFunction]<IAttributes*, LibVst.FIDString, int>)&getQueueItemCount_Wrapper;
+            vtbl[9] = (delegate*unmanaged[MemberFunction]<IAttributes*, LibVst.FIDString, int>)&resetQueue_Wrapper;
             vtbl[10] = (delegate*unmanaged[MemberFunction]<IAttributes*, int>)&resetAllQueues_Wrapper;
-            vtbl[11] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, void*, uint, int>)&getBinaryData_Wrapper;
-            vtbl[12] = (delegate*unmanaged[MemberFunction]<IAttributes*, byte*, uint>)&getBinaryDataSize_Wrapper;
+            vtbl[11] = (delegate*unmanaged[MemberFunction]<IAttributes*, LibVst.FIDString, void*, uint, int>)&getBinaryData_Wrapper;
+            vtbl[12] = (delegate*unmanaged[MemberFunction]<IAttributes*, LibVst.FIDString, uint>)&getBinaryDataSize_Wrapper;
         }
         
         // --------------------------------------------------------------
@@ -690,8 +688,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -723,20 +720,20 @@ internal static partial class LibVst
         /// When using the PAttributes functions, this is done through a function parameter.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult set(byte* attrID, LibVst.FVariant* data)
+        public ComResult set(LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "set");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[3])(__self__, attrID, data);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[3])(__self__, attrID, data);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[3])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[3])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
             }
         }
         
@@ -746,20 +743,20 @@ internal static partial class LibVst
         /// of subattributes or other objects that implement the IPersistent interface.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queue(byte* listID, LibVst.FVariant* data)
+        public ComResult queue(LibVst.IAttrID listID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "queue");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[4])(__self__, listID, data);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[4])(__self__, listID, data);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[4])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[4])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
             }
         }
         
@@ -770,20 +767,20 @@ internal static partial class LibVst
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setBinaryData(byte* attrID, void* data, uint bytes, byte copyBytes)
+        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "setBinaryData");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, void*, uint, byte, int>)Vtbl[5])(__self__, attrID, data, bytes, copyBytes);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, byte, int>)Vtbl[5])(__self__, attrID, data, bytes, copyBytes);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, void*, uint, byte, int>)Vtbl[5])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, byte, int>)Vtbl[5])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes, copyBytes);
             }
         }
         
@@ -793,20 +790,20 @@ internal static partial class LibVst
         /// Get data previously stored to the archive.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult get(byte* attrID, LibVst.FVariant* data)
+        public ComResult get(LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "get");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[6])(__self__, attrID, data);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[6])(__self__, attrID, data);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[6])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[6])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data);
             }
         }
         
@@ -817,20 +814,20 @@ internal static partial class LibVst
         /// </summary>
         /// <seealso cref="IAttributes::resetQueue "/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult unqueue(byte* listID, LibVst.FVariant* data)
+        public ComResult unqueue(LibVst.IAttrID listID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "unqueue");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[7])(__self__, listID, data);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[7])(__self__, listID, data);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, LibVst.FVariant*, int>)Vtbl[7])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, LibVst.FVariant*, int>)Vtbl[7])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), listID, data);
             }
         }
         
@@ -838,19 +835,19 @@ internal static partial class LibVst
         /// Get the amount of items in a queue.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int getQueueItemCount(byte* arg)
+        public int getQueueItemCount(LibVst.IAttrID arg)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getQueueItemCount");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, int>)Vtbl[8])(__self__, arg);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])(__self__, arg);
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, int>)Vtbl[8])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), arg);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), arg);
             }
         }
         
@@ -858,20 +855,20 @@ internal static partial class LibVst
         /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult resetQueue(byte* attrID)
+        public ComResult resetQueue(LibVst.IAttrID attrID)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "resetQueue");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, int>)Vtbl[9])(__self__, attrID);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[9])(__self__, attrID);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, int>)Vtbl[9])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[9])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
             }
         }
         
@@ -901,20 +898,20 @@ internal static partial class LibVst
         /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult getBinaryData(byte* attrID, void* data, uint bytes)
+        public ComResult getBinaryData(LibVst.IAttrID attrID, void* data, uint bytes)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getBinaryData");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, void*, uint, int>)Vtbl[11])(__self__, attrID, data, bytes);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, int>)Vtbl[11])(__self__, attrID, data, bytes);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, void*, uint, int>)Vtbl[11])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, void*, uint, int>)Vtbl[11])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID, data, bytes);
             }
         }
         
@@ -922,19 +919,19 @@ internal static partial class LibVst
         /// Get the size in bytes of binary data in the archive.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public uint getBinaryDataSize(byte* attrID)
+        public uint getBinaryDataSize(LibVst.IAttrID attrID)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getBinaryDataSize");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, uint>)Vtbl[12])(__self__, attrID);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, uint>)Vtbl[12])(__self__, attrID);
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, byte*, uint>)Vtbl[12])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, uint>)Vtbl[12])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrID);
             }
         }
         
@@ -954,10 +951,10 @@ internal static partial class LibVst
         /// ownership by adding the FVariant::kOwner flag to the FVariant::type member (data.type |= FVariant::kOwner).
         /// When using the PAttributes functions, this is done through a function parameter.
         /// </remarks>
-        private static partial ComResult set_ToManaged(IAttributes* self, byte* attrID, LibVst.FVariant* data);
+        private static partial ComResult set_ToManaged(IAttributes* self, LibVst.IAttrID attrID, LibVst.FVariant* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int set_Wrapper(IAttributes* self, byte* attrID, LibVst.FVariant* data)
+        private static int set_Wrapper(IAttributes* self, LibVst.FIDString attrID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -994,10 +991,10 @@ internal static partial class LibVst
         /// you can only store a list of integers or a list of doubles/strings/etc. You can also store a list
         /// of subattributes or other objects that implement the IPersistent interface.
         /// </summary>
-        private static partial ComResult queue_ToManaged(IAttributes* self, byte* listID, LibVst.FVariant* data);
+        private static partial ComResult queue_ToManaged(IAttributes* self, LibVst.IAttrID listID, LibVst.FVariant* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int queue_Wrapper(IAttributes* self, byte* listID, LibVst.FVariant* data)
+        private static int queue_Wrapper(IAttributes* self, LibVst.FIDString listID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -1035,10 +1032,10 @@ internal static partial class LibVst
         /// to write it to a file (copyBytes = false) or it copies the data to its own buffers (copyBytes = true).
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
-        private static partial ComResult setBinaryData_ToManaged(IAttributes* self, byte* attrID, void* data, uint bytes, byte copyBytes);
+        private static partial ComResult setBinaryData_ToManaged(IAttributes* self, LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int setBinaryData_Wrapper(IAttributes* self, byte* attrID, void* data, uint bytes, byte copyBytes)
+        private static int setBinaryData_Wrapper(IAttributes* self, LibVst.FIDString attrID, void* data, uint bytes, byte copyBytes)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -1075,10 +1072,10 @@ internal static partial class LibVst
         /// {
         /// Get data previously stored to the archive.
         /// </remarks>
-        private static partial ComResult get_ToManaged(IAttributes* self, byte* attrID, LibVst.FVariant* data);
+        private static partial ComResult get_ToManaged(IAttributes* self, LibVst.IAttrID attrID, LibVst.FVariant* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int get_Wrapper(IAttributes* self, byte* attrID, LibVst.FVariant* data)
+        private static int get_Wrapper(IAttributes* self, LibVst.FIDString attrID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -1116,10 +1113,10 @@ internal static partial class LibVst
         /// object lists can be reset which means that the items can be read once again.
         /// </summary>
         /// <seealso cref="IAttributes::resetQueue "/>
-        private static partial ComResult unqueue_ToManaged(IAttributes* self, byte* listID, LibVst.FVariant* data);
+        private static partial ComResult unqueue_ToManaged(IAttributes* self, LibVst.IAttrID listID, LibVst.FVariant* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int unqueue_Wrapper(IAttributes* self, byte* listID, LibVst.FVariant* data)
+        private static int unqueue_Wrapper(IAttributes* self, LibVst.FIDString listID, LibVst.FVariant* data)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -1154,10 +1151,10 @@ internal static partial class LibVst
         /// <summary>
         /// Get the amount of items in a queue.
         /// </summary>
-        private static partial int getQueueItemCount_ToManaged(IAttributes* self, byte* arg);
+        private static partial int getQueueItemCount_ToManaged(IAttributes* self, LibVst.IAttrID arg);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getQueueItemCount_Wrapper(IAttributes* self, byte* arg)
+        private static int getQueueItemCount_Wrapper(IAttributes* self, LibVst.FIDString arg)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -1192,10 +1189,10 @@ internal static partial class LibVst
         /// <summary>
         /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
         /// </summary>
-        private static partial ComResult resetQueue_ToManaged(IAttributes* self, byte* attrID);
+        private static partial ComResult resetQueue_ToManaged(IAttributes* self, LibVst.IAttrID attrID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int resetQueue_Wrapper(IAttributes* self, byte* attrID)
+        private static int resetQueue_Wrapper(IAttributes* self, LibVst.FIDString attrID)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -1269,10 +1266,10 @@ internal static partial class LibVst
         /// Read binary data from the archive. The data is copied into the passed buffer. The size of that buffer
         /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
         /// </summary>
-        private static partial ComResult getBinaryData_ToManaged(IAttributes* self, byte* attrID, void* data, uint bytes);
+        private static partial ComResult getBinaryData_ToManaged(IAttributes* self, LibVst.IAttrID attrID, void* data, uint bytes);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getBinaryData_Wrapper(IAttributes* self, byte* attrID, void* data, uint bytes)
+        private static int getBinaryData_Wrapper(IAttributes* self, LibVst.FIDString attrID, void* data, uint bytes)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -1307,10 +1304,10 @@ internal static partial class LibVst
         /// <summary>
         /// Get the size in bytes of binary data in the archive.
         /// </summary>
-        private static partial uint getBinaryDataSize_ToManaged(IAttributes* self, byte* attrID);
+        private static partial uint getBinaryDataSize_ToManaged(IAttributes* self, LibVst.IAttrID attrID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static uint getBinaryDataSize_Wrapper(IAttributes* self, byte* attrID)
+        private static uint getBinaryDataSize_Wrapper(IAttributes* self, LibVst.FIDString attrID)
         {
             if (InteropHelper.IsTracerEnabled)
             {
@@ -1358,6 +1355,22 @@ internal static partial class LibVst
         }
     }
     
+    public unsafe partial struct FIDString
+    {
+        public byte* Value;
+        
+        public static implicit operator byte*(FIDString value) => value.Value;
+        
+        public static implicit operator FIDString(byte* value) => new FIDString() { Value = value };
+    }
+    
+    public partial record struct IAttrID(LibVst.FIDString Value)
+    {
+        public static implicit operator LibVst.FIDString(IAttrID value) => value.Value;
+        
+        public static implicit operator IAttrID(LibVst.FIDString value) => new(value);
+    }
+    
     /// <summary>
     /// FVariant struct declaration
     /// A Value of variable type.
@@ -1365,7 +1378,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct FVariant
     {
         /// <summary>
@@ -1373,7 +1386,7 @@ internal static partial class LibVst
         /// </summary>
         public ushort type;
         
-        [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
+        [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
         public unsafe partial struct Union
         {
             [FieldOffset(0)]
@@ -1393,26 +1406,6 @@ internal static partial class LibVst
         }
         
         public LibVst.FVariant.Union union;
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public enum fvariant
-        {
-            kEmpty = 0,
-            
-            kInteger = 1 << 0,
-            
-            kFloat = 1 << 1,
-            
-            kString8 = 1 << 2,
-            
-            kObject = 1 << 3,
-            
-            kOwner = 1 << 4,
-            
-            kString16 = 1 << 5,
-        }
     }
     
     /// <summary>
@@ -1459,8 +1452,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -1492,7 +1484,7 @@ internal static partial class LibVst
         /// When using the PAttributes functions, this is done through a function parameter.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult set(byte* attrID, LibVst.FVariant* data)
+        public ComResult set(LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).set(attrID, data);
         }
@@ -1503,7 +1495,7 @@ internal static partial class LibVst
         /// of subattributes or other objects that implement the IPersistent interface.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult queue(byte* listID, LibVst.FVariant* data)
+        public ComResult queue(LibVst.IAttrID listID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).queue(listID, data);
         }
@@ -1515,7 +1507,7 @@ internal static partial class LibVst
         /// When binary data should be stored in the default pool for example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult setBinaryData(byte* attrID, void* data, uint bytes, byte copyBytes)
+        public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).setBinaryData(attrID, data, bytes, copyBytes);
         }
@@ -1526,7 +1518,7 @@ internal static partial class LibVst
         /// Get data previously stored to the archive.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult get(byte* attrID, LibVst.FVariant* data)
+        public ComResult get(LibVst.IAttrID attrID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).get(attrID, data);
         }
@@ -1538,7 +1530,7 @@ internal static partial class LibVst
         /// </summary>
         /// <seealso cref="IAttributes::resetQueue "/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult unqueue(byte* listID, LibVst.FVariant* data)
+        public ComResult unqueue(LibVst.IAttrID listID, LibVst.FVariant* data)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).unqueue(listID, data);
         }
@@ -1547,7 +1539,7 @@ internal static partial class LibVst
         /// Get the amount of items in a queue.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int getQueueItemCount(byte* arg)
+        public int getQueueItemCount(LibVst.IAttrID arg)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getQueueItemCount(arg);
         }
@@ -1556,7 +1548,7 @@ internal static partial class LibVst
         /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult resetQueue(byte* attrID)
+        public ComResult resetQueue(LibVst.IAttrID attrID)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).resetQueue(attrID);
         }
@@ -1575,7 +1567,7 @@ internal static partial class LibVst
         /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ComResult getBinaryData(byte* attrID, void* data, uint bytes)
+        public ComResult getBinaryData(LibVst.IAttrID attrID, void* data, uint bytes)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getBinaryData(attrID, data, bytes);
         }
@@ -1584,7 +1576,7 @@ internal static partial class LibVst
         /// Get the size in bytes of binary data in the archive.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public uint getBinaryDataSize(byte* attrID)
+        public uint getBinaryDataSize(LibVst.IAttrID attrID)
         {
             return Unsafe.As<IAttributes2, IAttributes>(ref this).getBinaryDataSize(attrID);
         }
@@ -1724,22 +1716,6 @@ internal static partial class LibVst
         }
     }
     
-    public unsafe partial struct FIDString
-    {
-        public byte* Value;
-        
-        public static implicit operator byte*(FIDString value) => value.Value;
-        
-        public static implicit operator FIDString(byte* value) => new FIDString() { Value = value };
-    }
-    
-    public partial record struct IAttrID(LibVst.FIDString Value)
-    {
-        public static implicit operator LibVst.FIDString(IAttrID value) => value.Value;
-        
-        public static implicit operator IAttrID(LibVst.FIDString value) => new(value);
-    }
-    
     /// <summary>
     /// Basic interface to a plug-in component: IPluginBase
     /// </summary>
@@ -1787,8 +1763,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -1811,7 +1786,7 @@ internal static partial class LibVst
         /// </summary>
         /// <param name="context,">passed by the host, is mandatory and should implement IHostApplication</param>
         /// <note>
-        /// Extensive memory allocations etc. should be performed in this method rather than in
+        /// @note Extensive memory allocations etc. should be performed in this method rather than in
         /// the class' constructor! If the method does NOT return kResultOk, the object is released
         /// immediately. In this case terminate is not called!
         /// </note>
@@ -1863,7 +1838,7 @@ internal static partial class LibVst
         /// </summary>
         /// <param name="context,">passed by the host, is mandatory and should implement IHostApplication</param>
         /// <note>
-        /// Extensive memory allocations etc. should be performed in this method rather than in
+        /// @note Extensive memory allocations etc. should be performed in this method rather than in
         /// the class' constructor! If the method does NOT return kResultOk, the object is released
         /// immediately. In this case terminate is not called!
         /// </note>
@@ -2006,8 +1981,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -2289,7 +2263,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PFactoryInfo
     {
         /// <summary>
@@ -2345,15 +2319,6 @@ internal static partial class LibVst
             /// </summary>
             kUnicode = 1 << 4,
         }
-        
-        public enum ipluginbase
-        {
-            kURLSize = 256,
-            
-            kEmailSize = 128,
-            
-            kNameSize = 64,
-        }
     }
     
     /// <summary>
@@ -2362,7 +2327,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PClassInfo
     {
         /// <summary>
@@ -2392,13 +2357,6 @@ internal static partial class LibVst
         {
             kManyInstances = 0x7FFFFFFF,
         }
-        
-        public enum ipluginbase
-        {
-            kCategorySize = 32,
-            
-            kNameSize = 64,
-        }
     }
     
     /// <summary>
@@ -2406,7 +2364,7 @@ internal static partial class LibVst
     /// Version 2 of class factory supporting PClassInfo2: IPluginFactory2
     /// </summary>
     /// <remarks>
-    ///  pluginBase@copydoc IPluginFactory
+    ///  pluginBaseIPluginFactory
     /// </remarks>
     public unsafe partial struct IPluginFactory2 : INativeGuid, INativeUnknown, INativeVtbl
     {
@@ -2443,8 +2401,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -2584,7 +2541,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginBase
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PClassInfo2
     {
         /// <summary>
@@ -2631,15 +2588,6 @@ internal static partial class LibVst
         /// SDK version used to build this class (e.g. "VST 3.0")
         /// </summary>
         public fixed byte sdkVersion[64];
-        
-        public enum ipluginbase
-        {
-            kVendorSize = 64,
-            
-            kVersionSize = 64,
-            
-            kSubCategoriesSize = 128,
-        }
     }
     
     /// <summary>
@@ -2647,7 +2595,7 @@ internal static partial class LibVst
     /// Version 3 of class factory supporting PClassInfoW: IPluginFactory3
     /// </summary>
     /// <remarks>
-    ///  pluginBase@copydoc IPluginFactory
+    ///  pluginBaseIPluginFactory
     /// </remarks>
     public unsafe partial struct IPluginFactory3 : INativeGuid, INativeUnknown, INativeVtbl
     {
@@ -2685,8 +2633,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -2891,7 +2838,7 @@ internal static partial class LibVst
     /// <summary>
     /// Unicode Version of Basic Information about a class provided by the plug-in
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PClassInfoW
     {
         /// <summary>
@@ -2938,15 +2885,6 @@ internal static partial class LibVst
         /// SDK version used to build this class (e.g. "VST 3.0")
         /// </summary>
         public fixed char sdkVersion[64];
-        
-        public enum ipluginbase
-        {
-            kVendorSize = 64,
-            
-            kVersionSize = 64,
-            
-            kSubCategoriesSize = 128,
-        }
     }
     
     /// <summary>
@@ -2992,8 +2930,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -3128,8 +3065,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -3236,8 +3172,7 @@ internal static partial class LibVst
     /// </remarks>
     /// <seealso cref="platformUITypeIPlugFrame, "/>
     /// <par>
-    /// Sizing of a view
-    /// Usually, the size of a plug-in view is fixed. But both the host and the plug-in can cause
+    /// @par Sizing of a view Usually, the size of a plug-in view is fixed. But both the host and the plug-in can cause
     /// a view to be resized:@n - @b Host: If IPlugView::canResize () returns kResultTrue the host will set up the window
     /// so that the user can resize it. While the user resizes the window,
     /// IPlugView::checkSizeConstraint () is called, allowing the plug-in to change the size to a valid
@@ -3251,8 +3186,7 @@ internal static partial class LibVst
     /// called.&lt;/b&gt;
     /// </par>
     /// <par>
-    /// Keyboard handling
-    /// The plug-in view receives keyboard events from the host. A view implementation must not handle
+    /// @par Keyboard handling The plug-in view receives keyboard events from the host. A view implementation must not handle
     /// keyboard events by the means of platform callbacks, but let the host pass them to the view. The host
     /// depends on a proper return value when IPlugView::onKeyDown is called, otherwise the plug-in view may
     /// cause a malfunction of the host's key command handling.
@@ -3303,8 +3237,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -3420,7 +3353,7 @@ internal static partial class LibVst
         /// <param name="key">: unicode code of key</param>
         /// <param name="keyCode">: virtual keycode for non ascii keys - see @ref VirtualKeyCodes in keycodes.h</param>
         /// <param name="modifiers">: any combination of modifiers - see @ref KeyModifier in keycodes.h</param>
-        /// <returns>kResultTrue if the key is handled, otherwise kResultFalse. @n &lt;b&gt;Please note that kResultTrue must only be returned if the key has really been
+        /// <returns>@return kResultTrue if the key is handled, otherwise kResultFalse. @n &lt;b&gt;Please note that kResultTrue must only be returned if the key has really been
         /// handled. &lt;/b&gt;Otherwise key command handling of the host might be blocked!</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult onKeyDown(ushort key, short keyCode, short modifiers)
@@ -3762,7 +3695,7 @@ internal static partial class LibVst
         /// <param name="key">: unicode code of key</param>
         /// <param name="keyCode">: virtual keycode for non ascii keys - see @ref VirtualKeyCodes in keycodes.h</param>
         /// <param name="modifiers">: any combination of modifiers - see @ref KeyModifier in keycodes.h</param>
-        /// <returns>kResultTrue if the key is handled, otherwise kResultFalse. @n &lt;b&gt;Please note that kResultTrue must only be returned if the key has really been
+        /// <returns>@return kResultTrue if the key is handled, otherwise kResultFalse. @n &lt;b&gt;Please note that kResultTrue must only be returned if the key has really been
         /// handled. &lt;/b&gt;Otherwise key command handling of the host might be blocked!</returns>
         private static partial ComResult onKeyDown_ToManaged(IPlugView* self, ushort key, short keyCode, short modifiers);
         
@@ -4093,7 +4026,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  pluginGUI
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ViewRect
     {
         public int left;
@@ -4158,8 +4091,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -4655,8 +4587,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -5261,8 +5192,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -5477,8 +5407,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -5501,7 +5430,7 @@ internal static partial class LibVst
         /// </summary>
         /// <param name="context,">passed by the host, is mandatory and should implement IHostApplication</param>
         /// <note>
-        /// Extensive memory allocations etc. should be performed in this method rather than in
+        /// @note Extensive memory allocations etc. should be performed in this method rather than in
         /// the class' constructor! If the method does NOT return kResultOk, the object is released
         /// immediately. In this case terminate is not called!
         /// </note>
@@ -6103,7 +6032,7 @@ internal static partial class LibVst
     /// BusInfo:
     /// This is the structure used with getBusInfo, informing the host about what is a specific given bus.@n See also: Steinberg::Vst::IComponent::getBusInfo
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct BusInfo
     {
         /// <summary>
@@ -6168,7 +6097,7 @@ internal static partial class LibVst
     /// relation of an event-input-channel to an audio-output-bus in particular is of interest to the host
     /// (in order to relate MIDI-tracks to audio-channels)@n See also: IComponent::getRoutingInfo, @ref vst3Routing
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct RoutingInfo
     {
         /// <summary>
@@ -6233,8 +6162,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -6453,7 +6381,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrpStructure representing a single Event of different types associated to a specific event (@ref kEvent) bus.
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct Event
     {
         /// <summary>
@@ -6481,7 +6409,7 @@ internal static partial class LibVst
         /// </summary>
         public ushort type;
         
-        [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
+        [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
         public unsafe partial struct Union
         {
             /// <summary>
@@ -6627,7 +6555,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrpPitch uses the twelve-tone equal temperament tuning (12-TET).
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteOnEvent
     {
         /// <summary>
@@ -6667,7 +6595,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteOffEvent
     {
         /// <summary>
@@ -6702,7 +6630,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct DataEvent
     {
         /// <summary>
@@ -6738,7 +6666,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PolyPressureEvent
     {
         /// <summary>
@@ -6771,13 +6699,13 @@ internal static partial class LibVst
     /// The predefined types have a predefined mapping of the normalized values (see @ref NoteExpressionTypeIDs)
     /// </summary>
     /// <seealso cref="INoteExpressionController"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteExpressionValueEvent
     {
         /// <summary>
         /// see @ref NoteExpressionTypeID
         /// </summary>
-        public uint typeId;
+        public LibVst.NoteExpressionTypeID typeId;
         
         /// <summary>
         /// associated note identifier to apply the change
@@ -6787,7 +6715,21 @@ internal static partial class LibVst
         /// <summary>
         /// normalized value [0.0, 1.0].
         /// </summary>
-        public double value;
+        public LibVst.NoteExpressionValue value;
+    }
+    
+    public partial record struct NoteExpressionTypeID(uint Value)
+    {
+        public static implicit operator uint(NoteExpressionTypeID value) => value.Value;
+        
+        public static implicit operator NoteExpressionTypeID(uint value) => new(value);
+    }
+    
+    public partial record struct NoteExpressionValue(double Value)
+    {
+        public static implicit operator double(NoteExpressionValue value) => value.Value;
+        
+        public static implicit operator NoteExpressionValue(double value) => new(value);
     }
     
     /// <summary>
@@ -6796,13 +6738,13 @@ internal static partial class LibVst
     /// </summary>
     /// <seealso cref="NoteExpressionTypeInfo"/>
     /// <seealso cref="INoteExpressionController"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteExpressionTextEvent
     {
         /// <summary>
         /// see @ref NoteExpressionTypeID (kTextTypeID or kPhoneticTypeID)
         /// </summary>
-        public uint typeId;
+        public LibVst.NoteExpressionTypeID typeId;
         
         /// <summary>
         /// associated note identifier to apply the change
@@ -6827,7 +6769,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ChordEvent
     {
         /// <summary>
@@ -6863,7 +6805,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ScaleEvent
     {
         /// <summary>
@@ -6894,7 +6836,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstEventGrp- [released: 3.6.12]This kind of event is reserved for generating MIDI CC as output event for kEvent Bus during the process call.
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct LegacyMIDICCOutEvent
     {
         /// <summary>
@@ -6966,8 +6908,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -7259,8 +7200,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -7596,8 +7536,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -8499,16 +8438,16 @@ internal static partial class LibVst
     /// Audio processing setup.
     /// </summary>
     /// <seealso cref="IAudioProcessor::setupProcessing"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ProcessSetup
     {
         /// <summary>
-        /// @ref ProcessModes
+        /// ProcessModes
         /// </summary>
         public int processMode;
         
         /// <summary>
-        /// @ref SymbolicSampleSizes
+        /// SymbolicSampleSizes
         /// </summary>
         public int symbolicSampleSize;
         
@@ -8537,7 +8476,7 @@ internal static partial class LibVst
     /// with bus indices used in IComponent::getBusInfo of media type kAudio.
     /// </summary>
     /// <seealso cref="AudioBusBuffers, IParameterChanges, IEventList, ProcessContext, IProcessContextRequirements"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ProcessData
     {
         /// <summary>
@@ -8617,7 +8556,7 @@ internal static partial class LibVst
     /// .
     /// </summary>
     /// <seealso cref="ProcessData"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct AudioBusBuffers
     {
         /// <summary>
@@ -8630,7 +8569,7 @@ internal static partial class LibVst
         /// </summary>
         public ulong silenceFlags;
         
-        [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
+        [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
         public unsafe partial struct Union
         {
             /// <summary>
@@ -8673,7 +8612,7 @@ internal static partial class LibVst
     /// this problem.
     /// </summary>
     /// <seealso cref="IAudioProcessor, ProcessData"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ProcessContext
     {
         /// <summary>
@@ -8842,7 +8781,7 @@ internal static partial class LibVst
     /// A chord is described with a key note, a root note and the@copydoc chordMask
     /// </summary>
     /// <seealso cref="ProcessContext"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct Chord
     {
         /// <summary>
@@ -8892,7 +8831,7 @@ internal static partial class LibVst
     /// - 59.94 fps	     is framesPerSecond: 60 and flags: kPullDownRate
     /// - 60 fps         is framesPerSecond: 60 and flags: 0
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct FrameRate
     {
         /// <summary>
@@ -8929,7 +8868,7 @@ internal static partial class LibVst
     /// When the output of this plug-in is connected to an audio device, the initial output latency is the output
     /// latency of the audio device itself.A value of zero either means no latency or an unknown latency.Each plug-in adding a latency (returning a none zero value for IAudioProcessor::getLatencySamples) will modify the input 
     /// presentation latency of the next plug-ins in the mixer routing graph and will modify the output presentation latency 
-    /// of the previous plug-ins.@n html "iaudiopresentationlatency_usage.png"@n
+    /// of the previous plug-ins. html "iaudiopresentationlatency_usage.png"
     /// </remarks>
     /// <seealso cref="IAudioProcessor"/>
     /// <seealso cref="IComponent"/>
@@ -8968,8 +8907,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -9115,8 +9053,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -9307,8 +9244,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -9481,8 +9417,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -9816,7 +9751,7 @@ internal static partial class LibVst
     /// <summary>
     /// IContextMenuItem is an entry element of the context menu.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct IContextMenuItem
     {
         /// <summary>
@@ -9916,8 +9851,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -10029,7 +9963,7 @@ internal static partial class LibVst
     /// - [released: 3.5.0]
     /// - [optional]A plug-in can ask the host to create a context menu for a given exported parameter ID or a generic context menu.@nThe host may pre-fill this context menu with specific items regarding the parameter ID like "Show automation for parameter",
     /// "MIDI learn" etc...@nThe plug-in can use the context menu in two ways :
-    /// - add its own items to the menu via the IContextMenu interface and call IContextMenu::popup(..) to create the pop-up. See the @ref IContextMenuExample.- extract the host menu items and add them to a context menu created by the plug-in.@b Note: You can and should use this even if you do not add your own items to the menu as this is considered to be a big user value. IContextMenuExample Examples- For example, Cubase adds its owned entries in the context menu opened with right-click on an exported parameter when the plug-in uses createContextMenu. html "contextmenuexample.png"@n - Adding plug-in specific items to the context menu:@code {.cpp}
+    /// - add its own items to the menu via the IContextMenu interface and call IContextMenu::popup(..) to create the pop-up. See the @ref IContextMenuExample.- extract the host menu items and add them to a context menu created by the plug-in.Note: You can and should use this even if you do not add your own items to the menu as this is considered to be a big user value. IContextMenuExample Examples- For example, Cubase adds its owned entries in the context menu opened with right-click on an exported parameter when the plug-in uses createContextMenu. html "contextmenuexample.png"- Adding plug-in specific items to the context menu:@code {.cpp}
     /// //------------------------------------------------------------------------
     /// class PluginContextMenuTarget : public IContextMenuTarget, public FObject
     /// {
@@ -10124,8 +10058,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -10274,8 +10207,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -10643,8 +10575,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -10976,8 +10907,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -11145,8 +11075,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -11441,8 +11370,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -11465,7 +11393,7 @@ internal static partial class LibVst
         /// </summary>
         /// <param name="context,">passed by the host, is mandatory and should implement IHostApplication</param>
         /// <note>
-        /// Extensive memory allocations etc. should be performed in this method rather than in
+        /// @note Extensive memory allocations etc. should be performed in this method rather than in
         /// the class' constructor! If the method does NOT return kResultOk, the object is released
         /// immediately. In this case terminate is not called!
         /// </note>
@@ -12285,7 +12213,7 @@ internal static partial class LibVst
     /// A parameter info describes a parameter of the controller.
     /// The id must always be the same for a parameter as this uniquely identifies the parameter.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ParameterInfo
     {
         /// <summary>
@@ -12431,8 +12359,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -12743,8 +12670,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -12911,8 +12837,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -13117,8 +13042,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -13395,7 +13319,7 @@ internal static partial class LibVst
     /// This structure is used by the method @ref INoteExpressionController::getNoteExpressionInfo.
     /// </summary>
     /// <seealso cref="INoteExpressionController"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteExpressionTypeInfo
     {
         /// <summary>
@@ -13462,13 +13386,6 @@ internal static partial class LibVst
         }
     }
     
-    public partial record struct NoteExpressionTypeID(uint Value)
-    {
-        public static implicit operator uint(NoteExpressionTypeID value) => value.Value;
-        
-        public static implicit operator NoteExpressionTypeID(uint value) => new(value);
-    }
-    
     /// <summary>
     /// Description of a Note Expression Type
     /// This structure is part of the NoteExpressionTypeInfo structure, it describes for given NoteExpressionTypeID its default value
@@ -13476,7 +13393,7 @@ internal static partial class LibVst
     /// and a stepCount when the given NoteExpressionTypeID is limited to discrete values (like on/off state).
     /// </summary>
     /// <seealso cref="NoteExpressionTypeInfo"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct NoteExpressionValueDescription
     {
         /// <summary>
@@ -13498,13 +13415,6 @@ internal static partial class LibVst
         /// number of discrete steps (0: continuous, 1: toggle, discrete value otherwise - see @ref vst3ParameterIntro)
         /// </summary>
         public int stepCount;
-    }
-    
-    public partial record struct NoteExpressionValue(double Value)
-    {
-        public static implicit operator double(NoteExpressionValue value) => value.Value;
-        
-        public static implicit operator NoteExpressionValue(double value) => new(value);
     }
     
     /// <summary>
@@ -13554,8 +13464,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -13714,7 +13623,7 @@ internal static partial class LibVst
     /// This structure is used by the method @ref IKeyswitchController::getKeyswitchInfo.
     /// </summary>
     /// <seealso cref="IKeyswitchController"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct KeyswitchInfo
     {
         /// <summary>
@@ -13809,8 +13718,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -14066,8 +13974,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -14326,8 +14233,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -14492,7 +14398,7 @@ internal static partial class LibVst
     /// - [mandatory]Informs the plug-in that a VST 3 to VST 2 wrapper is used between the plug-in and the real host.
     /// Implemented by the VST 2 Wrapper.
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct IVst3ToVst2Wrapper
     {
         /// <summary>
@@ -14521,7 +14427,7 @@ internal static partial class LibVst
     /// - [mandatory]Informs the plug-in that a VST 3 to AU wrapper is used between the plug-in and the real host.
     /// Implemented by the AU Wrapper.
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct IVst3ToAUWrapper
     {
         /// <summary>
@@ -14550,7 +14456,7 @@ internal static partial class LibVst
     /// - [mandatory]Informs the plug-in that a VST 3 to AAX wrapper is used between the plug-in and the real host.
     /// Implemented by the AAX Wrapper.
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct IVst3ToAAXWrapper
     {
         /// <summary>
@@ -14616,8 +14522,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -14830,8 +14735,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -15155,8 +15059,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -15790,8 +15693,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -15993,8 +15895,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -16185,8 +16086,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -16288,7 +16188,7 @@ internal static partial class LibVst
     /// PhysicalUIMapList describes a list of PhysicalUIMap
     /// </summary>
     /// <seealso cref="INoteExpressionPhysicalUIMapping"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PhysicalUIMapList
     {
         /// <summary>
@@ -16307,7 +16207,7 @@ internal static partial class LibVst
     /// It is used in PhysicalUIMapList.
     /// </summary>
     /// <seealso cref="PhysicalUIMapList "/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct PhysicalUIMap
     {
         /// <summary>
@@ -16389,8 +16289,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -16532,8 +16431,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -16690,8 +16588,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -16811,7 +16708,7 @@ internal static partial class LibVst
     /// - switch
     /// - link which allows to jump directly to a subpage (another page) 
     /// - more... See Vst::LayerType
-    /// .@n This representation is implemented as XML text following the Document Type Definition (DTD): http://dtd.steinberg.net/VST-Remote-1.1.dtd ExampleHere an example of what should be passed in the stream of getXmlRepresentationStream:@code &lt;?xml version="1.0" encoding="utf-8"?&gt;
+    /// .This representation is implemented as XML text following the Document Type Definition (DTD): http://dtd.steinberg.net/VST-Remote-1.1.dtd ExampleHere an example of what should be passed in the stream of getXmlRepresentationStream:@code &lt;?xml version="1.0" encoding="utf-8"?&gt;
     /// &lt;!DOCTYPE vstXML PUBLIC "-//Steinberg//DTD VST Remote 1.1//EN" "http://dtd.steinberg.net/VST-Remote-1.1.dtd"&gt;
     /// &lt;vstXML version="1.0"&gt;
     /// 	&lt;plugin classID="341FC5898AAA46A7A506BC0799E882AE" name="Chorus" vendor="Steinberg Media Technologies" /&gt;
@@ -16922,8 +16819,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -17025,7 +16921,7 @@ internal static partial class LibVst
     /// </summary>
     /// <seealso cref="IXmlRepresentationController "/>
     /// <seealso cref="IXmlRepresentationController::getXmlRepresentationStream."/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct RepresentationInfo
     {
         /// <summary>
@@ -17047,11 +16943,6 @@ internal static partial class LibVst
         /// Optional: used if the representation is for a given host only (eg. "Nuendo").
         /// </summary>
         public fixed byte host[64];
-        
-        public enum ivstrepresentation
-        {
-            kNameSize = 64,
-        }
     }
     
     /// <summary>
@@ -17101,8 +16992,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -17455,7 +17345,7 @@ internal static partial class LibVst
     ///  pluginBaseEach interface declares its identifier as static member inside the interface
     /// namespace (e.g. FUnknown::iid).
     /// </remarks>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct FUID
     {
         /// <summary>
@@ -17528,8 +17418,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -17732,8 +17621,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -17947,8 +17835,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -18104,8 +17991,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -18875,7 +18761,7 @@ internal static partial class LibVst
     /// Basic Unit Description.
     /// </summary>
     /// <seealso cref="IUnitInfo"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct UnitInfo
     {
         /// <summary>
@@ -18903,7 +18789,7 @@ internal static partial class LibVst
     /// Basic Program List Description.
     /// </summary>
     /// <seealso cref="IUnitInfo"/>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct ProgramListInfo
     {
         /// <summary>
@@ -18979,8 +18865,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -19242,8 +19127,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -20343,8 +20227,7 @@ internal static partial class LibVst
         /// Adds a reference and returns the new reference count.
         /// </summary>
         /// <par>
-        /// Remarks:
-        /// The initial reference count after creating an object is 1.
+        /// Remarks: The initial reference count after creating an object is 1.
         /// </par>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint addRef()
@@ -20450,51 +20333,6 @@ internal static partial class LibVst
         kPostVolumeFader,
         
         kUsedAsPanner,
-    }
-    
-    public enum ivstrepresentation
-    {
-        /// <summary>
-        /// a knob (encoder or not)
-        /// </summary>
-        kKnob = 0,
-        
-        /// <summary>
-        /// a knob which is used by pressing and turning
-        /// </summary>
-        kPressedKnob,
-        
-        /// <summary>
-        /// knob could be pressed to simulate a switch
-        /// </summary>
-        kSwitchKnob,
-        
-        /// <summary>
-        /// a "on/off" button
-        /// </summary>
-        kSwitch,
-        
-        /// <summary>
-        /// LED like VU-meter or display around a knob
-        /// </summary>
-        kLED,
-        
-        /// <summary>
-        /// indicates that this layer is a folder linked to an another INode (page)
-        /// </summary>
-        kLink,
-        
-        /// <summary>
-        /// only for text display (not really a control)
-        /// </summary>
-        kDisplay,
-        
-        /// <summary>
-        /// a fader
-        /// </summary>
-        kFader,
-        
-        kEndOfLayerType,
     }
     
     public const string kPlatformStringWin = "WIN";

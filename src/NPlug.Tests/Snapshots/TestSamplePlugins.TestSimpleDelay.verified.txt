@@ -2,6 +2,8 @@
 
 	{CurrentDirectory}nplug_validator_proxy.vst3
 
+* Check valid bundle structure...
+
 * Scanning classes...
 
   Factory Info:
@@ -14,7 +16,7 @@
 	category = Audio Module Class
 	subCategories = Fx
 	version = 0.0
-	sdkVersion = VST 3.7.7
+	sdkVersion = VST 3.8.0
 	cid = 7A130E07004A408DA1D897B671F36CA1
 
   Class Info 1:
@@ -22,7 +24,7 @@
 	category = Component Controller Class
 	subCategories = 
 	version = 0.0
-	sdkVersion = VST 3.7.7
+	sdkVersion = VST 3.8.0
 	cid = 484E783B5F4742F4A19F96C1FD42FB45
 
 * Checking snapshots...
@@ -58,8 +60,8 @@ Info:  => Event Buses: [0 In(s) => 0 Out(s)]
 [Scan Parameters]
 Info:  ===Scan Parameters ====================================
 Info:  This component exports 2 parameter(s)
-Info:     Parameter 000 (id=1): [title="ByPass"] [unit=""] [type = T, default = 0.000000, unit = 0]
-Info:     Parameter 001 (id=2): [title="Delay"] [unit="sec"] [type = F, default = 1.000000, unit = 0]
+Info:     Parameter 000 (id=1): [title="ByPass"] [unit=""] [type = Toggle, default = 0.000000, unit = 0]
+Info:     Parameter 001 (id=2): [title="Delay"] [unit="sec"] [type = Float, default = 1.000000, unit = 0]
 [Succeeded]
 
 [MIDI Mapping]

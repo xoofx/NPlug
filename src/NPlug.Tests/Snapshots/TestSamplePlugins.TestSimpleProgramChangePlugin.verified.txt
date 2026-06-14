@@ -2,6 +2,8 @@
 
 	{CurrentDirectory}nplug_validator_proxy.vst3
 
+* Check valid bundle structure...
+
 * Scanning classes...
 
   Factory Info:
@@ -14,7 +16,7 @@
 	category = Audio Module Class
 	subCategories = Fx
 	version = 0.0
-	sdkVersion = VST 3.7.7
+	sdkVersion = VST 3.8.0
 	cid = D2D46DF833974ACF9008DF3396B890F2
 
   Class Info 1:
@@ -22,7 +24,7 @@
 	category = Component Controller Class
 	subCategories = 
 	version = 0.0
-	sdkVersion = VST 3.7.7
+	sdkVersion = VST 3.8.0
 	cid = 59C17896478B4AF186D83BA0817149D5
 
 * Checking snapshots...
@@ -59,9 +61,9 @@ Info:       In [0]: "Event Input" (Main-Default Active)
 [Scan Parameters]
 Info:  ===Scan Parameters ====================================
 Info:  This component exports 3 parameter(s)
-Info:     Parameter 000 (id=1): [title="Bank Preset"] [unit=""] [type = D, default = 0.000000, unit = 0]
-Info:     Parameter 001 (id=2): [title="ByPass"] [unit=""] [type = T, default = 0.000000, unit = 0]
-Info:     Parameter 002 (id=3): [title="Gain"] [unit=""] [type = F, default = 1.000000, unit = 0]
+Info:     Parameter 000 (id=1): [title="Bank Preset"] [unit=""] [type = Discrete, default = 0.000000, unit = 0]
+Info:     Parameter 001 (id=2): [title="ByPass"] [unit=""] [type = Toggle, default = 0.000000, unit = 0]
+Info:     Parameter 002 (id=3): [title="Gain"] [unit=""] [type = Float, default = 1.000000, unit = 0]
 [Succeeded]
 
 [MIDI Mapping]

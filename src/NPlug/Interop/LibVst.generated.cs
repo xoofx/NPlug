@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 
 internal static partial class LibVst
 {
-    public const string SdkVersion = "VST 3.7.7";
+    public const string SdkVersion = "VST 3.8.0";
     
     public const string AudioEffectCategory = "Audio Module Class";
     
@@ -634,11 +634,13 @@ internal static partial class LibVst
     }
     
     /// <summary>
-    /// Object Data Archive Interface. 
-    /// - [host imp]
+    /// @
+    /// }
     /// </summary>
     /// <remarks>
-    /// - store data/objects/binary/subattributes in the archive
+    /// ------------------------------------------------------------------------
+    /// Object Data Archive Interface. 
+    /// - [host imp]- store data/objects/binary/subattributes in the archive
     /// - read stored data from the archiveAll data stored to the archive are identified by a string (IAttrID), which must be unique on each
     /// IAttribute level.The basic set/get methods make use of the FVariant class defined in 'funknown.h'.
     /// For a more convenient usage of this interface, you should use the functions defined
@@ -714,10 +716,11 @@ internal static partial class LibVst
         /// {
         /// Store any data in the archive. It is even possible to store sub-attributes by creating
         /// a new IAttributes instance via the IHostClasses interface and pass it to the parent in the
-        /// FVariant. In this case the archive must take the ownership of the newly created object, which
-        /// is true for all objects that have been created only for storing. You tell the archive to take
-        /// ownership by adding the FVariant::kOwner flag to the FVariant::type member (data.type |= FVariant::kOwner).
-        /// When using the PAttributes functions, this is done through a function parameter.
+        /// FVariant. In this case the archive must take the ownership of the newly created object,
+        /// which is true for all objects that have been created only for storing. You tell the archive
+        /// to take ownership by adding the FVariant::kOwner flag to the FVariant::type member (data.type
+        /// |= FVariant::kOwner). When using the PAttributes functions, this is done through a function
+        /// parameter.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult set(LibVst.IAttrID attrID, LibVst.FVariant* data)
@@ -739,8 +742,8 @@ internal static partial class LibVst
         
         /// <summary>
         /// Store a list of data in the archive. Please note that the type of data is not mixable! So
-        /// you can only store a list of integers or a list of doubles/strings/etc. You can also store a list
-        /// of subattributes or other objects that implement the IPersistent interface.
+        /// you can only store a list of integers or a list of doubles/strings/etc. You can also store a
+        /// list of subattributes or other objects that implement the IPersistent interface.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queue(LibVst.IAttrID listID, LibVst.FVariant* data)
@@ -761,10 +764,11 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Store binary data in the archive. Parameter 'copyBytes' specifies if the passed data should be copied.
-        /// The archive cannot take the ownership of binary data. Either it just references a buffer in order
-        /// to write it to a file (copyBytes = false) or it copies the data to its own buffers (copyBytes = true).
-        /// When binary data should be stored in the default pool for example, you must always copy it!
+        /// Store binary data in the archive. Parameter 'copyBytes' specifies if the passed data should
+        /// be copied. The archive cannot take the ownership of binary data. Either it just references a
+        /// buffer in order to write it to a file (copyBytes = false) or it copies the data to its own
+        /// buffers (copyBytes = true). When binary data should be stored in the default pool for
+        /// example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
@@ -808,9 +812,10 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Get list of data previously stored to the archive. As long as there are queue members the method
-        /// will return kResultTrue. When the queue is empty, the methods returns kResultFalse. All lists except from
-        /// object lists can be reset which means that the items can be read once again.
+        /// Get list of data previously stored to the archive. As long as there are queue members the
+        /// method will return kResultTrue. When the queue is empty, the methods returns kResultFalse.
+        /// All lists except from object lists can be reset which means that the items can be read once
+        /// again.
         /// </summary>
         /// <seealso cref="IAttributes::resetQueue "/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -835,24 +840,25 @@ internal static partial class LibVst
         /// Get the amount of items in a queue.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int getQueueItemCount(LibVst.IAttrID arg)
+        public int getQueueItemCount(LibVst.IAttrID attrId)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __self__ = (LibVst.IAttributes*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IAttributes), "getQueueItemCount");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])(__self__, arg);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])(__self__, attrId);
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), arg);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IAttributes*, LibVst.IAttrID, int>)Vtbl[8])((LibVst.IAttributes*)Unsafe.AsPointer(ref this), attrId);
             }
         }
         
         /// <summary>
-        /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
+        /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a
+        /// queue at any time.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult resetQueue(LibVst.IAttrID attrID)
@@ -894,8 +900,9 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Read binary data from the archive. The data is copied into the passed buffer. The size of that buffer
-        /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
+        /// Read binary data from the archive. The data is copied into the passed buffer. The size of
+        /// that buffer must fit the size of data stored in the archive which can be queried via
+        /// IAttributes::getBinaryDataSize
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getBinaryData(LibVst.IAttrID attrID, void* data, uint bytes)
@@ -946,10 +953,11 @@ internal static partial class LibVst
         /// {
         /// Store any data in the archive. It is even possible to store sub-attributes by creating
         /// a new IAttributes instance via the IHostClasses interface and pass it to the parent in the
-        /// FVariant. In this case the archive must take the ownership of the newly created object, which
-        /// is true for all objects that have been created only for storing. You tell the archive to take
-        /// ownership by adding the FVariant::kOwner flag to the FVariant::type member (data.type |= FVariant::kOwner).
-        /// When using the PAttributes functions, this is done through a function parameter.
+        /// FVariant. In this case the archive must take the ownership of the newly created object,
+        /// which is true for all objects that have been created only for storing. You tell the archive
+        /// to take ownership by adding the FVariant::kOwner flag to the FVariant::type member (data.type
+        /// |= FVariant::kOwner). When using the PAttributes functions, this is done through a function
+        /// parameter.
         /// </remarks>
         private static partial ComResult set_ToManaged(IAttributes* self, LibVst.IAttrID attrID, LibVst.FVariant* data);
         
@@ -988,8 +996,8 @@ internal static partial class LibVst
         
         /// <summary>
         /// Store a list of data in the archive. Please note that the type of data is not mixable! So
-        /// you can only store a list of integers or a list of doubles/strings/etc. You can also store a list
-        /// of subattributes or other objects that implement the IPersistent interface.
+        /// you can only store a list of integers or a list of doubles/strings/etc. You can also store a
+        /// list of subattributes or other objects that implement the IPersistent interface.
         /// </summary>
         private static partial ComResult queue_ToManaged(IAttributes* self, LibVst.IAttrID listID, LibVst.FVariant* data);
         
@@ -1027,10 +1035,11 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Store binary data in the archive. Parameter 'copyBytes' specifies if the passed data should be copied.
-        /// The archive cannot take the ownership of binary data. Either it just references a buffer in order
-        /// to write it to a file (copyBytes = false) or it copies the data to its own buffers (copyBytes = true).
-        /// When binary data should be stored in the default pool for example, you must always copy it!
+        /// Store binary data in the archive. Parameter 'copyBytes' specifies if the passed data should
+        /// be copied. The archive cannot take the ownership of binary data. Either it just references a
+        /// buffer in order to write it to a file (copyBytes = false) or it copies the data to its own
+        /// buffers (copyBytes = true). When binary data should be stored in the default pool for
+        /// example, you must always copy it!
         /// </summary>
         private static partial ComResult setBinaryData_ToManaged(IAttributes* self, LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes);
         
@@ -1108,9 +1117,10 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Get list of data previously stored to the archive. As long as there are queue members the method
-        /// will return kResultTrue. When the queue is empty, the methods returns kResultFalse. All lists except from
-        /// object lists can be reset which means that the items can be read once again.
+        /// Get list of data previously stored to the archive. As long as there are queue members the
+        /// method will return kResultTrue. When the queue is empty, the methods returns kResultFalse.
+        /// All lists except from object lists can be reset which means that the items can be read once
+        /// again.
         /// </summary>
         /// <seealso cref="IAttributes::resetQueue "/>
         private static partial ComResult unqueue_ToManaged(IAttributes* self, LibVst.IAttrID listID, LibVst.FVariant* data);
@@ -1151,17 +1161,17 @@ internal static partial class LibVst
         /// <summary>
         /// Get the amount of items in a queue.
         /// </summary>
-        private static partial int getQueueItemCount_ToManaged(IAttributes* self, LibVst.IAttrID arg);
+        private static partial int getQueueItemCount_ToManaged(IAttributes* self, LibVst.IAttrID attrId);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
-        private static int getQueueItemCount_Wrapper(IAttributes* self, LibVst.FIDString arg)
+        private static int getQueueItemCount_Wrapper(IAttributes* self, LibVst.FIDString attrId)
         {
             if (InteropHelper.IsTracerEnabled)
             {
                 var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IAttributes), "getQueueItemCount");
                 try
                 {
-                    return getQueueItemCount_ToManaged(self, arg);
+                    return getQueueItemCount_ToManaged(self, attrId);
                 }
                 catch (Exception ex)
                 {
@@ -1177,7 +1187,7 @@ internal static partial class LibVst
             {
                 try
                 {
-                    return getQueueItemCount_ToManaged(self, arg);
+                    return getQueueItemCount_ToManaged(self, attrId);
                 }
                 catch
                 {
@@ -1187,7 +1197,8 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
+        /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a
+        /// queue at any time.
         /// </summary>
         private static partial ComResult resetQueue_ToManaged(IAttributes* self, LibVst.IAttrID attrID);
         
@@ -1263,8 +1274,9 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Read binary data from the archive. The data is copied into the passed buffer. The size of that buffer
-        /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
+        /// Read binary data from the archive. The data is copied into the passed buffer. The size of
+        /// that buffer must fit the size of data stored in the archive which can be queried via
+        /// IAttributes::getBinaryDataSize
         /// </summary>
         private static partial ComResult getBinaryData_ToManaged(IAttributes* self, LibVst.IAttrID attrID, void* data, uint bytes);
         
@@ -1478,10 +1490,11 @@ internal static partial class LibVst
         /// {
         /// Store any data in the archive. It is even possible to store sub-attributes by creating
         /// a new IAttributes instance via the IHostClasses interface and pass it to the parent in the
-        /// FVariant. In this case the archive must take the ownership of the newly created object, which
-        /// is true for all objects that have been created only for storing. You tell the archive to take
-        /// ownership by adding the FVariant::kOwner flag to the FVariant::type member (data.type |= FVariant::kOwner).
-        /// When using the PAttributes functions, this is done through a function parameter.
+        /// FVariant. In this case the archive must take the ownership of the newly created object,
+        /// which is true for all objects that have been created only for storing. You tell the archive
+        /// to take ownership by adding the FVariant::kOwner flag to the FVariant::type member (data.type
+        /// |= FVariant::kOwner). When using the PAttributes functions, this is done through a function
+        /// parameter.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult set(LibVst.IAttrID attrID, LibVst.FVariant* data)
@@ -1491,8 +1504,8 @@ internal static partial class LibVst
         
         /// <summary>
         /// Store a list of data in the archive. Please note that the type of data is not mixable! So
-        /// you can only store a list of integers or a list of doubles/strings/etc. You can also store a list
-        /// of subattributes or other objects that implement the IPersistent interface.
+        /// you can only store a list of integers or a list of doubles/strings/etc. You can also store a
+        /// list of subattributes or other objects that implement the IPersistent interface.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult queue(LibVst.IAttrID listID, LibVst.FVariant* data)
@@ -1501,10 +1514,11 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Store binary data in the archive. Parameter 'copyBytes' specifies if the passed data should be copied.
-        /// The archive cannot take the ownership of binary data. Either it just references a buffer in order
-        /// to write it to a file (copyBytes = false) or it copies the data to its own buffers (copyBytes = true).
-        /// When binary data should be stored in the default pool for example, you must always copy it!
+        /// Store binary data in the archive. Parameter 'copyBytes' specifies if the passed data should
+        /// be copied. The archive cannot take the ownership of binary data. Either it just references a
+        /// buffer in order to write it to a file (copyBytes = false) or it copies the data to its own
+        /// buffers (copyBytes = true). When binary data should be stored in the default pool for
+        /// example, you must always copy it!
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setBinaryData(LibVst.IAttrID attrID, void* data, uint bytes, byte copyBytes)
@@ -1524,9 +1538,10 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Get list of data previously stored to the archive. As long as there are queue members the method
-        /// will return kResultTrue. When the queue is empty, the methods returns kResultFalse. All lists except from
-        /// object lists can be reset which means that the items can be read once again.
+        /// Get list of data previously stored to the archive. As long as there are queue members the
+        /// method will return kResultTrue. When the queue is empty, the methods returns kResultFalse.
+        /// All lists except from object lists can be reset which means that the items can be read once
+        /// again.
         /// </summary>
         /// <seealso cref="IAttributes::resetQueue "/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1539,13 +1554,14 @@ internal static partial class LibVst
         /// Get the amount of items in a queue.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int getQueueItemCount(LibVst.IAttrID arg)
+        public int getQueueItemCount(LibVst.IAttrID attrId)
         {
-            return Unsafe.As<IAttributes2, IAttributes>(ref this).getQueueItemCount(arg);
+            return Unsafe.As<IAttributes2, IAttributes>(ref this).getQueueItemCount(attrId);
         }
         
         /// <summary>
-        /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a queue at any time.
+        /// Reset a queue. If you need to restart reading a queue, you have to reset it. You can reset a
+        /// queue at any time.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult resetQueue(LibVst.IAttrID attrID)
@@ -1563,8 +1579,9 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Read binary data from the archive. The data is copied into the passed buffer. The size of that buffer
-        /// must fit the size of data stored in the archive which can be queried via IAttributes::getBinaryDataSize
+        /// Read binary data from the archive. The data is copied into the passed buffer. The size of
+        /// that buffer must fit the size of data stored in the archive which can be queried via
+        /// IAttributes::getBinaryDataSize
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getBinaryData(LibVst.IAttrID attrID, void* data, uint bytes)
@@ -3172,6 +3189,12 @@ internal static partial class LibVst
     /// </remarks>
     /// <seealso cref="platformUITypeIPlugFrame, "/>
     /// <par>
+    /// @par Coordinates The coordinates utilized within the ViewRect are native to the view system of the parent type.
+    /// This implies that on macOS (kPlatformTypeNSView), the coordinates are expressed in logical 
+    /// units (independent of the screen scale factor), whereas on Windows (kPlatformTypeHWND) and 
+    /// Linux (kPlatformTypeX11EmbedWindowID), the coordinates are expressed in physical units (pixels).
+    /// </par>
+    /// <par>
     /// @par Sizing of a view Usually, the size of a plug-in view is fixed. But both the host and the plug-in can cause
     /// a view to be resized:@n - @b Host: If IPlugView::canResize () returns kResultTrue the host will set up the window
     /// so that the user can resize it. While the user resizes the window,
@@ -4050,8 +4073,8 @@ internal static partial class LibVst
     /// the scale factor changes while the view is attached (system change or window moved to another screen
     /// with different scaling settings).The host may call setContentScaleFactor in a different context, for example: scaling the plug-in
     /// editor for better readability.When a plug-in handles this (by returning kResultTrue), it needs to scale the width and height of
-    /// its view by the scale factor and inform the host via a IPlugFrame::resizeView(). The host will then
-    /// call IPlugView::onSize().Note that the host is allowed to call setContentScaleFactor() at any time the IPlugView is valid.
+    /// its view by the scale factor and inform the host via a IPlugFrame::resizeView (). The host will then
+    /// call IPlugView::onSize ().Note that the host is allowed to call setContentScaleFactor() at any time the IPlugView is valid.
     /// If this happens before the IPlugFrame object is set on your view, make sure that when the host calls
     /// IPlugView::getSize() afterwards you return the size of your view for that new scale factor.It is recommended to implement this interface on Microsoft Windows to let the host know that the
     /// plug-in is able to render in different scalings.
@@ -4109,6 +4132,14 @@ internal static partial class LibVst
             return Unsafe.As<IPlugViewContentScaleSupport, FUnknown>(ref this).release();
         }
         
+        /// <summary>
+        /// Set the Content Scale Factor
+        /// </summary>
+        /// <param name="factor">the scale factor requested by the host</param>
+        /// <returns>kResultTrue when a plug-in handles this</returns>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setContentScaleFactor(LibVst.ScaleFactor factor)
         {
@@ -4130,6 +4161,14 @@ internal static partial class LibVst
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
+        /// <summary>
+        /// Set the Content Scale Factor
+        /// </summary>
+        /// <param name="factor">the scale factor requested by the host</param>
+        /// <returns>kResultTrue when a plug-in handles this</returns>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         private static partial ComResult setContentScaleFactor_ToManaged(IPlugViewContentScaleSupport* self, LibVst.ScaleFactor factor);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -4187,6 +4226,544 @@ internal static partial class LibVst
         
         public static implicit operator ScaleFactor(float value) => new(value);
     }
+    
+    /// <summary>
+    /// IWaylandHost: Wayland host interface
+    /// Implemented as a singleton in the host application.
+    /// Created via IHostApplication::createInstance.
+    /// </summary>
+    /// <remarks>
+    ///  waylandFrame pluginGUI vst380- [host imp]
+    /// - [released: 3.8.0]
+    /// </remarks>
+    public unsafe partial struct IWaylandHost : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 5;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IWaylandHost*, LibVst.wl_display*>)&openWaylandConnection_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IWaylandHost*, LibVst.wl_display*, int>)&closeWaylandConnection_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IWaylandHost, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IWaylandHost, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IWaylandHost, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Open a Wayland connection to the host.
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LibVst.wl_display* openWaylandConnection()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IWaylandHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IWaylandHost), "openWaylandConnection");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IWaylandHost*, LibVst.wl_display*>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IWaylandHost*, LibVst.wl_display*>)Vtbl[3])((LibVst.IWaylandHost*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        /// <summary>
+        /// Close a previously created connection.
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult closeWaylandConnection(LibVst.wl_display* display)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IWaylandHost*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IWaylandHost), "closeWaylandConnection");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IWaylandHost*, LibVst.wl_display*, int>)Vtbl[4])(__self__, display);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IWaylandHost*, LibVst.wl_display*, int>)Vtbl[4])((LibVst.IWaylandHost*)Unsafe.AsPointer(ref this), display);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Open a Wayland connection to the host.
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
+        private static partial LibVst.wl_display* openWaylandConnection_ToManaged(IWaylandHost* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static LibVst.wl_display* openWaylandConnection_Wrapper(IWaylandHost* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IWaylandHost), "openWaylandConnection");
+                try
+                {
+                    return openWaylandConnection_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return openWaylandConnection_ToManaged(self);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Close a previously created connection.
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
+        private static partial ComResult closeWaylandConnection_ToManaged(IWaylandHost* self, LibVst.wl_display* display);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int closeWaylandConnection_Wrapper(IWaylandHost* self, LibVst.wl_display* display)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IWaylandHost), "closeWaylandConnection");
+                try
+                {
+                    return closeWaylandConnection_ToManaged(self, display);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return closeWaylandConnection_ToManaged(self, display);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IWaylandHost, 0x5E9582EE, 0x86594652, 0xB213678E, 0x7F1A705E)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xee, 0x82, 0x95, 0x5e, 0x59, 0x86, 0x52, 0x46, 0xb2, 0x13, 0x67, 0x8e, 0x7f, 0x1a, 0x70, 0x5e })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x5e, 0x95, 0x82, 0xee, 0x86, 0x59, 0x46, 0x52, 0xb2, 0x13, 0x67, 0x8e, 0x7f, 0x1a, 0x70, 0x5e })
+                    )));
+            }
+        }
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct wl_display;
+    
+    /// <summary>
+    /// IWaylandFrame interface
+    /// Interface to query additional information about the host plug-in frame in a Wayland session.
+    /// To be implemented by the VST3 IPlugFrame class.
+    /// </summary>
+    /// <remarks>
+    ///  waylandFrame pluginGUI vst380- [host imp]
+    /// - [released: 3.8.0]
+    /// </remarks>
+    /// <seealso cref="IPlugFrame"/>
+    public unsafe partial struct IWaylandFrame : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 6;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IWaylandFrame*, LibVst.wl_display*, LibVst.wl_surface*>)&getWaylandSurface_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IWaylandFrame*, LibVst.ViewRect*, LibVst.wl_display*, LibVst.xdg_surface*>)&getParentSurface_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IWaylandFrame*, LibVst.wl_display*, LibVst.xdg_toplevel*>)&getParentToplevel_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IWaylandFrame, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IWaylandFrame, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IWaylandFrame, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Get the parent Wayland surface.
+        /// The plug-in must not change the state of the parent surface.
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// plugView]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LibVst.wl_surface* getWaylandSurface(LibVst.wl_display* display)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IWaylandFrame*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IWaylandFrame), "getWaylandSurface");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IWaylandFrame*, LibVst.wl_display*, LibVst.wl_surface*>)Vtbl[3])(__self__, display);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IWaylandFrame*, LibVst.wl_display*, LibVst.wl_surface*>)Vtbl[3])((LibVst.IWaylandFrame*)Unsafe.AsPointer(ref this), display);
+            }
+        }
+        
+        /// <summary>
+        /// Get the parent XDG surface for creating popup windows.
+        /// If the parent surface is not an xdg_surface,
+        /// this returns the first xdg_surface that can be found in the surface hierarchy,
+        /// starting the search with the parent surface.
+        /// The plug-in must not change the state of the parent surface.
+        /// The size and position of the parent surface, relative to the top left corner of
+        /// the plug-in surface, is returned in parentSize.
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// plugView]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LibVst.xdg_surface* getParentSurface(LibVst.ViewRect* parentSize, LibVst.wl_display* display)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IWaylandFrame*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IWaylandFrame), "getParentSurface");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IWaylandFrame*, LibVst.ViewRect*, LibVst.wl_display*, LibVst.xdg_surface*>)Vtbl[4])(__self__, parentSize, display);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IWaylandFrame*, LibVst.ViewRect*, LibVst.wl_display*, LibVst.xdg_surface*>)Vtbl[4])((LibVst.IWaylandFrame*)Unsafe.AsPointer(ref this), parentSize, display);
+            }
+        }
+        
+        /// <summary>
+        /// Get the XDG toplevel surface containing the plug-in frame.
+        /// The plug-in must not change the state of the returned xdg_toplevel.
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// plugView]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LibVst.xdg_toplevel* getParentToplevel(LibVst.wl_display* display)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IWaylandFrame*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IWaylandFrame), "getParentToplevel");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IWaylandFrame*, LibVst.wl_display*, LibVst.xdg_toplevel*>)Vtbl[5])(__self__, display);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IWaylandFrame*, LibVst.wl_display*, LibVst.xdg_toplevel*>)Vtbl[5])((LibVst.IWaylandFrame*)Unsafe.AsPointer(ref this), display);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Get the parent Wayland surface.
+        /// The plug-in must not change the state of the parent surface.
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// plugView]
+        /// </note>
+        private static partial LibVst.wl_surface* getWaylandSurface_ToManaged(IWaylandFrame* self, LibVst.wl_display* display);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static LibVst.wl_surface* getWaylandSurface_Wrapper(IWaylandFrame* self, LibVst.wl_display* display)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IWaylandFrame), "getWaylandSurface");
+                try
+                {
+                    return getWaylandSurface_ToManaged(self, display);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getWaylandSurface_ToManaged(self, display);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Get the parent XDG surface for creating popup windows.
+        /// If the parent surface is not an xdg_surface,
+        /// this returns the first xdg_surface that can be found in the surface hierarchy,
+        /// starting the search with the parent surface.
+        /// The plug-in must not change the state of the parent surface.
+        /// The size and position of the parent surface, relative to the top left corner of
+        /// the plug-in surface, is returned in parentSize.
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// plugView]
+        /// </note>
+        private static partial LibVst.xdg_surface* getParentSurface_ToManaged(IWaylandFrame* self, LibVst.ViewRect* parentSize, LibVst.wl_display* display);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static LibVst.xdg_surface* getParentSurface_Wrapper(IWaylandFrame* self, LibVst.ViewRect* parentSize, LibVst.wl_display* display)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IWaylandFrame), "getParentSurface");
+                try
+                {
+                    return getParentSurface_ToManaged(self, parentSize, display);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getParentSurface_ToManaged(self, parentSize, display);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Get the XDG toplevel surface containing the plug-in frame.
+        /// The plug-in must not change the state of the returned xdg_toplevel.
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// plugView]
+        /// </note>
+        private static partial LibVst.xdg_toplevel* getParentToplevel_ToManaged(IWaylandFrame* self, LibVst.wl_display* display);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static LibVst.xdg_toplevel* getParentToplevel_Wrapper(IWaylandFrame* self, LibVst.wl_display* display)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IWaylandFrame), "getParentToplevel");
+                try
+                {
+                    return getParentToplevel_ToManaged(self, display);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getParentToplevel_ToManaged(self, display);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IWaylandFrame, 0x809FAEC6, 0x231C4FFA, 0x98ED046C, 0x6E9E2003)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xc6, 0xae, 0x9f, 0x80, 0x1c, 0x23, 0xfa, 0x4f, 0x98, 0xed, 0x04, 0x6c, 0x6e, 0x9e, 0x20, 0x03 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x80, 0x9f, 0xae, 0xc6, 0x23, 0x1c, 0x4f, 0xfa, 0x98, 0xed, 0x04, 0x6c, 0x6e, 0x9e, 0x20, 0x03 })
+                    )));
+            }
+        }
+    }
+    
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct wl_surface;
+    
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct xdg_surface;
+    
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct xdg_toplevel;
     
     /// <summary>
     /// 
@@ -4423,6 +5000,31 @@ internal static partial class LibVst
         KEY_F19,
         
         /// <summary>
+        /// multimedia keys
+        /// </summary>
+        KEY_F20,
+        
+        /// <summary>
+        /// multimedia keys
+        /// </summary>
+        KEY_F21,
+        
+        /// <summary>
+        /// multimedia keys
+        /// </summary>
+        KEY_F22,
+        
+        /// <summary>
+        /// multimedia keys
+        /// </summary>
+        KEY_F23,
+        
+        /// <summary>
+        /// multimedia keys
+        /// </summary>
+        KEY_F24,
+        
+        /// <summary>
         /// Win-Key on Windows, Ctrl-Key on macOS
         /// </summary>
         KEY_SUPER,
@@ -4455,7 +5057,7 @@ internal static partial class LibVst
         kCommandKey = 1 << 2,
         
         /// <summary>
-        /// Wndows: win key, macOS: ctrl key
+        /// Windows: win key, macOS: ctrl key
         /// </summary>
         kControlKey = 1 << 3,
     }
@@ -4535,6 +5137,583 @@ internal static partial class LibVst
         kGray = kGray50,
         
         kDkGray = kGray70,
+    }
+    
+    /// <summary>
+    /// A base class which hides the FUnknown::iid static var
+    /// </summary>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct HideIIDBase;
+    
+    /// <summary>
+    /// Linux event handler interface
+    /// </summary>
+    /// <remarks>
+    ///  pluginGUI vst368- [plug imp]
+    /// - [released: 3.6.8]
+    /// </remarks>
+    /// <seealso cref="IRunLoop"/>
+    public unsafe partial struct IEventHandler : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IEventHandler*, int, void>)&onFDIsSet_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IEventHandler, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IEventHandler, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IEventHandler, FUnknown>(ref this).release();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void onFDIsSet(LibVst.FileDescriptor fd)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IEventHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEventHandler), "onFDIsSet");
+                ((delegate*unmanaged[MemberFunction]<LibVst.IEventHandler*, LibVst.FileDescriptor, void>)Vtbl[3])(__self__, fd);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged[MemberFunction]<LibVst.IEventHandler*, LibVst.FileDescriptor, void>)Vtbl[3])((LibVst.IEventHandler*)Unsafe.AsPointer(ref this), fd);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        private static partial void onFDIsSet_ToManaged(IEventHandler* self, LibVst.FileDescriptor fd);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void onFDIsSet_Wrapper(IEventHandler* self, int fd)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IEventHandler), "onFDIsSet");
+                try
+                {
+                    onFDIsSet_ToManaged(self, fd);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    onFDIsSet_ToManaged(self, fd);
+                }
+                catch
+                {
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IEventHandler, 0x561E65C9, 0x13A0496F, 0x813A2C35, 0x654D7983)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xc9, 0x65, 0x1e, 0x56, 0xa0, 0x13, 0x6f, 0x49, 0x81, 0x3a, 0x2c, 0x35, 0x65, 0x4d, 0x79, 0x83 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x56, 0x1e, 0x65, 0xc9, 0x13, 0xa0, 0x49, 0x6f, 0x81, 0x3a, 0x2c, 0x35, 0x65, 0x4d, 0x79, 0x83 })
+                    )));
+            }
+        }
+    }
+    
+    public partial record struct FileDescriptor(int Value)
+    {
+        public static implicit operator int(FileDescriptor value) => value.Value;
+        
+        public static implicit operator FileDescriptor(int value) => new(value);
+    }
+    
+    /// <summary>
+    /// Linux timer handler interface
+    /// </summary>
+    /// <remarks>
+    ///  pluginGUI vst368- [plug imp]
+    /// - [released: 3.6.8]
+    /// </remarks>
+    /// <seealso cref="IRunLoop"/>
+    public unsafe partial struct ITimerHandler : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<ITimerHandler*, void>)&onTimer_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<ITimerHandler, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<ITimerHandler, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<ITimerHandler, FUnknown>(ref this).release();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void onTimer()
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITimerHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITimerHandler), "onTimer");
+                ((delegate*unmanaged[MemberFunction]<LibVst.ITimerHandler*, void>)Vtbl[3])(__self__);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged[MemberFunction]<LibVst.ITimerHandler*, void>)Vtbl[3])((LibVst.ITimerHandler*)Unsafe.AsPointer(ref this));
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        private static partial void onTimer_ToManaged(ITimerHandler* self);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void onTimer_Wrapper(ITimerHandler* self)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITimerHandler), "onTimer");
+                try
+                {
+                    onTimer_ToManaged(self);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    onTimer_ToManaged(self);
+                }
+                catch
+                {
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (ITimerHandler, 0x10BDD94F, 0x41424774, 0x821FAD8F, 0xECA72CA9)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x4f, 0xd9, 0xbd, 0x10, 0x42, 0x41, 0x74, 0x47, 0x82, 0x1f, 0xad, 0x8f, 0xec, 0xa7, 0x2c, 0xa9 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x10, 0xbd, 0xd9, 0x4f, 0x41, 0x42, 0x47, 0x74, 0x82, 0x1f, 0xad, 0x8f, 0xec, 0xa7, 0x2c, 0xa9 })
+                    )));
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Linux host run loop interface
+    /// </summary>
+    /// <remarks>
+    ///  pluginGUI vst368- [host imp]
+    /// - [extends IPlugFrame]
+    /// - [released: 3.6.8]On Linux the host has to provide this interface to the plug-in as there's no global event run loop
+    /// defined as on other platforms.This can be done by IPlugFrame and the context which is passed to the plug-in as an argument 
+    /// in the method IPlugFactory3::setHostContext. This way the plug-in can get a runloop even if 
+    /// it does not have an editor.A plug-in can register an event handler for a file descriptor. The host has to call the event
+    /// handler when the file descriptor is marked readable.A plug-in also can register a timer which will be called repeatedly until it is unregistered.
+    /// </remarks>
+    public unsafe partial struct IRunLoop : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 7;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IRunLoop*, LibVst.IEventHandler*, int, int>)&registerEventHandler_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IRunLoop*, LibVst.IEventHandler*, int>)&unregisterEventHandler_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IRunLoop*, LibVst.ITimerHandler*, ulong, int>)&registerTimer_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IRunLoop*, LibVst.ITimerHandler*, int>)&unregisterTimer_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IRunLoop, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IRunLoop, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IRunLoop, FUnknown>(ref this).release();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult registerEventHandler(LibVst.IEventHandler* handler, LibVst.FileDescriptor fd)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IRunLoop*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IRunLoop), "registerEventHandler");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IRunLoop*, LibVst.IEventHandler*, LibVst.FileDescriptor, int>)Vtbl[3])(__self__, handler, fd);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IRunLoop*, LibVst.IEventHandler*, LibVst.FileDescriptor, int>)Vtbl[3])((LibVst.IRunLoop*)Unsafe.AsPointer(ref this), handler, fd);
+            }
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult unregisterEventHandler(LibVst.IEventHandler* handler)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IRunLoop*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IRunLoop), "unregisterEventHandler");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IRunLoop*, LibVst.IEventHandler*, int>)Vtbl[4])(__self__, handler);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IRunLoop*, LibVst.IEventHandler*, int>)Vtbl[4])((LibVst.IRunLoop*)Unsafe.AsPointer(ref this), handler);
+            }
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult registerTimer(LibVst.ITimerHandler* handler, LibVst.TimerInterval milliseconds)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IRunLoop*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IRunLoop), "registerTimer");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IRunLoop*, LibVst.ITimerHandler*, LibVst.TimerInterval, int>)Vtbl[5])(__self__, handler, milliseconds);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IRunLoop*, LibVst.ITimerHandler*, LibVst.TimerInterval, int>)Vtbl[5])((LibVst.IRunLoop*)Unsafe.AsPointer(ref this), handler, milliseconds);
+            }
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult unregisterTimer(LibVst.ITimerHandler* handler)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IRunLoop*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IRunLoop), "unregisterTimer");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IRunLoop*, LibVst.ITimerHandler*, int>)Vtbl[6])(__self__, handler);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IRunLoop*, LibVst.ITimerHandler*, int>)Vtbl[6])((LibVst.IRunLoop*)Unsafe.AsPointer(ref this), handler);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        private static partial ComResult registerEventHandler_ToManaged(IRunLoop* self, LibVst.IEventHandler* handler, LibVst.FileDescriptor fd);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int registerEventHandler_Wrapper(IRunLoop* self, LibVst.IEventHandler* handler, int fd)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IRunLoop), "registerEventHandler");
+                try
+                {
+                    return registerEventHandler_ToManaged(self, handler, fd);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return registerEventHandler_ToManaged(self, handler, fd);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        private static partial ComResult unregisterEventHandler_ToManaged(IRunLoop* self, LibVst.IEventHandler* handler);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int unregisterEventHandler_Wrapper(IRunLoop* self, LibVst.IEventHandler* handler)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IRunLoop), "unregisterEventHandler");
+                try
+                {
+                    return unregisterEventHandler_ToManaged(self, handler);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return unregisterEventHandler_ToManaged(self, handler);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        private static partial ComResult registerTimer_ToManaged(IRunLoop* self, LibVst.ITimerHandler* handler, LibVst.TimerInterval milliseconds);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int registerTimer_Wrapper(IRunLoop* self, LibVst.ITimerHandler* handler, ulong milliseconds)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IRunLoop), "registerTimer");
+                try
+                {
+                    return registerTimer_ToManaged(self, handler, milliseconds);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return registerTimer_ToManaged(self, handler, milliseconds);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        private static partial ComResult unregisterTimer_ToManaged(IRunLoop* self, LibVst.ITimerHandler* handler);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int unregisterTimer_Wrapper(IRunLoop* self, LibVst.ITimerHandler* handler)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IRunLoop), "unregisterTimer");
+                try
+                {
+                    return unregisterTimer_ToManaged(self, handler);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return unregisterTimer_ToManaged(self, handler);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IRunLoop, 0x18C35366, 0x97764F1A, 0x9C5B8385, 0x7A871389)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x66, 0x53, 0xc3, 0x18, 0x76, 0x97, 0x1a, 0x4f, 0x9c, 0x5b, 0x83, 0x85, 0x7a, 0x87, 0x13, 0x89 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x18, 0xc3, 0x53, 0x66, 0x97, 0x76, 0x4f, 0x1a, 0x9c, 0x5b, 0x83, 0x85, 0x7a, 0x87, 0x13, 0x89 })
+                    )));
+            }
+        }
+    }
+    
+    public partial record struct TimerInterval(ulong Value)
+    {
+        public static implicit operator ulong(TimerInterval value) => value.Value;
+        
+        public static implicit operator TimerInterval(ulong value) => new(value);
     }
     
     /// <summary>
@@ -5114,8 +6293,9 @@ internal static partial class LibVst
     ///  vstIHost vst360- [host imp]
     /// - [extends IBStream]
     /// - [released: 3.6.0]
-    /// - [optional]Interface to access preset meta information from stream, used, for example, in setState in order to inform the plug-in about
-    /// the current context in which the preset loading occurs (Project context or Preset load (see @ref StateType))or used to get the full file path of the loaded preset (if available).@code {.cpp}
+    /// - [optional]Interface to access preset meta information from stream, for example used in setState@getState in order to inform the plug-in about the current context in which the preset loading@saving occurs
+    /// (Project context or Preset load@save (see @ref StateType)) or used to get the full file path of the
+    /// loaded preset (if available).@code {.cpp}
     /// //------------------------------------------------------------------------
     /// #include "pluginterfaces/base/ustring.h"
     /// #include "pluginterfaces/vst/vstpresetkeys.h"
@@ -5126,17 +6306,17 @@ internal static partial class LibVst
     /// 	FUnknownPtr&lt;IStreamAttributes&gt; stream (state);
     /// 	if (stream)
     /// 	{
-    /// 		IAttributeList* list = stream-&gt;getAttributes ();
-    /// 		if (list)
+    /// 		if (IAttributeList* list = stream-&gt;getAttributes ())
     /// 		{
     /// 			// get the current type (project/Default..) of this state
     /// 			String128 string;
-    /// 			if (list-&gt;getString (PresetAttributes::kStateType, string, 128 * sizeof (TChar)) == kResultTrue)
+    /// 			if (list-&gt;getString (PresetAttributes::kStateType, string, 128 * sizeof (TChar)) ==
+    /// 				kResultTrue)
     /// 			{
     /// 				UString128 tmp (string);
     /// 				char ascii[128];
     /// 				tmp.toAscii (ascii, 128);
-    /// 				if (!strncmp (ascii, StateType::kProject, strlen (StateType::kProject)))
+    /// 				if (strncmp (ascii, StateType::kProject, strlen (StateType::kProject)) == 0)
     /// 				{
     /// 					// we are in project loading context...
     /// 				}
@@ -5144,15 +6324,16 @@ internal static partial class LibVst
     /// 
     /// 			// get the full file path of this state
     /// 			TChar fullPath[1024];
-    /// 			if (list-&gt;getString (PresetAttributes::kFilePathStringType, fullPath, 1024 * sizeof (TChar)) == kResultTrue)
+    /// 			if (list-&gt;getString (PresetAttributes::kFilePathStringType, fullPath,
+    /// 								 1024 * sizeof (TChar)) == kResultTrue)
     /// 			{
     /// 				// here we have the full path ...
     /// 			}
     /// 		}
     /// 	}
     /// 
-    /// 	//...read the state here.....
-    /// 	return kResultTrue;
+    ///     //...read the state here.....
+    ///     return kResultTrue;
     /// }
     /// @endcode
     /// </remarks>
@@ -5453,6 +6634,11 @@ internal static partial class LibVst
         /// <summary>
         /// Called before initializing the component to get information about the controller class.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Created]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getControllerClassId(Guid* classId)
         {
@@ -5472,8 +6658,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Called before 'initialize' to set the component usage (optional). See @ref IoModes
+        /// Called before 'initialize' to set the component usage (optional). See @ref IoModes.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Created]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setIoMode(LibVst.IoMode mode)
         {
@@ -5493,8 +6684,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections
+        /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getBusCount(LibVst.MediaType type, LibVst.BusDirection dir)
         {
@@ -5513,8 +6709,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections
+        /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getBusInfo(LibVst.MediaType type, LibVst.BusDirection dir, int index, LibVst.BusInfo* bus)
         {
@@ -5534,9 +6735,15 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Retrieves routing information (to be implemented when more than one regular input or output bus exists).
-        /// The inInfo always refers to an input bus while the returned outInfo must refer to an output bus!
+        /// Retrieves routing information (to be implemented when more than one regular input or output
+        /// bus exists). The inInfo always refers to an input bus while the returned outInfo must refer
+        /// to an output bus!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getRoutingInfo(LibVst.RoutingInfo* inInfo, LibVst.RoutingInfo* outInfo)
         {
@@ -5558,9 +6765,14 @@ internal static partial class LibVst
         /// <summary>
         /// Called upon (de-)activating a bus in the host application. The plug-in should only processed
         /// an activated bus, the host could provide less see @ref AudioBusBuffers in the process call
-        /// (see @ref IAudioProcessor::process) if last busses are not activated. An already activated bus 
-        /// does not need to be reactivated after a IAudioProcessor::setBusArrangements call.
+        /// (see @ref IAudioProcessor::process) if last busses are not activated. An already activated
+        /// bus does not need to be reactivated after a IAudioProcessor::setBusArrangements call.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Setup Done]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult activateBus(LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state)
         {
@@ -5582,6 +6794,11 @@ internal static partial class LibVst
         /// <summary>
         /// Activates / deactivates the component.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Setup Done]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setActive(byte state)
         {
@@ -5603,6 +6820,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets complete state of component.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done | Activated | Processing)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setState(LibVst.IBStream* state)
         {
@@ -5624,6 +6846,11 @@ internal static partial class LibVst
         /// <summary>
         /// Retrieves complete state of component.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done | Activated | Processing)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getState(LibVst.IBStream* state)
         {
@@ -5648,6 +6875,11 @@ internal static partial class LibVst
         /// <summary>
         /// Called before initializing the component to get information about the controller class.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Created]
+        /// </note>
         private static partial ComResult getControllerClassId_ToManaged(IComponent* self, Guid* classId);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -5684,8 +6916,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Called before 'initialize' to set the component usage (optional). See @ref IoModes
+        /// Called before 'initialize' to set the component usage (optional). See @ref IoModes.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Created]
+        /// </note>
         private static partial ComResult setIoMode_ToManaged(IComponent* self, LibVst.IoMode mode);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -5722,8 +6959,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections
+        /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         private static partial int getBusCount_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -5760,8 +7002,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections
+        /// Called after the plug-in is initialized. See @ref MediaTypes, BusDirections.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         private static partial ComResult getBusInfo_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, LibVst.BusInfo* bus);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -5798,9 +7045,15 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Retrieves routing information (to be implemented when more than one regular input or output bus exists).
-        /// The inInfo always refers to an input bus while the returned outInfo must refer to an output bus!
+        /// Retrieves routing information (to be implemented when more than one regular input or output
+        /// bus exists). The inInfo always refers to an input bus while the returned outInfo must refer
+        /// to an output bus!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         private static partial ComResult getRoutingInfo_ToManaged(IComponent* self, LibVst.RoutingInfo* inInfo, LibVst.RoutingInfo* outInfo);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -5839,9 +7092,14 @@ internal static partial class LibVst
         /// <summary>
         /// Called upon (de-)activating a bus in the host application. The plug-in should only processed
         /// an activated bus, the host could provide less see @ref AudioBusBuffers in the process call
-        /// (see @ref IAudioProcessor::process) if last busses are not activated. An already activated bus 
-        /// does not need to be reactivated after a IAudioProcessor::setBusArrangements call.
+        /// (see @ref IAudioProcessor::process) if last busses are not activated. An already activated
+        /// bus does not need to be reactivated after a IAudioProcessor::setBusArrangements call.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Setup Done]
+        /// </note>
         private static partial ComResult activateBus_ToManaged(IComponent* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -5880,6 +7138,11 @@ internal static partial class LibVst
         /// <summary>
         /// Activates / deactivates the component.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Setup Done]
+        /// </note>
         private static partial ComResult setActive_ToManaged(IComponent* self, byte state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -5918,6 +7181,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets complete state of component.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done | Activated | Processing)]
+        /// </note>
         private static partial ComResult setState_ToManaged(IComponent* self, LibVst.IBStream* state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -5956,6 +7224,11 @@ internal static partial class LibVst
         /// <summary>
         /// Retrieves complete state of component.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done | Activated | Processing)]
+        /// </note>
         private static partial ComResult getState_ToManaged(IComponent* self, LibVst.IBStream* state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -6449,6 +7722,12 @@ internal static partial class LibVst
             public LibVst.NoteExpressionTextEvent noteExpressionText;
             
             /// <summary>
+            /// type == kNoteExpressionIntValueEvent
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.NoteExpressionIntValueEvent noteExpressionIntValue;
+            
+            /// <summary>
             /// type == kChordEvent
             /// </summary>
             [FieldOffset(0)]
@@ -6534,6 +7813,11 @@ internal static partial class LibVst
             /// is @ref ScaleEvent
             /// </summary>
             kScaleEvent = 7,
+            
+            /// <summary>
+            /// is @ref NoteExpressionIntValueEvent
+            /// </summary>
+            kNoteExpressionIntValueEvent = 8,
             
             /// <summary>
             /// is @ref LegacyMIDICCOutEvent
@@ -6693,9 +7977,9 @@ internal static partial class LibVst
     /// <summary>
     /// Note Expression Value event. Used in @ref Event (union)
     /// A note expression event affects one single playing note (referring its noteId).
-    /// This kind of event is send from host to the plug-in like other events (NoteOnEvent, NoteOffEvent,...) in @ref ProcessData during the process call.
-    /// Note expression events for a specific noteId can only occur after a NoteOnEvent. The host must take care that the event list (@ref IEventList) is properly sorted.
-    /// Expression events are always absolute normalized values [0.0, 1.0].
+    /// This kind of event is send from host to the plug-in like other events (NoteOnEvent,
+    /// NoteOffEvent,...) in @ref ProcessData during the process call. Note expression events for a specific
+    /// noteId can only occur after a NoteOnEvent. The host must take care that the event list (@ref IEventList) is properly sorted. Expression events are always absolute normalized values [0.0, 1.0].
     /// The predefined types have a predefined mapping of the normalized values (see @ref NoteExpressionTypeIDs)
     /// </summary>
     /// <seealso cref="INoteExpressionController"/>
@@ -6761,6 +8045,29 @@ internal static partial class LibVst
         /// UTF-16, null terminated
         /// </summary>
         public char* text;
+    }
+    
+    /// <summary>
+    /// Note Expression Int event. Used in @ref Event (union)
+    /// Same as NoteExpressionValueEvent but use a uint64 instead of a NoteExpressionValue (double)
+    /// </summary>
+    /// <remarks>
+    ///  vstIPlug vst380- [released: 3.8.0]
+    /// </remarks>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct NoteExpressionIntValueEvent
+    {
+        /// <summary>
+        /// see @ref NoteExpressionTypeID
+        /// </summary>
+        public LibVst.NoteExpressionTypeID typeId;
+        
+        /// <summary>
+        /// associated note identifier to apply the change
+        /// </summary>
+        public int noteId;
+        
+        public ulong value;
     }
     
     /// <summary>
@@ -7558,21 +8865,31 @@ internal static partial class LibVst
         /// Try to set (host =&gt; plug-in) a wanted arrangement for inputs and outputs.
         /// The host should always deliver the same number of input and output busses than the plug-in
         /// needs (see @ref IComponent::getBusCount). The plug-in has 3 possibilities to react on this
-        /// setBusArrangements call:@n 1. The plug-in accepts these arrangements, then it should modify, if needed, its busses to match 
-        /// these new arrangements (later on asked by the host with IComponent::getBusInfo () or
-        /// IAudioProcessor::getBusArrangement ()) and then should return kResultTrue.@n 2. The plug-in does not accept or support these requested arrangements for all
-        /// inputs/outputs or just for some or only one bus, but the plug-in can try to adapt its current
-        /// arrangements according to the requested ones (requested arrangements for kMain busses should be
-        /// handled with more priority than the ones for kAux busses), then it should modify its busses arrangements
-        /// and should return kResultFalse.@n 3. Same than the point 2 above the plug-in does not support these requested arrangements 
-        /// but the plug-in cannot find corresponding arrangements, the plug-in could keep its current arrangement
-        /// or fall back to a default arrangement by modifying its busses arrangements and should return kResultFalse.@n
+        /// setBusArrangements call:@n
         /// </summary>
-        /// <param name="inputs">pointer to an array of /ref SpeakerArrangement</param>
-        /// <param name="numIns">number of /ref SpeakerArrangement in inputs array</param>
-        /// <param name="outputs">pointer to an array of /ref SpeakerArrangement</param>
-        /// <param name="numOuts">number of /ref SpeakerArrangement in outputs array 
-        /// Returns kResultTrue when Arrangements is supported and is the current one, else returns kResultFalse.</param>
+        /// <param name="inputs">pointer to an array of @ref SpeakerArrangement</param>
+        /// <param name="numIns">number of @ref SpeakerArrangement in inputs array</param>
+        /// <param name="outputs">pointer to an array of @ref SpeakerArrangement</param>
+        /// <param name="numOuts">number of @ref SpeakerArrangement in outputs array
+        /// Returns kResultTrue when Arrangements is supported and is the current one, else returns
+        /// kResultFalse.</param>
+        /// <remarks>
+        /// 1. The plug-in accepts these arrangements, then it should modify, if needed, its busses to
+        /// match these new arrangements (later on asked by the host with IComponent::getBusInfo () or
+        /// IAudioProcessor::getBusArrangement ()) and then should return kResultTrue.@n2. The plug-in does not accept or support these requested arrangements for all
+        /// inputs/outputs or just for some or only one bus, but the plug-in can try to adapt its
+        /// current arrangements according to the requested ones (requested arrangements for kMain busses
+        /// should be handled with more priority than the ones for kAux busses), then it should modify
+        /// its busses arrangements and should return kResultFalse.@n3. Same than the point 2 above the plug-in does not support these requested arrangements but
+        /// the plug-in cannot find corresponding arrangements, the plug-in could keep its current
+        /// arrangement or fall back to a default arrangement by modifying its busses arrangements and
+        /// should return kResultFalse.@n
+        /// </remarks>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setBusArrangements(LibVst.SpeakerArrangement* inputs, int numIns, LibVst.SpeakerArrangement* outputs, int numOuts)
         {
@@ -7593,9 +8910,14 @@ internal static partial class LibVst
         
         /// <summary>
         /// Gets the bus arrangement for a given direction (input/output) and index.
-        /// Note: IComponent::getBusInfo () and IAudioProcessor::getBusArrangement () should be always return the same 
-        /// information about the busses arrangements.
+        /// Note: IComponent::getBusInfo () and IAudioProcessor::getBusArrangement () should be always
+        /// return the same information about the busses arrangements.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done | Activated | Processing]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getBusArrangement(LibVst.BusDirection dir, int index, LibVst.SpeakerArrangement* arr)
         {
@@ -7617,6 +8939,11 @@ internal static partial class LibVst
         /// <summary>
         /// Asks if a given sample size is supported see @ref SymbolicSampleSizes.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult canProcessSampleSize(int symbolicSampleSize)
         {
@@ -7637,13 +8964,19 @@ internal static partial class LibVst
         
         /// <summary>
         /// Gets the current Latency in samples.
-        /// The returned value defines the group delay or the latency of the plug-in. For example, if the plug-in internally needs
-        /// to look in advance (like compressors) 512 samples then this plug-in should report 512 as latency.
-        /// If during the use of the plug-in this latency change, the plug-in has to inform the host by
-        /// using IComponentHandler::restartComponent (kLatencyChanged), this could lead to audio playback interruption
-        /// because the host has to recompute its internal mixer delay compensation.
-        /// Note that for player live recording this latency should be zero or small.
+        /// The returned value defines the group delay or the latency of the plug-in. For example, if
+        /// the plug-in internally needs to look in advance (like compressors) 512 samples then this
+        /// plug-in should report 512 as latency. If during the use of the plug-in this latency change,
+        /// the plug-in has to inform the host by using IComponentHandler::restartComponent
+        /// (kLatencyChanged), this could lead to audio playback interruption because the host has to
+        /// recompute its internal mixer delay compensation. Note that for player live recording this
+        /// latency should be zero or small.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Setup Done]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint getLatencySamples()
         {
@@ -7662,8 +8995,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Called in disable state (setActive not called with true) before setProcessing is called and processing will begin.
+        /// Called in disable state (setActive not called with true) before setProcessing is called and
+        /// processing will begin.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setupProcessing(LibVst.ProcessSetup* setup)
         {
@@ -7688,11 +9027,16 @@ internal static partial class LibVst
         /// Note that setProcessing (false) may be called after setProcessing (true) without any process
         /// calls.
         /// Note this function could be called in the UI or in Processing Thread, thats why the plug-in
-        /// should only light operation (no memory allocation or big setup reconfiguration), 
+        /// should only light operation (no memory allocation or big setup reconfiguration),
         /// this could be used to reset some buffers (like Delay line or Reverb).
         /// The host has to be sure that it is called only when the plug-in is enable (setActive (true)
         /// was called).
         /// </summary>
+        /// <note>
+        /// @note [(UI-thread or processing-thread) 
+        /// &amp;
+        /// Activated]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setProcessing(byte state)
         {
@@ -7714,6 +9058,11 @@ internal static partial class LibVst
         /// <summary>
         /// The Process call, where all information (parameter changes, event, audio buffer) are passed.
         /// </summary>
+        /// <note>
+        /// @note [processing-thread 
+        /// &amp;
+        /// Processing]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult process(LibVst.ProcessData* data)
         {
@@ -7734,15 +9083,20 @@ internal static partial class LibVst
         
         /// <summary>
         /// Gets tail size in samples. For example, if the plug-in is a Reverb plug-in and it knows that
-        /// the maximum length of the Reverb is 2sec, then it has to return in getTailSamples() 
+        /// the maximum length of the Reverb is 2sec, then it has to return in getTailSamples ()
         /// (in VST2 it was getGetTailSize ()): 2*sampleRate.
-        /// This information could be used by host for offline processing, process optimization and 
+        /// This information could be used by host for offline processing, process optimization and
         /// downmix (avoiding signal cut (clicks)).
         /// It should return:
         /// - kNoTail when no tail
         /// - x * sampleRate when x Sec tail.
         /// - kInfiniteTail when infinite tail.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Setup Done]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint getTailSamples()
         {
@@ -7767,21 +9121,31 @@ internal static partial class LibVst
         /// Try to set (host =&gt; plug-in) a wanted arrangement for inputs and outputs.
         /// The host should always deliver the same number of input and output busses than the plug-in
         /// needs (see @ref IComponent::getBusCount). The plug-in has 3 possibilities to react on this
-        /// setBusArrangements call:@n 1. The plug-in accepts these arrangements, then it should modify, if needed, its busses to match 
-        /// these new arrangements (later on asked by the host with IComponent::getBusInfo () or
-        /// IAudioProcessor::getBusArrangement ()) and then should return kResultTrue.@n 2. The plug-in does not accept or support these requested arrangements for all
-        /// inputs/outputs or just for some or only one bus, but the plug-in can try to adapt its current
-        /// arrangements according to the requested ones (requested arrangements for kMain busses should be
-        /// handled with more priority than the ones for kAux busses), then it should modify its busses arrangements
-        /// and should return kResultFalse.@n 3. Same than the point 2 above the plug-in does not support these requested arrangements 
-        /// but the plug-in cannot find corresponding arrangements, the plug-in could keep its current arrangement
-        /// or fall back to a default arrangement by modifying its busses arrangements and should return kResultFalse.@n
+        /// setBusArrangements call:@n
         /// </summary>
-        /// <param name="inputs">pointer to an array of /ref SpeakerArrangement</param>
-        /// <param name="numIns">number of /ref SpeakerArrangement in inputs array</param>
-        /// <param name="outputs">pointer to an array of /ref SpeakerArrangement</param>
-        /// <param name="numOuts">number of /ref SpeakerArrangement in outputs array 
-        /// Returns kResultTrue when Arrangements is supported and is the current one, else returns kResultFalse.</param>
+        /// <param name="inputs">pointer to an array of @ref SpeakerArrangement</param>
+        /// <param name="numIns">number of @ref SpeakerArrangement in inputs array</param>
+        /// <param name="outputs">pointer to an array of @ref SpeakerArrangement</param>
+        /// <param name="numOuts">number of @ref SpeakerArrangement in outputs array
+        /// Returns kResultTrue when Arrangements is supported and is the current one, else returns
+        /// kResultFalse.</param>
+        /// <remarks>
+        /// 1. The plug-in accepts these arrangements, then it should modify, if needed, its busses to
+        /// match these new arrangements (later on asked by the host with IComponent::getBusInfo () or
+        /// IAudioProcessor::getBusArrangement ()) and then should return kResultTrue.@n2. The plug-in does not accept or support these requested arrangements for all
+        /// inputs/outputs or just for some or only one bus, but the plug-in can try to adapt its
+        /// current arrangements according to the requested ones (requested arrangements for kMain busses
+        /// should be handled with more priority than the ones for kAux busses), then it should modify
+        /// its busses arrangements and should return kResultFalse.@n3. Same than the point 2 above the plug-in does not support these requested arrangements but
+        /// the plug-in cannot find corresponding arrangements, the plug-in could keep its current
+        /// arrangement or fall back to a default arrangement by modifying its busses arrangements and
+        /// should return kResultFalse.@n
+        /// </remarks>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done)]
+        /// </note>
         private static partial ComResult setBusArrangements_ToManaged(IAudioProcessor* self, LibVst.SpeakerArrangement* inputs, int numIns, LibVst.SpeakerArrangement* outputs, int numOuts);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -7819,9 +9183,14 @@ internal static partial class LibVst
         
         /// <summary>
         /// Gets the bus arrangement for a given direction (input/output) and index.
-        /// Note: IComponent::getBusInfo () and IAudioProcessor::getBusArrangement () should be always return the same 
-        /// information about the busses arrangements.
+        /// Note: IComponent::getBusInfo () and IAudioProcessor::getBusArrangement () should be always
+        /// return the same information about the busses arrangements.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done | Activated | Processing]
+        /// </note>
         private static partial ComResult getBusArrangement_ToManaged(IAudioProcessor* self, LibVst.BusDirection dir, int index, LibVst.SpeakerArrangement* arr);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -7860,6 +9229,11 @@ internal static partial class LibVst
         /// <summary>
         /// Asks if a given sample size is supported see @ref SymbolicSampleSizes.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult canProcessSampleSize_ToManaged(IAudioProcessor* self, int symbolicSampleSize);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -7897,13 +9271,19 @@ internal static partial class LibVst
         
         /// <summary>
         /// Gets the current Latency in samples.
-        /// The returned value defines the group delay or the latency of the plug-in. For example, if the plug-in internally needs
-        /// to look in advance (like compressors) 512 samples then this plug-in should report 512 as latency.
-        /// If during the use of the plug-in this latency change, the plug-in has to inform the host by
-        /// using IComponentHandler::restartComponent (kLatencyChanged), this could lead to audio playback interruption
-        /// because the host has to recompute its internal mixer delay compensation.
-        /// Note that for player live recording this latency should be zero or small.
+        /// The returned value defines the group delay or the latency of the plug-in. For example, if
+        /// the plug-in internally needs to look in advance (like compressors) 512 samples then this
+        /// plug-in should report 512 as latency. If during the use of the plug-in this latency change,
+        /// the plug-in has to inform the host by using IComponentHandler::restartComponent
+        /// (kLatencyChanged), this could lead to audio playback interruption because the host has to
+        /// recompute its internal mixer delay compensation. Note that for player live recording this
+        /// latency should be zero or small.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Setup Done]
+        /// </note>
         private static partial uint getLatencySamples_ToManaged(IAudioProcessor* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -7940,8 +9320,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Called in disable state (setActive not called with true) before setProcessing is called and processing will begin.
+        /// Called in disable state (setActive not called with true) before setProcessing is called and
+        /// processing will begin.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]]
+        /// </note>
         private static partial ComResult setupProcessing_ToManaged(IAudioProcessor* self, LibVst.ProcessSetup* setup);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -7983,11 +9369,16 @@ internal static partial class LibVst
         /// Note that setProcessing (false) may be called after setProcessing (true) without any process
         /// calls.
         /// Note this function could be called in the UI or in Processing Thread, thats why the plug-in
-        /// should only light operation (no memory allocation or big setup reconfiguration), 
+        /// should only light operation (no memory allocation or big setup reconfiguration),
         /// this could be used to reset some buffers (like Delay line or Reverb).
         /// The host has to be sure that it is called only when the plug-in is enable (setActive (true)
         /// was called).
         /// </summary>
+        /// <note>
+        /// @note [(UI-thread or processing-thread) 
+        /// &amp;
+        /// Activated]
+        /// </note>
         private static partial ComResult setProcessing_ToManaged(IAudioProcessor* self, byte state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -8026,6 +9417,11 @@ internal static partial class LibVst
         /// <summary>
         /// The Process call, where all information (parameter changes, event, audio buffer) are passed.
         /// </summary>
+        /// <note>
+        /// @note [processing-thread 
+        /// &amp;
+        /// Processing]
+        /// </note>
         private static partial ComResult process_ToManaged(IAudioProcessor* self, LibVst.ProcessData* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -8063,15 +9459,20 @@ internal static partial class LibVst
         
         /// <summary>
         /// Gets tail size in samples. For example, if the plug-in is a Reverb plug-in and it knows that
-        /// the maximum length of the Reverb is 2sec, then it has to return in getTailSamples() 
+        /// the maximum length of the Reverb is 2sec, then it has to return in getTailSamples ()
         /// (in VST2 it was getGetTailSize ()): 2*sampleRate.
-        /// This information could be used by host for offline processing, process optimization and 
+        /// This information could be used by host for offline processing, process optimization and
         /// downmix (avoiding signal cut (clicks)).
         /// It should return:
         /// - kNoTail when no tail
         /// - x * sampleRate when x Sec tail.
         /// - kInfiniteTail when infinite tail.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Setup Done]
+        /// </note>
         private static partial uint getTailSamples_ToManaged(IAudioProcessor* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -8203,6 +9604,24 @@ internal static partial class LibVst
         
         kSpeakerACN15 = 1UL << 49,
         
+        kSpeakerACN16 = 1UL << 50,
+        
+        kSpeakerACN17 = 1UL << 51,
+        
+        kSpeakerACN18 = 1UL << 52,
+        
+        kSpeakerACN19 = 1UL << 53,
+        
+        kSpeakerACN20 = 1UL << 54,
+        
+        kSpeakerACN21 = 1UL << 55,
+        
+        kSpeakerACN22 = 1UL << 56,
+        
+        kSpeakerACN23 = 1UL << 57,
+        
+        kSpeakerACN24 = 1UL << 58,
+        
         kSpeakerTsl = 1UL << 24,
         
         kSpeakerTsr = 1UL << 25,
@@ -8231,11 +9650,17 @@ internal static partial class LibVst
         
         kSpeakerBrr = 1UL << 37,
         
+        kSpeakerLw = 1UL << 59,
+        
+        kSpeakerRw = 1UL << 60,
+        
         kEmpty = 0,
         
         kMono = kSpeakerM,
         
         kStereo = kSpeakerL | kSpeakerR,
+        
+        kStereoWide = kSpeakerLw | kSpeakerRw,
         
         kStereoSurround = kSpeakerLs | kSpeakerRs,
         
@@ -8257,41 +9682,41 @@ internal static partial class LibVst
         
         k30Cine = kSpeakerL | kSpeakerR | kSpeakerC,
         
-        k31Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe,
+        k31Cine = k30Cine | kSpeakerLfe,
         
         k30Music = kSpeakerL | kSpeakerR | kSpeakerCs,
         
-        k31Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerCs,
+        k31Music = k30Music | kSpeakerLfe,
         
         k40Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerCs,
         
-        k41Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerCs,
+        k41Cine = k40Cine | kSpeakerLfe,
         
         k40Music = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs,
         
-        k41Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs,
+        k41Music = k40Music | kSpeakerLfe,
         
         k50 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs,
         
-        k51 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs,
+        k51 = k50 | kSpeakerLfe,
         
         k60Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerCs,
         
-        k61Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs,
+        k61Cine = k60Cine | kSpeakerLfe,
         
         k60Music = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
         
-        k61Music = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
+        k61Music = k60Music | kSpeakerLfe,
         
         k70Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc,
         
-        k71Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc,
+        k71Cine = k70Cine | kSpeakerLfe,
         
         k71CineFullFront = k71Cine,
         
         k70Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
         
-        k71Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr,
+        k71Music = k70Music | kSpeakerLfe,
         
         k71CineFullRear = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLcs | kSpeakerRcs,
         
@@ -8301,25 +9726,33 @@ internal static partial class LibVst
         
         k80Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs,
         
-        k81Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs,
+        k81Cine = k80Cine | kSpeakerLfe,
         
         k80Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerSl | kSpeakerSr,
         
-        k81Music = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerCs | kSpeakerSl | kSpeakerSr,
+        k81Music = k80Music | kSpeakerLfe,
         
         k90Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr,
         
-        k91Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr,
+        k91Cine = k90Cine | kSpeakerLfe,
         
         k100Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr,
         
-        k101Cine = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerCs | kSpeakerSl | kSpeakerSr,
+        k101Cine = k100Cine | kSpeakerLfe,
         
         kAmbi1stOrderACN = kSpeakerACN0 | kSpeakerACN1 | kSpeakerACN2 | kSpeakerACN3,
         
         kAmbi2cdOrderACN = kAmbi1stOrderACN | kSpeakerACN4 | kSpeakerACN5 | kSpeakerACN6 | kSpeakerACN7 | kSpeakerACN8,
         
         kAmbi3rdOrderACN = kAmbi2cdOrderACN | kSpeakerACN9 | kSpeakerACN10 | kSpeakerACN11 | kSpeakerACN12 | kSpeakerACN13 | kSpeakerACN14 | kSpeakerACN15,
+        
+        kAmbi4thOrderACN = kAmbi3rdOrderACN | kSpeakerACN16 | kSpeakerACN17 | kSpeakerACN18 | kSpeakerACN19 | kSpeakerACN20 | kSpeakerACN21 | kSpeakerACN22 | kSpeakerACN23 | kSpeakerACN24,
+        
+        kAmbi5thOrderACN = 0x000FFFFFFFFF,
+        
+        kAmbi6thOrderACN = 0x0001FFFFFFFFFFFF,
+        
+        kAmbi7thOrderACN = 0xFFFFFFFFFFFFFFFF,
         
         k80Cube = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
         
@@ -8335,13 +9768,19 @@ internal static partial class LibVst
         
         k50_2 = k70CineFrontHigh,
         
-        k71CineFrontHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr,
+        k71CineFrontHigh = k70CineFrontHigh | kSpeakerLfe,
         
         k71MPEG3D = k71CineFrontHigh,
         
         k51_2 = k71CineFrontHigh,
         
-        k71CineSideHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTsl | kSpeakerTsr,
+        k70CineSideHigh = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTsl | kSpeakerTsr,
+        
+        k50_2_TS = k70CineSideHigh,
+        
+        k71CineSideHigh = k70CineSideHigh | kSpeakerLfe,
+        
+        k51_2_TS = k71CineSideHigh,
         
         k81MPEG3D = kSpeakerL | kSpeakerR | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerBfc,
         
@@ -8351,47 +9790,59 @@ internal static partial class LibVst
         
         k50_4 = k90,
         
-        k91 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k91 = k90 | kSpeakerLfe,
         
         k51_4 = k91,
         
-        k50_4_1 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfc,
+        k50_4_1 = k50_4 | kSpeakerBfc,
         
-        k51_4_1 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfc,
+        k51_4_1 = k50_4_1 | kSpeakerLfe,
         
         k70_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTsl | kSpeakerTsr,
         
-        k71_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTsl | kSpeakerTsr,
+        k71_2 = k70_2 | kSpeakerLfe,
         
         k91Atmos = k71_2,
         
-        k70_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrc,
+        k70_2_TF = k70Music | kSpeakerTfl | kSpeakerTfr,
         
-        k72_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrc | kSpeakerLfe2,
+        k71_2_TF = k70_2_TF | kSpeakerLfe,
         
-        k70_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k70_3 = k70_2_TF | kSpeakerTrc,
         
-        k71_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k72_3 = k70_3 | kSpeakerLfe | kSpeakerLfe2,
+        
+        k70_4 = k70_2_TF | kSpeakerTrl | kSpeakerTrr,
+        
+        k71_4 = k70_4 | kSpeakerLfe,
         
         k111MPEG3D = k71_4,
         
         k70_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
         
-        k71_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
+        k71_6 = k70_6 | kSpeakerLfe,
         
         k90_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
         
-        k91_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k91_4 = k90_4 | kSpeakerLfe,
         
         k90_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
         
-        k91_6 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerLc | kSpeakerRc | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
+        k91_6 = k90_6 | kSpeakerLfe,
+        
+        k90_4_W = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLw | kSpeakerRw | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k91_4_W = k90_4_W | kSpeakerLfe,
+        
+        k90_6_W = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerLw | kSpeakerRw | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerTsl | kSpeakerTsr,
+        
+        k91_6_W = k90_6_W | kSpeakerLfe,
         
         k100 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
         
         k50_5 = k100,
         
-        k101 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k101 = k50_5 | kSpeakerLfe,
         
         k101MPEG3D = k101,
         
@@ -8405,7 +9856,7 @@ internal static partial class LibVst
         
         k50_6 = k110,
         
-        k111 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k111 = k110 | kSpeakerLfe,
         
         k51_6 = k111,
         
@@ -8415,7 +9866,7 @@ internal static partial class LibVst
         
         k130 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
         
-        k131 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTc | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        k131 = k130 | kSpeakerLfe,
         
         k140 = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr | kSpeakerBrl | kSpeakerBrr,
         
@@ -8431,7 +9882,27 @@ internal static partial class LibVst
         
         k50_5_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
         
-        k51_5_3 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLfe | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfc | kSpeakerBfr,
+        k51_5_3 = k50_5_3 | kSpeakerLfe,
+        
+        k50_2_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTsl | kSpeakerTsr | kSpeakerBfl | kSpeakerBfr,
+        
+        k50_4_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr,
+        
+        k70_4_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerSl | kSpeakerSr | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr,
+        
+        k50_5_Sony = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr,
+        
+        k40_2_2 = kSpeakerC | kSpeakerSl | kSpeakerSr | kSpeakerCs | kSpeakerTsl | kSpeakerTsr | kSpeakerBsl | kSpeakerBsr,
+        
+        k40_4_2 = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr,
+        
+        k50_3_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerBfl | kSpeakerBfr,
+        
+        k30_5_2 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerTfl | kSpeakerTfc | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr,
+        
+        k40_4_4 = kSpeakerL | kSpeakerR | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr | kSpeakerBrl | kSpeakerBrr,
+        
+        k50_4_4 = kSpeakerL | kSpeakerR | kSpeakerC | kSpeakerLs | kSpeakerRs | kSpeakerTfl | kSpeakerTfr | kSpeakerTrl | kSpeakerTrr | kSpeakerBfl | kSpeakerBfr | kSpeakerBrl | kSpeakerBrr,
     }
     
     /// <summary>
@@ -8543,18 +10014,17 @@ internal static partial class LibVst
     /// <summary>
     /// Processing buffers of an audio bus.
     /// This structure contains the processing buffer for each channel of an audio bus.
-    /// - The number of channels (numChannels) must always match the current bus arrangement.
-    /// It could be set to value '0' when the host wants to flush the parameters (when the plug-in is not processed).
-    /// - The size of the channel buffer array must always match the number of channels. So the host
-    /// must always supply an array for the channel buffers, regardless if the
-    /// bus is active or not. However, if an audio bus is currently inactive, the actual sample
-    /// buffer addresses are safe to be null.
-    /// - The silence flag is set when every sample of the according buffer has the value '0'. It is
+    /// </summary>
+    /// <remarks>
+    /// - The number of channels (numChannels) must always match the current bus arrangement. It could be
+    /// set to value '0' when the host wants to flush the parameters (when the plug-in is not processed).- The size of the channel buffer array must always match the number of channels. So the host must
+    /// always supply an array for the channel buffers, regardless if the bus is active or not. However, if
+    /// an audio bus is currently inactive, the actual sample buffer addresses are safe to be null.- The silence flag is set when every sample of the according buffer has the value '0'. It is
     /// intended to be used as help for optimizations allowing a plug-in to reduce processing activities.
     /// But even if this flag is set for a channel, the channel buffers must still point to valid memory!
     /// This flag is optional. A host is free to support it or not.
     /// .
-    /// </summary>
+    /// </remarks>
     /// <seealso cref="ProcessData"/>
     [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
     public unsafe partial struct AudioBusBuffers
@@ -8863,12 +10333,14 @@ internal static partial class LibVst
     /// - [extends IAudioProcessor]
     /// - [released: 3.1.0]
     /// - [optional]Inform the plug-in about how long from the moment of generation/acquiring (from file or from Input)
-    /// it will take for its input to arrive, and how long it will take for its output to be presented (to output or to speaker).Note for Input Presentation Latency: when reading from file, the first plug-in will have an input presentation latency set to zero.
-    /// When monitoring audio input from an audio device, the initial input latency is the input latency of the audio device itself.Note for Output Presentation Latency: when writing to a file, the last plug-in will have an output presentation latency set to zero.
-    /// When the output of this plug-in is connected to an audio device, the initial output latency is the output
-    /// latency of the audio device itself.A value of zero either means no latency or an unknown latency.Each plug-in adding a latency (returning a none zero value for IAudioProcessor::getLatencySamples) will modify the input 
-    /// presentation latency of the next plug-ins in the mixer routing graph and will modify the output presentation latency 
-    /// of the previous plug-ins. html "iaudiopresentationlatency_usage.png"
+    /// it will take for its input to arrive, and how long it will take for its output to be presented (to
+    /// output or to speaker).Note for Input Presentation Latency: when reading from file, the first plug-in will have an input
+    /// presentation latency set to zero. When monitoring audio input from an audio device, the initial
+    /// input latency is the input latency of the audio device itself.Note for Output Presentation Latency: when writing to a file, the last plug-in will have an output
+    /// presentation latency set to zero. When the output of this plug-in is connected to an audio device,
+    /// the initial output latency is the output latency of the audio device itself.A value of zero either means no latency or an unknown latency.Each plug-in adding a latency (returning a none zero value for IAudioProcessor::getLatencySamples)
+    /// will modify the input presentation latency of the next plug-ins in the mixer routing graph and will
+    /// modify the output presentation latency of the previous plug-ins. html "iaudiopresentationlatency_usage.png"
     /// </remarks>
     /// <seealso cref="IAudioProcessor"/>
     /// <seealso cref="IComponent"/>
@@ -8926,8 +10398,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Informs the plug-in about the Audio Presentation Latency in samples for a given direction (kInput/kOutput) and bus index.
+        /// Informs the plug-in about the Audio Presentation Latency in samples for a given direction
+        /// (kInput/kOutput) and bus index.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Activated]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setAudioPresentationLatencySamples(LibVst.BusDirection dir, int busIndex, uint latencyInSamples)
         {
@@ -8950,8 +10428,14 @@ internal static partial class LibVst
         // CCW methods
         // --------------------------------------------------------------
         /// <summary>
-        /// Informs the plug-in about the Audio Presentation Latency in samples for a given direction (kInput/kOutput) and bus index.
+        /// Informs the plug-in about the Audio Presentation Latency in samples for a given direction
+        /// (kInput/kOutput) and bus index.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Activated]
+        /// </note>
         private static partial ComResult setAudioPresentationLatencySamples_ToManaged(IAudioPresentationLatency* self, LibVst.BusDirection dir, int busIndex, uint latencyInSamples);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -9010,13 +10494,14 @@ internal static partial class LibVst
     ///  vstIPlug vst370- [plug imp]
     /// - [extends IAudioProcessor]
     /// - [released: 3.7.0]
-    /// - [mandatory]To get accurate process context information (Vst::ProcessContext), it is now required to implement this interface and
-    /// return the desired bit mask of flags which your audio effect needs. If you do not implement this
-    /// interface, you may not get any information at all of the process function.The host asks for this information once between initialize and setActive. It cannot be changed afterwards.This gives the host the opportunity to better optimize the audio process graph when it knows which
-    /// plug-ins need which information.Plug-Ins built with an earlier SDK version (
+    /// - [mandatory]To get accurate process context information (Vst::ProcessContext), it is now required to implement
+    /// this interface and return the desired bit mask of flags which your audio effect needs. If you do not
+    /// implement this interface, you may not get any information at all of the process function!The host asks for this information once between initialize and setActive (in Setup Done). It cannot
+    /// be changed afterwards.This gives the host the opportunity to better optimize the audio process graph when it knows which
+    /// plug-ins need which information.Plug-ins built with an earlier SDK version (
     /// &lt;
-    /// 3.7) will still get the old information, but the information
-    /// may not be as accurate as when using this interface.
+    /// 3.7) will still get the old information, but the
+    /// information may not be as accurate as when using this interface.
     /// </remarks>
     public unsafe partial struct IProcessContextRequirements : INativeGuid, INativeUnknown, INativeVtbl
     {
@@ -9071,6 +10556,15 @@ internal static partial class LibVst
             return Unsafe.As<IProcessContextRequirements, FUnknown>(ref this).release();
         }
         
+        /// <summary>
+        /// Allows the host to ask the plug-in what is really needed for the process context information
+        /// (Vst::ProcessContext).
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Setup Done]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint getProcessContextRequirements()
         {
@@ -9091,6 +10585,15 @@ internal static partial class LibVst
         // --------------------------------------------------------------
         // CCW methods
         // --------------------------------------------------------------
+        /// <summary>
+        /// Allows the host to ask the plug-in what is really needed for the process context information
+        /// (Vst::ProcessContext).
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Setup Done]
+        /// </note>
         private static partial uint getProcessContextRequirements_ToManaged(IProcessContextRequirements* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -9265,6 +10768,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets the current Automation state.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setAutomationState(int state)
         {
@@ -9289,6 +10797,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets the current Automation state.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult setAutomationState_ToManaged(IAutomationState* self, int state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -9327,7 +10840,7 @@ internal static partial class LibVst
         /// <summary>
         /// 
         /// </summary>
-        public enum AutomationStates
+        public enum AutomationStates : int
         {
             /// <summary>
             /// Not Read and not Write
@@ -9438,6 +10951,9 @@ internal static partial class LibVst
         /// <summary>
         /// Gets the number of menu items.
         /// </summary>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getItemCount()
         {
@@ -9458,6 +10974,9 @@ internal static partial class LibVst
         /// <summary>
         /// Gets a menu item and its target (target could be not assigned).
         /// </summary>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getItem(int index, LibVst.Item* item, LibVst.IContextMenuTarget** target)
         {
@@ -9479,6 +10998,9 @@ internal static partial class LibVst
         /// <summary>
         /// Adds a menu item and its target.
         /// </summary>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult addItem(LibVst.Item* item, LibVst.IContextMenuTarget* target)
         {
@@ -9500,6 +11022,9 @@ internal static partial class LibVst
         /// <summary>
         /// Removes a menu item.
         /// </summary>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult removeItem(LibVst.Item* item, LibVst.IContextMenuTarget* target)
         {
@@ -9521,6 +11046,9 @@ internal static partial class LibVst
         /// <summary>
         /// Pop-ups the menu. Coordinates are relative to the top-left position of the plug-ins view.
         /// </summary>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult popup(LibVst.UCoord x, LibVst.UCoord y)
         {
@@ -9545,6 +11073,9 @@ internal static partial class LibVst
         /// <summary>
         /// Gets the number of menu items.
         /// </summary>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         private static partial int getItemCount_ToManaged(IContextMenu* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -9583,6 +11114,9 @@ internal static partial class LibVst
         /// <summary>
         /// Gets a menu item and its target (target could be not assigned).
         /// </summary>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         private static partial ComResult getItem_ToManaged(IContextMenu* self, int index, LibVst.Item* item, LibVst.IContextMenuTarget** target);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -9621,6 +11155,9 @@ internal static partial class LibVst
         /// <summary>
         /// Adds a menu item and its target.
         /// </summary>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         private static partial ComResult addItem_ToManaged(IContextMenu* self, LibVst.Item* item, LibVst.IContextMenuTarget* target);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -9659,6 +11196,9 @@ internal static partial class LibVst
         /// <summary>
         /// Removes a menu item.
         /// </summary>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         private static partial ComResult removeItem_ToManaged(IContextMenu* self, LibVst.Item* item, LibVst.IContextMenuTarget* target);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -9697,6 +11237,9 @@ internal static partial class LibVst
         /// <summary>
         /// Pop-ups the menu. Coordinates are relative to the top-left position of the plug-ins view.
         /// </summary>
+        /// <note>
+        /// [UI-thread]
+        /// </note>
         private static partial ComResult popup_ToManaged(IContextMenu* self, LibVst.UCoord x, LibVst.UCoord y);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -9872,6 +11415,13 @@ internal static partial class LibVst
         /// <summary>
         /// Called when an menu item was executed.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected) 
+        /// &amp;
+        /// plugView]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult executeMenuItem(int tag)
         {
@@ -9896,6 +11446,13 @@ internal static partial class LibVst
         /// <summary>
         /// Called when an menu item was executed.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected) 
+        /// &amp;
+        /// plugView]
+        /// </note>
         private static partial ComResult executeMenuItem_ToManaged(IContextMenuTarget* self, int tag);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -9961,63 +11518,71 @@ internal static partial class LibVst
     ///  vstIHost vst350- [host imp]
     /// - [extends IComponentHandler]
     /// - [released: 3.5.0]
-    /// - [optional]A plug-in can ask the host to create a context menu for a given exported parameter ID or a generic context menu.@nThe host may pre-fill this context menu with specific items regarding the parameter ID like "Show automation for parameter",
-    /// "MIDI learn" etc...@nThe plug-in can use the context menu in two ways :
-    /// - add its own items to the menu via the IContextMenu interface and call IContextMenu::popup(..) to create the pop-up. See the @ref IContextMenuExample.- extract the host menu items and add them to a context menu created by the plug-in.Note: You can and should use this even if you do not add your own items to the menu as this is considered to be a big user value. IContextMenuExample Examples- For example, Cubase adds its owned entries in the context menu opened with right-click on an exported parameter when the plug-in uses createContextMenu. html "contextmenuexample.png"- Adding plug-in specific items to the context menu:@code {.cpp}
+    /// - [optional]A plug-in can ask the host to create a context menu for a given exported parameter ID or a generic
+    /// context menu.@nThe host may pre-fill this context menu with specific items regarding the parameter ID like "Show
+    /// automation for parameter", "MIDI learn" etc...@nThe plug-in can use the context menu in two ways :
+    /// - add its own items to the menu via the IContextMenu interface and call IContextMenu::popup(..) to
+    /// create the pop-up. See the @ref IContextMenuExample.- extract the host menu items and add them to a context menu created by the plug-in.@b Note: You can and should use this even if you do not add your own items to the menu as this is
+    /// considered to be a big user value. IContextMenuExample Examples- For example, Cubase adds its owned entries in the context menu opened with right-click on an
+    /// exported parameter when the plug-in uses createContextMenu. html "contextmenuexample.png" \n- Adding plug-in specific items to the context menu:@code {.cpp}
     /// //------------------------------------------------------------------------
     /// class PluginContextMenuTarget : public IContextMenuTarget, public FObject
     /// {
     /// public:
-    /// 	PluginContextMenuTarget () {}
+    ///     PluginContextMenuTarget () {}
     /// 
-    /// 	virtual tresult PLUGIN_API executeMenuItem (int32 tag)
-    /// 	{
-    /// 		// this will be called if the user has executed one of the menu items of the plug-in.
-    /// 		// It will not be called for items of the host.
-    /// 		switch (tag)
-    /// 		{
-    /// 			case 1: break;
-    /// 			case 2: break;
-    /// 		}
-    /// 		return kResultTrue;
-    /// 	}
+    ///     tresult PLUGIN_API executeMenuItem (int32 tag) override
+    ///     {
+    ///         // this will be called if the user has executed one of the menu items of the plug-in.
+    ///         // It will not be called for items of the host.
+    ///         switch (tag)
+    ///         {
+    ///             case 1: break;
+    ///             case 2: break;
+    ///         }
+    ///         return kResultTrue;
+    ///     }
     /// 
-    /// 	OBJ_METHODS(PluginContextMenuTarget, FObject)
-    /// 	DEFINE_INTERFACES
-    /// 		DEF_INTERFACE (IContextMenuTarget)
-    /// 	END_DEFINE_INTERFACES (FObject)
-    /// 	REFCOUNT_METHODS(FObject)
+    ///     OBJ_METHODS(PluginContextMenuTarget, FObject)
+    ///     DEFINE_INTERFACES
+    ///         DEF_INTERFACE (IContextMenuTarget)
+    ///     END_DEFINE_INTERFACES (FObject)
+    ///     REFCOUNT_METHODS(FObject)
     /// };
     /// 
     /// // The following is the code to create the context menu
-    /// void popupContextMenu (IComponentHandler* componentHandler, IPlugView* view, const ParamID* paramID, UCoord x, UCoord y)
+    /// void popupContextMenu (IComponentHandler* componentHandler, IPlugView* view, const ParamID* paramID,
+    /// UCoord x, UCoord y)
     /// {
-    /// 	if (componentHandler == 0 || view == 0)
-    /// 		return;
-    /// 	FUnknownPtr&lt;IComponentHandler3&gt; handler (componentHandler);
-    /// 	if (handler == 0)
-    /// 		return;
-    /// 	IContextMenu* menu = handler-&gt;createContextMenu (view, paramID);
-    /// 	if (menu)
-    /// 	{
-    /// 		// here you can add your entries (optional)
-    /// 		PluginContextMenuTarget* target = new PluginContextMenuTarget ();
-    /// 		
-    /// 		IContextMenu::Item item = {0};
-    /// 		UString128 ("My Item 1").copyTo (item.name, 128);
-    /// 		item.tag = 1;
-    /// 		menu-&gt;addItem (item, target);
+    ///     if (componentHandler == 0 || view == 0)
+    ///         return;
+    ///     FUnknownPtr&lt;IComponentHandler3&gt; handler (componentHandler);
+    ///     if (handler == 0)
+    ///         return;
+    ///     if (IContextMenu* menu = handler-&gt;createContextMenu (view, paramID))
+    ///     {
+    ///         // here you can add your entries (optional)
+    ///         PluginContextMenuTarget* target = new PluginContextMenuTarget ();
+    ///         
     /// 
-    /// 		UString128 ("My Item 2").copyTo (item.name, 128);
-    /// 		item.tag = 2;
-    /// 		menu-&gt;addItem (item, target);
-    /// 		target-&gt;release ();
-    /// 		//--end of adding new entries
-    /// 		
-    /// 		// here the the context menu will be pop-up (and it waits a user interaction)
-    /// 		menu-&gt;popup (x, y);
-    /// 		menu-&gt;release ();
-    /// 	}
+    /// 
+    ///         IContextMenu::Item item = {0};
+    ///         UString128 ("My Item 1").copyTo (item.name, 128);
+    ///         item.tag = 1;
+    ///         menu-&gt;addItem (item, target);
+    /// 
+    ///         UString128 ("My Item 2").copyTo (item.name, 128);
+    ///         item.tag = 2;
+    ///         menu-&gt;addItem (item, target);
+    ///         target-&gt;release ();
+    ///         //--end of adding new entries
+    ///         
+    /// 
+    /// 
+    ///         // here the the context menu will be pop-up (and it waits a user interaction)
+    ///         menu-&gt;popup (x, y);
+    ///         menu-&gt;release ();
+    ///     }
     /// }
     /// @endcode
     /// </remarks>
@@ -10082,6 +11647,13 @@ internal static partial class LibVst
         /// - The IPlugView object must be valid.
         /// - The return IContextMenu object needs to be released afterwards by the plug-in.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected) 
+        /// &amp;
+        /// plugView]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IContextMenu* createContextMenu(LibVst.IPlugView* plugView, LibVst.ParamID* paramID)
         {
@@ -10108,6 +11680,13 @@ internal static partial class LibVst
         /// - The IPlugView object must be valid.
         /// - The return IContextMenu object needs to be released afterwards by the plug-in.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected) 
+        /// &amp;
+        /// plugView]
+        /// </note>
         private static partial LibVst.IContextMenu* createContextMenu_ToManaged(IComponentHandler3* self, LibVst.IPlugView* plugView, LibVst.ParamID* paramID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -10154,6 +11733,747 @@ internal static partial class LibVst
                 return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
                         ? new ReadOnlySpan<byte>(new byte[] { 0x17, 0x16, 0xf1, 0x69, 0x6b, 0xd2, 0x0d, 0x40, 0xa4, 0xb6, 0xb9, 0x64, 0x7b, 0x6e, 0xbb, 0xab })
                         : new ReadOnlySpan<byte>(new byte[] { 0x69, 0xf1, 0x16, 0x17, 0xd2, 0x6b, 0x40, 0x0d, 0xa4, 0xb6, 0xb9, 0x64, 0x7b, 0x6e, 0xbb, 0xab })
+                    )));
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Host Data Exchange handler interface: Vst::IDataExchangeHandler
+    /// </summary>
+    /// <remarks>
+    ///  vstHost vst379- [host imp]
+    /// - [context interface]
+    /// - [released: 3.7.9]
+    /// - [optional]The IDataExchangeHandler implements a direct and thread-safe connection from the realtime
+    /// audio context of the audio processor to the non-realtime audio context of the edit controller.
+    /// This should be used when the edit controller needs continuous data from the audio process for
+    /// visualization or other use-cases. To circumvent the bottleneck on the main thread it is possible
+    /// to configure the connection in a way that the calls to the edit controller will happen on a
+    /// background thread.Opening a queue:
+    /// The main operation for a plug-in is to open a queue via the handler before the plug-in is activated
+    /// (but it must be connected to the edit controller via the IConnectionPoint when the plug-in is using
+    /// the recommended separation of edit controller and audio processor). The best place to do this is in
+    /// the IAudioProcessor::setupProcessing method as this is also the place where the plug-in knows the
+    /// sample rate and maximum block size which the plug-in may need to calculate the queue block size.
+    /// When a queue is opened the edit controller gets a notification about it and the controller can
+    /// decide if it wishes to receive the data on the main thread or the background thread.Sending data:
+    /// In the IAudioProcessor::process call the plug-in can now lock a block from the handler, fill it and
+    /// when done free the block via the handler which then sends the block to the edit controller. The edit
+    /// controller then receives the block either on the main thread or on a background thread depending on
+    /// the setup of the queue.
+    /// The host guarantees that all blocks are send before the plug-in is deactivated.Closing a queue:
+    /// The audio processor must close an opened queue and this has to be done after the processor was
+    /// deactivated and before it is disconnected from the edit controller (see IConnectionPoint).What to do when the queue is full and no block can be locked?
+    /// The plug-in needs to be prepared for this situation as constraints in the overall system may cause
+    /// the queue to get full. If you need to get this information to the controller you can declare a
+    /// hidden parameter which you set to a special value and send this parameter change in your audio
+    /// process method.
+    /// </remarks>
+    public unsafe partial struct IDataExchangeHandler : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 7;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IDataExchangeHandler*, LibVst.IAudioProcessor*, uint, uint, uint, uint, LibVst.DataExchangeQueueID*, int>)&openQueue_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IDataExchangeHandler*, uint, int>)&closeQueue_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IDataExchangeHandler*, uint, LibVst.DataExchangeBlock*, int>)&lockBlock_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IDataExchangeHandler*, uint, uint, byte, int>)&freeBlock_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IDataExchangeHandler, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IDataExchangeHandler, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IDataExchangeHandler, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// open a new queue
+        /// </summary>
+        /// <param name="processor">the processor who wants to open the queue</param>
+        /// <param name="blockSize">size of one block</param>
+        /// <param name="numBlocks">number of blocks in the queue</param>
+        /// <param name="alignment">data alignment, if zero will use the platform default alignment if any</param>
+        /// <param name="userContextID">an identifier internal to the processor</param>
+        /// <param name="outID">on return the ID of the queue</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// only allowed to be called from the main thread when the component is not active but
+        /// initialized and connected (see IConnectionPoint)
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult openQueue(LibVst.IAudioProcessor* processor, uint blockSize, uint numBlocks, uint alignment, LibVst.DataExchangeUserContextID userContextID, LibVst.DataExchangeQueueID* outID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeHandler), "openQueue");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.IAudioProcessor*, uint, uint, uint, LibVst.DataExchangeUserContextID, LibVst.DataExchangeQueueID*, int>)Vtbl[3])(__self__, processor, blockSize, numBlocks, alignment, userContextID, outID);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.IAudioProcessor*, uint, uint, uint, LibVst.DataExchangeUserContextID, LibVst.DataExchangeQueueID*, int>)Vtbl[3])((LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this), processor, blockSize, numBlocks, alignment, userContextID, outID);
+            }
+        }
+        
+        /// <summary>
+        /// close a queue
+        /// </summary>
+        /// <param name="queueID">the ID of the queue to close</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// closes and frees all memory of a previously opened queue
+        /// if there are locked blocks in the queue, they are freed and made invalidonly allowed to be called from the main thread when the component is not active but
+        /// initialized and connected
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult closeQueue(LibVst.DataExchangeQueueID queueID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeHandler), "closeQueue");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, int>)Vtbl[4])(__self__, queueID);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, int>)Vtbl[4])((LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this), queueID);
+            }
+        }
+        
+        /// <summary>
+        /// lock a block if available
+        /// </summary>
+        /// <param name="queueID">the ID of the queue</param>
+        /// <param name="block">on return will contain the data pointer and size of the block</param>
+        /// <returns>kResultTrue if a free block was found and kOutOfMemory if all blocks are locked</returns>
+        /// <remarks>
+        /// only allowed to be called from within the IAudioProcessor::process call
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult lockBlock(LibVst.DataExchangeQueueID queueId, LibVst.DataExchangeBlock* block)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeHandler), "lockBlock");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, LibVst.DataExchangeBlock*, int>)Vtbl[5])(__self__, queueId, block);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, LibVst.DataExchangeBlock*, int>)Vtbl[5])((LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this), queueId, block);
+            }
+        }
+        
+        /// <summary>
+        /// free a previously locked block
+        /// </summary>
+        /// <param name="queueID">the ID of the queue</param>
+        /// <param name="blockID">the ID of the block</param>
+        /// <param name="sendToController">if true the block data will be send to the IEditController otherwise
+        /// it will be discarded</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// only allowed to be called from within the IAudioProcessor::process call
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult freeBlock(LibVst.DataExchangeQueueID queueId, LibVst.DataExchangeBlockID blockID, byte sendToController)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeHandler), "freeBlock");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, LibVst.DataExchangeBlockID, byte, int>)Vtbl[6])(__self__, queueId, blockID, sendToController);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeHandler*, LibVst.DataExchangeQueueID, LibVst.DataExchangeBlockID, byte, int>)Vtbl[6])((LibVst.IDataExchangeHandler*)Unsafe.AsPointer(ref this), queueId, blockID, sendToController);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// open a new queue
+        /// </summary>
+        /// <param name="processor">the processor who wants to open the queue</param>
+        /// <param name="blockSize">size of one block</param>
+        /// <param name="numBlocks">number of blocks in the queue</param>
+        /// <param name="alignment">data alignment, if zero will use the platform default alignment if any</param>
+        /// <param name="userContextID">an identifier internal to the processor</param>
+        /// <param name="outID">on return the ID of the queue</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// only allowed to be called from the main thread when the component is not active but
+        /// initialized and connected (see IConnectionPoint)
+        /// </remarks>
+        private static partial ComResult openQueue_ToManaged(IDataExchangeHandler* self, LibVst.IAudioProcessor* processor, uint blockSize, uint numBlocks, uint alignment, LibVst.DataExchangeUserContextID userContextID, LibVst.DataExchangeQueueID* outID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int openQueue_Wrapper(IDataExchangeHandler* self, LibVst.IAudioProcessor* processor, uint blockSize, uint numBlocks, uint alignment, uint userContextID, LibVst.DataExchangeQueueID* outID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeHandler), "openQueue");
+                try
+                {
+                    return openQueue_ToManaged(self, processor, blockSize, numBlocks, alignment, userContextID, outID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return openQueue_ToManaged(self, processor, blockSize, numBlocks, alignment, userContextID, outID);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// close a queue
+        /// </summary>
+        /// <param name="queueID">the ID of the queue to close</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// closes and frees all memory of a previously opened queue
+        /// if there are locked blocks in the queue, they are freed and made invalidonly allowed to be called from the main thread when the component is not active but
+        /// initialized and connected
+        /// </remarks>
+        private static partial ComResult closeQueue_ToManaged(IDataExchangeHandler* self, LibVst.DataExchangeQueueID queueID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int closeQueue_Wrapper(IDataExchangeHandler* self, uint queueID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeHandler), "closeQueue");
+                try
+                {
+                    return closeQueue_ToManaged(self, queueID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return closeQueue_ToManaged(self, queueID);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// lock a block if available
+        /// </summary>
+        /// <param name="queueID">the ID of the queue</param>
+        /// <param name="block">on return will contain the data pointer and size of the block</param>
+        /// <returns>kResultTrue if a free block was found and kOutOfMemory if all blocks are locked</returns>
+        /// <remarks>
+        /// only allowed to be called from within the IAudioProcessor::process call
+        /// </remarks>
+        private static partial ComResult lockBlock_ToManaged(IDataExchangeHandler* self, LibVst.DataExchangeQueueID queueId, LibVst.DataExchangeBlock* block);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int lockBlock_Wrapper(IDataExchangeHandler* self, uint queueId, LibVst.DataExchangeBlock* block)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeHandler), "lockBlock");
+                try
+                {
+                    return lockBlock_ToManaged(self, queueId, block);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return lockBlock_ToManaged(self, queueId, block);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// free a previously locked block
+        /// </summary>
+        /// <param name="queueID">the ID of the queue</param>
+        /// <param name="blockID">the ID of the block</param>
+        /// <param name="sendToController">if true the block data will be send to the IEditController otherwise
+        /// it will be discarded</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// only allowed to be called from within the IAudioProcessor::process call
+        /// </remarks>
+        private static partial ComResult freeBlock_ToManaged(IDataExchangeHandler* self, LibVst.DataExchangeQueueID queueId, LibVst.DataExchangeBlockID blockID, byte sendToController);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int freeBlock_Wrapper(IDataExchangeHandler* self, uint queueId, uint blockID, byte sendToController)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeHandler), "freeBlock");
+                try
+                {
+                    return freeBlock_ToManaged(self, queueId, blockID, sendToController);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return freeBlock_ToManaged(self, queueId, blockID, sendToController);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IDataExchangeHandler, 0x36D551BD, 0x6FF54F08, 0xB48E830D, 0x8BD5A03B)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xbd, 0x51, 0xd5, 0x36, 0xf5, 0x6f, 0x08, 0x4f, 0xb4, 0x8e, 0x83, 0x0d, 0x8b, 0xd5, 0xa0, 0x3b })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x36, 0xd5, 0x51, 0xbd, 0x6f, 0xf5, 0x4f, 0x08, 0xb4, 0x8e, 0x83, 0x0d, 0x8b, 0xd5, 0xa0, 0x3b })
+                    )));
+            }
+        }
+    }
+    
+    public partial record struct DataExchangeUserContextID(uint Value)
+    {
+        public static implicit operator uint(DataExchangeUserContextID value) => value.Value;
+        
+        public static implicit operator DataExchangeUserContextID(uint value) => new(value);
+    }
+    
+    public partial record struct DataExchangeQueueID(uint Value)
+    {
+        public static implicit operator uint(DataExchangeQueueID value) => value.Value;
+        
+        public static implicit operator DataExchangeQueueID(uint value) => new(value);
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct DataExchangeBlock
+    {
+        /// <summary>
+        /// pointer to the memory buffer
+        /// </summary>
+        public void* data;
+        
+        /// <summary>
+        /// size of the memory buffer
+        /// </summary>
+        public uint size;
+        
+        /// <summary>
+        /// block identifier
+        /// </summary>
+        public LibVst.DataExchangeBlockID blockID;
+    }
+    
+    public partial record struct DataExchangeBlockID(uint Value)
+    {
+        public static implicit operator uint(DataExchangeBlockID value) => value.Value;
+        
+        public static implicit operator DataExchangeBlockID(uint value) => new(value);
+    }
+    
+    /// <summary>
+    /// Data Exchange Receiver interface: Vst::IDataExchangeReceiver
+    /// </summary>
+    /// <remarks>
+    ///  vstPlug vst379- [plug imp]
+    /// - [released: 3.7.9
+    /// - [optional]The receiver interface is required to receive data from the realtime audio process via the
+    /// IDataExchangeHandler.
+    /// </remarks>
+    /// <seealso cref="IDataExchangeHandler"/>
+    public unsafe partial struct IDataExchangeReceiver : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 6;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IDataExchangeReceiver*, uint, uint, byte*, void>)&queueOpened_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IDataExchangeReceiver*, uint, void>)&queueClosed_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IDataExchangeReceiver*, uint, uint, LibVst.DataExchangeBlock*, byte, void>)&onDataExchangeBlocksReceived_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IDataExchangeReceiver, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IDataExchangeReceiver, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IDataExchangeReceiver, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// queue opened notification
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <param name="blockSize">the size of one block of the queue</param>
+        /// <param name="dispatchedOnBackgroundThread">if true on output the blocks are dispatched on a
+        /// background thread [defaults to false in which case the
+        /// blocks are dispatched on the main thread]</param>
+        /// <remarks>
+        /// called on the main thread when the processor has opened a queue
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void queueOpened(LibVst.DataExchangeUserContextID userContextID, uint blockSize, byte* dispatchOnBackgroundThread)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeReceiver), "queueOpened");
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, uint, byte*, void>)Vtbl[3])(__self__, userContextID, blockSize, dispatchOnBackgroundThread);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, uint, byte*, void>)Vtbl[3])((LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this), userContextID, blockSize, dispatchOnBackgroundThread);
+            }
+        }
+        
+        /// <summary>
+        /// queue closed notification
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <remarks>
+        /// called on the main thread when the processor has closed a queue
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void queueClosed(LibVst.DataExchangeUserContextID userContextID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeReceiver), "queueClosed");
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, void>)Vtbl[4])(__self__, userContextID);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, void>)Vtbl[4])((LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this), userContextID);
+            }
+        }
+        
+        /// <summary>
+        /// one or more blocks were received
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <param name="numBlocks">number of blocks</param>
+        /// <param name="blocks">the blocks</param>
+        /// <param name="onBackgroundThread">true if the call is done on a background thread</param>
+        /// <remarks>
+        /// called either on the main thread or a background thread depending on the
+        /// dispatchOnBackgroundThread value in the queueOpened call.the data of the blocks are only valid inside this call and the blocks only become available
+        /// to the queue afterwards.
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void onDataExchangeBlocksReceived(LibVst.DataExchangeUserContextID userContextID, uint numBlocks, LibVst.DataExchangeBlock* blocks, byte onBackgroundThread)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IDataExchangeReceiver), "onDataExchangeBlocksReceived");
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, uint, LibVst.DataExchangeBlock*, byte, void>)Vtbl[5])(__self__, userContextID, numBlocks, blocks, onBackgroundThread);
+                __evt__.Dispose();
+            }
+            else
+            {
+                ((delegate*unmanaged[MemberFunction]<LibVst.IDataExchangeReceiver*, LibVst.DataExchangeUserContextID, uint, LibVst.DataExchangeBlock*, byte, void>)Vtbl[5])((LibVst.IDataExchangeReceiver*)Unsafe.AsPointer(ref this), userContextID, numBlocks, blocks, onBackgroundThread);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// queue opened notification
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <param name="blockSize">the size of one block of the queue</param>
+        /// <param name="dispatchedOnBackgroundThread">if true on output the blocks are dispatched on a
+        /// background thread [defaults to false in which case the
+        /// blocks are dispatched on the main thread]</param>
+        /// <remarks>
+        /// called on the main thread when the processor has opened a queue
+        /// </remarks>
+        private static partial void queueOpened_ToManaged(IDataExchangeReceiver* self, LibVst.DataExchangeUserContextID userContextID, uint blockSize, byte* dispatchOnBackgroundThread);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void queueOpened_Wrapper(IDataExchangeReceiver* self, uint userContextID, uint blockSize, byte* dispatchOnBackgroundThread)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeReceiver), "queueOpened");
+                try
+                {
+                    queueOpened_ToManaged(self, userContextID, blockSize, dispatchOnBackgroundThread);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    queueOpened_ToManaged(self, userContextID, blockSize, dispatchOnBackgroundThread);
+                }
+                catch
+                {
+                }
+            }
+        }
+        
+        /// <summary>
+        /// queue closed notification
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <remarks>
+        /// called on the main thread when the processor has closed a queue
+        /// </remarks>
+        private static partial void queueClosed_ToManaged(IDataExchangeReceiver* self, LibVst.DataExchangeUserContextID userContextID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void queueClosed_Wrapper(IDataExchangeReceiver* self, uint userContextID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeReceiver), "queueClosed");
+                try
+                {
+                    queueClosed_ToManaged(self, userContextID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    queueClosed_ToManaged(self, userContextID);
+                }
+                catch
+                {
+                }
+            }
+        }
+        
+        /// <summary>
+        /// one or more blocks were received
+        /// </summary>
+        /// <param name="userContextID">the user context ID of the queue</param>
+        /// <param name="numBlocks">number of blocks</param>
+        /// <param name="blocks">the blocks</param>
+        /// <param name="onBackgroundThread">true if the call is done on a background thread</param>
+        /// <remarks>
+        /// called either on the main thread or a background thread depending on the
+        /// dispatchOnBackgroundThread value in the queueOpened call.the data of the blocks are only valid inside this call and the blocks only become available
+        /// to the queue afterwards.
+        /// </remarks>
+        private static partial void onDataExchangeBlocksReceived_ToManaged(IDataExchangeReceiver* self, LibVst.DataExchangeUserContextID userContextID, uint numBlocks, LibVst.DataExchangeBlock* blocks, byte onBackgroundThread);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static void onDataExchangeBlocksReceived_Wrapper(IDataExchangeReceiver* self, uint userContextID, uint numBlocks, LibVst.DataExchangeBlock* blocks, byte onBackgroundThread)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IDataExchangeReceiver), "onDataExchangeBlocksReceived");
+                try
+                {
+                    onDataExchangeBlocksReceived_ToManaged(self, userContextID, numBlocks, blocks, onBackgroundThread);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    onDataExchangeBlocksReceived_ToManaged(self, userContextID, numBlocks, blocks, onBackgroundThread);
+                }
+                catch
+                {
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IDataExchangeReceiver, 0x45A759DC, 0x84FA4907, 0xABCB6175, 0x2FC786B6)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xdc, 0x59, 0xa7, 0x45, 0xfa, 0x84, 0x07, 0x49, 0xab, 0xcb, 0x61, 0x75, 0x2f, 0xc7, 0x86, 0xb6 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x45, 0xa7, 0x59, 0xdc, 0x84, 0xfa, 0x49, 0x07, 0xab, 0xcb, 0x61, 0x75, 0x2f, 0xc7, 0x86, 0xb6 })
                     )));
             }
         }
@@ -10229,6 +12549,11 @@ internal static partial class LibVst
         /// To be called before calling a performEdit (e.g. on mouse-click-down event).
         /// This must be called in the UI-Thread context!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult beginEdit(LibVst.ParamID id)
         {
@@ -10251,6 +12576,11 @@ internal static partial class LibVst
         /// Called between beginEdit and endEdit to inform the handler that a given parameter has a new
         /// value. This must be called in the UI-Thread context!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult performEdit(LibVst.ParamID id, LibVst.ParamValue valueNormalized)
         {
@@ -10273,6 +12603,11 @@ internal static partial class LibVst
         /// To be called after calling a performEdit (e.g. on mouse-click-up event).
         /// This must be called in the UI-Thread context!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult endEdit(LibVst.ParamID id)
         {
@@ -10295,6 +12630,11 @@ internal static partial class LibVst
         /// Instructs host to restart the component. This must be called in the UI-Thread context!
         /// </summary>
         /// <param name="flags">is a combination of RestartFlags</param>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult restartComponent(int flags)
         {
@@ -10320,6 +12660,11 @@ internal static partial class LibVst
         /// To be called before calling a performEdit (e.g. on mouse-click-down event).
         /// This must be called in the UI-Thread context!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult beginEdit_ToManaged(IComponentHandler* self, LibVst.ParamID id);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -10359,6 +12704,11 @@ internal static partial class LibVst
         /// Called between beginEdit and endEdit to inform the handler that a given parameter has a new
         /// value. This must be called in the UI-Thread context!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult performEdit_ToManaged(IComponentHandler* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -10398,6 +12748,11 @@ internal static partial class LibVst
         /// To be called after calling a performEdit (e.g. on mouse-click-up event).
         /// This must be called in the UI-Thread context!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult endEdit_ToManaged(IComponentHandler* self, LibVst.ParamID id);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -10437,6 +12792,11 @@ internal static partial class LibVst
         /// Instructs host to restart the component. This must be called in the UI-Thread context!
         /// </summary>
         /// <param name="flags">is a combination of RestartFlags</param>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult restartComponent_ToManaged(IComponentHandler* self, int flags);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -10497,8 +12857,9 @@ internal static partial class LibVst
     /// - [released: 3.1.0]
     /// - [optional]One part handles:
     /// - Setting dirty state of the plug-in
-    /// - Requesting the host to open the editorThe other part handles parameter group editing from the plug-in UI. It wraps a set of @ref IComponentHandler::beginEdit /@ref Steinberg::Vst::IComponentHandler::performEdit / @ref Steinberg::Vst::IComponentHandler::endEdit functions (see @ref IComponentHandler)which should use the same timestamp in the host when writing automation.
-    /// This allows for better synchronizing of multiple parameter changes at once. IComponentHandler2Example Examples of different use cases@code {.cpp}
+    /// - Requesting the host to open the editorThe other part handles parameter group editing from the plug-in UI. It wraps a set of @ref IComponentHandler::beginEdit / @ref Steinberg::Vst::IComponentHandler::performEdit / @ref Steinberg::Vst::IComponentHandler::endEdit functions (see @ref IComponentHandler) which should use
+    /// the same timestamp in the host when writing automation. This allows for better synchronizing of
+    /// multiple parameter changes at once. IComponentHandler2Example Examples of different use cases@code {.cpp}
     /// //--------------------------------------
     /// // we are in the editcontroller...
     /// // in case of multiple switch buttons (with associated ParamID 1 and 3)
@@ -10594,9 +12955,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Tells host that the plug-in is dirty (something besides parameters has changed since last save),
-        /// if true the host should apply a save before quitting.
+        /// Tells host that the plug-in is dirty (something besides parameters has changed since last
+        /// save), if true the host should apply a save before quitting.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setDirty(byte state)
         {
@@ -10616,9 +12982,15 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Tells host that it should open the plug-in editor the next time it's possible.
-        /// You should use this instead of showing an alert and blocking the program flow (especially on loading projects).
+        /// Tells host that it should open the plug-in editor the next time it's possible. You should
+        /// use this instead of showing an alert and blocking the program flow (especially on loading
+        /// projects).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult requestOpenEditor(LibVst.FIDString name)
         {
@@ -10638,8 +13010,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Starts the group editing (call before a @ref IComponentHandler::beginEdit), the host will keep the current timestamp at this call and will use it for all @ref IComponentHandler::beginEdit / @ref IComponentHandler::performEdit / @ref IComponentHandler::endEdit calls until a @ref finishGroupEdit ().
+        /// Starts the group editing (call before a @ref IComponentHandler::beginEdit), the host will keep the current timestamp at this call and will use it for all
+        /// @ref IComponentHandler::beginEdit, @ref IComponentHandler::performEdit, @ref IComponentHandler::endEdit calls until a @ref finishGroupEdit ().
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult startGroupEdit()
         {
@@ -10661,6 +13039,11 @@ internal static partial class LibVst
         /// <summary>
         /// Finishes the group editing started by a @ref startGroupEdit (call after a @ref IComponentHandler::endEdit).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult finishGroupEdit()
         {
@@ -10683,9 +13066,14 @@ internal static partial class LibVst
         // CCW methods
         // --------------------------------------------------------------
         /// <summary>
-        /// Tells host that the plug-in is dirty (something besides parameters has changed since last save),
-        /// if true the host should apply a save before quitting.
+        /// Tells host that the plug-in is dirty (something besides parameters has changed since last
+        /// save), if true the host should apply a save before quitting.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult setDirty_ToManaged(IComponentHandler2* self, byte state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -10722,9 +13110,15 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Tells host that it should open the plug-in editor the next time it's possible.
-        /// You should use this instead of showing an alert and blocking the program flow (especially on loading projects).
+        /// Tells host that it should open the plug-in editor the next time it's possible. You should
+        /// use this instead of showing an alert and blocking the program flow (especially on loading
+        /// projects).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult requestOpenEditor_ToManaged(IComponentHandler2* self, LibVst.FIDString name);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -10761,8 +13155,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Starts the group editing (call before a @ref IComponentHandler::beginEdit), the host will keep the current timestamp at this call and will use it for all @ref IComponentHandler::beginEdit / @ref IComponentHandler::performEdit / @ref IComponentHandler::endEdit calls until a @ref finishGroupEdit ().
+        /// Starts the group editing (call before a @ref IComponentHandler::beginEdit), the host will keep the current timestamp at this call and will use it for all
+        /// @ref IComponentHandler::beginEdit, @ref IComponentHandler::performEdit, @ref IComponentHandler::endEdit calls until a @ref finishGroupEdit ().
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult startGroupEdit_ToManaged(IComponentHandler2* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -10801,6 +13201,11 @@ internal static partial class LibVst
         /// <summary>
         /// Finishes the group editing started by a @ref startGroupEdit (call after a @ref IComponentHandler::endEdit).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult finishGroupEdit_ToManaged(IComponentHandler2* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -10928,6 +13333,11 @@ internal static partial class LibVst
         /// <summary>
         /// request the host to activate or deactivate a specific bus.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult requestBusActivation(LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state)
         {
@@ -10952,6 +13362,11 @@ internal static partial class LibVst
         /// <summary>
         /// request the host to activate or deactivate a specific bus.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult requestBusActivation_ToManaged(IComponentHandlerBusActivation* self, LibVst.MediaType type, LibVst.BusDirection dir, int index, byte state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11010,12 +13425,12 @@ internal static partial class LibVst
     ///  vstIHost vst370- [host imp]
     /// - [extends IComponentHandler]
     /// - [released: 3.7.0]
-    /// - [optional]Allows the plug-in to request the host to create a progress for some specific tasks which take
-    /// some time. The host can visualize the progress as read-only UI elements. For example,
-    /// after loading a project where a plug-in needs to load extra
-    /// data (e.g. samples) in a background thread, this enables the host to get and visualize the current status of the loading
+    /// - [optional]Allows the plug-in to request the host to create a progress for some specific tasks which take some
+    /// time. The host can visualize the progress as read-only UI elements.
+    /// For example, after loading a project where a plug-in needs to load extra data (e.g. samples) in a
+    /// background thread, this enables the host to get and visualize the current status of the loading
     /// progress and to inform the user when the loading is finished.
-    /// Note: During the progress, the host can unload the plug-in at any time. Make sure that the plug-in 
+    /// Note: During the progress, the host can unload the plug-in at any time. Make sure that the plug-in
     /// supports this use case. IProgressExample Example@code {.cpp}
     /// //--------------------------------------
     /// // we are in the editcontroller:
@@ -11023,18 +13438,19 @@ internal static partial class LibVst
     /// 
     /// FUnknownPtr&lt;IProgress&gt; progress (componentHandler);
     /// if (progress)
-    /// 	progress-&gt;start (IProgress::ProgressType::UIBackgroundTask, STR ("Load Samples..."), mProgressID);
+    ///     progress-&gt;start (IProgress::ProgressType::UIBackgroundTask, STR ("Load Samples..."),
+    ///                      mProgressID);
     /// 
     /// // ...
     /// myProgressValue += incProgressStep;
     /// FUnknownPtr&lt;IProgress&gt; progress (componentHandler);
     /// if (progress)
-    /// 	progress-&gt;update (mProgressID, myProgressValue);
+    ///     progress-&gt;update (mProgressID, myProgressValue);
     /// 
     /// // ...
     /// FUnknownPtr&lt;IProgress&gt; progress (componentHandler);
     /// if (progress)
-    /// 	progress-&gt;finish (mProgressID);
+    ///     progress-&gt;finish (mProgressID);
     /// @endcode
     /// </remarks>
     /// <seealso cref="IComponentHandler"/>
@@ -11095,8 +13511,13 @@ internal static partial class LibVst
         
         /// <summary>
         /// Start a new progress of a given type and optional Description. outID is as ID created by the
-        /// host to identify this newly created progress (for update and finish method)
+        /// host to identify this newly created progress (for update and finish method).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult start(ProgressType type, char* optionalDescription, LibVst.ID* outID)
         {
@@ -11116,8 +13537,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Update the progress value (normValue between [0, 1]) associated to the given id
+        /// Update the progress value (normValue between [0, 1]) associated to the given id.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult update(LibVst.ID id, LibVst.ParamValue normValue)
         {
@@ -11137,8 +13563,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Finish the progress associated to the given id
+        /// Finish the progress associated to the given id.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult finish(LibVst.ID id)
         {
@@ -11162,8 +13593,13 @@ internal static partial class LibVst
         // --------------------------------------------------------------
         /// <summary>
         /// Start a new progress of a given type and optional Description. outID is as ID created by the
-        /// host to identify this newly created progress (for update and finish method)
+        /// host to identify this newly created progress (for update and finish method).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult start_ToManaged(IProgress* self, ProgressType type, char* optionalDescription, LibVst.ID* outID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11200,8 +13636,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Update the progress value (normValue between [0, 1]) associated to the given id
+        /// Update the progress value (normValue between [0, 1]) associated to the given id.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult update_ToManaged(IProgress* self, LibVst.ID id, LibVst.ParamValue normValue);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11238,8 +13679,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Finish the progress associated to the given id
+        /// Finish the progress associated to the given id.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult finish_ToManaged(IProgress* self, LibVst.ID id);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11320,7 +13766,8 @@ internal static partial class LibVst
     /// <remarks>
     ///  vstIPlug vst300- [plug imp]
     /// - [released: 3.0.0]
-    /// - [mandatory]The controller part of an effect or instrument with parameter handling (export, definition, conversion...).
+    /// - [mandatory]The controller part of an effect or instrument with parameter handling (export, definition,
+    /// conversion, ...).
     /// </remarks>
     /// <seealso cref="IMidiMappingIComponent::getControllerClassId,"/>
     public unsafe partial struct IEditController : INativeGuid, INativeUnknown, INativeVtbl
@@ -11416,6 +13863,11 @@ internal static partial class LibVst
         /// <summary>
         /// Receives the component state.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setComponentState(LibVst.IBStream* state)
         {
@@ -11437,6 +13889,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets the controller state.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setState(LibVst.IBStream* state)
         {
@@ -11458,6 +13915,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets the controller state.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getState(LibVst.IBStream* state)
         {
@@ -11480,6 +13942,11 @@ internal static partial class LibVst
         /// parameters -------------------------
         /// Returns the number of parameters exported.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getParameterCount()
         {
@@ -11500,6 +13967,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given index the parameter information.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getParameterInfo(int paramIndex, LibVst.ParameterInfo* info)
         {
@@ -11521,6 +13993,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given paramID and normalized value its associated string representation.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getParamStringByValue(LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string)
         {
@@ -11542,6 +14019,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given paramID and string its normalized value.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getParamValueByString(LibVst.ParamID id, char* @string, LibVst.ParamValue* valueNormalized)
         {
@@ -11564,6 +14046,11 @@ internal static partial class LibVst
         /// Returns for a given paramID and a normalized value its plain representation
         /// (for example -6 for -6dB - see @ref vst3AutomationIntro).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double normalizedParamToPlain(LibVst.ParamID id, LibVst.ParamValue valueNormalized)
         {
@@ -11582,8 +14069,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Returns for a given paramID and a plain value its normalized value. (see @ref vst3AutomationIntro)
+        /// Returns for a given paramID and a plain value its normalized value. (see @ref vst3AutomationIntro).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double plainParamToNormalized(LibVst.ParamID id, LibVst.ParamValue plainValue)
         {
@@ -11604,6 +14096,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns the normalized value of the parameter associated to the paramID.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double getParamNormalized(LibVst.ParamID id)
         {
@@ -11622,10 +14119,15 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Sets the normalized value to the parameter associated to the paramID. The controller must never
-        /// pass this value-change back to the host via the IComponentHandler. It should update the according
-        /// GUI element(s) only!
+        /// Sets the normalized value to the parameter associated to the paramID. The controller must
+        /// never pass this value-change back to the host via the IComponentHandler.
+        /// It should update the according GUI element(s) only!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setParamNormalized(LibVst.ParamID id, LibVst.ParamValue value)
         {
@@ -11647,8 +14149,15 @@ internal static partial class LibVst
         /// <summary>
         /// handler ----------------------------
         /// Gets from host a handler which allows the Plugin-in to communicate with the host.
-        /// Note: This is mandatory if the host is using the IEditController!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
+        /// <note>
+        /// This is mandatory if the host is using the IEditController!
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setComponentHandler(LibVst.IComponentHandler* handler)
         {
@@ -11669,8 +14178,14 @@ internal static partial class LibVst
         
         /// <summary>
         /// view -------------------------------
-        /// Creates the editor view of the plug-in, currently only "editor" is supported, see @ref ViewType. The life time of the editor view will never exceed the life time of this controller instance.
+        /// Creates the editor view of the plug-in, currently only "editor" is supported, see @ref ViewType. The life time of the editor view will never exceed the life time of this controller
+        /// instance.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LibVst.IPlugView* createView(LibVst.FIDString name)
         {
@@ -11694,6 +14209,11 @@ internal static partial class LibVst
         /// <summary>
         /// Receives the component state.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult setComponentState_ToManaged(IEditController* self, LibVst.IBStream* state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11732,6 +14252,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets the controller state.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult setState_ToManaged(IEditController* self, LibVst.IBStream* state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11770,6 +14295,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets the controller state.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult getState_ToManaged(IEditController* self, LibVst.IBStream* state);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11809,6 +14339,11 @@ internal static partial class LibVst
         /// parameters -------------------------
         /// Returns the number of parameters exported.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial int getParameterCount_ToManaged(IEditController* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11847,6 +14382,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given index the parameter information.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult getParameterInfo_ToManaged(IEditController* self, int paramIndex, LibVst.ParameterInfo* info);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11885,6 +14425,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given paramID and normalized value its associated string representation.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult getParamStringByValue_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized, LibVst.String128* @string);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11923,6 +14468,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given paramID and string its normalized value.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult getParamValueByString_ToManaged(IEditController* self, LibVst.ParamID id, char* @string, LibVst.ParamValue* valueNormalized);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11962,6 +14512,11 @@ internal static partial class LibVst
         /// Returns for a given paramID and a normalized value its plain representation
         /// (for example -6 for -6dB - see @ref vst3AutomationIntro).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial LibVst.ParamValue normalizedParamToPlain_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue valueNormalized);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -11998,8 +14553,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Returns for a given paramID and a plain value its normalized value. (see @ref vst3AutomationIntro)
+        /// Returns for a given paramID and a plain value its normalized value. (see @ref vst3AutomationIntro).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial LibVst.ParamValue plainParamToNormalized_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue plainValue);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -12038,6 +14598,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns the normalized value of the parameter associated to the paramID.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial LibVst.ParamValue getParamNormalized_ToManaged(IEditController* self, LibVst.ParamID id);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -12074,10 +14639,15 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Sets the normalized value to the parameter associated to the paramID. The controller must never
-        /// pass this value-change back to the host via the IComponentHandler. It should update the according
-        /// GUI element(s) only!
+        /// Sets the normalized value to the parameter associated to the paramID. The controller must
+        /// never pass this value-change back to the host via the IComponentHandler.
+        /// It should update the according GUI element(s) only!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult setParamNormalized_ToManaged(IEditController* self, LibVst.ParamID id, LibVst.ParamValue value);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -12116,8 +14686,15 @@ internal static partial class LibVst
         /// <summary>
         /// handler ----------------------------
         /// Gets from host a handler which allows the Plugin-in to communicate with the host.
-        /// Note: This is mandatory if the host is using the IEditController!
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
+        /// <note>
+        /// This is mandatory if the host is using the IEditController!
+        /// </note>
         private static partial ComResult setComponentHandler_ToManaged(IEditController* self, LibVst.IComponentHandler* handler);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -12155,8 +14732,14 @@ internal static partial class LibVst
         
         /// <summary>
         /// view -------------------------------
-        /// Creates the editor view of the plug-in, currently only "editor" is supported, see @ref ViewType. The life time of the editor view will never exceed the life time of this controller instance.
+        /// Creates the editor view of the plug-in, currently only "editor" is supported, see @ref ViewType. The life time of the editor view will never exceed the life time of this controller
+        /// instance.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial LibVst.IPlugView* createView_ToManaged(IEditController* self, LibVst.FIDString name);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -12237,13 +14820,12 @@ internal static partial class LibVst
         public LibVst.String128 units;
         
         /// <summary>
-        /// number of discrete steps (0: continuous, 1: toggle, discrete value otherwise 
-        /// (corresponding to max - min, for example: 127 for a min = 0 and a max = 127) - see @ref vst3ParameterIntro)
+        /// number of discrete steps (0: continuous, 1: toggle, discrete value
         /// </summary>
         public int stepCount;
         
         /// <summary>
-        /// default normalized value [0,1] (in case of discrete value: defaultNormalizedValue = defDiscreteValue / stepCount)
+        /// default normalized value [0,1]
         /// </summary>
         public LibVst.ParamValue defaultNormalizedValue;
         
@@ -12257,48 +14839,61 @@ internal static partial class LibVst
         /// </summary>
         public int flags;
         
-        public enum ParameterFlags
+        /// <summary>
+        /// Parameter flags
+        /// </summary>
+        /// <remarks>
+        /// Note that all non defined bits are reserved for future use!
+        /// </remarks>
+        public enum ParameterFlags : int
         {
             /// <summary>
-            /// no flags wanted
+            /// No flags wanted.
+            /// [SDK 3.0.0]
             /// </summary>
             kNoFlags = 0,
             
             /// <summary>
-            /// parameter can be automated
+            /// Parameter can be automated.
+            /// [SDK 3.0.0]
             /// </summary>
             kCanAutomate = 1 << 0,
             
             /// <summary>
-            /// parameter cannot be changed from outside the plug-in (implies that kCanAutomate is NOT set)
+            /// Parameter cannot be changed from outside the plug-in
+            /// (implies that kCanAutomate is NOT set).
+            /// [SDK 3.0.0]
             /// </summary>
             kIsReadOnly = 1 << 1,
             
             /// <summary>
-            /// attempts to set the parameter value out of the limits will result in a wrap around [SDK 3.0.2]
+            /// Attempts to set the parameter value out of the limits will result in a wrap around.
+            /// [SDK 3.0.2]
             /// </summary>
             kIsWrapAround = 1 << 2,
             
             /// <summary>
-            /// parameter should be displayed as list in generic editor or automation editing [SDK 3.1.0]
+            /// Parameter should be displayed as list in generic editor or automation editing.
+            /// [SDK 3.1.0]
             /// </summary>
             kIsList = 1 << 3,
             
             /// <summary>
-            /// parameter should be NOT displayed and cannot be changed from outside the plug-in 
-            /// (implies that kCanAutomate is NOT set and kIsReadOnly is set) [SDK 3.7.0]
+            /// Parameter should be NOT displayed and cannot be changed from outside the plug-in.
+            /// It implies that kCanAutomate is NOT set and kIsReadOnly is set.
+            /// [SDK 3.7.0]
             /// </summary>
             kIsHidden = 1 << 4,
             
             /// <summary>
-            /// parameter is a program change (unitId gives info about associated unit 
-            /// - see @ref vst3ProgramLists)
+            /// Parameter is a program change (unitId gives info about associated unit - see @ref vst3ProgramLists). [SDK 3.0.0]
             /// </summary>
             kIsProgramChange = 1 << 15,
             
             /// <summary>
-            /// special bypass parameter (only one allowed): plug-in can handle bypass
-            /// (highly recommended to export a bypass parameter for effect plug-in)
+            /// Special bypass parameter (only one allowed): plug-in can handle bypass.
+            /// Highly recommended to export a bypass parameter for effect plug-in.
+            /// [SDK 3.0.0]
             /// </summary>
             kIsBypass = 1 << 16,
         }
@@ -12380,7 +14975,12 @@ internal static partial class LibVst
         /// <summary>
         /// Host could set the Knob Mode for the plug-in. Return kResultFalse means not supported mode.
         /// </summary>
-        /// <seealso cref="KnobModes. "/>
+        /// <seealso cref="KnobModes."/>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setKnobMode(LibVst.KnobMode mode)
         {
@@ -12400,10 +15000,15 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Host could ask to open the plug-in help (could be: opening a PDF document or link to a web page).
-        /// The host could call it with onlyCheck set to true for testing support of open Help. 
+        /// Host could ask to open the plug-in help (could be: opening a PDF document or link to a web
+        /// page). The host could call it with onlyCheck set to true for testing support of open Help.
         /// Return kResultFalse means not supported function.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult openHelp(byte onlyCheck)
         {
@@ -12424,9 +15029,14 @@ internal static partial class LibVst
         
         /// <summary>
         /// Host could ask to open the plug-in about box.
-        /// The host could call it with onlyCheck set to true for testing support of open AboutBox. 
+        /// The host could call it with onlyCheck set to true for testing support of open AboutBox.
         /// Return kResultFalse means not supported function.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult openAboutBox(byte onlyCheck)
         {
@@ -12451,7 +15061,12 @@ internal static partial class LibVst
         /// <summary>
         /// Host could set the Knob Mode for the plug-in. Return kResultFalse means not supported mode.
         /// </summary>
-        /// <seealso cref="KnobModes. "/>
+        /// <seealso cref="KnobModes."/>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult setKnobMode_ToManaged(IEditController2* self, LibVst.KnobMode mode);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -12488,10 +15103,15 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Host could ask to open the plug-in help (could be: opening a PDF document or link to a web page).
-        /// The host could call it with onlyCheck set to true for testing support of open Help. 
+        /// Host could ask to open the plug-in help (could be: opening a PDF document or link to a web
+        /// page). The host could call it with onlyCheck set to true for testing support of open Help.
         /// Return kResultFalse means not supported function.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult openHelp_ToManaged(IEditController2* self, byte onlyCheck);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -12529,9 +15149,14 @@ internal static partial class LibVst
         
         /// <summary>
         /// Host could ask to open the plug-in about box.
-        /// The host could call it with onlyCheck set to true for testing support of open AboutBox. 
+        /// The host could call it with onlyCheck set to true for testing support of open AboutBox.
         /// Return kResultFalse means not supported function.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult openAboutBox_ToManaged(IEditController2* self, byte onlyCheck);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -12600,38 +15225,44 @@ internal static partial class LibVst
     /// - [optional]MIDI controllers are not transmitted directly to a VST component. MIDI as hardware protocol has
     /// restrictions that can be avoided in software. Controller data in particular come along with unclear
     /// and often ignored semantics. On top of this they can interfere with regular parameter automation and
-    /// the host is unaware of what happens in the plug-in when passing MIDI controllers directly.So any functionality that is to be controlled by MIDI controllers must be exported as regular parameter.
-    /// The host will transform incoming MIDI controller data using this interface and transmit them as regular
-    /// parameter change. This allows the host to automate them in the same way as other parameters.
-    /// CtrlNumber can be a typical MIDI controller value extended to some others values like pitchbend or
-    /// aftertouch (see @ref ControllerNumbers).If the mapping has changed, the plug-in must call IComponentHandler::restartComponent (kMidiCCAssignmentChanged)
-    /// to inform the host about this change. IMidiMappingExample Example@code {.cpp}
+    /// the host is unaware of what happens in the plug-in when passing MIDI controllers directly.So any functionality that is to be controlled by MIDI controllers must be exported as regular
+    /// parameter. The host will transform incoming MIDI controller data using this interface and transmit
+    /// them as regular parameter change. This allows the host to automate them in the same way as other
+    /// parameters. CtrlNumber can be a typical MIDI controller value extended to some others values like
+    /// pitchbend or aftertouch (see @ref ControllerNumbers). If the mapping has changed, the plug-in must
+    /// call IComponentHandler::restartComponent (kMidiCCAssignmentChanged) to inform the host about this
+    /// change. IMidiMappingExample Example@code {.cpp}
     /// //--------------------------------------
     /// // in myeditcontroller.h
     /// class MyEditController: public EditControllerEx1, public IMidiMapping
     /// {
-    /// 	//...
-    /// 	//---IMidiMapping---------------------------
-    /// 	tresult PLUGIN_API getMidiControllerAssignment (int32 busIndex, int16 channel, CtrlNumber midiControllerNumber, ParamID&amp; id) SMTG_OVERRIDE;
-    /// 	//---Interface---------
-    /// 	OBJ_METHODS (MyEditController, EditControllerEx1)
-    /// 	DEFINE_INTERFACES
-    /// 		DEF_INTERFACE (IMidiMapping)
-    /// 	END_DEFINE_INTERFACES (MyEditController)
-    /// 	REFCOUNT_METHODS (MyEditController)
+    ///     //...
+    ///     //---IMidiMapping---------------------------
+    ///     tresult PLUGIN_API getMidiControllerAssignment (int32 busIndex, int16 channel,
+    ///                                                     CtrlNumber midiControllerNumber,
+    ///                                                     ParamID&amp; id) override;
+    ///     //---Interface---------
+    ///     OBJ_METHODS (MyEditController, EditControllerEx1)
+    ///     DEFINE_INTERFACES
+    ///         DEF_INTERFACE (IMidiMapping)
+    ///     END_DEFINE_INTERFACES (MyEditController)
+    ///     REFCOUNT_METHODS (MyEditController)
     /// };
     /// 
     /// //--------------------------------------
     /// // in myeditcontroller.cpp
-    /// tresult PLUGIN_API MyEditController::getMidiControllerAssignment (int32 busIndex, int16 midiChannel, CtrlNumber midiControllerNumber, ParamID&amp; tag)
+    /// tresult PLUGIN_API MyEditController::getMidiControllerAssignment (int32 busIndex,
+    ///                                                                   int16 midiChannel,
+    ///                                                                   CtrlNumber midiControllerNumber,
+    ///                                                                   ParamID&amp; tag)
     /// {
-    /// 	// for my first Event bus and for MIDI channel 0 and for MIDI CC Volume only
-    /// 	if (busIndex == 0 &amp;&amp; midiChannel == 0 &amp;&amp; midiControllerNumber == kCtrlVolume)
-    /// 	{
-    /// 		tag = kGainId;
-    /// 		return kResultTrue;
-    /// 	}
-    /// 	return kResultFalse;
+    ///     // for my first Event bus and for MIDI channel 0 and for MIDI CC Volume only
+    ///     if (busIndex == 0 &amp;&amp; midiChannel == 0 &amp;&amp; midiControllerNumber == kCtrlVolume)
+    ///     {
+    ///         tag = kGainId;
+    ///         return kResultTrue;
+    ///     }
+    ///     return kResultFalse;
     /// }
     /// @endcode
     /// </remarks>
@@ -12689,12 +15320,19 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Gets an (preferred) associated ParamID for a given Input Event Bus index, channel and MIDI Controller.
+        /// Gets an (preferred) associated ParamID for a given Input Event Bus index, channel and MIDI
+        /// Controller.
         /// </summary>
         /// <param name="busIndex">- index of Input Event Bus</param>
         /// <param name="channel">- channel of the bus</param>
-        /// <param name="midiControllerNumber">- see @ref ControllerNumbers for expected values (could be bigger than 127)</param>
+        /// <param name="midiControllerNumber">- see @ref ControllerNumbers for expected values (could be
+        /// bigger than 127)</param>
         /// <param name="id">- return the associated ParamID to the given midiControllerNumber</param>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getMidiControllerAssignment(int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id)
         {
@@ -12717,12 +15355,19 @@ internal static partial class LibVst
         // CCW methods
         // --------------------------------------------------------------
         /// <summary>
-        /// Gets an (preferred) associated ParamID for a given Input Event Bus index, channel and MIDI Controller.
+        /// Gets an (preferred) associated ParamID for a given Input Event Bus index, channel and MIDI
+        /// Controller.
         /// </summary>
         /// <param name="busIndex">- index of Input Event Bus</param>
         /// <param name="channel">- channel of the bus</param>
-        /// <param name="midiControllerNumber">- see @ref ControllerNumbers for expected values (could be bigger than 127)</param>
+        /// <param name="midiControllerNumber">- see @ref ControllerNumbers for expected values (could be
+        /// bigger than 127)</param>
         /// <param name="id">- return the associated ParamID to the given midiControllerNumber</param>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult getMidiControllerAssignment_ToManaged(IMidiMapping* self, int busIndex, short channel, LibVst.CtrlNumber midiControllerNumber, LibVst.ParamID* id);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -12789,9 +15434,9 @@ internal static partial class LibVst
     /// - [extends IEditController]
     /// - [released: 3.5.0]
     /// - [optional]If this interface is implemented by the edit controller, and when performing edits from outside
-    /// the plug-in (host / remote) of a not automatable and not read-only, and not hidden flagged parameter (kind of helper parameter),
-    /// the host will start with a beginEditFromHost before calling setParamNormalized and end with an endEditFromHost.
-    /// Here the sequence that the host will call: IEditControllerExample Example@code {.cpp}
+    /// the plug-in (host / remote) of a not automatable and not read-only, and not hidden flagged parameter
+    /// (kind of helper parameter), the host will start with a beginEditFromHost before calling
+    /// setParamNormalized and end with an endEditFromHost. Here the sequence that the host will call: IEditControllerExample Example@code {.cpp}
     /// //------------------------------------------------------------------------
     /// plugEditController-&gt;beginEditFromHost (id);
     /// plugEditController-&gt;setParamNormalized (id, value);
@@ -12856,8 +15501,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Called before a setParamNormalized sequence, a endEditFromHost will be call at the end of the editing action.
+        /// Called before a setParamNormalized sequence, a endEditFromHost will be call at the end of
+        /// the editing action.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult beginEditFromHost(LibVst.ParamID paramID)
         {
@@ -12879,6 +15530,11 @@ internal static partial class LibVst
         /// <summary>
         /// Called after a beginEditFromHost and a sequence of setParamNormalized.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult endEditFromHost(LibVst.ParamID paramID)
         {
@@ -12901,8 +15557,14 @@ internal static partial class LibVst
         // CCW methods
         // --------------------------------------------------------------
         /// <summary>
-        /// Called before a setParamNormalized sequence, a endEditFromHost will be call at the end of the editing action.
+        /// Called before a setParamNormalized sequence, a endEditFromHost will be call at the end of
+        /// the editing action.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult beginEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -12941,6 +15603,11 @@ internal static partial class LibVst
         /// <summary>
         /// Called after a beginEditFromHost and a sequence of setParamNormalized.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult endEditFromHost_ToManaged(IEditControllerHostEditing* self, LibVst.ParamID paramID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -12993,15 +15660,167 @@ internal static partial class LibVst
     }
     
     /// <summary>
-    /// Extended plug-in interface IEditController for note expression event support: Vst::INoteExpressionController
+    /// Extended plug-in interface IComponentHandler for an edit controller
+    /// </summary>
+    /// <remarks>
+    ///  vstIHost vst379- [host imp]
+    /// - [extends IComponentHandler]
+    /// - [released: 3.7.9]
+    /// - [optional]------------------------------------------------------------------------
+    /// </remarks>
+    public unsafe partial struct IComponentHandlerSystemTime : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IComponentHandlerSystemTime*, long*, int>)&getSystemTime_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IComponentHandlerSystemTime, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IComponentHandlerSystemTime, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IComponentHandlerSystemTime, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// get the current systemTime (the same as the one used in ProcessContext::systemTime).
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getSystemTime(long* systemTime)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IComponentHandlerSystemTime*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandlerSystemTime), "getSystemTime");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandlerSystemTime*, long*, int>)Vtbl[3])(__self__, systemTime);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandlerSystemTime*, long*, int>)Vtbl[3])((LibVst.IComponentHandlerSystemTime*)Unsafe.AsPointer(ref this), systemTime);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// get the current systemTime (the same as the one used in ProcessContext::systemTime).
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        private static partial ComResult getSystemTime_ToManaged(IComponentHandlerSystemTime* self, long* systemTime);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getSystemTime_Wrapper(IComponentHandlerSystemTime* self, long* systemTime)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IComponentHandlerSystemTime), "getSystemTime");
+                try
+                {
+                    return getSystemTime_ToManaged(self, systemTime);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getSystemTime_ToManaged(self, systemTime);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IComponentHandlerSystemTime, 0xF9E53056, 0xD1554CD5, 0xB7695E1B, 0x7B0F7745)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x56, 0x30, 0xe5, 0xf9, 0x55, 0xd1, 0xd5, 0x4c, 0xb7, 0x69, 0x5e, 0x1b, 0x7b, 0x0f, 0x77, 0x45 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf9, 0xe5, 0x30, 0x56, 0xd1, 0x55, 0x4c, 0xd5, 0xb7, 0x69, 0x5e, 0x1b, 0x7b, 0x0f, 0x77, 0x45 })
+                    )));
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Extended plug-in interface IEditController for note expression event support:
+    /// Vst::INoteExpressionController
     /// </summary>
     /// <remarks>
     ///  vstIPlug vst350- [plug imp]
     /// - [extends IEditController]
     /// - [released: 3.5.0]
-    /// - [optional]With this plug-in interface, the host can retrieve all necessary note expression information supported by the plug-in.
-    /// Note expression information (@ref NoteExpressionTypeInfo) are specific for given channel and event bus.Note that there is only one NoteExpressionTypeID per given channel of an event bus.The method getNoteExpressionStringByValue allows conversion from a normalized value to a string representation
-    /// and the getNoteExpressionValueByString method from a string to a normalized value.When the note expression state changes (for example when switching presets) the plug-in needs
+    /// - [optional]With this plug-in interface, the host can retrieve all necessary note expression information
+    /// supported by the plug-in. Note expression information (@ref NoteExpressionTypeInfo) are specific for
+    /// given channel and event bus.Note that there is only one NoteExpressionTypeID per given channel of an event bus.The method getNoteExpressionStringByValue allows conversion from a normalized value to a string
+    /// representation and the getNoteExpressionValueByString method from a string to a normalized value.When the note expression state changes (for example when switching presets) the plug-in needs
     /// to inform the host about it via @ref IComponentHandler::restartComponent (kNoteExpressionChanged).
     /// </remarks>
     public unsafe partial struct INoteExpressionController : INativeGuid, INativeUnknown, INativeVtbl
@@ -13063,6 +15882,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns number of supported note change types for event bus index and channel.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getNoteExpressionCount(int busIndex, short channel)
         {
@@ -13083,6 +15907,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns note change type info.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getNoteExpressionInfo(int busIndex, short channel, int noteExpressionIndex, LibVst.NoteExpressionTypeInfo* info)
         {
@@ -13104,6 +15933,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets a user readable representation of the normalized note change value.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getNoteExpressionStringByValue(int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string)
         {
@@ -13125,6 +15959,11 @@ internal static partial class LibVst
         /// <summary>
         /// Converts the user readable representation to the normalized note change value.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getNoteExpressionValueByString(int busIndex, short channel, LibVst.NoteExpressionTypeID id, char* @string, LibVst.NoteExpressionValue* valueNormalized)
         {
@@ -13149,6 +15988,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns number of supported note change types for event bus index and channel.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial int getNoteExpressionCount_ToManaged(INoteExpressionController* self, int busIndex, short channel);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -13187,6 +16031,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns note change type info.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult getNoteExpressionInfo_ToManaged(INoteExpressionController* self, int busIndex, short channel, int noteExpressionIndex, LibVst.NoteExpressionTypeInfo* info);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -13225,6 +16074,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets a user readable representation of the normalized note change value.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult getNoteExpressionStringByValue_ToManaged(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, LibVst.NoteExpressionValue valueNormalized, LibVst.String128* @string);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -13263,6 +16117,11 @@ internal static partial class LibVst
         /// <summary>
         /// Converts the user readable representation to the normalized note change value.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult getNoteExpressionValueByString_ToManaged(INoteExpressionController* self, int busIndex, short channel, LibVst.NoteExpressionTypeID id, char* @string, LibVst.NoteExpressionValue* valueNormalized);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -13388,9 +16247,10 @@ internal static partial class LibVst
     
     /// <summary>
     /// Description of a Note Expression Type
-    /// This structure is part of the NoteExpressionTypeInfo structure, it describes for given NoteExpressionTypeID its default value
-    /// (for example 0.5 for a kTuningTypeID (kIsBipolar: centered)), its minimum and maximum (for predefined NoteExpressionTypeID the full range is predefined too)
-    /// and a stepCount when the given NoteExpressionTypeID is limited to discrete values (like on/off state).
+    /// This structure is part of the NoteExpressionTypeInfo structure, it describes for given
+    /// NoteExpressionTypeID its default value (for example 0.5 for a kTuningTypeID (kIsBipolar: centered)),
+    /// its minimum and maximum (for predefined NoteExpressionTypeID the full range is predefined too) and a
+    /// stepCount when the given NoteExpressionTypeID is limited to discrete values (like on/off state).
     /// </summary>
     /// <seealso cref="NoteExpressionTypeInfo"/>
     [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
@@ -13424,9 +16284,10 @@ internal static partial class LibVst
     ///  vstIPlug vst350- [plug imp]
     /// - [extends IEditController]
     /// - [released: 3.5.0]
-    /// - [optional]When a (instrument) plug-in supports such interface, the host could get from the plug-in the current set
-    /// of used key switches (megatrig/articulation) for a given channel of a event bus and then automatically use them (like in Cubase 6) to
-    /// create VST Expression Map (allowing to associated symbol to a given articulation / key switch).
+    /// - [optional]When a (instrument) plug-in supports such interface, the host could get from the plug-in the current
+    /// set of used key switches (megatrig/articulation) for a given channel of a event bus and then
+    /// automatically use them (like in Cubase 6) to create VST Expression Map (allowing to associated
+    /// symbol to a given articulation / key switch).
     /// </remarks>
     public unsafe partial struct IKeyswitchController : INativeGuid, INativeUnknown, INativeVtbl
     {
@@ -13485,6 +16346,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns number of supported key switches for event bus index and channel.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getKeyswitchCount(int busIndex, short channel)
         {
@@ -13505,6 +16371,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns key switch info.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getKeyswitchInfo(int busIndex, short channel, int keySwitchIndex, LibVst.KeyswitchInfo* info)
         {
@@ -13529,6 +16400,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns number of supported key switches for event bus index and channel.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial int getKeyswitchCount_ToManaged(IKeyswitchController* self, int busIndex, short channel);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -13567,6 +16443,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns key switch info.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult getKeyswitchInfo_ToManaged(IKeyswitchController* self, int busIndex, short channel, int keySwitchIndex, LibVst.KeyswitchInfo* info);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -13934,7 +16815,8 @@ internal static partial class LibVst
     /// - [host imp]
     /// - [released: 3.0.0]
     /// - [mandatory]This interface is used for the communication of separate components.
-    /// Note that some hosts will place a proxy object between the components so that they are not directly connected.
+    /// Note that some hosts will place a proxy object between the components so that they are not directly
+    /// connected.
     /// </remarks>
     /// <seealso cref="vst3Communication"/>
     public unsafe partial struct IConnectionPoint : INativeGuid, INativeUnknown, INativeVtbl
@@ -13995,6 +16877,11 @@ internal static partial class LibVst
         /// <summary>
         /// Connects this instance with another connection point.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult connect(LibVst.IConnectionPoint* other)
         {
@@ -14016,6 +16903,11 @@ internal static partial class LibVst
         /// <summary>
         /// Disconnects a given connection point from this.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult disconnect(LibVst.IConnectionPoint* other)
         {
@@ -14037,6 +16929,11 @@ internal static partial class LibVst
         /// <summary>
         /// Called when a message has been sent from the connection point to this.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult notify(LibVst.IMessage* message)
         {
@@ -14061,6 +16958,11 @@ internal static partial class LibVst
         /// <summary>
         /// Connects this instance with another connection point.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         private static partial ComResult connect_ToManaged(IConnectionPoint* self, LibVst.IConnectionPoint* other);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -14099,6 +17001,11 @@ internal static partial class LibVst
         /// <summary>
         /// Disconnects a given connection point from this.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult disconnect_ToManaged(IConnectionPoint* self, LibVst.IConnectionPoint* other);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -14137,6 +17044,11 @@ internal static partial class LibVst
         /// <summary>
         /// Called when a message has been sent from the connection point to this.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult notify_ToManaged(IConnectionPoint* self, LibVst.IMessage* message);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -14254,6 +17166,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets host application name.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getName(LibVst.String128* name)
         {
@@ -14273,8 +17190,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Creates host object (e.g. Vst::IMessage).
+        /// Creates host object (for example: Vst::IMessage).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult createInstance(Guid* cid, Guid* _iid, void** obj)
         {
@@ -14299,6 +17221,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets host application name.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         private static partial ComResult getName_ToManaged(IHostApplication* self, LibVst.String128* name);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -14335,8 +17262,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Creates host object (e.g. Vst::IMessage).
+        /// Creates host object (for example: Vst::IMessage).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         private static partial ComResult createInstance_ToManaged(IHostApplication* self, Guid* cid, Guid* _iid, void** obj);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -15606,25 +18538,25 @@ internal static partial class LibVst
     /// - [released: 3.6.12]
     /// - [optional]If this interface is implemented by the edit controller, the host will call this method whenever
     /// there is live MIDI-CC input for the plug-in. This way, the plug-in can change its MIDI-CC parameter
-    /// mapping and inform the host via the IComponentHandler::restartComponent with the
+    /// mapping and notify the host using the IComponentHandler::restartComponent with the
     /// kMidiCCAssignmentChanged flag.
     /// Use this if you want to implement custom MIDI-Learn functionality in your plug-in.@code {.cpp}
     /// //------------------------------------------------
     /// // in MyController class declaration
     /// class MyController : public Vst::EditController, public Vst::IMidiLearn
     /// {
-    /// 	// ...
-    /// 	//--- IMidiLearn ---------------------------------
-    /// 	tresult PLUGIN_API onLiveMIDIControllerInput (int32 busIndex, int16 channel,
-    /// 												  CtrlNumber midiCC) SMTG_OVERRIDE;
-    /// 	// ...
+    ///     // ...
+    ///     //--- IMidiLearn ---------------------------------
+    ///     tresult PLUGIN_API onLiveMIDIControllerInput (int32 busIndex, int16 channel,
+    ///                                                   CtrlNumber midiCC) SMTG_OVERRIDE;
+    ///     // ...
     /// 
-    /// 	OBJ_METHODS (MyController, Vst::EditController)
-    /// 	DEFINE_INTERFACES
-    /// 		// ...
-    /// 		DEF_INTERFACE (Vst::IMidiLearn)
-    /// 	END_DEFINE_INTERFACES (Vst::EditController)
-    /// 	//...
+    ///     OBJ_METHODS (MyController, Vst::EditController)
+    ///     DEFINE_INTERFACES
+    ///         // ...
+    ///         DEF_INTERFACE (Vst::IMidiLearn)
+    ///     END_DEFINE_INTERFACES (Vst::EditController)
+    ///     //...
     /// }
     /// 
     /// //------------------------------------------------
@@ -15632,29 +18564,29 @@ internal static partial class LibVst
     /// #include "pluginterfaces/vst/ivstmidilearn.h
     /// 
     /// namespace Steinberg {
-    /// 	namespace Vst {
-    /// 		DEF_CLASS_IID (IMidiLearn)
-    /// 	}
+    ///     namespace Vst {
+    ///         DEF_CLASS_IID (IMidiLearn)
+    ///     }
     /// }
     /// 
     /// //------------------------------------------------------------------------
-    /// tresult PLUGIN_API MyController::onLiveMIDIControllerInput (int32 busIndex, 
-    /// 							int16 channel, CtrlNumber midiCC)
+    /// tresult PLUGIN_API MyController::onLiveMIDIControllerInput (int32 busIndex,
+    ///                             int16 channel, CtrlNumber midiCC)
     /// {
-    /// 	// if we are not in doMIDILearn (triggered by a UI button for example) 
-    /// 	// or wrong channel then return
-    /// 	if (!doMIDILearn || busIndex != 0 || channel != 0 || midiLearnParamID == InvalidParamID)
-    /// 		return kResultFalse;
+    ///     // if we are not in doMIDILearn (triggered by a UI button for example)
+    ///     // or wrong channel then return
+    ///     if (!doMIDILearn || busIndex != 0 || channel != 0 || midiLearnParamID == InvalidParamID)
+    ///         return kResultFalse;
     /// 
-    /// 	// adapt our internal MIDICC -&gt; parameterID mapping
-    /// 	midiCCMapping[midiCC] = midiLearnParamID;
+    ///     // adapt our internal MIDICC -&gt; parameterID mapping
+    ///     midiCCMapping[midiCC] = midiLearnParamID;
     /// 
-    /// 	// new mapping then inform the host that our MIDI assignment has changed
-    /// 	if (auto componentHandler = getComponentHandler ())
-    /// 	{
-    /// 		componentHandler-&gt;restartComponent (kMidiCCAssignmentChanged);
-    /// 	}
-    /// 	return kResultTrue;
+    ///     // new mapping then inform the host that our MIDI assignment has changed
+    ///     if (auto componentHandler = getComponentHandler ())
+    ///     {
+    ///         componentHandler-&gt;restartComponent (kMidiCCAssignmentChanged);
+    ///     }
+    ///     return kResultTrue;
     /// }
     /// @endcode
     /// </remarks>
@@ -15712,8 +18644,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Called on live input MIDI-CC change associated to a given bus index and MIDI channel
+        /// Called on live input MIDI-CC change associated to a given bus index and MIDI channel.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult onLiveMIDIControllerInput(int busIndex, short channel, LibVst.CtrlNumber midiCC)
         {
@@ -15736,8 +18673,13 @@ internal static partial class LibVst
         // CCW methods
         // --------------------------------------------------------------
         /// <summary>
-        /// Called on live input MIDI-CC change associated to a given bus index and MIDI channel
+        /// Called on live input MIDI-CC change associated to a given bus index and MIDI channel.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult onLiveMIDIControllerInput_ToManaged(IMidiLearn* self, int busIndex, short channel, LibVst.CtrlNumber midiCC);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -15790,6 +18732,716 @@ internal static partial class LibVst
     }
     
     /// <summary>
+    /// MIDI Mapping interface: Vst::IMidiMapping2
+    /// </summary>
+    /// <remarks>
+    ///  vstIPlug vst380- [plug imp]
+    /// - [extends IEditController]
+    /// - [released: 3.8.0]
+    /// - [optional]
+    /// - [replaces Vst::IMidiMapping]This interface replaces Vst::IMidiMapping to support the extended MIDI controllers in MIDI 2.0.A MIDI 2.0 capable host first queries for the Vst::IMidiMapping2 interface and uses the old
+    /// Vst::IMidiMapping interface as a fallback.A plug-in can use the Vst::IPlugInterfaceSupport to check if the host supports Vst::IMidiMapping2.
+    /// </remarks>
+    public unsafe partial struct IMidiMapping2 : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 7;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiMapping2*, BusDirections, uint>)&getNumMidi2ControllerAssignments_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IMidiMapping2*, BusDirections, LibVst.Midi2ControllerParamIDAssignmentList*, int>)&getMidi2ControllerAssignments_Wrapper;
+            vtbl[5] = (delegate*unmanaged[MemberFunction]<IMidiMapping2*, BusDirections, uint>)&getNumMidi1ControllerAssignments_Wrapper;
+            vtbl[6] = (delegate*unmanaged[MemberFunction]<IMidiMapping2*, BusDirections, LibVst.Midi1ControllerParamIDAssignmentList*, int>)&getMidi1ControllerAssignments_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IMidiMapping2, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IMidiMapping2, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IMidiMapping2, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Gets the number of MIDI 2.0 controller to parameter assignments
+        /// </summary>
+        /// <param name="direction">input/output direction</param>
+        /// <returns>number of MIDI 2.0 controller to parameter assignments</returns>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint getNumMidi2ControllerAssignments(BusDirections direction)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMidiMapping2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMidiMapping2), "getNumMidi2ControllerAssignments");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IMidiMapping2*, BusDirections, uint>)Vtbl[3])(__self__, direction);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IMidiMapping2*, BusDirections, uint>)Vtbl[3])((LibVst.IMidiMapping2*)Unsafe.AsPointer(ref this), direction);
+            }
+        }
+        
+        /// <summary>
+        /// Gets MIDI 2.0 controller parameter assignments
+        /// </summary>
+        /// <param name="direction">input/output direction</param>
+        /// <param name="list">list of assignments</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// the list is preallocated by the host and must be filled by the plug-in
+        /// </remarks>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getMidi2ControllerAssignments(BusDirections direction, LibVst.Midi2ControllerParamIDAssignmentList* list)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMidiMapping2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMidiMapping2), "getMidi2ControllerAssignments");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IMidiMapping2*, BusDirections, LibVst.Midi2ControllerParamIDAssignmentList*, int>)Vtbl[4])(__self__, direction, list);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IMidiMapping2*, BusDirections, LibVst.Midi2ControllerParamIDAssignmentList*, int>)Vtbl[4])((LibVst.IMidiMapping2*)Unsafe.AsPointer(ref this), direction, list);
+            }
+        }
+        
+        /// <summary>
+        /// Gets the number of MIDI 1.0 controller to parameter assignments
+        /// </summary>
+        /// <param name="direction">input/output direction</param>
+        /// <returns>number of MIDI 1.0 controller to parameter assignments</returns>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint getNumMidi1ControllerAssignments(BusDirections direction)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMidiMapping2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMidiMapping2), "getNumMidi1ControllerAssignments");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IMidiMapping2*, BusDirections, uint>)Vtbl[5])(__self__, direction);
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IMidiMapping2*, BusDirections, uint>)Vtbl[5])((LibVst.IMidiMapping2*)Unsafe.AsPointer(ref this), direction);
+            }
+        }
+        
+        /// <summary>
+        /// Gets MIDI 1.0 controller parameter assignments
+        /// </summary>
+        /// <param name="direction">input/output direction</param>
+        /// <param name="list">list of assignments</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// the list is preallocated by the host and must be filled by the plug-in
+        /// </remarks>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getMidi1ControllerAssignments(BusDirections direction, LibVst.Midi1ControllerParamIDAssignmentList* list)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMidiMapping2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMidiMapping2), "getMidi1ControllerAssignments");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IMidiMapping2*, BusDirections, LibVst.Midi1ControllerParamIDAssignmentList*, int>)Vtbl[6])(__self__, direction, list);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IMidiMapping2*, BusDirections, LibVst.Midi1ControllerParamIDAssignmentList*, int>)Vtbl[6])((LibVst.IMidiMapping2*)Unsafe.AsPointer(ref this), direction, list);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Gets the number of MIDI 2.0 controller to parameter assignments
+        /// </summary>
+        /// <param name="direction">input/output direction</param>
+        /// <returns>number of MIDI 2.0 controller to parameter assignments</returns>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        private static partial uint getNumMidi2ControllerAssignments_ToManaged(IMidiMapping2* self, BusDirections direction);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static uint getNumMidi2ControllerAssignments_Wrapper(IMidiMapping2* self, BusDirections direction)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiMapping2), "getNumMidi2ControllerAssignments");
+                try
+                {
+                    return getNumMidi2ControllerAssignments_ToManaged(self, direction);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getNumMidi2ControllerAssignments_ToManaged(self, direction);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets MIDI 2.0 controller parameter assignments
+        /// </summary>
+        /// <param name="direction">input/output direction</param>
+        /// <param name="list">list of assignments</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// the list is preallocated by the host and must be filled by the plug-in
+        /// </remarks>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        private static partial ComResult getMidi2ControllerAssignments_ToManaged(IMidiMapping2* self, BusDirections direction, LibVst.Midi2ControllerParamIDAssignmentList* list);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getMidi2ControllerAssignments_Wrapper(IMidiMapping2* self, BusDirections direction, LibVst.Midi2ControllerParamIDAssignmentList* list)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiMapping2), "getMidi2ControllerAssignments");
+                try
+                {
+                    return getMidi2ControllerAssignments_ToManaged(self, direction, list);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getMidi2ControllerAssignments_ToManaged(self, direction, list);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets the number of MIDI 1.0 controller to parameter assignments
+        /// </summary>
+        /// <param name="direction">input/output direction</param>
+        /// <returns>number of MIDI 1.0 controller to parameter assignments</returns>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        private static partial uint getNumMidi1ControllerAssignments_ToManaged(IMidiMapping2* self, BusDirections direction);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static uint getNumMidi1ControllerAssignments_Wrapper(IMidiMapping2* self, BusDirections direction)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiMapping2), "getNumMidi1ControllerAssignments");
+                try
+                {
+                    return getNumMidi1ControllerAssignments_ToManaged(self, direction);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return default;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getNumMidi1ControllerAssignments_ToManaged(self, direction);
+                }
+                catch
+                {
+                    return default;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Gets MIDI 1.0 controller parameter assignments
+        /// </summary>
+        /// <param name="direction">input/output direction</param>
+        /// <param name="list">list of assignments</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// the list is preallocated by the host and must be filled by the plug-in
+        /// </remarks>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        private static partial ComResult getMidi1ControllerAssignments_ToManaged(IMidiMapping2* self, BusDirections direction, LibVst.Midi1ControllerParamIDAssignmentList* list);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getMidi1ControllerAssignments_Wrapper(IMidiMapping2* self, BusDirections direction, LibVst.Midi1ControllerParamIDAssignmentList* list)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiMapping2), "getMidi1ControllerAssignments");
+                try
+                {
+                    return getMidi1ControllerAssignments_ToManaged(self, direction, list);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getMidi1ControllerAssignments_ToManaged(self, direction, list);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IMidiMapping2, 0x6DE14B88, 0x03F94F09, 0xA2552F0F, 0x9326593E)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x88, 0x4b, 0xe1, 0x6d, 0xf9, 0x03, 0x09, 0x4f, 0xa2, 0x55, 0x2f, 0x0f, 0x93, 0x26, 0x59, 0x3e })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x6d, 0xe1, 0x4b, 0x88, 0x03, 0xf9, 0x4f, 0x09, 0xa2, 0x55, 0x2f, 0x0f, 0x93, 0x26, 0x59, 0x3e })
+                    )));
+            }
+        }
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct Midi2ControllerParamIDAssignmentList
+    {
+        public uint count;
+        
+        public LibVst.Midi2ControllerParamIDAssignment* map;
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct Midi2ControllerParamIDAssignment
+    {
+        public LibVst.ParamID pId;
+        
+        public LibVst.BusIndex busIndex;
+        
+        public LibVst.MidiChannel channel;
+        
+        public LibVst.Midi2Controller controller;
+    }
+    
+    public partial record struct BusIndex(int Value)
+    {
+        public static implicit operator int(BusIndex value) => value.Value;
+        
+        public static implicit operator BusIndex(int value) => new(value);
+    }
+    
+    public partial record struct MidiChannel(byte Value)
+    {
+        public static implicit operator byte(MidiChannel value) => value.Value;
+        
+        public static implicit operator MidiChannel(byte value) => new(value);
+    }
+    
+    /// <summary>
+    /// Midi2Controller
+    /// </summary>
+    /// <remarks>
+    /// describes a MIDI 2.0 Registered or Assignable Controller
+    /// </remarks>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct Midi2Controller
+    {
+        /// <summary>
+        /// msb
+        /// </summary>
+        public byte bank;
+        
+        /// <summary>
+        /// true: registered, false: assignable
+        /// </summary>
+        public byte registered;
+        
+        /// <summary>
+        /// lsb
+        /// </summary>
+        public byte index;
+        
+        public byte reserved;
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct Midi1ControllerParamIDAssignmentList
+    {
+        public uint count;
+        
+        public LibVst.Midi1ControllerParamIDAssignment* map;
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct Midi1ControllerParamIDAssignment
+    {
+        public LibVst.ParamID pId;
+        
+        public LibVst.BusIndex busIndex;
+        
+        public LibVst.MidiChannel channel;
+        
+        public LibVst.CtrlNumber controller;
+    }
+    
+    /// <summary>
+    /// MIDI Learn interface: Vst::IMidiLearn2
+    /// </summary>
+    /// <remarks>
+    ///  vstIPlug vst380- [plug imp]
+    /// - [extends IEditController]
+    /// - [released: 3.8.0]
+    /// - [optional]
+    /// - [replaces Vst::IMidiLearn]If this interface is implemented by the edit controller, the host will call this method whenever
+    /// there is live MIDI-CC input for the plug-in. This way, the plug-in can change its MIDI-CC parameter
+    /// mapping and notify the host using IComponentHandler::restartComponent with the
+    /// kMidiCCAssignmentChanged flag.
+    /// Use this if you want to implement custom MIDI-Learn functionality in your plug-in.
+    /// </remarks>
+    public unsafe partial struct IMidiLearn2 : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 5;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IMidiLearn2*, int, byte, LibVst.Midi2Controller, int>)&onLiveMidi2ControllerInput_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<IMidiLearn2*, int, byte, short, int>)&onLiveMidi1ControllerInput_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IMidiLearn2, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IMidiLearn2, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IMidiLearn2, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Called on live input MIDI 2.0-CC change associated to a given bus index and MIDI channel
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult onLiveMidi2ControllerInput(LibVst.BusIndex index, LibVst.MidiChannel channel, LibVst.Midi2Controller midiCC)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMidiLearn2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMidiLearn2), "onLiveMidi2ControllerInput");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IMidiLearn2*, LibVst.BusIndex, LibVst.MidiChannel, LibVst.Midi2Controller, int>)Vtbl[3])(__self__, index, channel, midiCC);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IMidiLearn2*, LibVst.BusIndex, LibVst.MidiChannel, LibVst.Midi2Controller, int>)Vtbl[3])((LibVst.IMidiLearn2*)Unsafe.AsPointer(ref this), index, channel, midiCC);
+            }
+        }
+        
+        /// <summary>
+        /// Called on live input MIDI 1.0-CC change associated to a given bus index and MIDI channel
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult onLiveMidi1ControllerInput(LibVst.BusIndex index, LibVst.MidiChannel channel, LibVst.CtrlNumber midiCC)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IMidiLearn2*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IMidiLearn2), "onLiveMidi1ControllerInput");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IMidiLearn2*, LibVst.BusIndex, LibVst.MidiChannel, LibVst.CtrlNumber, int>)Vtbl[4])(__self__, index, channel, midiCC);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IMidiLearn2*, LibVst.BusIndex, LibVst.MidiChannel, LibVst.CtrlNumber, int>)Vtbl[4])((LibVst.IMidiLearn2*)Unsafe.AsPointer(ref this), index, channel, midiCC);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Called on live input MIDI 2.0-CC change associated to a given bus index and MIDI channel
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
+        private static partial ComResult onLiveMidi2ControllerInput_ToManaged(IMidiLearn2* self, LibVst.BusIndex index, LibVst.MidiChannel channel, LibVst.Midi2Controller midiCC);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int onLiveMidi2ControllerInput_Wrapper(IMidiLearn2* self, int index, byte channel, LibVst.Midi2Controller midiCC)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiLearn2), "onLiveMidi2ControllerInput");
+                try
+                {
+                    return onLiveMidi2ControllerInput_ToManaged(self, index, channel, midiCC);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return onLiveMidi2ControllerInput_ToManaged(self, index, channel, midiCC);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Called on live input MIDI 1.0-CC change associated to a given bus index and MIDI channel
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
+        private static partial ComResult onLiveMidi1ControllerInput_ToManaged(IMidiLearn2* self, LibVst.BusIndex index, LibVst.MidiChannel channel, LibVst.CtrlNumber midiCC);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int onLiveMidi1ControllerInput_Wrapper(IMidiLearn2* self, int index, byte channel, short midiCC)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IMidiLearn2), "onLiveMidi1ControllerInput");
+                try
+                {
+                    return onLiveMidi1ControllerInput_ToManaged(self, index, channel, midiCC);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return onLiveMidi1ControllerInput_ToManaged(self, index, channel, midiCC);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IMidiLearn2, 0xF07E498A, 0x78864327, 0x8B431CED, 0xA3C553FC)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x8a, 0x49, 0x7e, 0xf0, 0x86, 0x78, 0x27, 0x43, 0x8b, 0x43, 0x1c, 0xed, 0xa3, 0xc5, 0x53, 0xfc })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xf0, 0x7e, 0x49, 0x8a, 0x78, 0x86, 0x43, 0x27, 0x8b, 0x43, 0x1c, 0xed, 0xa3, 0xc5, 0x53, 0xfc })
+                    )));
+            }
+        }
+    }
+    
+    /// <summary>
     /// Edit controller component interface extension: Vst::IParameterFunctionName
     /// </summary>
     /// <remarks>
@@ -15805,28 +19457,28 @@ internal static partial class LibVst
     /// // here an example of how a VST3 plug-in could support this IParameterFunctionName interface.
     /// // we need to define somewhere the iids:
     /// 
-    /// in MyController class declaration
+    /// // in MyController class declaration
     /// class MyController : public Vst::EditController, public Vst::IParameterFunctionName
     /// {
-    ///     ...
+    ///     // ...
     ///     tresult PLUGIN_API getParameterIDFromFunctionName (UnitID unitID, FIDString functionName,
-    ///                                                     Vst::ParamID&amp; paramID) override;
-    ///     ...
+    ///                                                        Vst::ParamID&amp; paramID) override;
+    ///     // ...
     /// 
     ///     OBJ_METHODS (MyController, Vst::EditController)
     ///     DEFINE_INTERFACES
-    ///         ...
+    ///         // ...
     ///         DEF_INTERFACE (Vst::IParameterFunctionName)
     ///     END_DEFINE_INTERFACES (Vst::EditController)
     ///     DELEGATE_REFCOUNT (Vst::EditController)
-    ///     ...
+    ///     // ...
     /// }
     /// 
     /// #include "ivstparameterfunctionname.h"
     /// namespace Steinberg {
-    ///     namespace Vst {
-    ///         DEF_CLASS_IID (IParameterFunctionName)
-    ///     }
+    /// namespace Vst {
+    ///     DEF_CLASS_IID (IParameterFunctionName)
+    /// }
     /// }
     /// 
     /// //------------------------------------------------------------------------
@@ -15844,13 +19496,13 @@ internal static partial class LibVst
     /// }
     /// 
     /// //--- a host implementation example: --------------------
-    /// ...
+    /// // ...
     /// FUnknownPtr&lt;Vst::IParameterFunctionName&gt; functionName (mEditController-&gt;getIEditController ());
     /// if (functionName)
     /// {
     ///     Vst::ParamID paramID;
     ///     if (functionName-&gt;getParameterIDFromFunctionName (kRootUnitId,
-    ///                                                       Vst::FunctionNameType::kCompGainReduction, paramID) == kResultTrue)
+    ///                        Vst::FunctionNameType::kCompGainReduction, paramID) == kResultTrue)
     ///     {
     ///         // paramID could be cached for performance issue
     ///         ParamValue norm = mEditController-&gt;getIEditController ()-&gt;getParamNormalized (paramID);
@@ -15917,6 +19569,11 @@ internal static partial class LibVst
         /// Gets for the given unitID the associated paramID to a function Name.
         /// Returns kResultFalse when no found parameter (paramID is set to kNoParamId in this case).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getParameterIDFromFunctionName(LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID)
         {
@@ -15942,6 +19599,11 @@ internal static partial class LibVst
         /// Gets for the given unitID the associated paramID to a function Name.
         /// Returns kResultFalse when no found parameter (paramID is set to kNoParamId in this case).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult getParameterIDFromFunctionName_ToManaged(IParameterFunctionName* self, LibVst.UnitID unitID, LibVst.FIDString functionName, LibVst.ParamID* paramID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -16108,6 +19770,11 @@ internal static partial class LibVst
         /// Fills the list of mapped [physical UI (in) - note expression (out)] for a given bus index
         /// and channel.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getPhysicalUIMapping(int busIndex, short channel, LibVst.PhysicalUIMapList* list)
         {
@@ -16133,6 +19800,11 @@ internal static partial class LibVst
         /// Fills the list of mapped [physical UI (in) - note expression (out)] for a given bus index
         /// and channel.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
         private static partial ComResult getPhysicalUIMapping_ToManaged(INoteExpressionPhysicalUIMapping* self, int busIndex, short channel, LibVst.PhysicalUIMapList* list);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -16452,6 +20124,13 @@ internal static partial class LibVst
         /// <summary>
         /// Find out which parameter in plug-in view is at given position (relative to plug-in view).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected) 
+        /// &amp;
+        /// plugView]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult findParameter(int xPos, int yPos, LibVst.ParamID* resultTag)
         {
@@ -16476,6 +20155,13 @@ internal static partial class LibVst
         /// <summary>
         /// Find out which parameter in plug-in view is at given position (relative to plug-in view).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected) 
+        /// &amp;
+        /// plugView]
+        /// </note>
         private static partial ComResult findParameter_ToManaged(IParameterFinder* self, int xPos, int yPos, LibVst.ParamID* resultTag);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -16610,6 +20296,11 @@ internal static partial class LibVst
         /// retrieve the current prefetch support. Use IComponentHandler::restartComponent
         /// (kPrefetchableSupportChanged) to inform the host that this support has changed.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done | Activated | Processing)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getPrefetchableSupport(LibVst.PrefetchableSupport* prefetchable)
         {
@@ -16635,6 +20326,11 @@ internal static partial class LibVst
         /// retrieve the current prefetch support. Use IComponentHandler::restartComponent
         /// (kPrefetchableSupportChanged) to inform the host that this support has changed.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done | Activated | Processing)]
+        /// </note>
         private static partial ComResult getPrefetchableSupport_ToManaged(IPrefetchableSupport* self, LibVst.PrefetchableSupport* prefetchable);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -16691,6 +20387,178 @@ internal static partial class LibVst
         public static implicit operator uint(PrefetchableSupport value) => value.Value;
         
         public static implicit operator PrefetchableSupport(uint value) => new(value);
+    }
+    
+    /// <summary>
+    /// Extended IEditController interface for a component.
+    /// </summary>
+    /// <remarks>
+    ///  vstIPlug vst3711- [plug imp]
+    /// - [extends IEditController]
+    /// - [released: 3.7.11]
+    /// - [optional]When replacing one plug-in with another, the host can ask the new plug-in for remapping paramIDs to
+    /// new ones.
+    /// </remarks>
+    /// <seealso cref="Moduleinfo"/>
+    /// <seealso cref="IPluginCompatibility"/>
+    /// <seealso cref="IEditController"/>
+    public unsafe partial struct IRemapParamID : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IRemapParamID*, Guid*, uint, LibVst.ParamID*, int>)&getCompatibleParamID_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IRemapParamID, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IRemapParamID, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IRemapParamID, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Retrieve the appropriate paramID for a specific plug-in UID and paramID (or index for VST 2
+        /// plug-ins).
+        /// The retrieved paramID should match the one it replaces, maintaining the same
+        /// behavior during automation playback. Called in UI-Thread context.
+        /// </summary>
+        /// <param name="pluginToReplaceUID">- TUID of plug-in (processor) that will be replaced</param>
+        /// <param name="oldParamID">- paramID (or index for VST 2 plug-ins) to be replaced</param>
+        /// <param name="newParamID">- contains the associated paramID to be used</param>
+        /// <returns>@return kResultTrue if a compatible parameter is available (newParamID has the appropriate
+        /// value, it could be the same than oldParamID), or kResultFalse if no compatible parameter is
+        /// available (newParamID is undefined).</returns>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getCompatibleParamID(Guid* pluginToReplaceUID, LibVst.ParamID oldParamID, LibVst.ParamID* newParamID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IRemapParamID*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IRemapParamID), "getCompatibleParamID");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IRemapParamID*, Guid*, LibVst.ParamID, LibVst.ParamID*, int>)Vtbl[3])(__self__, pluginToReplaceUID, oldParamID, newParamID);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IRemapParamID*, Guid*, LibVst.ParamID, LibVst.ParamID*, int>)Vtbl[3])((LibVst.IRemapParamID*)Unsafe.AsPointer(ref this), pluginToReplaceUID, oldParamID, newParamID);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Retrieve the appropriate paramID for a specific plug-in UID and paramID (or index for VST 2
+        /// plug-ins).
+        /// The retrieved paramID should match the one it replaces, maintaining the same
+        /// behavior during automation playback. Called in UI-Thread context.
+        /// </summary>
+        /// <param name="pluginToReplaceUID">- TUID of plug-in (processor) that will be replaced</param>
+        /// <param name="oldParamID">- paramID (or index for VST 2 plug-ins) to be replaced</param>
+        /// <param name="newParamID">- contains the associated paramID to be used</param>
+        /// <returns>@return kResultTrue if a compatible parameter is available (newParamID has the appropriate
+        /// value, it could be the same than oldParamID), or kResultFalse if no compatible parameter is
+        /// available (newParamID is undefined).</returns>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
+        private static partial ComResult getCompatibleParamID_ToManaged(IRemapParamID* self, Guid* pluginToReplaceUID, LibVst.ParamID oldParamID, LibVst.ParamID* newParamID);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getCompatibleParamID_Wrapper(IRemapParamID* self, Guid* pluginToReplaceUID, uint oldParamID, LibVst.ParamID* newParamID)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IRemapParamID), "getCompatibleParamID");
+                try
+                {
+                    return getCompatibleParamID_ToManaged(self, pluginToReplaceUID, oldParamID, newParamID);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getCompatibleParamID_ToManaged(self, pluginToReplaceUID, oldParamID, newParamID);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IRemapParamID, 0x2B88021E, 0x6286B646, 0xB49DF76A, 0x5663061C)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x1e, 0x02, 0x88, 0x2b, 0x86, 0x62, 0x46, 0xb6, 0xb4, 0x9d, 0xf7, 0x6a, 0x56, 0x63, 0x06, 0x1c })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x2b, 0x88, 0x02, 0x1e, 0x62, 0x86, 0xb6, 0x46, 0xb4, 0x9d, 0xf7, 0x6a, 0x56, 0x63, 0x06, 0x1c })
+                    )));
+            }
+        }
     }
     
     /// <summary>
@@ -16838,8 +20706,13 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Retrieves a stream containing a XmlRepresentation for a wanted representation info
+        /// Retrieves a stream containing a XmlRepresentation for a wanted representation info.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getXmlRepresentationStream(LibVst.RepresentationInfo* info, LibVst.IBStream* stream)
         {
@@ -16862,8 +20735,13 @@ internal static partial class LibVst
         // CCW methods
         // --------------------------------------------------------------
         /// <summary>
-        /// Retrieves a stream containing a XmlRepresentation for a wanted representation info
+        /// Retrieves a stream containing a XmlRepresentation for a wanted representation info.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Initialized]
+        /// </note>
         private static partial ComResult getXmlRepresentationStream_ToManaged(IXmlRepresentationController* self, LibVst.RepresentationInfo* info, LibVst.IBStream* stream);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -16951,7 +20829,7 @@ internal static partial class LibVst
     /// <remarks>
     ///  TestClassThis class provides access to the component and the controller of a plug-in when running a unit
     /// test (see ITest).
-    /// You get this interface as the context argument in the ITestFactory::createTests method.------------------------------------------------------------------------
+    /// You get this interface as the context argument in the ITestFactory::createTests method.
     /// </remarks>
     public unsafe partial struct ITestPlugProvider : INativeGuid, INativeUnknown, INativeVtbl
     {
@@ -17642,6 +21520,11 @@ internal static partial class LibVst
         /// <summary>
         /// Notify host when a module is selected in plug-in GUI.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult notifyUnitSelection(LibVst.UnitID unitId)
         {
@@ -17661,10 +21544,17 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Tell host that the plug-in controller changed a program list (rename, load, PitchName changes).
+        /// Tell host that the plug-in controller changed a program list (rename, load, PitchName
+        /// changes).
         /// </summary>
-        /// <param name="programIndex">: when kAllProgramInvalid, all program information is invalid, otherwise only the program of given index.</param>
         /// <param name="listId">is the specified program list ID to inform.</param>
+        /// <param name="programIndex:">when kAllProgramInvalid, all program information is invalid, otherwise
+        /// only the program of given index.</param>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult notifyProgramListChange(LibVst.ProgramListID listId, int programIndex)
         {
@@ -17689,6 +21579,11 @@ internal static partial class LibVst
         /// <summary>
         /// Notify host when a module is selected in plug-in GUI.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult notifyUnitSelection_ToManaged(IUnitHandler* self, LibVst.UnitID unitId);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -17725,10 +21620,17 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Tell host that the plug-in controller changed a program list (rename, load, PitchName changes).
+        /// Tell host that the plug-in controller changed a program list (rename, load, PitchName
+        /// changes).
         /// </summary>
-        /// <param name="programIndex">: when kAllProgramInvalid, all program information is invalid, otherwise only the program of given index.</param>
         /// <param name="listId">is the specified program list ID to inform.</param>
+        /// <param name="programIndex:">when kAllProgramInvalid, all program information is invalid, otherwise
+        /// only the program of given index.</param>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult notifyProgramListChange_ToManaged(IUnitHandler* self, LibVst.ProgramListID listId, int programIndex);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -17856,6 +21758,11 @@ internal static partial class LibVst
         /// <summary>
         /// Tell host that assignment Unit-Bus defined by IUnitInfo::getUnitByBus has changed.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult notifyUnitByBusChange()
         {
@@ -17880,6 +21787,11 @@ internal static partial class LibVst
         /// <summary>
         /// Tell host that assignment Unit-Bus defined by IUnitInfo::getUnitByBus has changed.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult notifyUnitByBusChange_ToManaged(IUnitHandler2* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18012,6 +21924,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns the flat count of units.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getUnitCount()
         {
@@ -18032,6 +21949,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets UnitInfo for a given index in the flat list of unit.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getUnitInfo(int unitIndex, LibVst.UnitInfo* info)
         {
@@ -18051,11 +21973,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Component intern program structure.
-        /// </summary>
-        /// <remarks>
+        /// --- Component intern program structure ----------------
         /// Gets the count of Program List.
-        /// </remarks>
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getProgramListCount()
         {
@@ -18076,6 +22001,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given index the Program List Info.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getProgramListInfo(int listIndex, LibVst.ProgramListInfo* info)
         {
@@ -18097,6 +22027,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given program list ID and program index its program name.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getProgramName(LibVst.ProgramListID listId, int programIndex, LibVst.String128* name)
         {
@@ -18116,8 +22051,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Gets for a given program list ID, program index and attributeId the associated attribute value.
+        /// Gets for a given program list ID, program index and attributeId the associated attribute
+        /// value.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getProgramInfo(LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue)
         {
@@ -18137,8 +22078,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Returns kResultTrue if the given program index of a given program list ID supports PitchNames.
+        /// Returns kResultTrue if the given program index of a given program list ID supports
+        /// PitchNames.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult hasProgramPitchNames(LibVst.ProgramListID listId, int programIndex)
         {
@@ -18159,8 +22106,14 @@ internal static partial class LibVst
         
         /// <summary>
         /// Gets the PitchName for a given program list ID, program index and pitch.
-        /// If PitchNames are changed the plug-in should inform the host with IUnitHandler::notifyProgramListChange.
+        /// If PitchNames are changed the plug-in should inform the host with
+        /// IUnitHandler::notifyProgramListChange.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getProgramPitchName(LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name)
         {
@@ -18180,9 +22133,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// units selection --------------------
+        /// --- units selection --------------------
         /// Gets the current selected unit.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int getSelectedUnit()
         {
@@ -18203,6 +22161,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets a new selected unit.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult selectUnit(LibVst.UnitID unitId)
         {
@@ -18222,9 +22185,15 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Gets the according unit if there is an unambiguous relation between a channel or a bus and a unit.
-        /// This method mainly is intended to find out which unit is related to a given MIDI input channel.
+        /// Gets the according unit if there is an unambiguous relation between a channel or a bus and a
+        /// unit. This method mainly is intended to find out which unit is related to a given MIDI input
+        /// channel.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getUnitByBus(LibVst.MediaType type, LibVst.BusDirection dir, int busIndex, int channel, LibVst.UnitID* unitId)
         {
@@ -18247,11 +22216,16 @@ internal static partial class LibVst
         /// Receives a preset data stream.
         /// - If the component supports program list data (IProgramListData), the destination of the data
         /// stream is the program specified by list-Id and program index (first and second parameter)
-        /// - If the component supports unit data (IUnitData), the destination is the unit specified by the first
-        /// parameter - in this case parameter programIndex is 
+        /// - If the component supports unit data (IUnitData), the destination is the unit specified by
+        /// the first parameter - in this case parameter programIndex is 
         /// &lt;
         /// 0).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setUnitProgramData(int listOrUnitId, int programIndex, LibVst.IBStream* data)
         {
@@ -18276,6 +22250,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns the flat count of units.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial int getUnitCount_ToManaged(IUnitInfo* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18314,6 +22293,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets UnitInfo for a given index in the flat list of unit.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult getUnitInfo_ToManaged(IUnitInfo* self, int unitIndex, LibVst.UnitInfo* info);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18350,11 +22334,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Component intern program structure.
-        /// </summary>
-        /// <remarks>
+        /// --- Component intern program structure ----------------
         /// Gets the count of Program List.
-        /// </remarks>
+        /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial int getProgramListCount_ToManaged(IUnitInfo* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18393,6 +22380,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given index the Program List Info.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult getProgramListInfo_ToManaged(IUnitInfo* self, int listIndex, LibVst.ProgramListInfo* info);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18431,6 +22423,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given program list ID and program index its program name.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult getProgramName_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.String128* name);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18467,8 +22464,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Gets for a given program list ID, program index and attributeId the associated attribute value.
+        /// Gets for a given program list ID, program index and attributeId the associated attribute
+        /// value.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult getProgramInfo_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, LibVst.CString attributeId, LibVst.String128* attributeValue);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18505,8 +22508,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Returns kResultTrue if the given program index of a given program list ID supports PitchNames.
+        /// Returns kResultTrue if the given program index of a given program list ID supports
+        /// PitchNames.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult hasProgramPitchNames_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18544,8 +22553,14 @@ internal static partial class LibVst
         
         /// <summary>
         /// Gets the PitchName for a given program list ID, program index and pitch.
-        /// If PitchNames are changed the plug-in should inform the host with IUnitHandler::notifyProgramListChange.
+        /// If PitchNames are changed the plug-in should inform the host with
+        /// IUnitHandler::notifyProgramListChange.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult getProgramPitchName_ToManaged(IUnitInfo* self, LibVst.ProgramListID listId, int programIndex, short midiPitch, LibVst.String128* name);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18582,9 +22597,14 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// units selection --------------------
+        /// --- units selection --------------------
         /// Gets the current selected unit.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial LibVst.UnitID getSelectedUnit_ToManaged(IUnitInfo* self);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18623,6 +22643,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets a new selected unit.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult selectUnit_ToManaged(IUnitInfo* self, LibVst.UnitID unitId);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18659,9 +22684,15 @@ internal static partial class LibVst
         }
         
         /// <summary>
-        /// Gets the according unit if there is an unambiguous relation between a channel or a bus and a unit.
-        /// This method mainly is intended to find out which unit is related to a given MIDI input channel.
+        /// Gets the according unit if there is an unambiguous relation between a channel or a bus and a
+        /// unit. This method mainly is intended to find out which unit is related to a given MIDI input
+        /// channel.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult getUnitByBus_ToManaged(IUnitInfo* self, LibVst.MediaType type, LibVst.BusDirection dir, int busIndex, int channel, LibVst.UnitID* unitId);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18701,11 +22732,16 @@ internal static partial class LibVst
         /// Receives a preset data stream.
         /// - If the component supports program list data (IProgramListData), the destination of the data
         /// stream is the program specified by list-Id and program index (first and second parameter)
-        /// - If the component supports unit data (IUnitData), the destination is the unit specified by the first
-        /// parameter - in this case parameter programIndex is 
+        /// - If the component supports unit data (IUnitData), the destination is the unit specified by
+        /// the first parameter - in this case parameter programIndex is 
         /// &lt;
         /// 0).
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult setUnitProgramData_ToManaged(IUnitInfo* self, int listOrUnitId, int programIndex, LibVst.IBStream* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18886,6 +22922,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns kResultTrue if the given Program List ID supports Program Data.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult programDataSupported(LibVst.ProgramListID listId)
         {
@@ -18907,6 +22948,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given program list ID and program index the program Data.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getProgramData(LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
         {
@@ -18928,6 +22974,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets for a given program list ID and program index a program Data.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setProgramData(LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data)
         {
@@ -18952,6 +23003,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns kResultTrue if the given Program List ID supports Program Data.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult programDataSupported_ToManaged(IProgramListData* self, LibVst.ProgramListID listId);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -18990,6 +23046,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets for a given program list ID and program index the program Data.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult getProgramData_ToManaged(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -19028,6 +23089,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets for a given program list ID and program index a program Data.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult setProgramData_ToManaged(IProgramListData* self, LibVst.ProgramListID listId, int programIndex, LibVst.IBStream* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -19148,6 +23214,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns kResultTrue if the specified unit supports export and import of preset data.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult unitDataSupported(LibVst.UnitID unitID)
         {
@@ -19169,6 +23240,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets the preset data for the specified unit.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult getUnitData(LibVst.UnitID unitId, LibVst.IBStream* data)
         {
@@ -19190,6 +23266,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets the preset data for the specified unit.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setUnitData(LibVst.UnitID unitId, LibVst.IBStream* data)
         {
@@ -19214,6 +23295,11 @@ internal static partial class LibVst
         /// <summary>
         /// Returns kResultTrue if the specified unit supports export and import of preset data.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult unitDataSupported_ToManaged(IUnitData* self, LibVst.UnitID unitID);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -19252,6 +23338,11 @@ internal static partial class LibVst
         /// <summary>
         /// Gets the preset data for the specified unit.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult getUnitData_ToManaged(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -19290,6 +23381,11 @@ internal static partial class LibVst
         /// <summary>
         /// Sets the preset data for the specified unit.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
         private static partial ComResult setUnitData_ToManaged(IUnitData* self, LibVst.UnitID unitId, LibVst.IBStream* data);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -19446,26 +23542,29 @@ internal static partial class LibVst
     }
     
     /// <summary>
-    /// Processing mode informs the plug-in about the context and at which frequency the process call is called.
+    /// Processing mode informs the plug-in about the context and at which frequency the process call is
+    /// called.
+    /// .
     /// VST3 defines 3 modes:
-    /// - kRealtime: each process call is called at a realtime frequency (defined by [numSamples of ProcessData] / samplerate).
-    /// The plug-in should always try to process as fast as possible in order to let enough time slice to other plug-ins.
-    /// - kPrefetch: each process call could be called at a variable frequency (jitter, slower / faster than realtime),
-    /// the plug-in should process at the same quality level than realtime, plug-in must not slow down to realtime
-    /// (e.g. disk streaming)!
-    /// The host should avoid to process in kPrefetch mode such sampler based plug-in.
-    /// - kOffline:  each process call could be faster than realtime or slower, higher quality than realtime could be used.
-    /// plug-ins using disk streaming should be sure that they have enough time in the process call for streaming,
-    /// if needed by slowing down to realtime or slower.
+    /// </summary>
+    /// <remarks>
+    /// - kRealtime: each process call is called at a realtime frequency (defined by [numSamples of
+    /// ProcessData] / samplerate). The plug-in should always try to process as fast as possible in order
+    /// to let enough time slice to other plug-ins.- kPrefetch: each process call could be called at a variable frequency (jitter, slower /
+    /// faster than realtime), the plug-in should process at the same quality level than realtime,
+    /// plug-in must not slow down to realtime (e.g. disk streaming)! The host should avoid to process in
+    /// kPrefetch mode such sampler based plug-in.- kOffline:  each process call could be faster than realtime or slower, higher quality than
+    /// realtime could be used. plug-ins using disk streaming should be sure that they have enough time
+    /// in the process call for streaming, if needed by slowing down to realtime or slower.
     /// .
     /// Note about Process Modes switching:
-    /// - Switching between kRealtime and kPrefetch process modes are done in realtime thread without need of calling
-    /// IAudioProcessor::setupProcessing, the plug-in should check in process call the member processMode of ProcessData
-    /// in order to know in which mode it is processed.
-    /// - Switching between kRealtime (or kPrefetch) and kOffline requires that the host calls IAudioProcessor::setupProcessing
-    /// in order to inform the plug-in about this mode change.
+    /// - Switching between kRealtime and kPrefetch process modes are done in realtime thread without
+    /// need of calling IAudioProcessor::setupProcessing, the plug-in should check in process call the
+    /// member processMode of ProcessData in order to know in which mode it is processed.
+    /// - Switching between kRealtime (or kPrefetch) and kOffline requires that the host calls
+    /// IAudioProcessor::setupProcessing in order to inform the plug-in about this mode change.
     /// .
-    /// </summary>
+    /// </remarks>
     /// <seealso cref="ProcessSetup, ProcessData"/>
     public enum ProcessModes
     {
@@ -19488,27 +23587,28 @@ internal static partial class LibVst
     /// <summary>
     /// Flags used for IComponentHandler::restartComponent
     /// </summary>
-    public enum RestartFlags
+    public enum RestartFlags : int
     {
         /// <summary>
         /// The Component should be reloaded
-        /// The host has to unload completely the plug-in (controller/processor) and reload it. 
+        /// The host has to unload completely the plug-in (controller/processor) and reload it.
         /// [SDK 3.0.0]
         /// </summary>
         kReloadComponent = 1 << 0,
         
         /// <summary>
-        /// Input / Output Bus configuration has changed
+        /// Input/Output Bus configuration has changed
         /// The plug-in informs the host that either the bus configuration or the bus count has changed.
-        /// The host has to deactivate the plug-in, asks the plug-in for its wanted new bus configurations,
-        /// adapts its processing graph and reactivate the plug-in.
+        /// The host has to deactivate the plug-in, asks the plug-in for its wanted new bus
+        /// configurations, adapts its processing graph and reactivate the plug-in.
         /// [SDK 3.0.0]
         /// </summary>
         kIoChanged = 1 << 1,
         
         /// <summary>
         /// Multiple parameter values have changed  (as result of a program change for example)
-        /// The host invalidates all caches of parameter values and asks the edit controller for the current values.
+        /// The host invalidates all caches of parameter values and asks the edit controller for the
+        /// current values.
         /// [SDK 3.0.0]
         /// </summary>
         kParamValuesChanged = 1 << 2,
@@ -19517,14 +23617,15 @@ internal static partial class LibVst
         /// Latency has changed
         /// The plug informs the host that its latency has changed, getLatencySamples should return the new latency after setActive (true) was called
         /// The host has to deactivate and reactivate the plug-in, then afterwards the host could ask for the current latency (getLatencySamples)
-        /// see IAudioProcessor::getLatencySamples
+        /// See IAudioProcessor::getLatencySamples
         /// [SDK 3.0.0]
         /// </summary>
         kLatencyChanged = 1 << 3,
         
         /// <summary>
-        /// Parameter titles, default values or flags (ParameterFlags) have changed
-        /// The host invalidates all caches of parameter infos and asks the edit controller for the current infos.
+        /// Parameter titles (title, shortTitle and units), default values, stepCount or flags (ParameterFlags) have changed
+        /// The host invalidates all caches of parameter infos and asks the edit controller for the
+        /// current infos.
         /// [SDK 3.0.0]
         /// </summary>
         kParamTitlesChanged = 1 << 4,
@@ -19558,16 +23659,18 @@ internal static partial class LibVst
         /// <summary>
         /// Prefetch support has changed
         /// The plug-in informs the host that its PrefetchSupport has changed
-        /// The host has to deactivate the plug-in, calls IPrefetchableSupport::getPrefetchableSupport and reactivate the plug-in
-        /// see IPrefetchableSupport
+        /// The host has to deactivate the plug-in, calls IPrefetchableSupport::getPrefetchableSupport 
+        /// and reactivate the plug-in.
+        /// See IPrefetchableSupport
         /// [SDK 3.6.1]
         /// </summary>
         kPrefetchableSupportChanged = 1 << 8,
         
         /// <summary>
         /// RoutingInfo has changed
-        /// The plug-in informs the host that its internal routing (relation of an event-input-channel to an audio-output-bus) has changed
-        /// The host ask the plug-in for the new routing with IComponent::getRoutingInfo, @ref vst3Routing see IComponent
+        /// The plug-in informs the host that its internal routing (relation of an event-input-channel to
+        /// an audio-output-bus) has changed. The host asks the plug-in for the new routing with 
+        /// IComponent::getRoutingInfo, @ref vst3Routing See IComponent
         /// [SDK 3.6.6]
         /// </summary>
         kRoutingInfoChanged = 1 << 9,
@@ -19575,17 +23678,31 @@ internal static partial class LibVst
         /// <summary>
         /// Key switches has changed (info, count)
         /// Either the Key switches info, the count of Key switches has changed.
-        /// The host invalidates all caches of Key switches infos and asks the edit controller (IKeyswitchController) for the current ones.
+        /// The host invalidates all caches of Key switches infos and asks the edit controller
+        /// (IKeyswitchController) for the current ones.
         /// See IKeyswitchController
         /// [SDK 3.7.3]
         /// </summary>
         kKeyswitchChanged = 1 << 10,
+        
+        /// <summary>
+        /// Mapping of ParamID has changed
+        /// The Plug-in informs the host that its parameters ID has changed. This has to be called by the
+        /// edit controller in the method setComponentState or setState (during projects loading) when the
+        /// plug-in detects that the given state was associated to an older version of the plug-in, or to a
+        /// plug-in to replace (for ex. migrating VST2 =&gt; VST3), with a different set of parameter IDs, then
+        /// the host could remap any used parameters like automation by asking the IRemapParamID interface
+        /// (which extends IEditController).
+        /// See IRemapParamID
+        /// [SDK 3.7.11]
+        /// </summary>
+        kParamIDMappingChanged = 1 << 11,
     }
     
     /// <summary>
     /// Knob Mode
     /// </summary>
-    public enum KnobModes
+    public enum KnobModes : int
     {
         /// <summary>
         /// Circular with jump to clicked position
@@ -20030,6 +24147,46 @@ internal static partial class LibVst
         /// Quarter Frame ((use LegacyMIDICCOutEvent.value only)
         /// </summary>
         kCtrlQuarterFrame = 132,
+        
+        /// <summary>
+        /// Song Select (use LegacyMIDICCOutEvent.value only)
+        /// </summary>
+        kSystemSongSelect = 133,
+        
+        /// <summary>
+        /// Song Pointer (use LegacyMIDICCOutEvent.value for LSB and
+        /// </summary>
+        kSystemSongPointer = 134,
+        
+        /// <summary>
+        /// Cable Select (use LegacyMIDICCOutEvent.value only)
+        /// </summary>
+        kSystemCableSelect = 135,
+        
+        /// <summary>
+        /// Tune Request (use LegacyMIDICCOutEvent.value only)
+        /// </summary>
+        kSystemTuneRequest = 136,
+        
+        /// <summary>
+        /// Midi Clock Start (use LegacyMIDICCOutEvent.value only)
+        /// </summary>
+        kSystemMidiClockStart = 137,
+        
+        /// <summary>
+        /// Midi Clock Continue (use LegacyMIDICCOutEvent.value only)
+        /// </summary>
+        kSystemMidiClockContinue = 138,
+        
+        /// <summary>
+        /// Midi Clock Stop (use LegacyMIDICCOutEvent.value only)
+        /// </summary>
+        kSystemMidiClockStop = 139,
+        
+        /// <summary>
+        /// Active Sensing (use LegacyMIDICCOutEvent.value only)
+        /// </summary>
+        kSystemActiveSensing = 140,
     }
     
     /// <summary>
@@ -20124,7 +24281,14 @@ internal static partial class LibVst
     /// 		{
     /// 			...
     /// 		}
-    /// 		
+    /// 
+    /// 		// get Channel RuntimeID
+    /// 		int64 runtimeId;
+    /// 		if (list-&gt;getInt (ChannelContext::kChannelRuntimeIDKey, runtimeId) == kResultTrue)
+    /// 		{
+    /// 			...
+    /// 		}
+    /// 
     /// 		// get Channel Index
     /// 		int64 index;
     /// 		if (list-&gt;getInt (ChannelContext::kChannelIndexKey, index) == kResultTrue)
@@ -20248,6 +24412,11 @@ internal static partial class LibVst
         /// <summary>
         /// Receive the channel context infos from host.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done | Activated | Processing)]
+        /// </note>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ComResult setChannelContextInfos(LibVst.IAttributeList* list)
         {
@@ -20272,6 +24441,11 @@ internal static partial class LibVst
         /// <summary>
         /// Receive the channel context infos from host.
         /// </summary>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected | Setup Done | Activated | Processing)]
+        /// </note>
         private static partial ComResult setChannelContextInfos_ToManaged(IInfoListener* self, LibVst.IAttributeList* list);
         
         [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
@@ -20402,16 +24576,26 @@ internal static partial class LibVst
     public static ReadOnlySpan<byte> kPlatformTypeX11EmbedWindowID_u8 => "X11EmbedWindowID\0"u8;
     
     /// <summary>
-    /// @
-    /// }
+    /// Wayland Surface ID.
     /// </summary>
-    public const string SDKVersionString = "VST 3.7.7";
+    public const string kPlatformTypeWaylandSurfaceID = "WaylandSurfaceID";
+    
+    /// <summary>
+    /// Wayland Surface ID.
+    /// </summary>
+    public static ReadOnlySpan<byte> kPlatformTypeWaylandSurfaceID_u8 => "WaylandSurfaceID\0"u8;
     
     /// <summary>
     /// @
     /// }
     /// </summary>
-    public static ReadOnlySpan<byte> SDKVersionString_u8 => "VST 3.7.7\0"u8;
+    public const string SDKVersionString = "VST 3.8.0";
+    
+    /// <summary>
+    /// @
+    /// }
+    /// </summary>
+    public static ReadOnlySpan<byte> SDKVersionString_u8 => "VST 3.8.0\0"u8;
     
     public static partial class SpeakerArr
     {
@@ -20446,6 +24630,13 @@ internal static partial class LibVst
         public const string kStringStereo = "Stereo";
         
         public static ReadOnlySpan<byte> kStringStereo_u8 => "Stereo\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringStereoWide = "Stereo (Lw Rw)";
+        
+        public static ReadOnlySpan<byte> kStringStereoWide_u8 => "Stereo (Lw Rw)\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -20681,30 +24872,37 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString71CineFrontHigh = "7.1 Cine Front High";
-        
-        public static ReadOnlySpan<byte> kString71CineFrontHigh_u8 => "7.1 Cine Front High\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
-        public const string kString70CineFrontHigh = "7.0 Cine Front High";
-        
-        public static ReadOnlySpan<byte> kString70CineFrontHigh_u8 => "7.0 Cine Front High\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
-        public const string kString71CineSideHigh = "7.1 Cine Side High";
-        
-        public static ReadOnlySpan<byte> kString71CineSideHigh_u8 => "7.1 Cine Side High\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
         public const string kString71CineFullRear = "7.1 Cine Full Rear";
         
         public static ReadOnlySpan<byte> kString71CineFullRear_u8 => "7.1 Cine Full Rear\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_2 = "5.1.2";
+        
+        public static ReadOnlySpan<byte> kString51_2_u8 => "5.1.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_2 = "5.0.2";
+        
+        public static ReadOnlySpan<byte> kString50_2_u8 => "5.0.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_2TopSide = "5.0.2 Top Side";
+        
+        public static ReadOnlySpan<byte> kString50_2TopSide_u8 => "5.0.2 Top Side\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_2TopSide = "5.1.2 Top Side";
+        
+        public static ReadOnlySpan<byte> kString51_2TopSide_u8 => "5.1.2 Top Side\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -20730,9 +24928,9 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString80Cube = "8.0 Cube";
+        public const string kString40_4 = "8.0 Cube";
         
-        public static ReadOnlySpan<byte> kString80Cube_u8 => "8.0 Cube\0"u8;
+        public static ReadOnlySpan<byte> kString40_4_u8 => "8.0 Cube\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -20779,16 +24977,16 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString102 = "10.2 Experimental";
+        public const string kString52_5 = "5.2.5";
         
-        public static ReadOnlySpan<byte> kString102_u8 => "10.2 Experimental\0"u8;
+        public static ReadOnlySpan<byte> kString52_5_u8 => "5.2.5\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString122 = "12.2";
+        public const string kString72_5 = "12.2";
         
-        public static ReadOnlySpan<byte> kString122_u8 => "12.2\0"u8;
+        public static ReadOnlySpan<byte> kString72_5_u8 => "12.2\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -20835,6 +25033,20 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
+        public const string kString70_2_TF = "7.0.2 Top Front";
+        
+        public static ReadOnlySpan<byte> kString70_2_TF_u8 => "7.0.2 Top Front\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString71_2_TF = "7.1.2 Top Front";
+        
+        public static ReadOnlySpan<byte> kString71_2_TF_u8 => "7.1.2 Top Front\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_3 = "7.0.3";
         
         public static ReadOnlySpan<byte> kString70_3_u8 => "7.0.3\0"u8;
@@ -20877,58 +25089,86 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString90_4 = "9.0.4";
+        public const string kString90_4 = "9.0.4 ITU";
         
-        public static ReadOnlySpan<byte> kString90_4_u8 => "9.0.4\0"u8;
+        public static ReadOnlySpan<byte> kString90_4_u8 => "9.0.4 ITU\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString91_4 = "9.1.4";
+        public const string kString91_4 = "9.1.4 ITU";
         
-        public static ReadOnlySpan<byte> kString91_4_u8 => "9.1.4\0"u8;
+        public static ReadOnlySpan<byte> kString91_4_u8 => "9.1.4 ITU\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString90_6 = "9.0.6";
+        public const string kString90_6 = "9.0.6 ITU";
         
-        public static ReadOnlySpan<byte> kString90_6_u8 => "9.0.6\0"u8;
+        public static ReadOnlySpan<byte> kString90_6_u8 => "9.0.6 ITU\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString91_6 = "9.1.6";
+        public const string kString91_6 = "9.1.6 ITU";
         
-        public static ReadOnlySpan<byte> kString91_6_u8 => "9.1.6\0"u8;
+        public static ReadOnlySpan<byte> kString91_6_u8 => "9.1.6 ITU\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString100 = "10.0 Auro-3D";
+        public const string kString90_4_W = "9.0.4";
         
-        public static ReadOnlySpan<byte> kString100_u8 => "10.0 Auro-3D\0"u8;
+        public static ReadOnlySpan<byte> kString90_4_W_u8 => "9.0.4\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString101 = "10.1 Auro-3D";
+        public const string kString91_4_W = "9.1.4";
         
-        public static ReadOnlySpan<byte> kString101_u8 => "10.1 Auro-3D\0"u8;
+        public static ReadOnlySpan<byte> kString91_4_W_u8 => "9.1.4\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString110 = "11.0 Auro-3D";
+        public const string kString90_6_W = "9.0.6";
         
-        public static ReadOnlySpan<byte> kString110_u8 => "11.0 Auro-3D\0"u8;
+        public static ReadOnlySpan<byte> kString90_6_W_u8 => "9.0.6\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString111 = "11.1 Auro-3D";
+        public const string kString91_6_W = "9.1.6";
         
-        public static ReadOnlySpan<byte> kString111_u8 => "11.1 Auro-3D\0"u8;
+        public static ReadOnlySpan<byte> kString91_6_W_u8 => "9.1.6\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_5 = "10.0 Auro-3D";
+        
+        public static ReadOnlySpan<byte> kString50_5_u8 => "10.0 Auro-3D\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_5 = "10.1 Auro-3D";
+        
+        public static ReadOnlySpan<byte> kString51_5_u8 => "10.1 Auro-3D\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_6 = "11.0 Auro-3D";
+        
+        public static ReadOnlySpan<byte> kString50_6_u8 => "11.0 Auro-3D\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_6 = "11.1 Auro-3D";
+        
+        public static ReadOnlySpan<byte> kString51_6_u8 => "11.1 Auro-3D\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -20947,23 +25187,16 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString81MPEG = "8.1 MPEG";
+        public const string kString41_4_1 = "8.1 MPEG";
         
-        public static ReadOnlySpan<byte> kString81MPEG_u8 => "8.1 MPEG\0"u8;
+        public static ReadOnlySpan<byte> kString41_4_1_u8 => "8.1 MPEG\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString140 = "14.0";
+        public const string kString60_4_4 = "14.0";
         
-        public static ReadOnlySpan<byte> kString140_u8 => "14.0\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
-        public const string kString222 = "22.2";
-        
-        public static ReadOnlySpan<byte> kString222_u8 => "22.2\0"u8;
+        public static ReadOnlySpan<byte> kString60_4_4_u8 => "14.0\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -20971,6 +25204,13 @@ internal static partial class LibVst
         public const string kString220 = "22.0";
         
         public static ReadOnlySpan<byte> kString220_u8 => "22.0\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString222 = "22.2";
+        
+        public static ReadOnlySpan<byte> kString222_u8 => "22.2\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -20989,23 +25229,121 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kStringAmbi1stOrder = "1st Order Ambisonics";
+        public const string kString50_2_2 = "5.0.2.2";
         
-        public static ReadOnlySpan<byte> kStringAmbi1stOrder_u8 => "1st Order Ambisonics\0"u8;
+        public static ReadOnlySpan<byte> kString50_2_2_u8 => "5.0.2.2\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kStringAmbi2cdOrder = "2nd Order Ambisonics";
+        public const string kString50_4_2 = "5.0.4.2";
         
-        public static ReadOnlySpan<byte> kStringAmbi2cdOrder_u8 => "2nd Order Ambisonics\0"u8;
+        public static ReadOnlySpan<byte> kString50_4_2_u8 => "5.0.4.2\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kStringAmbi3rdOrder = "3rd Order Ambisonics";
+        public const string kString70_4_2 = "7.0.4.2";
         
-        public static ReadOnlySpan<byte> kStringAmbi3rdOrder_u8 => "3rd Order Ambisonics\0"u8;
+        public static ReadOnlySpan<byte> kString70_4_2_u8 => "7.0.4.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_5_Sony = "5.0.5 Sony";
+        
+        public static ReadOnlySpan<byte> kString50_5_Sony_u8 => "5.0.5 Sony\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString40_2_2 = "4.0.3.2";
+        
+        public static ReadOnlySpan<byte> kString40_2_2_u8 => "4.0.3.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString40_4_2 = "4.0.4.2";
+        
+        public static ReadOnlySpan<byte> kString40_4_2_u8 => "4.0.4.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_3_2 = "5.0.3.2";
+        
+        public static ReadOnlySpan<byte> kString50_3_2_u8 => "5.0.3.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString30_5_2 = "3.0.5.2";
+        
+        public static ReadOnlySpan<byte> kString30_5_2_u8 => "3.0.5.2\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString40_4_4 = "4.0.4.4";
+        
+        public static ReadOnlySpan<byte> kString40_4_4_u8 => "4.0.4.4\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_4_4 = "5.0.4.4";
+        
+        public static ReadOnlySpan<byte> kString50_4_4_u8 => "5.0.4.4\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi1stOrder = "1OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi1stOrder_u8 => "1OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi2cdOrder = "2OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi2cdOrder_u8 => "2OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi3rdOrder = "3OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi3rdOrder_u8 => "3OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi4thOrder = "4OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi4thOrder_u8 => "4OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi5thOrder = "5OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi5thOrder_u8 => "5OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi6thOrder = "6OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi6thOrder_u8 => "6OA\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi7thOrder = "7OA";
+        
+        public static ReadOnlySpan<byte> kStringAmbi7thOrder_u8 => "7OA\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21034,6 +25372,13 @@ internal static partial class LibVst
         public const string kStringStereoS = "L R";
         
         public static ReadOnlySpan<byte> kStringStereoS_u8 => "L R\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringStereoWideS = "Lw Rw";
+        
+        public static ReadOnlySpan<byte> kStringStereoWideS_u8 => "Lw Rw\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21255,9 +25600,9 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString80CubeS = "L R Ls Rs Tfl Tfr Trl Trr";
+        public const string kString40_4S = "L R Ls Rs Tfl Tfr Trl Trr";
         
-        public static ReadOnlySpan<byte> kString80CubeS_u8 => "L R Ls Rs Tfl Tfr Trl Trr\0"u8;
+        public static ReadOnlySpan<byte> kString40_4S_u8 => "L R Ls Rs Tfl Tfr Trl Trr\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21276,30 +25621,37 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString71CineFrontHighS = "L R C LFE Ls Rs Tfl Tfr";
-        
-        public static ReadOnlySpan<byte> kString71CineFrontHighS_u8 => "L R C LFE Ls Rs Tfl Tfr\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
-        public const string kString70CineFrontHighS = "L R C Ls Rs Tfl Tfr";
-        
-        public static ReadOnlySpan<byte> kString70CineFrontHighS_u8 => "L R C Ls Rs Tfl Tfr\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
-        public const string kString71CineSideHighS = "L R C LFE Ls Rs Tsl Tsr";
-        
-        public static ReadOnlySpan<byte> kString71CineSideHighS_u8 => "L R C LFE Ls Rs Tsl Tsr\0"u8;
-    }
-    
-    public static partial class SpeakerArr
-    {
         public const string kString71CineFullRearS = "L R C LFE Ls Rs Lcs Rcs";
         
         public static ReadOnlySpan<byte> kString71CineFullRearS_u8 => "L R C LFE Ls Rs Lcs Rcs\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_2S = "L R C Ls Rs Tfl Tfr";
+        
+        public static ReadOnlySpan<byte> kString50_2S_u8 => "L R C Ls Rs Tfl Tfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_2S = "L R C LFE Ls Rs Tfl Tfr";
+        
+        public static ReadOnlySpan<byte> kString51_2S_u8 => "L R C LFE Ls Rs Tfl Tfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_2TopSideS = "L R C Ls Rs Tsl Tsr";
+        
+        public static ReadOnlySpan<byte> kString50_2TopSideS_u8 => "L R C Ls Rs Tsl Tsr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_2TopSideS = "L R C LFE Ls Rs Tsl Tsr";
+        
+        public static ReadOnlySpan<byte> kString51_2TopSideS_u8 => "L R C LFE Ls Rs Tsl Tsr\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21381,6 +25733,20 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
+        public const string kString70_2_TFS = "L R C Ls Rs Sl Sr Tfl Tfr";
+        
+        public static ReadOnlySpan<byte> kString70_2_TFS_u8 => "L R C Ls Rs Sl Sr Tfl Tfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString71_2_TFS = "L R C LFE Ls Rs Sl Sr Tfl Tfr";
+        
+        public static ReadOnlySpan<byte> kString71_2_TFS_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
         public const string kString70_3S = "L R C Ls Rs Sl Sr Tfl Tfr Trc";
         
         public static ReadOnlySpan<byte> kString70_3S_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trc\0"u8;
@@ -21451,30 +25817,65 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString100S = "L R C Ls Rs Tc Tfl Tfr Trl Trr";
+        public const string kString90_4_WS = "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Lw Rw";
         
-        public static ReadOnlySpan<byte> kString100S_u8 => "L R C Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
+        public static ReadOnlySpan<byte> kString90_4_WS_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Lw Rw\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString101S = "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr";
+        public const string kString91_4_WS = "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Lw Rw";
         
-        public static ReadOnlySpan<byte> kString101S_u8 => "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
+        public static ReadOnlySpan<byte> kString91_4_WS_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Lw Rw\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString110S = "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr";
+        public const string kString90_6_WS = "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr Lw Rw";
         
-        public static ReadOnlySpan<byte> kString110S_u8 => "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
+        public static ReadOnlySpan<byte> kString90_6_WS_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr Lw Rw\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString111S = "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr";
+        public const string kString91_6_WS = "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr Lw Rw";
         
-        public static ReadOnlySpan<byte> kString111S_u8 => "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
+        public static ReadOnlySpan<byte> kString91_6_WS_u8 => "L R C LFE Ls Rs Sl Sr Tfl Tfr Trl Trr Tsl Tsr Lw Rw\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_5S = "L R C Ls Rs Tc Tfl Tfr Trl Trr";
+        
+        public static ReadOnlySpan<byte> kString50_5S_u8 => "L R C Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_5S = "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr";
+        
+        public static ReadOnlySpan<byte> kString51_5S_u8 => "L R C LFE Ls Rs Tc Tfl Tfr Trl Trr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_5_SonyS = "L R C Ls Rs Tfl Tfc Tfr Trl Trr";
+        
+        public static ReadOnlySpan<byte> kString50_5_SonyS_u8 => "L R C Ls Rs Tfl Tfc Tfr Trl Trr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_6S = "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr";
+        
+        public static ReadOnlySpan<byte> kString50_6S_u8 => "L R C Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString51_6S = "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr";
+        
+        public static ReadOnlySpan<byte> kString51_6S_u8 => "L R C LFE Ls Rs Tc Tfl Tfc Tfr Trl Trr\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21493,44 +25894,65 @@ internal static partial class LibVst
     
     public static partial class SpeakerArr
     {
-        public const string kString102S = "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2";
+        public const string kString52_5S = "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2";
         
-        public static ReadOnlySpan<byte> kString102S_u8 => "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2\0"u8;
+        public static ReadOnlySpan<byte> kString52_5S_u8 => "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr LFE2\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString122S = "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2";
+        public const string kString72_5S = "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2";
         
-        public static ReadOnlySpan<byte> kString122S_u8 => "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2\0"u8;
+        public static ReadOnlySpan<byte> kString72_5S_u8 => "L R C LFE Ls Rs Lc Rc Tfl Tfc Tfr Trl Trr LFE2\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString81MPEGS = "L R LFE Ls Rs Tfl Tfc Tfr Bfc";
+        public const string kString41_4_1S = "L R LFE Ls Rs Tfl Tfc Tfr Bfc";
         
-        public static ReadOnlySpan<byte> kString81MPEGS_u8 => "L R LFE Ls Rs Tfl Tfc Tfr Bfc\0"u8;
+        public static ReadOnlySpan<byte> kString41_4_1S_u8 => "L R LFE Ls Rs Tfl Tfc Tfr Bfc\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString140S = "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr";
+        public const string kString30_5_2S = "L R C Tfl Tfc Tfr Trl Trr Bfl Bfr";
         
-        public static ReadOnlySpan<byte> kString140S_u8 => "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr\0"u8;
+        public static ReadOnlySpan<byte> kString30_5_2S_u8 => "L R C Tfl Tfc Tfr Trl Trr Bfl Bfr\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString222S = "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr";
+        public const string kString40_2_2S = "C Sl Sr Cs Tfc Tsl Tsr Trc";
         
-        public static ReadOnlySpan<byte> kString222S_u8 => "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr\0"u8;
+        public static ReadOnlySpan<byte> kString40_2_2S_u8 => "C Sl Sr Cs Tfc Tsl Tsr Trc\0"u8;
     }
     
     public static partial class SpeakerArr
     {
-        public const string kString220S = "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr";
+        public const string kString40_4_2S = "L R Ls Rs Tfl Tfr Trl Trr Bfl Bfr";
         
-        public static ReadOnlySpan<byte> kString220S_u8 => "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr\0"u8;
+        public static ReadOnlySpan<byte> kString40_4_2S_u8 => "L R Ls Rs Tfl Tfr Trl Trr Bfl Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString40_4_4S = "L R Ls Rs Tfl Tfr Trl Trr Bfl Bfr Brl Brr";
+        
+        public static ReadOnlySpan<byte> kString40_4_4S_u8 => "L R Ls Rs Tfl Tfr Trl Trr Bfl Bfr Brl Brr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_4_4S = "L R C Ls Rs Tfl Tfr Trl Trr Bfl Bfr Brl Brr";
+        
+        public static ReadOnlySpan<byte> kString50_4_4S_u8 => "L R C Ls Rs Tfl Tfr Trl Trr Bfl Bfr Brl Brr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString60_4_4S = "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr";
+        
+        public static ReadOnlySpan<byte> kString60_4_4S_u8 => "L R Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr Brl Brr\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21545,6 +25967,48 @@ internal static partial class LibVst
         public const string kString51_5_3S = "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr";
         
         public static ReadOnlySpan<byte> kString51_5_3S_u8 => "L R C LFE Ls Rs Tfl Tfc Tfr Trl Trr Bfl Bfc Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_2_2S = "L R C Ls Rs Tsl Tsr Bfl Bfr";
+        
+        public static ReadOnlySpan<byte> kString50_2_2S_u8 => "L R C Ls Rs Tsl Tsr Bfl Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_3_2S = "L R C Ls Rs Tfl Tfc Tfr Bfl Bfr";
+        
+        public static ReadOnlySpan<byte> kString50_3_2S_u8 => "L R C Ls Rs Tfl Tfc Tfr Bfl Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString50_4_2S = "L R C Ls Rs Tfl Tfr Trl Trr Bfl Bfr";
+        
+        public static ReadOnlySpan<byte> kString50_4_2S_u8 => "L R C Ls Rs Tfl Tfr Trl Trr Bfl Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString70_4_2S = "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr";
+        
+        public static ReadOnlySpan<byte> kString70_4_2S_u8 => "L R C Ls Rs Sl Sr Tfl Tfr Trl Trr Bfl Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString222S = "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr";
+        
+        public static ReadOnlySpan<byte> kString222S_u8 => "L R C LFE Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr LFE2 Tsl Tsr Bfl Bfc Bfr\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kString220S = "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr";
+        
+        public static ReadOnlySpan<byte> kString220S_u8 => "L R C Ls Rs Lc Rc Cs Sl Sr Tc Tfl Tfc Tfr Trl Trc Trr Tsl Tsr Bfl Bfc Bfr\0"u8;
     }
     
     public static partial class SpeakerArr
@@ -21568,6 +26032,47 @@ internal static partial class LibVst
         public static ReadOnlySpan<byte> kStringAmbi3rdOrderS_u8 => "0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15\0"u8;
     }
     
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi4thOrderS = "0..24";
+        
+        public static ReadOnlySpan<byte> kStringAmbi4thOrderS_u8 => "0..24\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi5thOrderS = "0..35";
+        
+        public static ReadOnlySpan<byte> kStringAmbi5thOrderS_u8 => "0..35\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi6thOrderS = "0..48";
+        
+        public static ReadOnlySpan<byte> kStringAmbi6thOrderS_u8 => "0..48\0"u8;
+    }
+    
+    public static partial class SpeakerArr
+    {
+        public const string kStringAmbi7thOrderS = "0..63";
+        
+        public static ReadOnlySpan<byte> kStringAmbi7thOrderS_u8 => "0..63\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// others type (not categorized)
+        /// </summary>
+        public const string kFx = "Fx";
+        
+        /// <summary>
+        /// others type (not categorized)
+        /// </summary>
+        public static ReadOnlySpan<byte> kFx_u8 => "Fx\0"u8;
+    }
+    
     public static partial class PlugType
     {
         /// <summary>
@@ -21579,6 +26084,32 @@ internal static partial class LibVst
         /// Scope, FFT-Display, Loudness Processing...
         /// </summary>
         public static ReadOnlySpan<byte> kFxAnalyzer_u8 => "Fx|Analyzer\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// Tools dedicated to Bass Guitar
+        /// </summary>
+        public const string kFxBass = "Fx|Bass";
+        
+        /// <summary>
+        /// Tools dedicated to Bass Guitar
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxBass_u8 => "Fx|Bass\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// Tools dedicated to Channel Strip
+        /// </summary>
+        public const string kFxChannelStrip = "Fx|Channel Strip";
+        
+        /// <summary>
+        /// Tools dedicated to Channel Strip
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxChannelStrip_u8 => "Fx|Channel Strip\0"u8;
     }
     
     public static partial class PlugType
@@ -21605,6 +26136,19 @@ internal static partial class LibVst
         /// Amp Simulator, Sub-Harmonic, SoftClipper...
         /// </summary>
         public static ReadOnlySpan<byte> kFxDistortion_u8 => "Fx|Distortion\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// Tools dedicated to Drums...
+        /// </summary>
+        public const string kFxDrums = "Fx|Drums";
+        
+        /// <summary>
+        /// Tools dedicated to Drums...
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxDrums_u8 => "Fx|Drums\0"u8;
     }
     
     public static partial class PlugType
@@ -21649,14 +26193,27 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
-        /// others type (not categorized)
+        /// Tone Generator, Noise Generator...
         /// </summary>
-        public const string kFx = "Fx";
+        public const string kFxGenerator = "Fx|Generator";
         
         /// <summary>
-        /// others type (not categorized)
+        /// Tone Generator, Noise Generator...
         /// </summary>
-        public static ReadOnlySpan<byte> kFx_u8 => "Fx\0"u8;
+        public static ReadOnlySpan<byte> kFxGenerator_u8 => "Fx|Generator\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// Tools dedicated to Guitar
+        /// </summary>
+        public const string kFxGuitar = "Fx|Guitar";
+        
+        /// <summary>
+        /// Tools dedicated to Guitar
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxGuitar_u8 => "Fx|Guitar\0"u8;
     }
     
     public static partial class PlugType
@@ -21688,32 +26245,6 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
-        /// MonoToStereo, StereoEnhancer,...
-        /// </summary>
-        public const string kFxSpatial = "Fx|Spatial";
-        
-        /// <summary>
-        /// MonoToStereo, StereoEnhancer,...
-        /// </summary>
-        public static ReadOnlySpan<byte> kFxSpatial_u8 => "Fx|Spatial\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// Tone Generator, Noise Generator...
-        /// </summary>
-        public const string kFxGenerator = "Fx|Generator";
-        
-        /// <summary>
-        /// Tone Generator, Noise Generator...
-        /// </summary>
-        public static ReadOnlySpan<byte> kFxGenerator_u8 => "Fx|Generator\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
         /// Dither, Noise Shaping,...
         /// </summary>
         public const string kFxMastering = "Fx|Mastering";
@@ -21727,6 +26258,19 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
+        /// Tools dedicated to Microphone
+        /// </summary>
+        public const string kFxMicrophone = "Fx|Microphone";
+        
+        /// <summary>
+        /// Tools dedicated to Microphone
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxMicrophone_u8 => "Fx|Microphone\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
         /// Phaser, Flanger, Chorus, Tremolo, Vibrato, AutoPan, Rotary, Cloner...
         /// </summary>
         public const string kFxModulation = "Fx|Modulation";
@@ -21735,6 +26279,19 @@ internal static partial class LibVst
         /// Phaser, Flanger, Chorus, Tremolo, Vibrato, AutoPan, Rotary, Cloner...
         /// </summary>
         public static ReadOnlySpan<byte> kFxModulation_u8 => "Fx|Modulation\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// using Network
+        /// </summary>
+        public const string kFxNetwork = "Fx|Network";
+        
+        /// <summary>
+        /// using Network
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxNetwork_u8 => "Fx|Network\0"u8;
     }
     
     public static partial class PlugType
@@ -21779,6 +26336,19 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
+        /// MonoToStereo, StereoEnhancer,...
+        /// </summary>
+        public const string kFxSpatial = "Fx|Spatial";
+        
+        /// <summary>
+        /// MonoToStereo, StereoEnhancer,...
+        /// </summary>
+        public static ReadOnlySpan<byte> kFxSpatial_u8 => "Fx|Spatial\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
         /// dedicated to surround processing: LFE Splitter, Bass Manager...
         /// </summary>
         public const string kFxSurround = "Fx|Surround";
@@ -21805,14 +26375,14 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
-        /// using Network
+        /// Tools dedicated to Vocals
         /// </summary>
-        public const string kFxNetwork = "Fx|Network";
+        public const string kFxVocals = "Fx|Vocals";
         
         /// <summary>
-        /// using Network
+        /// Tools dedicated to Vocals
         /// </summary>
-        public static ReadOnlySpan<byte> kFxNetwork_u8 => "Fx|Network\0"u8;
+        public static ReadOnlySpan<byte> kFxVocals_u8 => "Fx|Vocals\0"u8;
     }
     
     public static partial class PlugType
@@ -21909,6 +26479,84 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
+        /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
+        /// </summary>
+        public const string kAmbisonics = "Ambisonics";
+        
+        /// <summary>
+        /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
+        /// </summary>
+        public static ReadOnlySpan<byte> kAmbisonics_u8 => "Ambisonics\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// Meter, Scope, FFT-Display, not selectable as insert plug-in
+        /// </summary>
+        public const string kAnalyzer = "Analyzer";
+        
+        /// <summary>
+        /// Meter, Scope, FFT-Display, not selectable as insert plug-in
+        /// </summary>
+        public static ReadOnlySpan<byte> kAnalyzer_u8 => "Analyzer\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
+        /// </summary>
+        public const string kNoOfflineProcess = "NoOfflineProcess";
+        
+        /// <summary>
+        /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
+        /// </summary>
+        public static ReadOnlySpan<byte> kNoOfflineProcess_u8 => "NoOfflineProcess\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
+        /// </summary>
+        public const string kOnlyARA = "OnlyARA";
+        
+        /// <summary>
+        /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
+        /// </summary>
+        public static ReadOnlySpan<byte> kOnlyARA_u8 => "OnlyARA\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// used for plug-in offline processing  (will not work as normal insert plug-in)
+        /// </summary>
+        public const string kOnlyOfflineProcess = "OnlyOfflineProcess";
+        
+        /// <summary>
+        /// used for plug-in offline processing  (will not work as normal insert plug-in)
+        /// </summary>
+        public static ReadOnlySpan<byte> kOnlyOfflineProcess_u8 => "OnlyOfflineProcess\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
+        /// indicates that it supports only realtime process call, no processing faster than realtime
+        /// </summary>
+        public const string kOnlyRealTime = "OnlyRT";
+        
+        /// <summary>
+        /// indicates that it supports only realtime process call, no processing faster than realtime
+        /// </summary>
+        public static ReadOnlySpan<byte> kOnlyRealTime_u8 => "OnlyRT\0"u8;
+    }
+    
+    public static partial class PlugType
+    {
+        /// <summary>
         /// used for SurroundPanner
         /// </summary>
         public const string kSpatial = "Spatial";
@@ -21935,58 +26583,6 @@ internal static partial class LibVst
     public static partial class PlugType
     {
         /// <summary>
-        /// indicates that it supports only realtime process call, no processing faster than realtime
-        /// </summary>
-        public const string kOnlyRealTime = "OnlyRT";
-        
-        /// <summary>
-        /// indicates that it supports only realtime process call, no processing faster than realtime
-        /// </summary>
-        public static ReadOnlySpan<byte> kOnlyRealTime_u8 => "OnlyRT\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// used for plug-in offline processing  (will not work as normal insert plug-in)
-        /// </summary>
-        public const string kOnlyOfflineProcess = "OnlyOfflineProcess";
-        
-        /// <summary>
-        /// used for plug-in offline processing  (will not work as normal insert plug-in)
-        /// </summary>
-        public static ReadOnlySpan<byte> kOnlyOfflineProcess_u8 => "OnlyOfflineProcess\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
-        /// </summary>
-        public const string kOnlyARA = "OnlyARA";
-        
-        /// <summary>
-        /// used for plug-ins that require ARA to operate (will not work as normal insert plug-in)
-        /// </summary>
-        public static ReadOnlySpan<byte> kOnlyARA_u8 => "OnlyARA\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
-        /// </summary>
-        public const string kNoOfflineProcess = "NoOfflineProcess";
-        
-        /// <summary>
-        /// will be NOT used for plug-in offline processing (will work as normal insert plug-in)
-        /// </summary>
-        public static ReadOnlySpan<byte> kNoOfflineProcess_u8 => "NoOfflineProcess\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
         /// used for Mixconverter/Up-Mixer/Down-Mixer
         /// </summary>
         public const string kUpDownMix = "Up-Downmix";
@@ -21995,32 +26591,6 @@ internal static partial class LibVst
         /// used for Mixconverter/Up-Mixer/Down-Mixer
         /// </summary>
         public static ReadOnlySpan<byte> kUpDownMix_u8 => "Up-Downmix\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// Meter, Scope, FFT-Display, not selectable as insert plug-in
-        /// </summary>
-        public const string kAnalyzer = "Analyzer";
-        
-        /// <summary>
-        /// Meter, Scope, FFT-Display, not selectable as insert plug-in
-        /// </summary>
-        public static ReadOnlySpan<byte> kAnalyzer_u8 => "Analyzer\0"u8;
-    }
-    
-    public static partial class PlugType
-    {
-        /// <summary>
-        /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
-        /// </summary>
-        public const string kAmbisonics = "Ambisonics";
-        
-        /// <summary>
-        /// used for Ambisonics channel (FX or Panner/Mixconverter/Up-Mixer/Down-Mixer when combined with other category)
-        /// </summary>
-        public static ReadOnlySpan<byte> kAmbisonics_u8 => "Ambisonics\0"u8;
     }
     
     public static partial class PlugType
@@ -22101,6 +26671,19 @@ internal static partial class LibVst
     public static partial class ChannelContext
     {
         /// <summary>
+        /// integer (int64) [optional]: runtime id to identify a channel (may change when reloading project)
+        /// </summary>
+        public const string kChannelRuntimeIDKey = "channel runtime id";
+        
+        /// <summary>
+        /// integer (int64) [optional]: runtime id to identify a channel (may change when reloading project)
+        /// </summary>
+        public static ReadOnlySpan<byte> kChannelRuntimeIDKey_u8 => "channel runtime id\0"u8;
+    }
+    
+    public static partial class ChannelContext
+    {
+        /// <summary>
         /// string (TChar) [optional]: name of the channel like displayed in the mixer
         /// </summary>
         public const string kChannelNameKey = "channel name";
@@ -22140,12 +26723,14 @@ internal static partial class LibVst
     public static partial class ChannelContext
     {
         /// <summary>
-        /// integer (int64) [optional]: index of the channel in a channel index namespace, start with 1 not * 0!
+        /// integer (int64) [optional]: index of the channel in a channel index namespace,
+        /// start with 1 not 0!
         /// </summary>
         public const string kChannelIndexKey = "channel index";
         
         /// <summary>
-        /// integer (int64) [optional]: index of the channel in a channel index namespace, start with 1 not * 0!
+        /// integer (int64) [optional]: index of the channel in a channel index namespace,
+        /// start with 1 not 0!
         /// </summary>
         public static ReadOnlySpan<byte> kChannelIndexKey_u8 => "channel index\0"u8;
     }
@@ -22153,7 +26738,8 @@ internal static partial class LibVst
     public static partial class ChannelContext
     {
         /// <summary>
-        /// integer (int64) [optional]: define the order of the current used index namespace, start with 1 not 0!
+        /// integer (int64) [optional]: define the order of the current used index namespace,
+        /// start with 1 not 0!
         /// For example:
         /// index namespace is "Input"   -&gt; order 1,
         /// index namespace is "Channel" -&gt; order 2,
@@ -22162,7 +26748,8 @@ internal static partial class LibVst
         public const string kChannelIndexNamespaceOrderKey = "channel index namespace order";
         
         /// <summary>
-        /// integer (int64) [optional]: define the order of the current used index namespace, start with 1 not 0!
+        /// integer (int64) [optional]: define the order of the current used index namespace,
+        /// start with 1 not 0!
         /// For example:
         /// index namespace is "Input"   -&gt; order 1,
         /// index namespace is "Channel" -&gt; order 2,
@@ -22174,12 +26761,14 @@ internal static partial class LibVst
     public static partial class ChannelContext
     {
         /// <summary>
-        /// string (TChar) [optional]: name of the channel index namespace for example "Input", "Output", "Channel", ...
+        /// string (TChar) [optional]: name of the channel index namespace
+        /// for example "Input", "Output","Channel", ...
         /// </summary>
         public const string kChannelIndexNamespaceKey = "channel index namespace";
         
         /// <summary>
-        /// string (TChar) [optional]: name of the channel index namespace for example "Input", "Output", "Channel", ...
+        /// string (TChar) [optional]: name of the channel index namespace
+        /// for example "Input", "Output","Channel", ...
         /// </summary>
         public static ReadOnlySpan<byte> kChannelIndexNamespaceKey_u8 => "channel index namespace\0"u8;
     }
@@ -22213,12 +26802,14 @@ internal static partial class LibVst
     public static partial class ChannelContext
     {
         /// <summary>
-        /// integer (int64) [optional]: routing position of the plug-in in the channel (see ChannelPluginLocation)
+        /// integer (int64) [optional]: routing position of the plug-in in the channel
+        /// (see ChannelPluginLocation)
         /// </summary>
         public const string kChannelPluginLocationKey = "channel plugin location";
         
         /// <summary>
-        /// integer (int64) [optional]: routing position of the plug-in in the channel (see ChannelPluginLocation)
+        /// integer (int64) [optional]: routing position of the plug-in in the channel
+        /// (see ChannelPluginLocation)
         /// </summary>
         public static ReadOnlySpan<byte> kChannelPluginLocationKey_u8 => "channel plugin location\0"u8;
     }
@@ -22918,46 +27509,57 @@ internal static partial class LibVst
     
     public static partial class StateType
     {
-        /// <summary>
-        /// the state is restored from a project loading or it is saved in a project
-        /// </summary>
+        /// <remarks>
+        ///  stateType Context of State Restorationused for PresetAttributes::kStateType in IStreamAttributes@
+        /// {the state is restored from a project loading or it is saved in a project
+        /// </remarks>
         public const string kProject = "Project";
         
-        /// <summary>
-        /// the state is restored from a project loading or it is saved in a project
-        /// </summary>
+        /// <remarks>
+        ///  stateType Context of State Restorationused for PresetAttributes::kStateType in IStreamAttributes@
+        /// {the state is restored from a project loading or it is saved in a project
+        /// </remarks>
         public static ReadOnlySpan<byte> kProject_u8 => "Project\0"u8;
     }
     
     public static partial class StateType
     {
         /// <summary>
-        /// the state is restored from a preset (marked as default) or the host wants to store a default state of the plug-in
+        /// the state is restored from a preset (marked as default) or the host wants to store a default
+        /// state of the plug-in
         /// </summary>
         public const string kDefault = "Default";
         
         /// <summary>
-        /// the state is restored from a preset (marked as default) or the host wants to store a default state of the plug-in
+        /// the state is restored from a preset (marked as default) or the host wants to store a default
+        /// state of the plug-in
         /// </summary>
         public static ReadOnlySpan<byte> kDefault_u8 => "Default\0"u8;
     }
     
-    public static partial class MusicalInstrument
+    public static partial class StateType
     {
         /// <summary>
-        ///  musicalInstrument Predefined Musical Instrument
+        /// the state is restored from a track preset
         /// </summary>
+        public const string kTrackPreset = "TrackPreset";
+        
+        /// <summary>
+        /// the state is restored from a track preset
+        /// </summary>
+        public static ReadOnlySpan<byte> kTrackPreset_u8 => "TrackPreset\0"u8;
+    }
+    
+    public static partial class MusicalInstrument
+    {
         /// <remarks>
-        /// @
+        ///  musicalInstrument Predefined Musical Instrument@
         /// {
         /// </remarks>
         public const string kAccordion = "Accordion";
         
-        /// <summary>
-        ///  musicalInstrument Predefined Musical Instrument
-        /// </summary>
         /// <remarks>
-        /// @
+        ///  musicalInstrument Predefined Musical Instrument@
         /// {
         /// </remarks>
         public static ReadOnlySpan<byte> kAccordion_u8 => "Accordion\0"u8;
@@ -23763,20 +28365,14 @@ internal static partial class LibVst
     
     public static partial class MusicalStyle
     {
-        /// <summary>
-        ///  musicalStyle Predefined Musical Style
-        /// </summary>
         /// <remarks>
-        /// @
+        ///  musicalStyle Predefined Musical Style@
         /// {
         /// </remarks>
         public const string kAlternativeIndie = "Alternative/Indie";
         
-        /// <summary>
-        ///  musicalStyle Predefined Musical Style
-        /// </summary>
         /// <remarks>
-        /// @
+        ///  musicalStyle Predefined Musical Style@
         /// {
         /// </remarks>
         public static ReadOnlySpan<byte> kAlternativeIndie_u8 => "Alternative/Indie\0"u8;
@@ -24958,6 +29554,11 @@ internal static partial class LibVst
             Register<IPlugView>();
             Register<IPlugFrame>();
             Register<IPlugViewContentScaleSupport>();
+            Register<IWaylandHost>();
+            Register<IWaylandFrame>();
+            Register<IEventHandler>();
+            Register<ITimerHandler>();
+            Register<IRunLoop>();
             Register<IAttributeList>();
             Register<IStreamAttributes>();
             Register<IComponent>();
@@ -24971,6 +29572,8 @@ internal static partial class LibVst
             Register<IContextMenu>();
             Register<IContextMenuTarget>();
             Register<IComponentHandler3>();
+            Register<IDataExchangeHandler>();
+            Register<IDataExchangeReceiver>();
             Register<IComponentHandler>();
             Register<IComponentHandler2>();
             Register<IComponentHandlerBusActivation>();
@@ -24979,6 +29582,7 @@ internal static partial class LibVst
             Register<IEditController2>();
             Register<IMidiMapping>();
             Register<IEditControllerHostEditing>();
+            Register<IComponentHandlerSystemTime>();
             Register<INoteExpressionController>();
             Register<IKeyswitchController>();
             Register<IMessage>();
@@ -24988,11 +29592,14 @@ internal static partial class LibVst
             Register<IInterAppAudioPresetManager>();
             Register<IInterAppAudioHost>();
             Register<IMidiLearn>();
+            Register<IMidiMapping2>();
+            Register<IMidiLearn2>();
             Register<IParameterFunctionName>();
             Register<INoteExpressionPhysicalUIMapping>();
             Register<IPlugInterfaceSupport>();
             Register<IParameterFinder>();
             Register<IPrefetchableSupport>();
+            Register<IRemapParamID>();
             Register<IXmlRepresentationController>();
             Register<ITestPlugProvider>();
             Register<ITestPlugProvider2>();
@@ -25022,12 +29629,16 @@ internal static partial class LibVst
             { IComponentHandler2.IId, nameof(IComponentHandler2) },
             { IComponentHandler3.IId, nameof(IComponentHandler3) },
             { IComponentHandlerBusActivation.IId, nameof(IComponentHandlerBusActivation) },
+            { IComponentHandlerSystemTime.IId, nameof(IComponentHandlerSystemTime) },
             { IConnectionPoint.IId, nameof(IConnectionPoint) },
             { IContextMenu.IId, nameof(IContextMenu) },
             { IContextMenuTarget.IId, nameof(IContextMenuTarget) },
+            { IDataExchangeHandler.IId, nameof(IDataExchangeHandler) },
+            { IDataExchangeReceiver.IId, nameof(IDataExchangeReceiver) },
             { IEditController.IId, nameof(IEditController) },
             { IEditController2.IId, nameof(IEditController2) },
             { IEditControllerHostEditing.IId, nameof(IEditControllerHostEditing) },
+            { IEventHandler.IId, nameof(IEventHandler) },
             { IEventList.IId, nameof(IEventList) },
             { IHostApplication.IId, nameof(IHostApplication) },
             { IInfoListener.IId, nameof(IInfoListener) },
@@ -25036,7 +29647,9 @@ internal static partial class LibVst
             { IKeyswitchController.IId, nameof(IKeyswitchController) },
             { IMessage.IId, nameof(IMessage) },
             { IMidiLearn.IId, nameof(IMidiLearn) },
+            { IMidiLearn2.IId, nameof(IMidiLearn2) },
             { IMidiMapping.IId, nameof(IMidiMapping) },
+            { IMidiMapping2.IId, nameof(IMidiMapping2) },
             { INoteExpressionController.IId, nameof(INoteExpressionController) },
             { INoteExpressionPhysicalUIMapping.IId, nameof(INoteExpressionPhysicalUIMapping) },
             { IParameterChanges.IId, nameof(IParameterChanges) },
@@ -25055,15 +29668,20 @@ internal static partial class LibVst
             { IProcessContextRequirements.IId, nameof(IProcessContextRequirements) },
             { IProgramListData.IId, nameof(IProgramListData) },
             { IProgress.IId, nameof(IProgress) },
+            { IRemapParamID.IId, nameof(IRemapParamID) },
+            { IRunLoop.IId, nameof(IRunLoop) },
             { IStreamAttributes.IId, nameof(IStreamAttributes) },
             { IStringResult.IId, nameof(IStringResult) },
             { ITestPlugProvider.IId, nameof(ITestPlugProvider) },
             { ITestPlugProvider2.IId, nameof(ITestPlugProvider2) },
+            { ITimerHandler.IId, nameof(ITimerHandler) },
             { IUnitData.IId, nameof(IUnitData) },
             { IUnitHandler.IId, nameof(IUnitHandler) },
             { IUnitHandler2.IId, nameof(IUnitHandler2) },
             { IUnitInfo.IId, nameof(IUnitInfo) },
             { IVst3WrapperMPESupport.IId, nameof(IVst3WrapperMPESupport) },
+            { IWaylandFrame.IId, nameof(IWaylandFrame) },
+            { IWaylandHost.IId, nameof(IWaylandHost) },
             { IXmlRepresentationController.IId, nameof(IXmlRepresentationController) },
         };
     }

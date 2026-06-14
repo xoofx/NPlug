@@ -64,7 +64,7 @@ function Build-Project {
         }
         $NETPlatform = "win"
         $NETSharedLibExtension = "dll"
-        $CMakeBuilder = "Visual Studio 17 2022"
+        $CMakeBuilder = "Visual Studio 18 2026"
         $LocalCMakeArgs += "-A$MsvcArch"
     } elseif ($IsLinux) {
         $LocalCMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"

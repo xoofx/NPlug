@@ -449,7 +449,7 @@ public class CodeGenerator
 
         if (!cppEnum.IntegerType.Equals(CppPrimitiveType.Int))
         {
-            csEnum.BaseTypes.Add(GetCSharpType(cppEnum.IntegerType));
+            csEnum.BaseTypes.Add(GetCSharpType(cppEnum.IntegerType.GetCanonicalType()));
         }
 
         foreach (var cppEnumItem in cppEnum.Items)
@@ -504,6 +504,8 @@ public class CodeGenerator
             case "TBool":
                 return CSharpPrimitiveType.Byte();
 
+            case "int":
+                return CSharpPrimitiveType.Int();
             case "int8":
                 return CSharpPrimitiveType.SByte();
             case "unsigned char":

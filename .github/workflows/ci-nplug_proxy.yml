@@ -22,10 +22,38 @@ jobs:
            sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
     - name: Build Proxy
       working-directory: ./ext/nplug-proxy/
+      shell: pwsh
       run: |
-          ./build_nplug_proxy.ps1
+          $ErrorActionPreference = 'Stop'
+          & ./build_nplug_proxy.ps1
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+    - name: Verify Proxy Artifacts
+      shell: pwsh
+      run: |
+          $ErrorActionPreference = 'Stop'
+          $expectedArtifacts = switch ('${{ matrix.os }}') {
+            'ubuntu-22.04' { @{ Rids = @('linux-x64', 'linux-arm64'); Extension = '.so' } }
+            'windows-latest' { @{ Rids = @('win-x64', 'win-arm64'); Extension = '.dll' } }
+            'macos-latest' { @{ Rids = @('osx-x64', 'osx-arm64'); Extension = '.dylib' } }
+            default { throw "Unsupported OS '${{ matrix.os }}'" }
+          }
+
+          foreach ($rid in $expectedArtifacts.Rids) {
+            $nativePath = Join-Path 'ext/nplug-proxy/build/package' "$rid/native"
+            if (-not (Test-Path $nativePath -PathType Container)) {
+              throw "Missing artifact directory: $nativePath"
+            }
+
+            $artifacts = Get-ChildItem -Path $nativePath -Filter "*$($expectedArtifacts.Extension)" -File
+            if ($artifacts.Count -eq 0) {
+              throw "Missing $($expectedArtifacts.Extension) artifact in $nativePath"
+            }
+          }
     - name: Artifacts Proxy
       uses: actions/upload-artifact@v7
       with:
         name: nplug-proxy-${{ matrix.os }}
         path: ext/nplug-proxy/build/package
+        if-no-files-found: error

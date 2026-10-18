@@ -10,7 +10,7 @@
     <NPlugNativeLibraryExtension Condition="'$(NPlugNativeLibraryExtension)' == ''">.so</NPlugNativeLibraryExtension>
 
     <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'win-x64'">x86_64-win</NPlugVstArch>
-    <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'win-arm64'">arm_64-win</NPlugVstArch>
+    <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'win-arm64'">arm64-win</NPlugVstArch>
 
     <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'linux-x64'">x86_64-linux</NPlugVstArch>
     <NPlugVstArch Condition="'$(NPlugVstArch)' == '' and '$(NPlugRuntimeIdentifier)' == 'linux-arm64'">aarch64-linux</NPlugVstArch>

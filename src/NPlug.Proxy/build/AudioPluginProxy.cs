@@ -51,7 +51,7 @@ internal sealed class AudioPluginProxy : IDisposable
             {
 
                 case Architecture.Arm64:
-                    return "arm_64-win";
+                    return "arm64-win";
                 case Architecture.X64:
                     return "x86_64-win";
                 default:
@@ -70,7 +70,7 @@ internal sealed class AudioPluginProxy : IDisposable
             {
 
                 case Architecture.Arm64:
-                    return "arch64-linux";
+                    return "aarch64-linux";
                 case Architecture.X64:
                     return "x86_64-linux";
                 default:

@@ -94,14 +94,7 @@ internal static partial class LibVst
                 if (_refCount > 0)
                 {
                     _refCount--;
-                    if (_refCount == 0)
-                    {
-                        if (Target is IDisposable disposable)
-                        {
-                            disposable.Dispose();
-                        }
-                        needToReturn = true;
-                    }
+                    needToReturn = _refCount == 0;
                 }
                 return _refCount;
             }
@@ -110,8 +103,20 @@ internal static partial class LibVst
                 if (lockTaken) _lock.Exit();
                 if (needToReturn)
                 {
-                    Reset();
-                    Manager.Return(this);
+                    // User code (Dispose) must not run while holding the spin lock: it may be long (window
+                    // destruction...) or call back into this object (AddRef/QueryInterface), which would deadlock.
+                    try
+                    {
+                        if (Target is IDisposable disposable)
+                        {
+                            disposable.Dispose();
+                        }
+                    }
+                    finally
+                    {
+                        Reset();
+                        Manager.Return(this);
+                    }
                 }
             }
         }

@@ -335,6 +335,13 @@ Creating a UI requires to implement the `IAudioPluginView` interface and to over
     }
 ```
 
+A few rules of the VST3 view protocol are reflected in the `IAudioPluginView` and `IAudioPluginFrame` signatures:
+
+- `OnKeyDown`, `OnKeyUp` and `OnWheel` return `true` only when the view actually handled the event. Returning `false` lets the host process it (transport shortcuts, scrolling...).
+- `SetContentScaleFactor` returns `true` if the view scales its content itself (HiDPI), `false` otherwise.
+- `SetFrame` receives `null` when the host detaches the frame (typically after `Removed`): the previous frame must not be used afterwards.
+- `IAudioPluginFrame.ResizeView` returns `false` when the host refuses the requested size: the view should then keep (or restore) its current size.
+
 ### Debugging/Tracing the interop layer
 
 NPlug allows to trace all the interactions (call-in and call-out) between the host and your plugin.

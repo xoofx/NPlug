@@ -62,7 +62,8 @@ public interface IAudioPluginView
     /// <summary>
     /// Handling of mouse wheel.
     /// </summary>
-    void OnWheel(float distance);
+    /// <returns><c>true</c> if the wheel event was handled by the view, <c>false</c> to let the host handle it.</returns>
+    bool OnWheel(float distance);
 
     /// <summary>
     /// Handling of keyboard events : Key Down.
@@ -70,9 +71,9 @@ public interface IAudioPluginView
     /// <param name="key">: unicode code of key</param>
     /// <param name="keyCode">: virtual keycode for non ascii keys - see @ref VirtualKeyCodes in keycodes.h</param>
     /// <param name="modifiers">: any combination of modifiers - see @ref KeyModifier in keycodes.h</param>
-    /// <returns>kResultTrue if the key is handled, otherwise kResultFalse. @n &lt;b&gt;Please note that kResultTrue must only be returned if the key has really been
-    /// handled. &lt;/b&gt;Otherwise key command handling of the host might be blocked!</returns>
-    void OnKeyDown(ushort key, short keyCode, short modifiers);
+    /// <returns><c>true</c> (kResultTrue) if the key is handled, otherwise <c>false</c> (kResultFalse). Please note that <c>true</c> must only be returned if the key has really been
+    /// handled. Otherwise key command handling of the host might be blocked!</returns>
+    bool OnKeyDown(ushort key, short keyCode, short modifiers);
 
     /// <summary>
     /// Handling of keyboard events : Key Up.
@@ -80,8 +81,8 @@ public interface IAudioPluginView
     /// <param name="key">: unicode code of key</param>
     /// <param name="keyCode">: virtual keycode for non ascii keys - see @ref VirtualKeyCodes in keycodes.h</param>
     /// <param name="modifiers">: any combination of KeyModifier - see @ref KeyModifier in keycodes.h</param>
-    /// <returns>kResultTrue if the key is handled, otherwise return kResultFalse.</returns>
-    void OnKeyUp(ushort key, short keyCode, short modifiers);
+    /// <returns><c>true</c> (kResultTrue) if the key is handled, otherwise <c>false</c> (kResultFalse).</returns>
+    bool OnKeyUp(ushort key, short keyCode, short modifiers);
 
     /// <summary>
     /// Returns the size of the platform representation of the view.
@@ -102,7 +103,9 @@ public interface IAudioPluginView
     /// <summary>
     /// Sets IPlugFrame object to allow the plug-in to inform the host about resizing.
     /// </summary>
-    void SetFrame(IAudioPluginFrame frame);
+    /// <param name="frame">The frame, or <c>null</c> when the host detaches it (typically after <see cref="Removed"/>).
+    /// A view must not use a previously received frame after receiving <c>null</c>.</param>
+    void SetFrame(IAudioPluginFrame? frame);
 
     /// <summary>
     /// Is view sizable by user.
@@ -137,9 +140,10 @@ public interface IAudioPluginView
     /// It is recommended to implement this interface on Microsoft Windows to let the host know that the
     /// plug-in is able to render in different scalings.
     /// </summary>
-    /// <param name="factor"></param>
+    /// <param name="factor">The content scale factor (1.0 = 100 %).</param>
+    /// <returns><c>true</c> if the view handles content scaling; <c>false</c> to tell the host that the view does not scale itself.</returns>
     /// <remarks>IPlugViewContentScaleSupport</remarks>
-    void SetContentScaleFactor(float factor);
+    bool SetContentScaleFactor(float factor);
 
     /// <summary>
     /// Find out which parameter in plug-in view is at given position (relative to plug-in view).

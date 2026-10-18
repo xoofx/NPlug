@@ -39,20 +39,19 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult onWheel_ToManaged(IPlugView* self, float distance)
         {
-            Get(self).OnWheel(distance);
-            return true;
+            // Only report the event as handled when the view really handled it (otherwise the host keeps it).
+            return Get(self).OnWheel(distance);
         }
 
         private static partial ComResult onKeyDown_ToManaged(IPlugView* self, ushort key, short keyCode, short modifiers)
         {
-            Get(self).OnKeyDown(key, keyCode, modifiers);
-            return true;
+            // kResultTrue must only be returned if the key was really handled, otherwise host key commands are blocked.
+            return Get(self).OnKeyDown(key, keyCode, modifiers);
         }
 
         private static partial ComResult onKeyUp_ToManaged(IPlugView* self, ushort key, short keyCode, short modifiers)
         {
-            Get(self).OnKeyUp(key, keyCode, modifiers);
-            return true;
+            return Get(self).OnKeyUp(key, keyCode, modifiers);
         }
 
         private static partial ComResult getSize_ToManaged(IPlugView* self, ViewRect* size)
@@ -75,7 +74,8 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult setFrame_ToManaged(IPlugView* self, IPlugFrame* frame)
         {
-            Get(self).SetFrame(new AudioPluginFrameVst(frame));
+            // The host calls setFrame(nullptr) to detach the frame: never hand out a wrapper around a null pointer.
+            Get(self).SetFrame(frame is null ? null : new AudioPluginFrameVst(frame));
             return true;
         }
 
@@ -127,11 +127,19 @@ internal static unsafe partial class LibVst
                 _frame = frame;
             }
 
-            public void ResizeView(IAudioPluginView view, ViewRectangle newSize)
+            public bool ResizeView(IAudioPluginView view, ViewRectangle newSize)
             {
                 var comObject = ComObjectManager.Instance.GetOrCreateComObject(view);
+                // QueryInterface adds a reference: it must be released once the call is done, otherwise the view leaks.
                 var plugView = comObject.QueryInterface<IPlugView>();
-                _frame->resizeView(plugView, (ViewRect*)&newSize);
+                try
+                {
+                    return _frame->resizeView(plugView, (ViewRect*)&newSize);
+                }
+                finally
+                {
+                    comObject.ReleaseRef();
+                }
             }
         }
     }

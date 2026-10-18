@@ -3,6 +3,7 @@
 // See license.txt file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 
 namespace NPlug;
 
@@ -14,12 +15,31 @@ public abstract partial class AudioController<TAudioControllerModel>
     private bool ParameterValueChangedFromHost { get; set; }
     
     /// <summary>
-    /// The parameter being edited (set/unset via <see cref="BeginEditParameter"/> and <see cref="EndEditParameter"/>)
+    /// Parameters currently being edited, in the order their edit started. VST3 allows several parameters to be
+    /// edited at the same time (e.g. a XY pad, or a mouse wheel on one control while dragging another).
     /// </summary>
-    public AudioParameter? EditedParameter { get; private set; }
+    private readonly List<AudioParameter> _editedParameters = new();
 
     /// <summary>
-    /// Begins to edit several parameters. The host will keep the current timestamp at this call and will use it for all <see cref="BeginEditParameter"/> and <see cref="EndEditParameter"/>.
+    /// The parameter whose edit started most recently (set/unset via <see cref="BeginEditParameter"/> and <see cref="EndEditParameter()"/>),
+    /// or <c>null</c> if no parameter is being edited.
+    /// </summary>
+    public AudioParameter? EditedParameter => _editedParameters.Count > 0 ? _editedParameters[^1] : null;
+
+    /// <summary>
+    /// Gets the number of parameters currently being edited.
+    /// </summary>
+    public int EditedParameterCount => _editedParameters.Count;
+
+    /// <summary>
+    /// Returns <c>true</c> if <paramref name="parameter"/> is currently being edited (between <see cref="BeginEditParameter"/> and <see cref="EndEditParameter(AudioParameter)"/>).
+    /// </summary>
+    /// <param name="parameter">The parameter to test.</param>
+    /// <returns><c>true</c> if an edit of this parameter is in progress; otherwise <c>false</c>.</returns>
+    public bool IsEditingParameter(AudioParameter parameter) => IndexOfEditedParameter(parameter) >= 0;
+
+    /// <summary>
+    /// Begins to edit several parameters. The host will keep the current timestamp at this call and will use it for all <see cref="BeginEditParameter"/> and <see cref="EndEditParameter(AudioParameter)"/>.
     /// </summary>
     public void BeginGroupEditParameters()
     {
@@ -46,21 +66,53 @@ public abstract partial class AudioController<TAudioControllerModel>
     /// Begins to edit the specified parameter. This method must be called before editing the value of a parameter.
     /// </summary>
     /// <param name="parameter">The parameter to be edited.</param>
+    /// <remarks>Several parameters can be edited at the same time; each edit is ended with <see cref="EndEditParameter(AudioParameter)"/>.</remarks>
+    /// <exception cref="ArgumentNullException"><paramref name="parameter"/> is <c>null</c>.</exception>
+    /// <exception cref="InvalidOperationException">The parameter is already being edited, or no controller handler is connected.</exception>
     public void BeginEditParameter(AudioParameter parameter)
     {
-        EditedParameter = parameter;
-        GetHandler().BeginEdit(parameter.Id);
+        ArgumentNullException.ThrowIfNull(parameter);
+        // Resolve the handler first: if it is missing, no edit state is left behind.
+        var handler = GetHandler();
+        if (IsEditingParameter(parameter)) throw new InvalidOperationException($"The parameter {parameter.Id}/{parameter.Title} is already being edited.");
+        handler.BeginEdit(parameter.Id);
+        _editedParameters.Add(parameter);
     }
 
     /// <summary>
-    /// Ends to edit the current <see cref="EditedParameter"/>. This method must be called after an equivalent <see cref="BeginEditParameter"/> for the same parameter.
+    /// Ends to edit the specified parameter. This method must be called after an equivalent <see cref="BeginEditParameter"/> for the same parameter.
     /// </summary>
+    /// <param name="parameter">The parameter being edited.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="parameter"/> is <c>null</c>.</exception>
+    /// <exception cref="InvalidOperationException">The parameter is not being edited, or no controller handler is connected.</exception>
+    public void EndEditParameter(AudioParameter parameter)
+    {
+        ArgumentNullException.ThrowIfNull(parameter);
+        var index = IndexOfEditedParameter(parameter);
+        if (index < 0) throw new InvalidOperationException($"The parameter {parameter.Id}/{parameter.Title} is not being edited. Must have a {nameof(BeginEditParameter)}");
+        _editedParameters.RemoveAt(index);
+        GetHandler().EndEdit(parameter.Id);
+    }
+
+    /// <summary>
+    /// Ends to edit the current <see cref="EditedParameter"/> (the most recently started edit). This method must be called after an equivalent <see cref="BeginEditParameter"/> for the same parameter.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">No parameter is being edited, or no controller handler is connected.</exception>
     public void EndEditParameter()
     {
-        var editedParameter = EditedParameter!;
+        var editedParameter = EditedParameter;
         if (editedParameter is null) throw new InvalidOperationException("No parameter is being edited. Must have a BeginEditParameter");
-        EditedParameter = null;
-        GetHandler().EndEdit(editedParameter.Id);
+        EndEditParameter(editedParameter);
+    }
+
+    private int IndexOfEditedParameter(AudioParameter parameter)
+    {
+        var editedParameters = _editedParameters;
+        for (int i = 0; i < editedParameters.Count; i++)
+        {
+            if (ReferenceEquals(editedParameters[i], parameter)) return i;
+        }
+        return -1;
     }
 
     /// <summary>
@@ -92,7 +144,7 @@ public abstract partial class AudioController<TAudioControllerModel>
         }
         else
         {
-            if (!ReferenceEquals(EditedParameter, parameter)) throw new InvalidOperationException($"The parameter {parameter.Id}/{parameter.Title} is being edited without a call to {nameof(BeginEditParameter)}/{nameof(EndEditParameter)}.");
+            if (!IsEditingParameter(parameter)) throw new InvalidOperationException($"The parameter {parameter.Id}/{parameter.Title} is being edited without a call to {nameof(BeginEditParameter)}/{nameof(EndEditParameter)}.");
             GetHandler().PerformEdit(parameter.Id, parameter.NormalizedValue);
         }
     }

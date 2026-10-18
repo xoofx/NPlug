@@ -322,6 +322,10 @@ You might want to use sub classes of this `AudioParameter` to manipulate other t
 
 ![NPlug parameters](./nplug-parameters.png)
 
+When a UI changes a parameter, the change must be wrapped in an edit gesture so that the host records a single automation move: call `AudioController.BeginEditParameter(parameter)`, set `parameter.NormalizedValue` as many times as needed, then `EndEditParameter(parameter)`. Several parameters can be edited at the same time (e.g. the two axes of a XY pad); `IsEditingParameter` and `EditedParameterCount` report the edits in progress.
+
+`AudioProcessorModel.Load` (project or preset load) writes all the values at once without raising `ParameterValueChanged`: subscribe to `AudioProcessorModel.StateLoaded` to refresh a UI after a load.
+
 ### UI
 
 NPlug does not provide yet a sample with a UI for the main reason that I haven't found yet a simple UI framework that is lightweight, simple to setup and compatible with NativeAOT.

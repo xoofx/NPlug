@@ -34,6 +34,7 @@ internal static unsafe partial class LibVst
             var result = _hostApplication->createInstance(IMessage.NativeGuid, IMessage.NativeGuid, (void**)&nativeMessage);
             if (result.IsSuccess)
             {
+                nativeMessage->setMessageID(GetOrCreateString(messageId));
                 message = new AudioMessage(this, (IntPtr)nativeMessage, new AudioAttributeList(this, (IntPtr)nativeMessage->getAttributes()));
                 return true;
             }
@@ -95,6 +96,7 @@ internal static unsafe partial class LibVst
                 span = span.Slice(0, index);
             }
             Span<byte> buffer = stackalloc byte[Encoding.UTF8.GetByteCount(span)];
+            Encoding.UTF8.GetBytes(span, buffer);
             return GetOrCreateString(buffer);
         }
 
@@ -111,16 +113,16 @@ internal static unsafe partial class LibVst
             lock (_managedToNativeUTF8)
             {
                 ref var ptr = ref CollectionsMarshal.GetValueRefOrAddDefault(_managedToNativeUTF8, str, out _);
-                var localPtr = ptr;
-                if (localPtr == IntPtr.Zero)
+                if (ptr == IntPtr.Zero)
                 {
                     var byteCount = Encoding.UTF8.GetByteCount(str);
                     // TODO: optimize memory allocation with a global allocator
-                    localPtr = (IntPtr)NativeMemory.Alloc((nuint)(byteCount + 1));
-                    _managedToNativeUTF8.Add(str, localPtr);
-                    ptr = localPtr;
+                    var native = (byte*)NativeMemory.Alloc((nuint)(byteCount + 1));
+                    Encoding.UTF8.GetBytes(str, new Span<byte>(native, byteCount));
+                    native[byteCount] = 0; // FIDString: null-terminated UTF-8
+                    ptr = (IntPtr)native; // the entry was added by GetValueRefOrAddDefault
                 }
-                return new FIDString() { Value = (byte*)localPtr };
+                return new FIDString() { Value = (byte*)ptr };
             }
         }
 
@@ -217,8 +219,8 @@ internal static unsafe partial class LibVst
 
         void IAudioMessageBackend.Destroy(in AudioMessage message)
         {
+            // The attribute list belongs to the message (IMessage::getAttributes does not add a reference).
             ((IMessage*)message.NativeContext)->release();
-            ((IAttributeList*)message.AttributeList.NativeContext)->release();
         }
 
         private AttrID GetNativeAttributeId(string attributeId)

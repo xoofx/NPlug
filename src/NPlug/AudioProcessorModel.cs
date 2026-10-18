@@ -109,6 +109,16 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
     public event Action<AudioParameter>? ParameterValueChanged;
 
     /// <summary>
+    /// Event raised after the parameter values were loaded from a stream by <see cref="Load"/> (project or preset load).
+    /// </summary>
+    /// <remarks>
+    /// <see cref="Load"/> writes all the values at once without raising <see cref="ParameterValueChanged"/>:
+    /// subscribe to this event to refresh a UI. It is raised on the thread calling <see cref="Load"/>
+    /// (the UI thread for a controller).
+    /// </remarks>
+    public event Action? StateLoaded;
+
+    /// <summary>
     /// Add a default by-pass parameter (e.g for effects).
     /// </summary>
     /// <param name="name">The name of the parameter. Default is "ByPass".</param>
@@ -238,11 +248,17 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
     /// <summary>
     /// Loads the model/parameter values from the specified reader.
     /// </summary>
-    public override unsafe void Load(PortableBinaryReader reader, AudioProcessorModelStorageMode mode)
+    public override void Load(PortableBinaryReader reader, AudioProcessorModelStorageMode mode)
     {
         // Don't try to read anything if the stream is empty.
         if (reader.Stream.Length == 0) return;
 
+        LoadValues(reader, mode);
+        StateLoaded?.Invoke();
+    }
+
+    private unsafe void LoadValues(PortableBinaryReader reader, AudioProcessorModelStorageMode mode)
+    {
         // If the mode to load is not the default one, then we cannot use the optimize one below
         // and we need to use the lower mode from the base class
         if (mode != AudioProcessorModelStorageMode.Default)

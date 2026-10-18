@@ -16,8 +16,8 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult setContentScaleFactor_ToManaged(IPlugViewContentScaleSupport* self, LibVst.ScaleFactor factor)
         {
-            Get(self).SetContentScaleFactor(factor.Value);
-            return true;
+            // kResultFalse tells the host that the view does not scale itself.
+            return Get(self).SetContentScaleFactor(factor.Value);
         }
     }
 }

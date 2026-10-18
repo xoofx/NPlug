@@ -103,20 +103,46 @@ internal static partial class LibVst
                 if (lockTaken) _lock.Exit();
                 if (needToReturn)
                 {
-                    // User code (Dispose) must not run while holding the spin lock: it may be long (window
-                    // destruction...) or call back into this object (AddRef/QueryInterface), which would deadlock.
-                    try
-                    {
-                        if (Target is IDisposable disposable)
-                        {
-                            disposable.Dispose();
-                        }
-                    }
-                    finally
-                    {
-                        Reset();
-                        Manager.Return(this);
-                    }
+                    ReleaseFinal();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Disposes the target after the last reference is released, outside the spin lock: Dispose may be long
+        /// (window destruction...) or call back into COM (AddRef, QueryInterface), which would throw under the lock.
+        /// </summary>
+        private void ReleaseFinal()
+        {
+            // Detached first: a COM object requested for the target during Dispose is a new one, not this dying one.
+            var target = Manager.Detach(this);
+            try
+            {
+                if (target is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
+            }
+            finally
+            {
+                bool lockTaken = false;
+                bool referenced;
+                try
+                {
+                    _lock.Enter(ref lockTaken);
+                    referenced = _refCount != 0;
+                }
+                finally
+                {
+                    if (lockTaken) _lock.Exit();
+                }
+
+                // A reference taken on this object during Dispose keeps it alive: recycling it would hand a pointer
+                // still in use to another target. Its next final release recycles it.
+                if (!referenced)
+                {
+                    Reset();
+                    Manager.Recycle(this);
                 }
             }
         }
@@ -262,13 +288,32 @@ internal static partial class LibVst
             }
         }
 
-        public void Return(ComObject comObject)
+        /// <summary>
+        /// Removes the mapping from the target of a COM object to it, so that the target gets a new COM object from now
+        /// on. The COM object keeps its target.
+        /// </summary>
+        /// <returns>The target of the COM object.</returns>
+        public object? Detach(ComObject comObject)
         {
-            var target = comObject.Target!;
-            comObject.Target = null;
             lock (_thisLock)
             {
-                _mapTargetToComObject.Remove(target);
+                var target = comObject.Target;
+                if (target is not null && _mapTargetToComObject.TryGetValue(target, out var current) && ReferenceEquals(current, comObject))
+                {
+                    _mapTargetToComObject.Remove(target);
+                }
+                return target;
+            }
+        }
+
+        /// <summary>
+        /// Puts a detached COM object without references back in the cache.
+        /// </summary>
+        public void Recycle(ComObject comObject)
+        {
+            lock (_thisLock)
+            {
+                comObject.Target = null;
                 _comObjectCache.Push(comObject);
             }
         }

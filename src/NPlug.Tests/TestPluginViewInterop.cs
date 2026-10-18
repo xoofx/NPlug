@@ -2,6 +2,7 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using NPlug.Interop;
@@ -106,15 +107,45 @@ public unsafe class TestPluginViewInterop
     }
 
     [Test]
-    public void DisposeRunsOutsideTheComObjectLockOnFinalRelease()
+    public void FinalReleaseKeepsAComObjectReferencedDuringDispose()
     {
         var view = new RecordingView();
         var comObject = LibVst.ComObjectManager.Instance.GetOrCreateComObject(view);
         comObject.QueryInterface<LibVst.IPlugView>();
-        // The view queries the COM object from Dispose: this deadlocks/throws if Dispose runs under the spin lock.
-        view.OnDispose = () => LibVst.ComObjectManager.Instance.GetOrCreateComObject(view).AddRef();
+        // Dispose takes a new reference on the COM object: it must stay alive instead of returning to the pool.
+        view.OnDispose = () =>
+        {
+            view.OnDispose = null;
+            comObject.AddRef();
+        };
         Assert.DoesNotThrow(() => comObject.ReleaseRef());
         Assert.IsTrue(view.Disposed);
+        Assert.AreEqual(1u, comObject.ReferenceCount);
+        Assert.That(comObject.Target, Is.SameAs(view));
+        Assert.That(LibVst.ComObjectManager.Instance.GetOrCreateComObject(view), Is.Not.SameAs(comObject), "a released object is no longer handed out");
+        Assert.AreEqual(0u, comObject.ReleaseRef());
+        Assert.IsNull(comObject.Target);
+    }
+
+    [Test]
+    public void FinalReleaseToleratesComCallsOnTheTargetDuringDispose()
+    {
+        var view = new RecordingView();
+        var comObject = LibVst.ComObjectManager.Instance.GetOrCreateComObject(view);
+        comObject.QueryInterface<LibVst.IPlugView>();
+        int disposeCount = 0;
+        // Dispose queries the target again and releases it (a nested final release on a new COM object).
+        view.OnDispose = () =>
+        {
+            if (++disposeCount > 1) return;
+            var nested = LibVst.ComObjectManager.Instance.GetOrCreateComObject(view);
+            Assert.That(nested, Is.Not.SameAs(comObject));
+            nested.QueryInterface<LibVst.IPlugView>();
+            nested.ReleaseRef();
+        };
+        Assert.DoesNotThrow(() => comObject.ReleaseRef());
+        Assert.AreEqual(0u, comObject.ReferenceCount);
+        Assert.IsFalse(LibVst.ComObjectManager.Instance.GetAliveComObjects().Any(x => ReferenceEquals(x.Target, view)));
     }
 
     /// <summary>

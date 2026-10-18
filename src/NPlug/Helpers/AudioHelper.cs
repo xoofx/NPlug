@@ -23,53 +23,43 @@ public static class AudioHelper
     /// <returns><c>true</c> if the buffer contains only value below the <paramref name="silenceThreshold"/>.</returns>
     public static bool CheckIsSilent<T>(Span<T> buffer, T silenceThreshold) where T : unmanaged, INumber<T>
     {
-        bool isChannelSilent = true;
         int sampleIndex = 0;
-        if (Vector256.IsHardwareAccelerated)
+        if (Vector256.IsHardwareAccelerated && buffer.Length >= Vector256<T>.Count)
         {
-            if (buffer.Length >= Vector256<T>.Count)
+            var silence256 = Vector256.Create(silenceThreshold);
+            var buffer256 = MemoryMarshal.Cast<T, Vector256<T>>(buffer);
+            for (int i = 0; i < buffer256.Length; i++)
             {
-                var silence256 = Vector256.Create<T>(silenceThreshold);
-                var buffer256 = MemoryMarshal.Cast<T, Vector256<T>>(buffer);
-                for (; sampleIndex < buffer256.Length; sampleIndex++)
+                if (Vector256.GreaterThanAny(Vector256.Abs(buffer256[i]), silence256))
                 {
-                    if (Vector256.GreaterThanAny(Vector256.Abs(buffer256[sampleIndex]), silence256))
-                    {
-                        isChannelSilent = false;
-                        break;
-                    }
+                    return false;
                 }
-
-                sampleIndex *= Vector256<T>.Count;
             }
+
+            sampleIndex = buffer256.Length * Vector256<T>.Count;
         }
-        else if (Vector128.IsHardwareAccelerated)
+        else if (Vector128.IsHardwareAccelerated && buffer.Length >= Vector128<T>.Count)
         {
-            if (buffer.Length >= Vector128<T>.Count)
+            var silence128 = Vector128.Create(silenceThreshold);
+            var buffer128 = MemoryMarshal.Cast<T, Vector128<T>>(buffer);
+            for (int i = 0; i < buffer128.Length; i++)
             {
-                var silence128 = Vector128.Create(silenceThreshold);
-                var buffer128 = MemoryMarshal.Cast<T, Vector128<T>>(buffer);
-                for (; sampleIndex < buffer128.Length; sampleIndex++)
+                if (Vector128.GreaterThanAny(Vector128.Abs(buffer128[i]), silence128))
                 {
-                    if (Vector128.GreaterThanAny(Vector128.Abs(buffer128[sampleIndex]), silence128))
-                    {
-                        isChannelSilent = false;
-                        break;
-                    }
+                    return false;
                 }
-
-                sampleIndex *= Vector256<T>.Count;
             }
+
+            sampleIndex = buffer128.Length * Vector128<T>.Count;
         }
 
         for (; sampleIndex < buffer.Length; sampleIndex++)
         {
-            if (buffer[sampleIndex] > silenceThreshold)
+            if (T.Abs(buffer[sampleIndex]) > silenceThreshold)
             {
-                isChannelSilent = false;
-                break;
+                return false;
             }
         }
-        return isChannelSilent;
+        return true;
     }
 }

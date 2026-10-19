@@ -18,7 +18,8 @@ public interface IAudioPluginFrame
     /// <summary>
     /// Called to inform the host about the resize of a given view. Afterwards the host has to call <see cref="IAudioPluginView.OnSize"/>.
     /// </summary>
-    /// <param name="view"></param>
-    /// <param name="newSize"></param>
-    void ResizeView(IAudioPluginView view, ViewRectangle newSize);
+    /// <param name="view">The view to resize.</param>
+    /// <param name="newSize">The requested size, in pixels.</param>
+    /// <returns><c>true</c> if the host accepted the request, <c>false</c> if it refused it.</returns>
+    bool ResizeView(IAudioPluginView view, ViewRectangle newSize);
 }

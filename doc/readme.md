@@ -351,6 +351,8 @@ When a UI changes a parameter, the change must be wrapped in an edit gesture so 
 
 NPlug does not provide yet a sample with a UI for the main reason that I haven't found yet a simple UI framework that is lightweight, simple to setup and compatible with NativeAOT.
 
+On Windows, the third-party [PluginUI](https://github.com/asm8086/PluginUI) toolkit (Win32 + Direct2D, NativeAOT-compatible) implements `IAudioPluginView` for NPlug, with parameter edit gestures and MIDI learn; its demo synthesizer shows a complete instrument with an editor.
+
 Creating a UI requires to implement the `IAudioPluginView` interface and to override the `AudioController.CreateView()` 
 
 ```c#

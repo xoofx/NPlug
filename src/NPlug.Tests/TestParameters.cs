@@ -55,6 +55,24 @@ public class TestParameters
     }
 
     [Test]
+    public void InitializeKeepsTheValuesSetBefore()
+    {
+        var model = new SimpleModel();
+        var range = model.AddParameter(new AudioRangeParameter("Range", minValue: -48.0, maxValue: 12.0, defaultPlainValue: 0.0));
+        var plain = model.AddParameter(new AudioParameter("Plain", defaultNormalizedValue: 0.25));
+        var changed = model.AddParameter(new AudioParameter("Changed"));
+        changed.NormalizedValue = 0.75;
+
+        model.Initialize();
+
+        Assert.AreEqual(0.8, range.NormalizedValue, 1e-12, "The default value must survive the move to the shared buffer.");
+        Assert.AreEqual(0.0, range.Value, 1e-12);
+        Assert.AreEqual(0.25, plain.NormalizedValue);
+        Assert.AreEqual(0.75, changed.NormalizedValue, "A value set before Initialize must be kept.");
+        Assert.AreEqual(0.8, model.GetNormalizedValueById(range.Id), 1e-12);
+    }
+
+    [Test]
     public void TestBoolParameter()
     {
         var boolParameter = new AudioBoolParameter("Hello");

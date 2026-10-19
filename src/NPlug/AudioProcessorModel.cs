@@ -444,8 +444,10 @@ public abstract class AudioProcessorModel : AudioUnit, IDisposable
         for (var i = 0; i < _allParameters.Count; i++)
         {
             var audioParameter = _allParameters[i];
+            // Read the current (default) value before the parameter storage is redirected to the zeroed buffer.
+            var normalizedValue = audioParameter.NormalizedValue;
             audioParameter.PointerToNormalizedValueInSharedBuffer = pValue;
-            *pValue = audioParameter.NormalizedValue;
+            *pValue = normalizedValue;
             pValue++;
         }
     }

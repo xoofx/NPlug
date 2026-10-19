@@ -39,7 +39,8 @@ public readonly ref struct AudioMessage
     public AudioAttributeList Attributes => AttributeList;
 
     /// <summary>
-    /// Dispose this message.
+    /// Releases a message created with <see cref="AudioHostApplication.TryCreateMessage"/>. Do not dispose a message
+    /// received in <see cref="AudioPluginComponent.OnMessage"/>: the sender owns it, and releasing it would crash the host.
     /// </summary>
     public void Dispose()
     {

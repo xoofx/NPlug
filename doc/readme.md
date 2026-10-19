@@ -310,6 +310,27 @@ The following table shows the mapping between the VST3 interface and NPlug.
 | `IUnitInfo` | `IAudioControllerUnitInfo` |
 | `IXmlRepresentationController` | `IAudioControllerXmlRepresentation` |
 
+### Messages between the processor and the controller
+
+The processor and the controller are connected by the host (`IConnectionPoint`). Override `OnConnect` to keep the other side (also available as `ConnectionPoint`), `OnMessage` to receive messages, and create messages from the host:
+
+```c#
+if (Host!.TryCreateMessage("MyPlugin.Ping", out var message))
+{
+    try
+    {
+        message.Attributes.TrySetInt64("count", 42);
+        ConnectionPoint?.Notify(message);
+    }
+    finally
+    {
+        message.Dispose(); // releases the message (and its attribute list)
+    }
+}
+```
+
+Messages are delivered on the UI thread: never create or send them from the audio thread.
+
 ### Parameters
 
 By default, the class `AudioParameter` provides a simple float parameter.

@@ -27,7 +27,7 @@ public abstract class AudioPluginComponent : IAudioPluginComponent, IAudioConnec
     /// <summary>
     /// Called when this component receives a message from another component.
     /// </summary>
-    /// <param name="message"></param>
+    /// <param name="message">The message. The sender owns it: it is valid during this call only and must not be disposed.</param>
     protected virtual void OnMessage(AudioMessage message)
     {
     }

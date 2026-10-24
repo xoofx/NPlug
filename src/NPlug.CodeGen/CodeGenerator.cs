@@ -623,6 +623,22 @@ public class CodeGenerator
 
         return type;
     }
+
+    /// <summary>
+    /// Returns the C# primitive (<c>float</c> or <c>double</c>) of a struct generated for a typedef of a floating-point
+    /// type, or <c>null</c> for any other type.
+    /// </summary>
+    private CSharpType? GetFloatingPointTypedefPrimitive(CSharpType? csType)
+    {
+        if (csType is CSharpStruct { CppElement: CppTypedef typeDef } &&
+            typeDef.ElementType.GetCanonicalType() is CppPrimitiveType { Kind: CppPrimitiveKind.Float or CppPrimitiveKind.Double } primitive)
+        {
+            return GetCSharpType(primitive);
+        }
+
+        return null;
+    }
+
     private CSharpType GetUnmanagedType(CSharpType csType)
     {
         if (csType is CSharpStruct csStruct)
@@ -1160,6 +1176,18 @@ public class CodeGenerator
                 var thisPointer = new CSharpPointerType(csClass);
                 functionPointer.IsUnmanaged = true;
                 functionPointer.UnmanagedCallingConvention.Add("MemberFunction");
+                // A typedef of float/double (ParamValue, ScaleFactor...) is generated as a struct wrapping the value, but
+                // the native method takes a plain floating-point argument: the function pointer must declare the
+                // primitive, otherwise Windows x64 passes the struct in an integer register while the callee reads an XMM
+                // register. The argument converts implicitly from the struct.
+                for (var i = 0; i < functionPointer.Parameters.Count; i++)
+                {
+                    var parameter = functionPointer.Parameters[i];
+                    if (GetFloatingPointTypedefPrimitive(parameter.ParameterType) is { } primitive)
+                    {
+                        functionPointer.Parameters[i] = new CSharpParameter(primitive, parameter.Name);
+                    }
+                }
                 functionPointer.Parameters.Insert(0, new CSharpParameter(thisPointer, "this"));
                 functionPointer.ReturnType = unmanagedReturnType;
                 var builder = new StringBuilder();

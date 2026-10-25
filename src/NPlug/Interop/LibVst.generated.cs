@@ -4147,14 +4147,14 @@ internal static partial class LibVst
             {
                 var __self__ = (LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IPlugViewContentScaleSupport), "setContentScaleFactor");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugViewContentScaleSupport*, LibVst.ScaleFactor, int>)Vtbl[3])(__self__, factor);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IPlugViewContentScaleSupport*, float, int>)Vtbl[3])(__self__, factor);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugViewContentScaleSupport*, LibVst.ScaleFactor, int>)Vtbl[3])((LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this), factor);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IPlugViewContentScaleSupport*, float, int>)Vtbl[3])((LibVst.IPlugViewContentScaleSupport*)Unsafe.AsPointer(ref this), factor);
             }
         }
         
@@ -8596,14 +8596,14 @@ internal static partial class LibVst
             {
                 var __self__ = (LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IParamValueQueue), "addPoint");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, int, LibVst.ParamValue, int*, int>)Vtbl[6])(__self__, sampleOffset, value, index);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, int, double, int*, int>)Vtbl[6])(__self__, sampleOffset, value, index);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, int, LibVst.ParamValue, int*, int>)Vtbl[6])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this), sampleOffset, value, index);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IParamValueQueue*, int, double, int*, int>)Vtbl[6])((LibVst.IParamValueQueue*)Unsafe.AsPointer(ref this), sampleOffset, value, index);
             }
         }
         
@@ -12588,14 +12588,14 @@ internal static partial class LibVst
             {
                 var __self__ = (LibVst.IComponentHandler*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IComponentHandler), "performEdit");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler*, LibVst.ParamID, LibVst.ParamValue, int>)Vtbl[4])(__self__, id, valueNormalized);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler*, LibVst.ParamID, double, int>)Vtbl[4])(__self__, id, valueNormalized);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler*, LibVst.ParamID, LibVst.ParamValue, int>)Vtbl[4])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), id, valueNormalized);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IComponentHandler*, LibVst.ParamID, double, int>)Vtbl[4])((LibVst.IComponentHandler*)Unsafe.AsPointer(ref this), id, valueNormalized);
             }
         }
         
@@ -13551,14 +13551,14 @@ internal static partial class LibVst
             {
                 var __self__ = (LibVst.IProgress*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IProgress), "update");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IProgress*, LibVst.ID, LibVst.ParamValue, int>)Vtbl[4])(__self__, id, normValue);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IProgress*, LibVst.ID, double, int>)Vtbl[4])(__self__, id, normValue);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IProgress*, LibVst.ID, LibVst.ParamValue, int>)Vtbl[4])((LibVst.IProgress*)Unsafe.AsPointer(ref this), id, normValue);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IProgress*, LibVst.ID, double, int>)Vtbl[4])((LibVst.IProgress*)Unsafe.AsPointer(ref this), id, normValue);
             }
         }
         
@@ -14005,14 +14005,14 @@ internal static partial class LibVst
             {
                 var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "getParamStringByValue");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128*, int>)Vtbl[10])(__self__, id, valueNormalized, @string);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, double, LibVst.String128*, int>)Vtbl[10])(__self__, id, valueNormalized, @string);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, LibVst.String128*, int>)Vtbl[10])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, valueNormalized, @string);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, double, LibVst.String128*, int>)Vtbl[10])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, valueNormalized, @string);
             }
         }
         
@@ -14058,13 +14058,13 @@ internal static partial class LibVst
             {
                 var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "normalizedParamToPlain");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)Vtbl[12])(__self__, id, valueNormalized);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, double, double>)Vtbl[12])(__self__, id, valueNormalized);
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)Vtbl[12])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, valueNormalized);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, double, double>)Vtbl[12])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, valueNormalized);
             }
         }
         
@@ -14083,13 +14083,13 @@ internal static partial class LibVst
             {
                 var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "plainParamToNormalized");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)Vtbl[13])(__self__, id, plainValue);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, double, double>)Vtbl[13])(__self__, id, plainValue);
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, double>)Vtbl[13])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, plainValue);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, double, double>)Vtbl[13])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, plainValue);
             }
         }
         
@@ -14135,14 +14135,14 @@ internal static partial class LibVst
             {
                 var __self__ = (LibVst.IEditController*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IEditController), "setParamNormalized");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, int>)Vtbl[15])(__self__, id, value);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, double, int>)Vtbl[15])(__self__, id, value);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, LibVst.ParamValue, int>)Vtbl[15])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, value);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IEditController*, LibVst.ParamID, double, int>)Vtbl[15])((LibVst.IEditController*)Unsafe.AsPointer(ref this), id, value);
             }
         }
         
@@ -15945,14 +15945,14 @@ internal static partial class LibVst
             {
                 var __self__ = (LibVst.INoteExpressionController*)Unsafe.AsPointer(ref this);
                 var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(INoteExpressionController), "getNoteExpressionStringByValue");
-                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128*, int>)Vtbl[5])(__self__, busIndex, channel, id, valueNormalized, @string);
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, double, LibVst.String128*, int>)Vtbl[5])(__self__, busIndex, channel, id, valueNormalized, @string);
                 __evt__.Result = __result__;
                 __evt__.Dispose();
                 return __result__;
             }
             else
             {
-                return ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, LibVst.NoteExpressionValue, LibVst.String128*, int>)Vtbl[5])((LibVst.INoteExpressionController*)Unsafe.AsPointer(ref this), busIndex, channel, id, valueNormalized, @string);
+                return ((delegate*unmanaged[MemberFunction]<LibVst.INoteExpressionController*, int, short, LibVst.NoteExpressionTypeID, double, LibVst.String128*, int>)Vtbl[5])((LibVst.INoteExpressionController*)Unsafe.AsPointer(ref this), busIndex, channel, id, valueNormalized, @string);
             }
         }
         

@@ -34,6 +34,8 @@ You will find VST3 NPlug samples available in the [NPlug.Samples repository](htt
 
 NPlug does not include a UI framework. [PluginUI](https://github.com/asm8086/PluginUI) is a separate, MIT-licensed project for Windows plugin editors: a NativeAOT-compatible Win32 + Direct2D toolkit with an NPlug adapter (`IAudioPluginView`, parameter edit gestures, MIDI learn), about eighty controls and a visual designer. See its [documentation](https://asm8086.github.io/PluginUI/).
 
+Native controller callbacks are retained and released deterministically by NPlug. See [controller callback lifetime](doc/readme.md#controller-callback-lifetime) for handler and context-menu ownership.
+
 ## License
 
 The core part of this software is released under the [BSD-2-Clause license](https://opensource.org/licenses/BSD-2-Clause) but you have also to follow the following VST3 license:

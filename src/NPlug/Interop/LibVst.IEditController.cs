@@ -92,7 +92,7 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult setComponentHandler_ToManaged(IEditController* self, IComponentHandler* handler)
         {
-            Get(self).SetControllerHandler(handler == null ? null : new AudioControllerHandlerProxy(handler));
+            ((ComObjectHandle*)self)->ComObject.SetControllerHandler(handler);
             return true;
         }
 
@@ -112,7 +112,7 @@ internal static unsafe partial class LibVst
     /// <summary>
     /// Access to all the optional native handlers.
     /// </summary>
-    private class AudioControllerHandlerProxy : IAudioControllerHandler
+    private sealed class AudioControllerHandlerProxy : IAudioControllerHandler, IDisposable
     {
         private readonly IComponentHandler* _handler;
         private readonly IComponentHandler2* _handler2;
@@ -120,38 +120,64 @@ internal static unsafe partial class LibVst
         private readonly IComponentHandlerBusActivation* _busActivation;
         private readonly IProgress* _progress;
         private readonly IUnitHandler* _unitHandler;
+        private bool _disposed;
 
         public AudioControllerHandlerProxy(IComponentHandler* handler)
         {
             _handler = handler;
-            _handler2 = QueryInterface<IComponentHandler, IComponentHandler2>(_handler);
-            _handler3 = QueryInterface<IComponentHandler, IComponentHandler3>(_handler);
-            _busActivation = QueryInterface<IComponentHandler, IComponentHandlerBusActivation>(_handler);
-            _progress = QueryInterface<IComponentHandler, IProgress>(_handler);
-            _unitHandler = QueryInterface<IComponentHandler, IUnitHandler>(_handler);
+            _handler->addRef();
+            try
+            {
+                _handler2 = QueryInterface<IComponentHandler, IComponentHandler2>(_handler);
+                _handler3 = QueryInterface<IComponentHandler, IComponentHandler3>(_handler);
+                _busActivation = QueryInterface<IComponentHandler, IComponentHandlerBusActivation>(_handler);
+                _progress = QueryInterface<IComponentHandler, IProgress>(_handler);
+                _unitHandler = QueryInterface<IComponentHandler, IUnitHandler>(_handler);
+            }
+            catch
+            {
+                Dispose();
+                throw;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            if (_unitHandler != null) _unitHandler->release();
+            if (_progress != null) _progress->release();
+            if (_busActivation != null) _busActivation->release();
+            if (_handler3 != null) _handler3->release();
+            if (_handler2 != null) _handler2->release();
+            _handler->release();
         }
         
         public void BeginEdit(AudioParameterId id)
         {
+            ObjectDisposedException.ThrowIf(_disposed, this);
             _handler->beginEdit(id);
         }
 
         public void PerformEdit(AudioParameterId id, double valueNormalized)
         {
+            ObjectDisposedException.ThrowIf(_disposed, this);
             _handler->performEdit(id, valueNormalized);
         }
 
         public void EndEdit(AudioParameterId id)
         {
+            ObjectDisposedException.ThrowIf(_disposed, this);
             _handler->endEdit(id);
         }
 
         public void RestartComponent(AudioRestartFlags flags)
         {
+            ObjectDisposedException.ThrowIf(_disposed, this);
             _handler->restartComponent((int)flags);
         }
 
-        public bool IsAdvancedEditSupported => _handler2 != null;
+        public bool IsAdvancedEditSupported => !_disposed && _handler2 != null;
 
         public void SetDirty(bool state)
         {
@@ -183,10 +209,11 @@ internal static unsafe partial class LibVst
 
         private void ThrowIfNotIsAdvancedEditSupported()
         {
+            ObjectDisposedException.ThrowIf(_disposed, this);
             if (!IsAdvancedEditSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsAdvancedEditSupported)} is false");
         }
 
-        public bool IsCreateContextMenuSupported => _handler3 != null;
+        public bool IsCreateContextMenuSupported => !_disposed && _handler3 != null;
 
         public IAudioContextMenu CreateContextMenu(IAudioPluginView plugView, AudioParameterId paramID)
         {
@@ -194,17 +221,36 @@ internal static unsafe partial class LibVst
 
             var comObject = ComObjectManager.Instance.GetOrCreateComObject(plugView);
             var nativePlugView = comObject.QueryInterface<IPlugView>();
-            var nativeContextMenu = _handler3->createContextMenu(nativePlugView, (ParamID*)&paramID);
-            var audioContextMenu = new AudioContextMenuVst(nativeContextMenu);
-            return audioContextMenu;
+            try
+            {
+                var nativeContextMenu = _handler3->createContextMenu(nativePlugView, (ParamID*)&paramID);
+                if (nativeContextMenu == null)
+                {
+                    throw new InvalidOperationException("The host could not create a context menu.");
+                }
+                try
+                {
+                    return new AudioContextMenuVst(nativeContextMenu);
+                }
+                catch
+                {
+                    nativeContextMenu->release();
+                    throw;
+                }
+            }
+            finally
+            {
+                comObject.ReleaseRef();
+            }
         }
 
         private void ThrowIfNotIsCreateContextMenuSupported()
         {
+            ObjectDisposedException.ThrowIf(_disposed, this);
             if (!IsCreateContextMenuSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsCreateContextMenuSupported)} is false");
         }
 
-        public bool IsRequestBusActivationSupported => _busActivation != null;
+        public bool IsRequestBusActivationSupported => !_disposed && _busActivation != null;
 
         public void RequestBusActivation(BusMediaType type, NPlug.BusDirection dir, int index, bool state)
         {
@@ -214,10 +260,11 @@ internal static unsafe partial class LibVst
 
         private void ThrowIfNotIsRequestBusActivationSupported()
         {
+            ObjectDisposedException.ThrowIf(_disposed, this);
             if (!IsRequestBusActivationSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsRequestBusActivationSupported)} is false");
         }
 
-        public bool IsProgressSupported => _progress != null;
+        public bool IsProgressSupported => !_disposed && _progress != null;
 
         public AudioProgressId StartProgress(AudioProgressType type, string? optionalDescription)
         {
@@ -244,10 +291,11 @@ internal static unsafe partial class LibVst
 
         private void ThrowIfNotIsProgressSupported()
         {
+            ObjectDisposedException.ThrowIf(_disposed, this);
             if (!IsProgressSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsProgressSupported)} is false");
         }
 
-        public bool IsUnitAndProgramListSupported => _unitHandler != null;
+        public bool IsUnitAndProgramListSupported => !_disposed && _unitHandler != null;
 
         public void NotifyUnitSelection(AudioUnitId unitId)
         {
@@ -263,6 +311,7 @@ internal static unsafe partial class LibVst
         
         private void ThrowIfNotIsUnitAndProgramListSupported()
         {
+            ObjectDisposedException.ThrowIf(_disposed, this);
             if (!IsUnitAndProgramListSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsUnitAndProgramListSupported)} is false");
         }
     }

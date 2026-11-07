@@ -29,7 +29,14 @@ internal static unsafe partial class LibVst
 
         private static partial ComResult terminate_ToManaged(IPluginBase* self)
         {
-            Get(self).Terminate();
+            try
+            {
+                Get(self).Terminate();
+            }
+            finally
+            {
+                ((ComObjectHandle*)self)->ComObject.ReleaseControllerHandler();
+            }
             return true;
         }
     }

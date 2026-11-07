@@ -7,6 +7,11 @@ namespace NPlug;
 /// <summary>
 /// Host callback interface for an edit controller.
 /// </summary>
+/// <remarks>
+/// A handler supplied by the native host is valid until it is replaced or disconnected, the controller is
+/// terminated, or its last native COM reference is released. Do not use a saved handler after that point.
+/// NPlug releases the native callback interfaces deterministically on the calling thread.
+/// </remarks>
 public interface IAudioControllerHandler
 {
     /// <summary>
@@ -92,6 +97,7 @@ public interface IAudioControllerHandler
     /// <remarks>
     /// Only supported if <see cref="IsCreateContextMenuSupported"/> is <c>true</c>.
     /// </remarks>
+    /// <exception cref="System.InvalidOperationException">The native host could not create a context menu.</exception>
     IAudioContextMenu CreateContextMenu(IAudioPluginView plugView, AudioParameterId paramID);
 
     /// <summary>

@@ -330,6 +330,9 @@ The actions that need a position (the locate actions and `SetCycleStart` / `SetC
 `AudioTransportAction.RequiresPosition()`) take an `AudioTransportPosition` in samples or in quarter notes; hosts may
 honor only one of the two units.
 
+For hosts without `ITransportControl`, both support checks return `false` and transport requests throw
+`NotSupportedException`. Each capability query or request releases its temporary native transport interface reference.
+
 ### Messages between the processor and the controller
 
 The processor and the controller are connected by the host (`IConnectionPoint`). Override `OnConnect` to keep the other side (also available as `ConnectionPoint`), `OnMessage` to receive messages, and create messages from the host:

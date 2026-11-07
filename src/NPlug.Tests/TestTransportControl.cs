@@ -18,6 +18,7 @@ public unsafe class TestTransportControl
 {
     private static readonly List<string> Calls = new();
     private static void* _transportControl;
+    private static uint _transportReferenceCount;
 
     // IComponentHandler::queryInterface: only ITransportControl is known, when the host supports it.
     [UnmanagedCallersOnly]
@@ -26,6 +27,7 @@ public unsafe class TestTransportControl
         if (_transportControl != null && *iid == LibVst.ITransportControl.IId)
         {
             *obj = _transportControl;
+            ((LibVst.ITransportControl*)_transportControl)->addRef();
             return 0; // kResultOk
         }
         *obj = null;
@@ -41,6 +43,12 @@ public unsafe class TestTransportControl
 
     [UnmanagedCallersOnly]
     private static uint AddRefOrRelease(void* self) => 1;
+
+    [UnmanagedCallersOnly]
+    private static uint TransportAddRef(void* self) => ++_transportReferenceCount;
+
+    [UnmanagedCallersOnly]
+    private static uint TransportRelease(void* self) => --_transportReferenceCount;
 
     // C++ layout of Vst::TransportPosition: int32 type, then a union of TSamples (int64) and TQuarterNotes (double) at offset 8.
     [StructLayout(LayoutKind.Explicit, Size = 16)]
@@ -105,8 +113,11 @@ public unsafe class TestTransportControl
         {
             var transport = CreateNativeObject(5, &QueryInterface);
             var vtable = *(void***)transport;
+            vtable[1] = (delegate* unmanaged<void*, uint>)&TransportAddRef;
+            vtable[2] = (delegate* unmanaged<void*, uint>)&TransportRelease;
             vtable[3] = (delegate* unmanaged<void*, int, CppTransportPosition*, int>)&RequestAction;
             vtable[4] = (delegate* unmanaged<void*, int, int>)&IsActionSupported;
+            _transportReferenceCount = 1; // The host owns the initial reference.
             _transportControl = transport;
         }
         var handler = CreateNativeObject(8, &HandlerQueryInterface);
@@ -119,7 +130,9 @@ public unsafe class TestTransportControl
 
     private static void Disconnect(LibVst.ComObject comObject, nint handler)
     {
-        comObject.QueryInterface<LibVst.IEditController>()->setComponentHandler(null);
+        var editController = comObject.QueryInterface<LibVst.IEditController>();
+        editController->setComponentHandler(null);
+        editController->release();
         comObject.ReleaseRef();
         Free((void*)handler);
     }
@@ -178,6 +191,45 @@ public unsafe class TestTransportControl
         {
             Disconnect(comObject, handler);
         }
+    }
+
+    [Test]
+    public void TransportQueriesDoNotRetainHostReferences()
+    {
+        var (controller, comObject, handler) = Connect(transportControl: true);
+        try
+        {
+            Assert.That(_transportReferenceCount, Is.EqualTo(1), "connecting must not retain a transport reference");
+            var host = controller.Handler!;
+            Assert.IsTrue(host.IsTransportControlSupported);
+            Assert.That(_transportReferenceCount, Is.EqualTo(1), "capability queries must release their reference");
+            Assert.IsTrue(host.IsTransportActionSupported(AudioTransportAction.PlaybackStart));
+            Assert.IsFalse(host.IsTransportActionSupported(AudioTransportAction.CycleOn));
+            Assert.That(_transportReferenceCount, Is.EqualTo(1), "action queries must release their reference");
+            Assert.IsTrue(host.RequestTransportAction(AudioTransportAction.PlaybackStart));
+            Assert.IsFalse(host.RequestTransportAction(AudioTransportAction.RecordOnPlaybackStart));
+            Assert.That(_transportReferenceCount, Is.EqualTo(1), "accepted and refused requests must release their reference");
+            Assert.IsTrue(host.RequestTransportAction(AudioTransportAction.Locate, AudioTransportPosition.FromSamples(48000)));
+            Assert.IsFalse(host.RequestTransportAction(AudioTransportAction.RecordOnPlaybackStart, AudioTransportPosition.FromSamples(0)));
+            Assert.That(_transportReferenceCount, Is.EqualTo(1), "position requests must release their reference");
+
+            var editController = comObject.QueryInterface<LibVst.IEditController>();
+            try
+            {
+                editController->setComponentHandler((LibVst.IComponentHandler*)handler);
+            }
+            finally
+            {
+                editController->release();
+            }
+            Assert.That(_transportReferenceCount, Is.EqualTo(1), "replacing a handler must not retain a transport reference");
+        }
+        finally
+        {
+            Disconnect(comObject, handler);
+        }
+        Assert.That(_transportReferenceCount, Is.EqualTo(1), "disconnecting must leave only the host's reference");
+        Assert.That(comObject.ReferenceCount, Is.Zero, "the test controller must also release all its references");
     }
 
     [Test]

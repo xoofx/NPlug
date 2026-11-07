@@ -5,3 +5,7 @@ project = "NPlug.slnx"
 [github]
 user = "xoofx"
 repo = "NPlug"
+
+[nuget]
+trusted_publishing = true
+user = "xoofx"

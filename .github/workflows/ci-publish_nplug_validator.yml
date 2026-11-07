@@ -2,11 +2,13 @@ name: ci-publish_nplug_validator
 
 on:
   workflow_dispatch:
-    branches:
-    - main
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
 
     steps:
@@ -31,7 +33,15 @@ jobs:
       run: |
         dotnet pack -c Release ./src/NPlug.Validator/NPlug.Validator.csproj -p:IsPackable=true
 
+    - name: Authenticate to NuGet
+      id: nuget
+      uses: NuGet/login@v1
+      with:
+        user: xoofx
+
     - name: Publish
       shell: bash
+      env:
+        NUGET_API_KEY: ${{ steps.nuget.outputs.NUGET_API_KEY }}
       run: |
-        dotnet nuget push ./src/NPlug.Validator/bin/Release/*.nupkg -k ${{secrets.NUGET_TOKEN}} -s https://api.nuget.org/v3/index.json
+        dotnet nuget push ./src/NPlug.Validator/bin/Release/*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json

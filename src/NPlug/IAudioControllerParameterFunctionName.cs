@@ -85,7 +85,7 @@ public interface IAudioControllerParameterFunctionName : IAudioController
     /// Gets for the given unitID the associated paramID to a function Name. Returns false when no found parameter (paramID is set to kNoParamId in this case).
     /// </summary>
     /// <param name="unitId"></param>
-    /// <param name="functionName"></param>
+    /// <param name="functionName">The function name, for example one of <see cref="AudioParameterFunctionNames"/>.</param>
     /// <param name="paramId"></param>
     /// <returns></returns>
     bool TryGetParameterIdFromFunctionName(AudioUnitId unitId, string functionName, out AudioParameterId paramId);

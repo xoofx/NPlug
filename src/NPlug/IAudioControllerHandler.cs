@@ -2,6 +2,8 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using System;
+
 namespace NPlug;
 
 /// <summary>
@@ -168,4 +170,47 @@ public interface IAudioControllerHandler
     /// Only supported if <see cref="IsUnitAndProgramListSupported"/> is <c>true</c>.
     /// </remarks>
     void NotifyProgramListChange(AudioProgramListId listId, int programIndex);
+
+    /// <summary>
+    /// Returns <c>true</c> if the host accepts transport requests from the plugin (<see cref="RequestTransportAction(AudioTransportAction)"/>).
+    /// </summary>
+    /// <remarks>
+    /// This is equivalent of checking `ITransportControl` (VST 3.8.1) for VST3. The default implementation returns <c>false</c>.
+    /// </remarks>
+    bool IsTransportControlSupported => false;
+
+    /// <summary>
+    /// Returns <c>true</c> if the host supports the given transport action, for example to enable or disable a button of the plugin UI.
+    /// </summary>
+    /// <param name="action">The transport action.</param>
+    /// <returns><c>true</c> if the action is supported; <c>false</c> if it is not, or if <see cref="IsTransportControlSupported"/> is <c>false</c>.</returns>
+    /// <remarks>
+    /// Must be called from the UI thread.
+    /// </remarks>
+    bool IsTransportActionSupported(AudioTransportAction action) => false;
+
+    /// <summary>
+    /// Requests a transport action that does not need a position from the host (start or stop playback or recording, cycle on or off).
+    /// </summary>
+    /// <param name="action">The transport action.</param>
+    /// <returns><c>true</c> if the host accepted the request (not necessarily completed yet); <c>false</c> if it refused it.</returns>
+    /// <exception cref="ArgumentException">The action requires a position (see <see cref="AudioTransportActionExtensions.RequiresPosition"/>).</exception>
+    /// <exception cref="NotSupportedException"><see cref="IsTransportControlSupported"/> is <c>false</c>.</exception>
+    /// <remarks>
+    /// Must be called from the UI thread. The host may refuse a request depending on its state (offline rendering, write-protected project...).
+    /// </remarks>
+    bool RequestTransportAction(AudioTransportAction action) => throw new NotSupportedException($"This method is not supported because {nameof(IsTransportControlSupported)} is false");
+
+    /// <summary>
+    /// Requests a transport action with a position from the host (locate, set the cycle start or end).
+    /// </summary>
+    /// <param name="action">The transport action.</param>
+    /// <param name="position">The position, in samples or in quarter notes; hosts may honor only one of the two units.</param>
+    /// <returns><c>true</c> if the host accepted the request (not necessarily completed yet); <c>false</c> if it refused it.</returns>
+    /// <exception cref="NotSupportedException"><see cref="IsTransportControlSupported"/> is <c>false</c>.</exception>
+    /// <remarks>
+    /// Must be called from the UI thread. The position is passed to the host for every action; the host ignores it for
+    /// the actions that do not need one.
+    /// </remarks>
+    bool RequestTransportAction(AudioTransportAction action, AudioTransportPosition position) => throw new NotSupportedException($"This method is not supported because {nameof(IsTransportControlSupported)} is false");
 }

@@ -310,6 +310,25 @@ The following table shows the mapping between the VST3 interface and NPlug.
 | `IUnitInfo` | `IAudioControllerUnitInfo` |
 | `IXmlRepresentationController` | `IAudioControllerXmlRepresentation` |
 
+### Requesting transport actions from the host
+
+Since VST 3.8.1, a plugin can ask the host to move or start its transport (`ITransportControl`), for example from a
+"play from here" button of a sequencer or a looper. The requests go through the controller handler, from the UI thread:
+
+```c#
+var host = Handler!;
+if (host.IsTransportControlSupported)
+{
+    playButton.IsEnabled = host.IsTransportActionSupported(AudioTransportAction.LocateAndPlaybackStart);
+    // Locate to bar 5 in 4/4 (16 quarter notes) and start playback. Returns false if the host refuses.
+    host.RequestTransportAction(AudioTransportAction.LocateAndPlaybackStart, AudioTransportPosition.FromQuarterNotes(16));
+}
+```
+
+The actions that need a position (the locate actions and `SetCycleStart` / `SetCycleEnd`, see
+`AudioTransportAction.RequiresPosition()`) take an `AudioTransportPosition` in samples or in quarter notes; hosts may
+honor only one of the two units.
+
 ### Messages between the processor and the controller
 
 The processor and the controller are connected by the host (`IConnectionPoint`). Override `OnConnect` to keep the other side (also available as `ConnectionPoint`), `OnMessage` to receive messages, and create messages from the host:

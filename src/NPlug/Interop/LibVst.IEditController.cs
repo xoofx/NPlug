@@ -120,6 +120,7 @@ internal static unsafe partial class LibVst
         private readonly IComponentHandlerBusActivation* _busActivation;
         private readonly IProgress* _progress;
         private readonly IUnitHandler* _unitHandler;
+        private readonly ITransportControl* _transportControl;
 
         public AudioControllerHandlerProxy(IComponentHandler* handler)
         {
@@ -129,6 +130,7 @@ internal static unsafe partial class LibVst
             _busActivation = QueryInterface<IComponentHandler, IComponentHandlerBusActivation>(_handler);
             _progress = QueryInterface<IComponentHandler, IProgress>(_handler);
             _unitHandler = QueryInterface<IComponentHandler, IUnitHandler>(_handler);
+            _transportControl = QueryInterface<IComponentHandler, ITransportControl>(_handler);
         }
         
         public void BeginEdit(AudioParameterId id)
@@ -264,6 +266,40 @@ internal static unsafe partial class LibVst
         private void ThrowIfNotIsUnitAndProgramListSupported()
         {
             if (!IsUnitAndProgramListSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsUnitAndProgramListSupported)} is false");
+        }
+
+        public bool IsTransportControlSupported => _transportControl != null;
+
+        public bool IsTransportActionSupported(AudioTransportAction action)
+        {
+            return _transportControl != null && _transportControl->isActionSupported((int)action).IsSuccess;
+        }
+
+        public bool RequestTransportAction(AudioTransportAction action)
+        {
+            if (action.RequiresPosition()) throw new ArgumentException($"The transport action {action} requires a position.", nameof(action));
+            ThrowIfNotIsTransportControlSupported();
+            return _transportControl->requestAction((int)action, null).IsSuccess;
+        }
+
+        public bool RequestTransportAction(AudioTransportAction action, AudioTransportPosition position)
+        {
+            ThrowIfNotIsTransportControlSupported();
+            var nativePosition = new TransportPosition { type = (TransportPositionType)position.Kind };
+            if (position.Kind == AudioTransportPositionKind.QuarterNotes)
+            {
+                nativePosition.union.quarterNotes = new TQuarterNotes(position.QuarterNotes);
+            }
+            else
+            {
+                nativePosition.union.samples = new TSamples(position.Samples);
+            }
+            return _transportControl->requestAction((int)action, &nativePosition).IsSuccess;
+        }
+
+        private void ThrowIfNotIsTransportControlSupported()
+        {
+            if (!IsTransportControlSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsTransportControlSupported)} is false");
         }
     }
 

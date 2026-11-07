@@ -64,8 +64,8 @@ function Build-Project {
         }
         $NETPlatform = "win"
         $NETSharedLibExtension = "dll"
-        #$CMakeBuilder = "Visual Studio 18 2026"
-        $CMakeBuilder = "Visual Studio 17 2022"
+        # Let CMake select the installed Visual Studio version.
+        $CMakeBuilder = $null
         $LocalCMakeArgs += "-A$MsvcArch"
     } elseif ($IsLinux) {
         $LocalCMakeArgs += "-DCMAKE_BUILD_TYPE=$CMakeConfig"
@@ -84,8 +84,11 @@ function Build-Project {
     $BuildPlatformFolder = "$BuildFolder/$DotNetRid"
     $PackageFolder = "$BuildFolder/package/$DotNetRid/native/"
 
-    # trace-command -PSHOST -Name ParameterBinding { & $CMakeExePath -G $CMakeBuilder -B $BuildPlatformFolder @LocalCMakeArgs $CMakeSource  }
-    & $CMakeExePath -G $CMakeBuilder -B $BuildPlatformFolder @LocalCMakeArgs $CMakeSource
+    $GeneratorArgs = @()
+    if ($CMakeBuilder) {
+        $GeneratorArgs = @("-G", $CMakeBuilder)
+    }
+    & $CMakeExePath @GeneratorArgs -B $BuildPlatformFolder @LocalCMakeArgs $CMakeSource
     if ($LastExitCode -ne 0) {
         throw "error with cmake"
     }

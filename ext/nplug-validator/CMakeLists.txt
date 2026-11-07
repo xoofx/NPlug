@@ -40,6 +40,7 @@ ExternalProject_Add(vst3sdk
         -DSMTG_BUILD_UNIVERSAL_BINARY=0
         -DSMTG_ENABLE_IOS_TARGETS=0
         -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=0
+        -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=0
         -DSMTG_ENABLE_VSTGUI_SUPPORT=0
     BUILD_COMMAND ${CMAKE_COMMAND} --build . --config Release --target nplug_validator
     INSTALL_COMMAND ""

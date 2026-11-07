@@ -293,6 +293,7 @@ The following table shows the mapping between the VST3 interface and NPlug.
 | `IMidiMapping` | `IAudioControllerMidiMapping` |
 | `INoteExpressionController` | `IAudioControllerNoteExpression` |
 | `INoteExpressionPhysicalUIMapping` | `IAudioControllerNoteExpressionPhysicalUIMapping` |
+| `NoteOnOrchestralArticulation::IInfo` | `IAudioControllerNoteOnOrchestralArticulationInfo` |
 | `IParameterFinder` | `IAudioPluginView` |
 | `IParameterFunctionName` | `IAudioControllerParameterFunctionName` |
 | `IPluginBase` | `IAudioPluginComponent` |

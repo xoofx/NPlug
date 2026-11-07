@@ -60,6 +60,7 @@ internal static unsafe partial class LibVst
             { IEditController.IId, TryMatchQueryInterface<IEditController, NPlug.IAudioController> },
             { IEditController2.IId, TryMatchQueryInterface<IEditController2, IAudioControllerExtended> },
             { IEditControllerHostEditing.IId, TryMatchQueryInterface<IEditControllerHostEditing, IAudioControllerHostEditing> },
+            { IInfo.IId, TryMatchQueryInterface<IInfo, IAudioControllerNoteOnOrchestralArticulationInfo> },
             { IInfoListener.IId, TryMatchQueryInterface<IInfoListener, IAudioControllerInfoListener> },
             { IInterAppAudioPresetManager.IId, TryMatchQueryInterface<IInterAppAudioPresetManager, IAudioControllerInterAppAudioPresetManager> },
             { IKeyswitchController.IId, TryMatchQueryInterface<IKeyswitchController, IAudioControllerKeySwitch> },

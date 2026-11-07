@@ -372,6 +372,9 @@ You might want to use sub classes of this `AudioParameter` to manipulate other t
 - The `AudioRangeParameter` allows to manipulate a range of float with a min and max value and potential steps or continuous.
 - The `AudioStringListParameter` allows to display a list of string for a parameter. Behind the scene, the selected string is automatically mapped to a float ranging from 0.0f to 1.0f.
 
+Host parameter conversions use `NormalizedParameterToPlain` to map normalized values to the parameter's plain range,
+and `PlainParameterToNormalized` for the inverse conversion. For example, a range from -40 to 100 maps 30 to 0.5.
+
 ![NPlug parameters](./nplug-parameters.png)
 
 When a UI changes a parameter, the change must be wrapped in an edit gesture so that the host records a single automation move: call `AudioController.BeginEditParameter(parameter)`, set `parameter.NormalizedValue` as many times as needed, then `EndEditParameter(parameter)`. Several parameters can be edited at the same time (e.g. the two axes of a XY pad); `IsEditingParameter` and `EditedParameterCount` report the edits in progress.

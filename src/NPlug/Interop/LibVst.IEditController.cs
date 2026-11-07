@@ -76,7 +76,7 @@ internal static unsafe partial class LibVst
 
         private static partial ParamValue plainParamToNormalized_ToManaged(IEditController* self, ParamID id, ParamValue plainValue)
         {
-            return new ParamValue(Get(self).NormalizedParameterToPlain(id, plainValue.Value));
+            return new ParamValue(Get(self).PlainParameterToNormalized(id, plainValue.Value));
         }
 
         private static partial ParamValue getParamNormalized_ToManaged(IEditController* self, ParamID id)

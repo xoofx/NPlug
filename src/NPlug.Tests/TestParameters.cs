@@ -2,12 +2,33 @@
 // Licensed under the BSD-Clause 2 license.
 // See license.txt file in the project root for full license information.
 
+using NPlug.Interop;
 using NUnit.Framework;
 
 namespace NPlug.Tests;
 
 public class TestParameters
 {
+    [TestCase(-40.0, 0.0)]
+    [TestCase(30.0, 0.5)]
+    [TestCase(100.0, 1.0)]
+    public unsafe void NativeParameterConversionsAreInverse(double plain, double normalized)
+    {
+        var controller = new RangeController();
+        var comObject = LibVst.ComObjectManager.Instance.GetOrCreateComObject(controller);
+        var native = comObject.QueryInterface<LibVst.IEditController>();
+        try
+        {
+            var id = new LibVst.ParamID((uint)controller.Model.Range.Id.Value);
+            Assert.AreEqual(plain, native->normalizedParamToPlain(id, new LibVst.ParamValue(normalized)), 1e-12);
+            Assert.AreEqual(normalized, native->plainParamToNormalized(id, new LibVst.ParamValue(plain)), 1e-12);
+        }
+        finally
+        {
+            native->release();
+        }
+    }
+
     [Test]
     public void TestParameter()
     {
@@ -121,6 +142,20 @@ public class TestParameters
                 Assert.AreEqual(listParameter.Items[i], listParameter.ToString(listParameter.NormalizedValue));
             }
         }
+    }
+
+    private sealed class RangeController : AudioController<RangeModel>
+    {
+    }
+
+    private sealed class RangeModel : AudioProcessorModel
+    {
+        public RangeModel()
+        {
+            Range = AddParameter(new AudioRangeParameter("Range", minValue: -40.0, maxValue: 100.0));
+        }
+
+        public AudioRangeParameter Range { get; }
     }
 
     private class SimpleModel : AudioProcessorModel

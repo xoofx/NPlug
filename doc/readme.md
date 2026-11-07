@@ -23,6 +23,14 @@ The `AudioController` and `AudioProcessor` implement some of the core NPlug VST 
 
 ![NPlug Class Diagram](./nplug-class-diagram.png)
 
+### Controller callback lifetime
+
+The native interop bridge retains the host's `IComponentHandler` and each supported optional callback interface. It releases those references on handler replacement, `setComponentHandler(nullptr)`, controller termination (even if the termination override throws), or the controller's final native COM release. Cleanup runs on the calling thread, not the GC finalizer thread, and also applies to custom `IAudioController` implementations.
+
+Use only the currently assigned `AudioController.Handler`; do not keep using a saved handler after replacement or cleanup. The handler remains available during the controller's termination override and, if implemented, disposal. Custom controllers must accept `SetControllerHandler(null)` to clear their managed callback reference.
+
+`IAudioControllerHandler.CreateContextMenu` borrows the view for the native call and releases its temporary view reference whether creation succeeds or fails. A host retaining the view must acquire its own reference. A null menu from the host causes `InvalidOperationException`; a successfully returned `IAudioContextMenu` owns the native menu reference and must be disposed by the caller.
+
 
 ## Getting Started
 

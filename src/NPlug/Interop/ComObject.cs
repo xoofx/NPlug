@@ -40,6 +40,8 @@ internal static partial class LibVst
         private readonly ComObjectHandle* _handles;
         private int _interfaceCount;
         private GCHandle _thisHandle;
+        private AudioControllerHandlerProxy? _controllerHandler;
+        private bool _releasingControllerHandler;
 
         public ComObject(ComObjectManager manager)
         {
@@ -68,6 +70,60 @@ internal static partial class LibVst
         }
         
         public object? Target { get; set; }
+
+        internal void SetControllerHandler(IComponentHandler* nativeHandler)
+        {
+            if (_releasingControllerHandler)
+            {
+                throw new InvalidOperationException("Cannot set a controller handler during cleanup.");
+            }
+            // Retain the new handler before releasing the old one: they may be the same native object.
+            var handler = nativeHandler == null ? null : new AudioControllerHandlerProxy(nativeHandler);
+            var previous = _controllerHandler;
+            _controllerHandler = handler;
+            try
+            {
+                ((IAudioController)Target!).SetControllerHandler(handler);
+            }
+            catch
+            {
+                if (ReferenceEquals(_controllerHandler, handler))
+                {
+                    _controllerHandler = previous;
+                }
+                else
+                {
+                    // A reentrant setComponentHandler has already installed another handler.
+                    previous?.Dispose();
+                }
+                handler?.Dispose();
+                throw;
+            }
+            previous?.Dispose();
+        }
+
+        internal void ReleaseControllerHandler()
+        {
+            var handler = _controllerHandler;
+            if (handler is null) return;
+            _controllerHandler = null;
+            _releasingControllerHandler = true;
+            try
+            {
+                try
+                {
+                    ((IAudioController)Target!).SetControllerHandler(null);
+                }
+                finally
+                {
+                    handler.Dispose();
+                }
+            }
+            finally
+            {
+                _releasingControllerHandler = false;
+            }
+        }
 
         public uint AddRef()
         {
@@ -118,9 +174,17 @@ internal static partial class LibVst
             var target = Manager.Detach(this);
             try
             {
-                if (target is IDisposable disposable)
+                try
                 {
-                    disposable.Dispose();
+                    if (target is IDisposable disposable)
+                    {
+                        disposable.Dispose();
+                    }
+                }
+                finally
+                {
+                    // Native references are released on the caller's thread, never by a GC finalizer.
+                    ReleaseControllerHandler();
                 }
             }
             finally

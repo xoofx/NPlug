@@ -24,6 +24,8 @@ public interface IAudioContextMenu : IDisposable
     /// <summary>
     /// Adds a menu item and its target.
     /// </summary>
+    /// <param name="item">The menu item to add.</param>
+    /// <param name="target">The optional action, or <c>null</c> for an item without an action, such as a separator.</param>
     void AddItem(in AudioContextMenuItem item, AudioContextMenuAction? target);
 
     /// <summary>

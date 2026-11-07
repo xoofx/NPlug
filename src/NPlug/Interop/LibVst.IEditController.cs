@@ -484,7 +484,10 @@ internal static unsafe partial class LibVst
             _disposed = true;
             foreach (var item in _items)
             {
-                ((IContextMenuTarget*)item.Item2)->release();
+                if (item.Item2 != 0)
+                {
+                    ((IContextMenuTarget*)item.Item2)->release();
+                }
             }
 
             _items.Clear();

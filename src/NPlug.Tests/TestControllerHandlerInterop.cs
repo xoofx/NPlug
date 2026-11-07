@@ -308,6 +308,46 @@ public unsafe class TestControllerHandlerInterop
 
     [TestCase(false)]
     [TestCase(true)]
+    public void ContextMenusDisposeTargetlessItemsAndOwnedActionReferences(bool includeAction)
+    {
+        using var host = new NativeHandler(0b11111);
+        var controller = new Controller();
+        using var export = new ControllerExport(controller);
+        export.Native->setComponentHandler(host.Handler);
+        using var menu = controller.Handler!.CreateContextMenu(new View(), 42);
+        LibVst.ComObject? actionObject = null;
+        try
+        {
+            menu.AddItem(new AudioContextMenuItem("Heading"), null);
+            menu.AddItem(new AudioContextMenuItem("", Flags: AudioContextMenuItemFlags.IsSeparator), null);
+            if (includeAction)
+            {
+                AudioContextMenuAction action = _ => { };
+                actionObject = LibVst.ComObjectManager.Instance.GetOrCreateComObject(action);
+                menu.AddItem(new AudioContextMenuItem("Action", 7), action);
+                Assert.AreEqual(1u, actionObject.ReferenceCount);
+            }
+
+            Assert.AreEqual(includeAction ? 3 : 2, menu.GetItemCount());
+            Assert.DoesNotThrow(menu.Dispose);
+            menu.Dispose();
+            Assert.AreEqual(1, host.State->Menu.References, "Only the fake host's menu reference remains.");
+            Assert.AreEqual(1, host.State->MenuReleaseCalls, "The wrapper must release the native menu exactly once.");
+            if (actionObject is not null) Assert.AreEqual(0u, actionObject.ReferenceCount);
+        }
+        finally
+        {
+            menu.Dispose();
+            // Also drain action references when running this regression against the unfixed implementation.
+            if (actionObject is not null)
+            {
+                while (actionObject.ReferenceCount != 0) actionObject.ReleaseRef();
+            }
+        }
+    }
+
+    [TestCase(false)]
+    [TestCase(true)]
     public void DetachedHandlersDoNotQueryTransportInterfaces(bool terminate)
     {
         using var host = new NativeHandler(0b11111);
@@ -378,6 +418,7 @@ public unsafe class TestControllerHandlerInterop
             State->Handler.Vtbl[3] = (delegate* unmanaged[MemberFunction]<NativeInterface*, uint, int>)&BeginEdit;
             State->Handler3.Vtbl[3] = (delegate* unmanaged[MemberFunction]<NativeInterface*, LibVst.IPlugView*, uint*, LibVst.IContextMenu*>)&CreateMenu;
             State->Menu.Vtbl[3] = (delegate* unmanaged[MemberFunction]<NativeInterface*, int>)&GetItemCount;
+            State->Menu.Vtbl[5] = (delegate* unmanaged[MemberFunction]<NativeInterface*, LibVst.Item*, LibVst.IContextMenuTarget*, int>)&AddMenuItem;
         }
 
         public LibVst.IComponentHandler* Handler => (LibVst.IComponentHandler*)&State->Handler;
@@ -457,7 +498,11 @@ public unsafe class TestControllerHandlerInterop
             self->References--;
             state->ReleaseCalls++;
             if (Environment.CurrentManagedThreadId != state->OwnerThreadId) state->WrongThreadReleases++;
-            if (self == &state->Menu) return (uint)self->References;
+            if (self == &state->Menu)
+            {
+                state->MenuReleaseCalls++;
+                return (uint)self->References;
+            }
             return (uint)--state->ReferenceCount;
         }
 
@@ -487,7 +532,14 @@ public unsafe class TestControllerHandlerInterop
         }
 
         [UnmanagedCallersOnly(CallConvs = [typeof(CallConvMemberFunction)])]
-        private static int GetItemCount(NativeInterface* self) => 0;
+        private static int GetItemCount(NativeInterface* self) => self->Owner->MenuItemCount;
+
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvMemberFunction)])]
+        private static int AddMenuItem(NativeInterface* self, LibVst.Item* item, LibVst.IContextMenuTarget* target)
+        {
+            self->Owner->MenuItemCount++;
+            return LibVst.ComResult.Ok;
+        }
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -514,6 +566,8 @@ public unsafe class TestControllerHandlerInterop
         public int WrongThreadReleases;
         public int ReleaseCalls;
         public int QueryCalls;
+        public int MenuItemCount;
+        public int MenuReleaseCalls;
         public int EditCalls;
         public bool UsedAfterFinalRelease;
         public bool FailMenu;

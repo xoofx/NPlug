@@ -31,6 +31,9 @@ Use only the currently assigned `AudioController.Handler`; do not keep using a s
 
 `IAudioControllerHandler.CreateContextMenu` borrows the view for the native call and releases its temporary view reference whether creation succeeds or fails. A host retaining the view must acquire its own reference. A null menu from the host causes `InvalidOperationException`; a successfully returned `IAudioContextMenu` owns the native menu reference and must be disposed by the caller.
 
+Context-menu items can have a null action, including separators. Disposing the menu releases only assigned action
+targets and releases the native menu exactly once, even when `Dispose` is called repeatedly.
+
 
 ## Getting Started
 

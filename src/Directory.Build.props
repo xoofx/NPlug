@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <VstVersion>3.8.0</VstVersion>    
+    <VstVersion>3.8.1</VstVersion>    
     <VstVersionCompact>$(VstVersion.Replace(".", ""))</VstVersionCompact>
   </PropertyGroup>
 </Project>

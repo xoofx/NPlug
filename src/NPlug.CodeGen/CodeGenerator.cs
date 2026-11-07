@@ -687,6 +687,25 @@ public class CodeGenerator
         Both = Plugin | Host
     }
 
+    /// <summary>
+    /// Creates, in <paramref name="container"/>, an inline array struct of <paramref name="size"/> elements of
+    /// <paramref name="elementType"/> for the field <paramref name="fieldName"/> (e.g. <c>classification</c> gives
+    /// <c>ClassificationArray</c>).
+    /// </summary>
+    private static CSharpStruct CreateInlineArray(CSharpStructExtended container, string fieldName, CSharpType elementType, int size)
+    {
+        var name = $"{char.ToUpperInvariant(fieldName[0])}{fieldName[1..]}Array";
+        var inlineArray = new CSharpStruct(name)
+        {
+            Modifiers = CSharpModifiers.Unsafe | CSharpModifiers.Partial,
+            Visibility = CSharpVisibility.Public,
+        };
+        inlineArray.Attributes.Add(new CSharpFreeAttribute($"global::System.Runtime.CompilerServices.InlineArray({size})"));
+        inlineArray.Members.Add(new CSharpField("_element0") { FieldType = elementType, Visibility = CSharpVisibility.Private });
+        container.Members.Add(inlineArray);
+        return inlineArray;
+    }
+
     private CSharpStructExtended GetOrCreateStruct(CppClass cppClass, CSharpTypeWithMembers? container = null)
     {
         var name = cppClass.Name;
@@ -740,7 +759,12 @@ public class CodeGenerator
                     {
                         csField.Attributes.Add(new CSharpFreeAttribute("FieldOffset(0)"));
                     }
-                    if (cppField.Type is CppArrayType arrayType)
+                    if (cppField.Type is CppArrayType structArrayType && structArrayType.ElementType.GetCanonicalType() is CppClass)
+                    {
+                        // A C# fixed size buffer only takes primitive types: an array of structs becomes an inline array.
+                        csField.FieldType = CreateInlineArray(csStruct, csField.Name, GetCSharpType(structArrayType.ElementType), structArrayType.Size);
+                    }
+                    else if (cppField.Type is CppArrayType arrayType)
                     {
                         csField.FieldType = new CSharpFixedArrayType(GetCSharpType(arrayType.ElementType), arrayType.Size);
                     }

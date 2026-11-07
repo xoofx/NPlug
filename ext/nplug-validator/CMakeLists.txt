@@ -24,7 +24,7 @@ set(VST_SDK_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/../vst3sdk)
 
 if(NOT EXISTS ${VST_SDK_FOLDER})
     set(GIT_REPOSITORY https://github.com/steinbergmedia/vst3sdk.git)
-    set(GIT_TAG v3.8.0_build_66)
+    set(GIT_TAG v3.8.1_build_84)
 endif()
 
 ExternalProject_Add(vst3sdk
@@ -35,6 +35,7 @@ ExternalProject_Add(vst3sdk
         -DSMTG_CREATE_PLUGIN_LINK=0
         -DSMTG_USE_STATIC_CRT=1
         -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
         -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
         -DSMTG_BUILD_UNIVERSAL_BINARY=0
         -DSMTG_ENABLE_IOS_TARGETS=0

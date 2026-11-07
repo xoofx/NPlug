@@ -65,6 +65,54 @@ public enum AudioNoteExpressionTypeId : uint
     CustomEnd = 200000,
 
     /// <summary>
+    /// start of the MIDI 2.0 assignable per-note controllers (VST 3.8.1)
+    /// </summary>
+    Midi2AssignablePerNoteControllerStart = 201000,
+    /// <summary>
+    /// end of the MIDI 2.0 assignable per-note controllers (VST 3.8.1)
+    /// </summary>
+    Midi2AssignablePerNoteControllerEnd = 201255,
+    /// <summary>
+    /// start of the MIDI 2.0 registered per-note controllers (VST 3.8.1)
+    /// </summary>
+    Midi2RegisteredPerNoteControllerStart = 202000,
+    /// <summary>
+    /// MIDI 2.0 registered per-note controller 0x0C: playing position (VST 3.8.1)
+    /// </summary>
+    Midi2RegisteredPerNoteControllerPlayingPosition = Midi2RegisteredPerNoteControllerStart + 0x0C,
+    /// <summary>
+    /// end of the MIDI 2.0 registered per-note controllers (VST 3.8.1)
+    /// </summary>
+    Midi2RegisteredPerNoteControllerEnd = 202255,
+    /// <summary>
+    /// start of the MIDI 2.0 note-on attributes (VST 3.8.1)
+    /// </summary>
+    Midi2NoteOnAttributeStart = 203000,
+    /// <summary>
+    /// start of the note-on articulations of the MIDI 2.0 orchestral profile (VST 3.8.1)
+    /// </summary>
+    Midi2NoteOnOrchestralArticulationStart = Midi2NoteOnAttributeStart + 0x10,
+    /// <summary>
+    /// end of the note-on articulations of the MIDI 2.0 orchestral profile (VST 3.8.1)
+    /// </summary>
+    Midi2NoteOnOrchestralArticulationEnd = Midi2NoteOnAttributeStart + 0x1F,
+    /// <summary>
+    /// end of the MIDI 2.0 note-on attributes (VST 3.8.1)
+    /// </summary>
+    Midi2NoteOnAttributeEnd = 203255,
+    /// <summary>
+    /// start of the MIDI 2.0 note-off attributes (VST 3.8.1)
+    /// </summary>
+    Midi2NoteOffAttributeStart = 204000,
+    /// <summary>
+    /// note-off articulation of the MIDI 2.0 orchestral profile (VST 3.8.1)
+    /// </summary>
+    Midi2NoteOffOrchestralArticulation = Midi2NoteOffAttributeStart + 0x10,
+    /// <summary>
+    /// end of the MIDI 2.0 note-off attributes (VST 3.8.1)
+    /// </summary>
+    Midi2NoteOffAttributeEnd = 204255,
+    /// <summary>
     /// indicates an invalid note expression type
     /// </summary>
     InvalidTypeID = 0xFFFFFFFF,

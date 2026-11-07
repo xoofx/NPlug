@@ -265,6 +265,75 @@ internal static unsafe partial class LibVst
         {
             if (!IsUnitAndProgramListSupported) throw new NotSupportedException($"This method is not supported because {nameof(IsUnitAndProgramListSupported)} is false");
         }
+
+        public bool IsTransportControlSupported
+        {
+            get
+            {
+                var transportControl = QueryInterface<IComponentHandler, ITransportControl>(_handler);
+                if (transportControl == null) return false;
+                transportControl->release();
+                return true;
+            }
+        }
+
+        public bool IsTransportActionSupported(AudioTransportAction action)
+        {
+            var transportControl = QueryInterface<IComponentHandler, ITransportControl>(_handler);
+            if (transportControl == null) return false;
+            try
+            {
+                return transportControl->isActionSupported((int)action).IsSuccess;
+            }
+            finally
+            {
+                transportControl->release();
+            }
+        }
+
+        public bool RequestTransportAction(AudioTransportAction action)
+        {
+            if (action.RequiresPosition()) throw new ArgumentException($"The transport action {action} requires a position.", nameof(action));
+            var transportControl = GetTransportControl();
+            try
+            {
+                return transportControl->requestAction((int)action, null).IsSuccess;
+            }
+            finally
+            {
+                transportControl->release();
+            }
+        }
+
+        public bool RequestTransportAction(AudioTransportAction action, AudioTransportPosition position)
+        {
+            var transportControl = GetTransportControl();
+            try
+            {
+                var nativePosition = new TransportPosition { type = (TransportPositionType)position.Kind };
+                if (position.Kind == AudioTransportPositionKind.QuarterNotes)
+                {
+                    nativePosition.union.quarterNotes = new TQuarterNotes(position.QuarterNotes);
+                }
+                else
+                {
+                    nativePosition.union.samples = new TSamples(position.Samples);
+                }
+                return transportControl->requestAction((int)action, &nativePosition).IsSuccess;
+            }
+            finally
+            {
+                transportControl->release();
+            }
+        }
+
+        private ITransportControl* GetTransportControl()
+        {
+            // QueryInterface returns an owned reference; each caller releases it before returning.
+            var transportControl = QueryInterface<IComponentHandler, ITransportControl>(_handler);
+            if (transportControl == null) throw new NotSupportedException($"This method is not supported because {nameof(IsTransportControlSupported)} is false");
+            return transportControl;
+        }
     }
 
     private sealed class AudioContextMenuVst : IAudioContextMenu

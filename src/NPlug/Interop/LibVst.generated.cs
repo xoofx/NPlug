@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 
 internal static partial class LibVst
 {
-    public const string SdkVersion = "VST 3.8.0";
+    public const string SdkVersion = "VST 3.8.1";
     
     public const string AudioEffectCategory = "Audio Module Class";
     
@@ -10208,7 +10208,7 @@ internal static partial class LibVst
             kBarPositionValid = 1 << 11,
             
             /// <summary>
-            /// cycleStartMusic and barPositionMusic contain valid information
+            /// cycleStartMusic and cycleEndMusic contain valid information
             /// </summary>
             kCycleValid = 1 << 12,
             
@@ -19173,21 +19173,15 @@ internal static partial class LibVst
     public unsafe partial struct Midi2Controller
     {
         /// <summary>
-        /// msb
+        /// Bits 0-6 of byte1 specify the bank. Bit 7 (MSB) indicates the controller type:
+        /// set = registered controller, clear = assignable controller.
         /// </summary>
-        public byte bank;
+        public byte byte1;
         
         /// <summary>
-        /// true: registered, false: assignable
+        /// Bits 0-6 of byte2 specify the controller index.
         /// </summary>
-        public byte registered;
-        
-        /// <summary>
-        /// lsb
-        /// </summary>
-        public byte index;
-        
-        public byte reserved;
+        public byte byte2;
     }
     
     /// <summary>
@@ -19506,7 +19500,8 @@ internal static partial class LibVst
     ///     {
     ///         // paramID could be cached for performance issue
     ///         ParamValue norm = mEditController-&gt;getIEditController ()-&gt;getParamNormalized (paramID);
-    ///         ParamValue plain = mEditController-&gt;getIEditController ()-&gt;normalizedParamToPlain (paramID, norm);
+    ///         ParamValue plain = mEditController-&gt;getIEditController ()-&gt;normalizedParamToPlain (paramID,
+    /// norm);
     ///         // plain is something like -6 (-6dB)
     ///     }
     /// }
@@ -21450,6 +21445,397 @@ internal static partial class LibVst
                     )));
             }
         }
+    }
+    
+    /// <summary>
+    /// Vst::ITransportControl Interface
+    /// </summary>
+    /// <remarks>
+    ///  vstIHost vst381- [host imp]
+    /// - [extends IComponentHandler]
+    /// - [released: 3.8.1]
+    /// - [optional]This interface allows a plug-in to request transport-related actions from the host.
+    /// Typical use cases include:
+    /// - Jumping (locating) to a position
+    /// - Starting or stopping playback or recording
+    /// - Adjusting loop/cycle regions
+    /// - Enabling or disabling cycle playbackAll calls must be made from the **UI thread**.
+    /// Hosts may accept or deny requests depending on their internal policies or the
+    /// current editing mode (e.g., offline rendering, write-protected state, etc.).
+    /// </remarks>
+    public unsafe partial struct ITransportControl : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 5;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<ITransportControl*, int, LibVst.TransportPosition*, int>)&requestAction_Wrapper;
+            vtbl[4] = (delegate*unmanaged[MemberFunction]<ITransportControl*, int, int>)&isActionSupported_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<ITransportControl, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<ITransportControl, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<ITransportControl, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Request a transport action from the host.
+        /// </summary>
+        /// <param name="action">The action to perform.</param>
+        /// <param name="position">Optional pointer to a TransportPosition.
+        /// Required for locate or cycle-related actions.</param>
+        /// <returns>@return kResultOk          The request is accepted (not necessarily completed synchronously).
+        /// kNotImplemented    Host does not implement this function.
+        /// kInvalidArgument   Position missing or invalid for the supplied action.
+        /// kResultFalse       Host refuses the action due to state/policy constraints.</returns>
+        /// <remarks>
+        /// The host may accept the request or refuse it based on its current state
+        /// (editing mode, user preferences, restricted transport control policies).
+        /// </remarks>
+        /// <note>
+        /// Must be called from the UI/main thread.
+        /// </note>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult requestAction(int action, LibVst.TransportPosition* position)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITransportControl*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITransportControl), "requestAction");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.ITransportControl*, int, LibVst.TransportPosition*, int>)Vtbl[3])(__self__, action, position);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.ITransportControl*, int, LibVst.TransportPosition*, int>)Vtbl[3])((LibVst.ITransportControl*)Unsafe.AsPointer(ref this), action, position);
+            }
+        }
+        
+        /// <summary>
+        /// Query whether the host supports the given action.
+        /// </summary>
+        /// <param name="action">The action to test.</param>
+        /// <returns>@return kResultOk        The action is supported.
+        /// kResultFalse     The action is not supported.
+        /// kNotImplemented  Host does not implement this function.
+        /// kInvalidArgument Unknown action.</returns>
+        /// <remarks>
+        /// This is useful for updating plug-in UI elements (enabling or disabling buttons).
+        /// </remarks>
+        /// <note>
+        /// Must be called from the UI/main thread.
+        /// </note>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult isActionSupported(int action)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.ITransportControl*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(ITransportControl), "isActionSupported");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.ITransportControl*, int, int>)Vtbl[4])(__self__, action);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.ITransportControl*, int, int>)Vtbl[4])((LibVst.ITransportControl*)Unsafe.AsPointer(ref this), action);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Request a transport action from the host.
+        /// </summary>
+        /// <param name="action">The action to perform.</param>
+        /// <param name="position">Optional pointer to a TransportPosition.
+        /// Required for locate or cycle-related actions.</param>
+        /// <returns>@return kResultOk          The request is accepted (not necessarily completed synchronously).
+        /// kNotImplemented    Host does not implement this function.
+        /// kInvalidArgument   Position missing or invalid for the supplied action.
+        /// kResultFalse       Host refuses the action due to state/policy constraints.</returns>
+        /// <remarks>
+        /// The host may accept the request or refuse it based on its current state
+        /// (editing mode, user preferences, restricted transport control policies).
+        /// </remarks>
+        /// <note>
+        /// Must be called from the UI/main thread.
+        /// </note>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
+        private static partial ComResult requestAction_ToManaged(ITransportControl* self, int action, LibVst.TransportPosition* position);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int requestAction_Wrapper(ITransportControl* self, int action, LibVst.TransportPosition* position)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITransportControl), "requestAction");
+                try
+                {
+                    return requestAction_ToManaged(self, action, position);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return requestAction_ToManaged(self, action, position);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Query whether the host supports the given action.
+        /// </summary>
+        /// <param name="action">The action to test.</param>
+        /// <returns>@return kResultOk        The action is supported.
+        /// kResultFalse     The action is not supported.
+        /// kNotImplemented  Host does not implement this function.
+        /// kInvalidArgument Unknown action.</returns>
+        /// <remarks>
+        /// This is useful for updating plug-in UI elements (enabling or disabling buttons).
+        /// </remarks>
+        /// <note>
+        /// Must be called from the UI/main thread.
+        /// </note>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// (Initialized | Connected)]
+        /// </note>
+        private static partial ComResult isActionSupported_ToManaged(ITransportControl* self, int action);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int isActionSupported_Wrapper(ITransportControl* self, int action)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(ITransportControl), "isActionSupported");
+                try
+                {
+                    return isActionSupported_ToManaged(self, action);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return isActionSupported_ToManaged(self, action);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Transport action requested by the plug-in.
+        /// </summary>
+        public enum Action : int
+        {
+            /// <summary>
+            /// Locate transport to a new position.
+            /// Requires a valid TransportPosition.
+            /// </summary>
+            Locate = 0,
+            
+            /// <summary>
+            /// Start playback at current position
+            /// </summary>
+            PlaybackStart,
+            
+            /// <summary>
+            /// Stop playback, keep current position
+            /// </summary>
+            PlaybackStop,
+            
+            /// <summary>
+            /// Locate and start playback (position required)
+            /// </summary>
+            LocateAndPlaybackStart,
+            
+            /// <summary>
+            /// Stop and locate (position required)
+            /// </summary>
+            PlaybackStopAndLocate,
+            
+            /// <summary>
+            /// Start recording and playback at current position
+            /// </summary>
+            RecordOnPlaybackStart,
+            
+            /// <summary>
+            /// Locate and start recording and playback (position required)
+            /// </summary>
+            LocateAndRecordOnPlaybackStart,
+            
+            /// <summary>
+            /// Stop recording and continue playback
+            /// </summary>
+            RecordOff,
+            
+            /// <summary>
+            /// Stop recording and playback, keep current position
+            /// </summary>
+            RecordOffPlaybackStop,
+            
+            /// <summary>
+            /// Stop recording and playback and locate (position required)
+            /// </summary>
+            RecordOffPlaybackStopAndLocate,
+            
+            /// <summary>
+            /// Set start of cycle/loop region (position required)
+            /// </summary>
+            SetCycleStart,
+            
+            /// <summary>
+            /// Set end of cycle/loop region (position required)
+            /// </summary>
+            SetCycleEnd,
+            
+            /// <summary>
+            /// Enable looping/cycle mode
+            /// </summary>
+            CycleOn,
+            
+            /// <summary>
+            /// Disable looping/cycle mode
+            /// </summary>
+            CycleOff,
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (ITransportControl, 0xD752F52D, 0x004348A0, 0xB431B045, 0xF0DCA49C)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0x2d, 0xf5, 0x52, 0xd7, 0x43, 0x00, 0xa0, 0x48, 0xb4, 0x31, 0xb0, 0x45, 0xf0, 0xdc, 0xa4, 0x9c })
+                        : new ReadOnlySpan<byte>(new byte[] { 0xd7, 0x52, 0xf5, 0x2d, 0x00, 0x43, 0x48, 0xa0, 0xb4, 0x31, 0xb0, 0x45, 0xf0, 0xdc, 0xa4, 0x9c })
+                    )));
+            }
+        }
+    }
+    
+    /// <summary>
+    /// TransportPosition
+    /// </summary>
+    /// <remarks>
+    /// A tagged union representing a transport position in either:
+    /// - absolute samples (TSamples), or
+    /// - musical quarter notes (TQuarterNotes, a.k.a. PPQ).Hosts may choose which representation they honor.
+    /// Plug-ins should use ::Type to indicate which field is valid.
+    /// </remarks>
+    /// <note>
+    /// @note TransportPosition is only meaningful for actions requiring a position
+    /// (Locate, SetCycleStart, SetCycleEnd, etc).
+    /// </note>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct TransportPosition
+    {
+        public TransportPositionType type;
+        
+        [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
+        public unsafe partial struct Union
+        {
+            /// <summary>
+            /// Absolute sample position
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.TSamples samples;
+            
+            /// <summary>
+            /// PPQ position (musical time)
+            /// </summary>
+            [FieldOffset(0)]
+            public LibVst.TQuarterNotes quarterNotes;
+        }
+        
+        public LibVst.TransportPosition.Union union;
     }
     
     /// <summary>
@@ -23781,6 +24167,68 @@ internal static partial class LibVst
         kCustomEnd = 200000,
         
         /// <summary>
+        /// --- Dedicated for MIDI 2.0 Note Expression Type IDs --------
+        /// --- Reserved for Assignable Per Note Controller --------
+        /// </summary>
+        kMidi2AssignablePerNoteControllerStart = 201000,
+        
+        /// <summary>
+        /// --- Dedicated for MIDI 2.0 Note Expression Type IDs --------
+        /// --- Reserved for Assignable Per Note Controller --------
+        /// </summary>
+        kMidi2AssignablePerNoteControllerEnd = 201255,
+        
+        /// <summary>
+        /// --- Reserved for Registered Per Note Controller --------
+        /// </summary>
+        kMidi2RegisteredPerNoteControllerStart = 202000,
+        
+        /// <summary>
+        /// --- Reserved for Registered Per Note Controller --------
+        /// </summary>
+        kMidi2RegisteredPerNoteControllerPlayingPosition = kMidi2RegisteredPerNoteControllerStart + 0x0C,
+        
+        /// <summary>
+        /// --- Reserved for Registered Per Note Controller --------
+        /// </summary>
+        kMidi2RegisteredPerNoteControllerEnd = 202255,
+        
+        /// <summary>
+        /// --- Reserved for Note On Attribute ---------------------
+        /// </summary>
+        kMidi2NoteOnAttributeStart = 203000,
+        
+        /// <summary>
+        /// Orchestral Profile Specific
+        /// </summary>
+        kMidi2NoteOnOrchestralArticulationStart = kMidi2NoteOnAttributeStart + 0x10,
+        
+        /// <summary>
+        /// Orchestral Profile Specific
+        /// </summary>
+        kMidi2NoteOnOrchestralArticulationEnd = kMidi2NoteOnAttributeStart + 0x1F,
+        
+        /// <summary>
+        /// Orchestral Profile Specific
+        /// </summary>
+        kMidi2NoteOnAttributeEnd = 203255,
+        
+        /// <summary>
+        /// --- Reserved for Note Off Attribute --------------------
+        /// </summary>
+        kMidi2NoteOffAttributeStart = 204000,
+        
+        /// <summary>
+        /// Orchestral Profile Specific
+        /// </summary>
+        kMidi2NoteOffOrchestralArticulation = kMidi2NoteOffAttributeStart + 0x10,
+        
+        /// <summary>
+        /// Orchestral Profile Specific
+        /// </summary>
+        kMidi2NoteOffAttributeEnd = 204255,
+        
+        /// <summary>
         /// indicates an invalid note expression type
         /// </summary>
         kInvalidTypeID = 0xFFFFFFFF,
@@ -24159,32 +24607,32 @@ internal static partial class LibVst
         kSystemSongPointer = 134,
         
         /// <summary>
-        /// Cable Select (use LegacyMIDICCOutEvent.value only)
+        /// MIDI1: 0xF5 undefined (single byte)
         /// </summary>
         kSystemCableSelect = 135,
         
         /// <summary>
-        /// Tune Request (use LegacyMIDICCOutEvent.value only)
+        /// MIDI1: 0xF6 Tune Request (single byte)
         /// </summary>
         kSystemTuneRequest = 136,
         
         /// <summary>
-        /// Midi Clock Start (use LegacyMIDICCOutEvent.value only)
+        /// MIDI1: 0xFA Start (single byte)
         /// </summary>
         kSystemMidiClockStart = 137,
         
         /// <summary>
-        /// Midi Clock Continue (use LegacyMIDICCOutEvent.value only)
+        /// MIDI1: 0xFB Continue (single byte)
         /// </summary>
         kSystemMidiClockContinue = 138,
         
         /// <summary>
-        /// Midi Clock Stop (use LegacyMIDICCOutEvent.value only)
+        /// MIDI1: 0xFC Stop (single byte)
         /// </summary>
         kSystemMidiClockStop = 139,
         
         /// <summary>
-        /// Active Sensing (use LegacyMIDICCOutEvent.value only)
+        /// MIDI1: 0xFE Active Sensing (single byte)
         /// </summary>
         kSystemActiveSensing = 140,
     }
@@ -24243,6 +24691,22 @@ internal static partial class LibVst
         kIsNotYetPrefetchable,
         
         kNumPrefetchableSupport,
+    }
+    
+    /// <summary>
+    /// Transport Position Type
+    /// </summary>
+    public enum TransportPositionType : int
+    {
+        /// <summary>
+        /// Absolute position in samples
+        /// </summary>
+        Samples,
+        
+        /// <summary>
+        /// Musical position in quarter notes (PPQ)
+        /// </summary>
+        QuarterNotes,
     }
     
     /// <summary>
@@ -24509,6 +24973,242 @@ internal static partial class LibVst
         kUsedAsPanner,
     }
     
+    /// <summary>
+    /// Extended host callback interface for an edit controller:
+    /// Vst::NoteOnOrchestralArticulation::IInfo
+    /// </summary>
+    /// <remarks>
+    ///  vstIPlug vst381- [plug imp]
+    /// - [extends IEditController]
+    /// - [released: 3.8.1]
+    /// - [optional]This interface allows the host to get some information about the plug-in's noteOn
+    /// Orchestral Articulation capabilities from the UI Thread------------------------------------------------------------------------
+    /// </remarks>
+    public unsafe partial struct IInfo : INativeGuid, INativeUnknown, INativeVtbl
+    {
+        public static Guid* NativeGuid => (Guid*)Unsafe.AsPointer(ref Unsafe.AsRef(in IId));
+        
+        public void** Vtbl;
+        
+        public static int VtblCount => 4;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void InitializeVtbl(void** vtbl)
+        {
+            FUnknown.InitializeVtbl(vtbl);
+            vtbl[3] = (delegate*unmanaged[MemberFunction]<IInfo*, int, short, LibVst.ClassificationVariations*, int>)&getVariationsInfo_Wrapper;
+        }
+        
+        // --------------------------------------------------------------
+        // RCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Query for a pointer to the specified interface.
+        /// Returns kResultOk on success or kNoInterface if the object does not implement the interface.
+        /// The object has to call addRef when returning an interface.
+        /// </summary>
+        /// <param name="obj">: (out) On return, *obj points to the requested interface</param>
+        /// <param name="_iid">: (in) 16 Byte interface identifier (-&gt; FUID)</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult queryInterface(Guid* _iid, void** obj)
+        {
+            return Unsafe.As<IInfo, FUnknown>(ref this).queryInterface(_iid, obj);
+        }
+        
+        /// <summary>
+        /// Adds a reference and returns the new reference count.
+        /// </summary>
+        /// <par>
+        /// Remarks: The initial reference count after creating an object is 1.
+        /// </par>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint addRef()
+        {
+            return Unsafe.As<IInfo, FUnknown>(ref this).addRef();
+        }
+        
+        /// <summary>
+        /// Releases a reference and returns the new reference count.
+        /// If the reference count reaches zero, the object will be destroyed in memory.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public uint release()
+        {
+            return Unsafe.As<IInfo, FUnknown>(ref this).release();
+        }
+        
+        /// <summary>
+        /// Returns variation information for orchestral classification types supported by the plug-in.
+        /// </summary>
+        /// <param name="busIndex">- index of Input Event Bus</param>
+        /// <param name="channel">- channel of the bus</param>
+        /// <param name="info">2D array receiving supported variation information.</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// The 2D Array is organized by classifications (see Classification) and subclass
+        /// (according to the index used in MIDI2 Orchestral Profile).
+        /// If info.classification[i].variation[j] is 0, subclass j has no variation (subclass not available).
+        /// If all entries in info.classification[i] are zero, classification i is not available.
+        /// </remarks>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ComResult getVariationsInfo(int busIndex, short channel, LibVst.ClassificationVariations* info)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __self__ = (LibVst.IInfo*)Unsafe.AsPointer(ref this);
+                var __evt__ = new ManagedToNativeEvent((IntPtr)__self__, nameof(IInfo), "getVariationsInfo");
+                var __result__ = ((delegate*unmanaged[MemberFunction]<LibVst.IInfo*, int, short, LibVst.ClassificationVariations*, int>)Vtbl[3])(__self__, busIndex, channel, info);
+                __evt__.Result = __result__;
+                __evt__.Dispose();
+                return __result__;
+            }
+            else
+            {
+                return ((delegate*unmanaged[MemberFunction]<LibVst.IInfo*, int, short, LibVst.ClassificationVariations*, int>)Vtbl[3])((LibVst.IInfo*)Unsafe.AsPointer(ref this), busIndex, channel, info);
+            }
+        }
+        
+        // --------------------------------------------------------------
+        // CCW methods
+        // --------------------------------------------------------------
+        /// <summary>
+        /// Returns variation information for orchestral classification types supported by the plug-in.
+        /// </summary>
+        /// <param name="busIndex">- index of Input Event Bus</param>
+        /// <param name="channel">- channel of the bus</param>
+        /// <param name="info">2D array receiving supported variation information.</param>
+        /// <returns>kResultTrue on success</returns>
+        /// <remarks>
+        /// The 2D Array is organized by classifications (see Classification) and subclass
+        /// (according to the index used in MIDI2 Orchestral Profile).
+        /// If info.classification[i].variation[j] is 0, subclass j has no variation (subclass not available).
+        /// If all entries in info.classification[i] are zero, classification i is not available.
+        /// </remarks>
+        /// <note>
+        /// @note [UI-thread 
+        /// &amp;
+        /// Connected]
+        /// </note>
+        private static partial ComResult getVariationsInfo_ToManaged(IInfo* self, int busIndex, short channel, LibVst.ClassificationVariations* info);
+        
+        [UnmanagedCallersOnly(CallConvs = new Type[] { typeof(CallConvMemberFunction)})]
+        private static int getVariationsInfo_Wrapper(IInfo* self, int busIndex, short channel, LibVst.ClassificationVariations* info)
+        {
+            if (InteropHelper.IsTracerEnabled)
+            {
+                var __evt__ = new NativeToManagedEvent((IntPtr)self, nameof(IInfo), "getVariationsInfo");
+                try
+                {
+                    return getVariationsInfo_ToManaged(self, busIndex, channel, info);
+                }
+                catch (Exception ex)
+                {
+                    __evt__.Exception = ex;
+                    return (ComResult)ex;
+                }
+                finally
+                {
+                    __evt__.Dispose();
+                }
+            }
+            else
+            {
+                try
+                {
+                    return getVariationsInfo_ToManaged(self, busIndex, channel, info);
+                }
+                catch (Exception ex)
+                {
+                    return (ComResult)ex;
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Used as index for the array classification of structure ClassificationVariations.
+        /// </summary>
+        public enum Classification : uint
+        {
+            kCoreSoundSustainAndStrikes = 0,
+            
+            kStaccatosAndShorts = 1,
+            
+            kSameNoteTrillsRepeats = 2,
+            
+            kIntervallicTrills = 3,
+            
+            kAdditionalColors = 4,
+            
+            kPitchAndDynamicGestures = 5,
+            
+            kScalesRunsAndArpeggios = 6,
+            
+            kEffectsAndNoises = 7,
+            
+            kReserved1 = 8,
+            
+            kReserved2 = 9,
+            
+            kCustomNoteOn1 = 10,
+            
+            kCustomNoteOn2 = 11,
+            
+            kCustomNoteOn3 = 12,
+            
+            kCustomNoteOn4 = 13,
+            
+            kCustomNoteOn5 = 14,
+            
+            kCustomNoteOn6 = 15,
+            
+            kReserved3 = 16,
+        }
+        
+        /// <summary>
+        /// DECLARE_CLASS_IID (IInfo, 0x7D34A9B4, 0x89CA45F4, 0x9284A9FD, 0x4DD9C906)
+        /// </summary>
+        public static ref readonly Guid IId
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                return ref Unsafe.As<byte, Guid>(ref MemoryMarshal.GetReference((OperatingSystem.IsWindows()
+                        ? new ReadOnlySpan<byte>(new byte[] { 0xb4, 0xa9, 0x34, 0x7d, 0xca, 0x89, 0xf4, 0x45, 0x92, 0x84, 0xa9, 0xfd, 0x4d, 0xd9, 0xc9, 0x06 })
+                        : new ReadOnlySpan<byte>(new byte[] { 0x7d, 0x34, 0xa9, 0xb4, 0x89, 0xca, 0x45, 0xf4, 0x92, 0x84, 0xa9, 0xfd, 0x4d, 0xd9, 0xc9, 0x06 })
+                    )));
+            }
+        }
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct ClassificationVariations
+    {
+        [global::System.Runtime.CompilerServices.InlineArray(17)]
+        public unsafe partial struct ClassificationArray
+        {
+            private LibVst.Variations _element0;
+        }
+        
+        public LibVst.ClassificationVariations.ClassificationArray classification;
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    [global::System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 16)]
+    public unsafe partial struct Variations
+    {
+        public fixed byte variation[16];
+    }
+    
     public const string kPlatformStringWin = "WIN";
     
     public static ReadOnlySpan<byte> kPlatformStringWin_u8 => "WIN\0"u8;
@@ -24589,13 +25289,13 @@ internal static partial class LibVst
     /// @
     /// }
     /// </summary>
-    public const string SDKVersionString = "VST 3.8.0";
+    public const string SDKVersionString = "VST 3.8.1";
     
     /// <summary>
     /// @
     /// }
     /// </summary>
-    public static ReadOnlySpan<byte> SDKVersionString_u8 => "VST 3.8.0\0"u8;
+    public static ReadOnlySpan<byte> SDKVersionString_u8 => "VST 3.8.1\0"u8;
     
     public static partial class SpeakerArr
     {
@@ -26824,12 +27524,12 @@ internal static partial class LibVst
     public static partial class FunctionNameType
     {
         /// <summary>
-        /// 
+        /// ---Compressor Gain Reduction Type -----------
         /// </summary>
         public const string kCompGainReduction = "Comp:GainReduction";
         
         /// <summary>
-        /// 
+        /// ---Compressor Gain Reduction Type -----------
         /// </summary>
         public static ReadOnlySpan<byte> kCompGainReduction_u8 => "Comp:GainReduction\0"u8;
     }
@@ -26857,26 +27557,36 @@ internal static partial class LibVst
     
     public static partial class FunctionNameType
     {
+        /// <summary>
+        /// Useful for live situation where low latency is required:
+        /// 0 means LowLatency disable,
+        /// 1 means LowLatency enable
+        /// </summary>
         public const string kLowLatencyMode = "LowLatencyMode";
         
+        /// <summary>
+        /// Useful for live situation where low latency is required:
+        /// 0 means LowLatency disable,
+        /// 1 means LowLatency enable
+        /// </summary>
         public static ReadOnlySpan<byte> kLowLatencyMode_u8 => "LowLatencyMode\0"u8;
     }
     
     public static partial class FunctionNameType
     {
         /// <summary>
-        /// Useful for live situation where low
-        /// latency is required:
-        /// 0 means LowLatency disable,
-        /// 1 means LowLatency enable
+        /// Allowing to mix the original (Dry) Signal with the processed one (Wet):
+        /// 0.0 means Dry Signal only,
+        /// 0.5 means 50% Dry Signal + 50% Wet Signal,
+        /// 1.0 means Wet Signal only
         /// </summary>
         public const string kDryWetMix = "DryWetMix";
         
         /// <summary>
-        /// Useful for live situation where low
-        /// latency is required:
-        /// 0 means LowLatency disable,
-        /// 1 means LowLatency enable
+        /// Allowing to mix the original (Dry) Signal with the processed one (Wet):
+        /// 0.0 means Dry Signal only,
+        /// 0.5 means 50% Dry Signal + 50% Wet Signal,
+        /// 1.0 means Wet Signal only
         /// </summary>
         public static ReadOnlySpan<byte> kDryWetMix_u8 => "DryWetMix\0"u8;
     }
@@ -26884,18 +27594,14 @@ internal static partial class LibVst
     public static partial class FunctionNameType
     {
         /// <summary>
-        /// Allowing to mix the original (Dry) Signal with the processed one (Wet):
-        /// 0.0 means Dry Signal only,
-        /// 0.5 means 50% Dry Signal + 50% Wet Signal,
-        /// 1.0 means Wet Signal only
+        /// ---Randomize Type ------------------------
+        /// Assigns randomized values across the full parameter range.
         /// </summary>
         public const string kRandomize = "Randomize";
         
         /// <summary>
-        /// Allowing to mix the original (Dry) Signal with the processed one (Wet):
-        /// 0.0 means Dry Signal only,
-        /// 0.5 means 50% Dry Signal + 50% Wet Signal,
-        /// 1.0 means Wet Signal only
+        /// ---Randomize Type ------------------------
+        /// Assigns randomized values across the full parameter range.
         /// </summary>
         public static ReadOnlySpan<byte> kRandomize_u8 => "Randomize\0"u8;
     }
@@ -26903,12 +27609,27 @@ internal static partial class LibVst
     public static partial class FunctionNameType
     {
         /// <summary>
-        /// Gravity point X-axis [0, 1]=&gt;[L-R] (for stereo: middle between left and right)
+        /// Assigns randomized values around the current parameter values (e.g. +/-5% of the current value).
+        /// </summary>
+        public const string kRandomizeAroundCurrent = "RandomizeAroundCurrent";
+        
+        /// <summary>
+        /// Assigns randomized values around the current parameter values (e.g. +/-5% of the current value).
+        /// </summary>
+        public static ReadOnlySpan<byte> kRandomizeAroundCurrent_u8 => "RandomizeAroundCurrent\0"u8;
+    }
+    
+    public static partial class FunctionNameType
+    {
+        /// <summary>
+        /// ---Panner Type ---------------------------
+        /// Gravity point X-axis [0, 1]=&gt;[L-R] (for stereo: middle between left and right).
         /// </summary>
         public const string kPanPosCenterX = "PanPosCenterX";
         
         /// <summary>
-        /// Gravity point X-axis [0, 1]=&gt;[L-R] (for stereo: middle between left and right)
+        /// ---Panner Type ---------------------------
+        /// Gravity point X-axis [0, 1]=&gt;[L-R] (for stereo: middle between left and right).
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterX_u8 => "PanPosCenterX\0"u8;
     }
@@ -26916,12 +27637,12 @@ internal static partial class LibVst
     public static partial class FunctionNameType
     {
         /// <summary>
-        /// Gravity point Y-axis [0, 1]=&gt;[Front-Rear]
+        /// Gravity point Y-axis [0, 1]=&gt;[Front-Rear].
         /// </summary>
         public const string kPanPosCenterY = "PanPosCenterY";
         
         /// <summary>
-        /// Gravity point Y-axis [0, 1]=&gt;[Front-Rear]
+        /// Gravity point Y-axis [0, 1]=&gt;[Front-Rear].
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterY_u8 => "PanPosCenterY\0"u8;
     }
@@ -26929,12 +27650,12 @@ internal static partial class LibVst
     public static partial class FunctionNameType
     {
         /// <summary>
-        /// Gravity point Z-axis [0, 1]=&gt;[Bottom-Top]
+        /// Gravity point Z-axis [0, 1]=&gt;[Bottom-Top].
         /// </summary>
         public const string kPanPosCenterZ = "PanPosCenterZ";
         
         /// <summary>
-        /// Gravity point Z-axis [0, 1]=&gt;[Bottom-Top]
+        /// Gravity point Z-axis [0, 1]=&gt;[Bottom-Top].
         /// </summary>
         public static ReadOnlySpan<byte> kPanPosCenterZ_u8 => "PanPosCenterZ\0"u8;
     }
@@ -29603,12 +30324,14 @@ internal static partial class LibVst
             Register<IXmlRepresentationController>();
             Register<ITestPlugProvider>();
             Register<ITestPlugProvider2>();
+            Register<ITransportControl>();
             Register<IUnitHandler>();
             Register<IUnitHandler2>();
             Register<IUnitInfo>();
             Register<IProgramListData>();
             Register<IUnitData>();
             Register<IInfoListener>();
+            Register<IInfo>();
         }
     }
     
@@ -29641,6 +30364,7 @@ internal static partial class LibVst
             { IEventHandler.IId, nameof(IEventHandler) },
             { IEventList.IId, nameof(IEventList) },
             { IHostApplication.IId, nameof(IHostApplication) },
+            { IInfo.IId, nameof(IInfo) },
             { IInfoListener.IId, nameof(IInfoListener) },
             { IInterAppAudioHost.IId, nameof(IInterAppAudioHost) },
             { IInterAppAudioPresetManager.IId, nameof(IInterAppAudioPresetManager) },
@@ -29675,6 +30399,7 @@ internal static partial class LibVst
             { ITestPlugProvider.IId, nameof(ITestPlugProvider) },
             { ITestPlugProvider2.IId, nameof(ITestPlugProvider2) },
             { ITimerHandler.IId, nameof(ITimerHandler) },
+            { ITransportControl.IId, nameof(ITransportControl) },
             { IUnitData.IId, nameof(IUnitData) },
             { IUnitHandler.IId, nameof(IUnitHandler) },
             { IUnitHandler2.IId, nameof(IUnitHandler2) },
